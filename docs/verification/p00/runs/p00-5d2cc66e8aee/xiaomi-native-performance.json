@@ -1,0 +1,2382 @@
+{
+  "task": "P00-08",
+  "layer": "android_native_performance",
+  "status": "passed",
+  "native_status": "unverified",
+  "recorded_at_utc": "2026-10-11T15:26:06.817136+00:00",
+  "run_id": "p00-5d2cc66e8aee",
+  "environment_kind": "physical_device",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "apk_sha256": "bc77b3826db907424e98b87a59ddba4c1e8aa640d06a065ef0c560c480889269",
+  "build_report_sha256": "7b266fa77b7fe1fbdd7f042744b913820f245ac272c3b2d1dae2c1f19ffe9428",
+  "peer_report_sha256": "d6a4417a0b7a0a4ef5221e5a4ef7764487f23df33ec50b90e08d9cba69129a02",
+  "peer_binary_sha256": "75387de6bbd85f0de5bcd613f74968f473d7c2b6bbeb9692e22dcea69ec4af2c",
+  "runner_sha256": "32964e94b88b1ac726affa61a80e02f0ada522c81e7952e25bd16d7392513ce6",
+  "commands": [
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "get-state"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "c98373c1abef78070f6beef6b4ae4fbf3de348dac280195c7f93441920584af9",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "1bfaa17007aea1b639eb5c54d1c55d079f30f56b64ed20dfc02faf499d567a48",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.version.sdk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a4b2c5db15348c29451e18b8307e5ef81625ea638e807935f39ceaa8d9ac7758",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.cpu.abi"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "7f10c3cd4593d1d6ded27d658e7c05216011c955c200aac551caad0c979d4d90",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "pm",
+        "path",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "7c0ce4331664a5954d1854e3c723f9f819906f1c2fd7aa358d8afd7c48f679c0",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "sha256sum",
+        "/data/app/~~wBy98FXBeqwR0dSoQRvKOg==/com.github.zzwtsy.chuanmen.p00probe-fhCwYF9kqYyjIMG7yt6Lag==/base.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "42722760705119ce794ce1b180ddfb0ec7a9373de7650265af839024e4545a7a",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "run-as",
+        "com.github.zzwtsy.chuanmen.p00probe",
+        "cat",
+        "files/p00-performance-p00-5d2cc66e8aee.json"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "6252d76786b44358a9cdb59bbf0a9cf95f11a0e770989f037ba2d3d54600efdc",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "dumpsys",
+        "activity",
+        "services",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e9990d2b9ce9e862271712ca1ecd0c280ac8cd7a2fd48fc18fb69623521c33b0",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    }
+  ],
+  "device_id": "device-01",
+  "device": {
+    "ro.build.fingerprint": "Xiaomi/popsicle/popsicle:16/BP2A.250605.031.A3/OS3.0.319.0.WPBCNXM:user/release-keys",
+    "ro.build.version.sdk": "36",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.kernel.qemu": ""
+  },
+  "native_library_sha256": "8e523672e0b5c0efb80ed8e649f8308f5e8ef84924bbdef5ab06d06cb4ba5065",
+  "installed_apk_sha256": "bc77b3826db907424e98b87a59ddba4c1e8aa640d06a065ef0c560c480889269",
+  "started_report_sha256": "1b301712b36ebd4e0b5903721bfbe2fd2a519dd610a0b19eb98c6b5ad7c2f1f1",
+  "observations": {
+    "layer": "android_native_performance",
+    "status": "passed",
+    "run_id": "p00-5d2cc66e8aee",
+    "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "measurement_owner": "experiment_process_including_harness",
+    "idle_seconds_requested": 1800,
+    "connect_ms": 65.372604,
+    "connect_request_sha256": "dfac270a4404912160287b01718e1bc4aae4f5cecc92d54b4343da75fb410722",
+    "tcp": {
+      "duration_seconds": 60.026053571,
+      "cpu_one_core_percent": 35.70782805943996,
+      "pss_kib_start": 83472,
+      "pss_kib_end": 85635,
+      "samples": [
+        {
+          "elapsed_ns": 935299407584600,
+          "process_cpu_ms": 314,
+          "process_pss_kib": 83472,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935300425494391,
+          "process_cpu_ms": 836,
+          "process_pss_kib": 87129,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935301457100276,
+          "process_cpu_ms": 1247,
+          "process_pss_kib": 87289,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935302507524911,
+          "process_cpu_ms": 1607,
+          "process_pss_kib": 87303,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935303523126838,
+          "process_cpu_ms": 1782,
+          "process_pss_kib": 87439,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935304537984181,
+          "process_cpu_ms": 1955,
+          "process_pss_kib": 87606,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935305577038504,
+          "process_cpu_ms": 2119,
+          "process_pss_kib": 87738,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935306601598660,
+          "process_cpu_ms": 2340,
+          "process_pss_kib": 88062,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935307615502722,
+          "process_cpu_ms": 2742,
+          "process_pss_kib": 88126,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935308671839857,
+          "process_cpu_ms": 3170,
+          "process_pss_kib": 88254,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935309718780065,
+          "process_cpu_ms": 3585,
+          "process_pss_kib": 88566,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935310791074075,
+          "process_cpu_ms": 4000,
+          "process_pss_kib": 88566,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935311827441314,
+          "process_cpu_ms": 4415,
+          "process_pss_kib": 88582,
+          "charge_uah": 4727000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935312868698449,
+          "process_cpu_ms": 4833,
+          "process_pss_kib": 88586,
+          "charge_uah": 4727000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935313896895115,
+          "process_cpu_ms": 5238,
+          "process_pss_kib": 88586,
+          "charge_uah": 4727000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935314957801104,
+          "process_cpu_ms": 5571,
+          "process_pss_kib": 88590,
+          "charge_uah": 4727000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935315986987406,
+          "process_cpu_ms": 5951,
+          "process_pss_kib": 88670,
+          "charge_uah": 4727000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935317011494593,
+          "process_cpu_ms": 6334,
+          "process_pss_kib": 88670,
+          "charge_uah": 4728000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935318075111728,
+          "process_cpu_ms": 6717,
+          "process_pss_kib": 88670,
+          "charge_uah": 4728000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935319103379801,
+          "process_cpu_ms": 7074,
+          "process_pss_kib": 88801,
+          "charge_uah": 4728000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935320150342248,
+          "process_cpu_ms": 7451,
+          "process_pss_kib": 88681,
+          "charge_uah": 4728000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935321217203029,
+          "process_cpu_ms": 7831,
+          "process_pss_kib": 88681,
+          "charge_uah": 4728000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935322242820997,
+          "process_cpu_ms": 8212,
+          "process_pss_kib": 88681,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935323299036310,
+          "process_cpu_ms": 8592,
+          "process_pss_kib": 88859,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935324334071205,
+          "process_cpu_ms": 8942,
+          "process_pss_kib": 88867,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935325379341257,
+          "process_cpu_ms": 9314,
+          "process_pss_kib": 88867,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935326443205215,
+          "process_cpu_ms": 9675,
+          "process_pss_kib": 88867,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935327465466360,
+          "process_cpu_ms": 10049,
+          "process_pss_kib": 88847,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935328512154641,
+          "process_cpu_ms": 10469,
+          "process_pss_kib": 88931,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935329581239953,
+          "process_cpu_ms": 10916,
+          "process_pss_kib": 88919,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935330621996151,
+          "process_cpu_ms": 11284,
+          "process_pss_kib": 88919,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935331675526723,
+          "process_cpu_ms": 11682,
+          "process_pss_kib": 88927,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935332721565108,
+          "process_cpu_ms": 12051,
+          "process_pss_kib": 88935,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935333747574222,
+          "process_cpu_ms": 12461,
+          "process_pss_kib": 88935,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935334810440576,
+          "process_cpu_ms": 12849,
+          "process_pss_kib": 88935,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935335867878284,
+          "process_cpu_ms": 13215,
+          "process_pss_kib": 88935,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935336897394742,
+          "process_cpu_ms": 13568,
+          "process_pss_kib": 88935,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935337940210314,
+          "process_cpu_ms": 13957,
+          "process_pss_kib": 88935,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935338982934897,
+          "process_cpu_ms": 14383,
+          "process_pss_kib": 85536,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935340064605730,
+          "process_cpu_ms": 14783,
+          "process_pss_kib": 85648,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935341142834428,
+          "process_cpu_ms": 15143,
+          "process_pss_kib": 85656,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935342214195990,
+          "process_cpu_ms": 15530,
+          "process_pss_kib": 85656,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935343282404010,
+          "process_cpu_ms": 15911,
+          "process_pss_kib": 85664,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935344324566562,
+          "process_cpu_ms": 16270,
+          "process_pss_kib": 85664,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935345368569582,
+          "process_cpu_ms": 16645,
+          "process_pss_kib": 85661,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935346388875780,
+          "process_cpu_ms": 17023,
+          "process_pss_kib": 85661,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935347446540259,
+          "process_cpu_ms": 17389,
+          "process_pss_kib": 85683,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 342,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935348483723383,
+          "process_cpu_ms": 17713,
+          "process_pss_kib": 85683,
+          "charge_uah": 4733000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935349512500831,
+          "process_cpu_ms": 18089,
+          "process_pss_kib": 85627,
+          "charge_uah": 4733000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935350572466976,
+          "process_cpu_ms": 18439,
+          "process_pss_kib": 85627,
+          "charge_uah": 4733000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935351627538851,
+          "process_cpu_ms": 18805,
+          "process_pss_kib": 85635,
+          "charge_uah": 4733000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935352685032757,
+          "process_cpu_ms": 19170,
+          "process_pss_kib": 85639,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935353715452756,
+          "process_cpu_ms": 19572,
+          "process_pss_kib": 85639,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935354736603277,
+          "process_cpu_ms": 19934,
+          "process_pss_kib": 85647,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935355767994006,
+          "process_cpu_ms": 20353,
+          "process_pss_kib": 85647,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935356799942703,
+          "process_cpu_ms": 20739,
+          "process_pss_kib": 85647,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935357874196557,
+          "process_cpu_ms": 21139,
+          "process_pss_kib": 85647,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935358937961452,
+          "process_cpu_ms": 21551,
+          "process_pss_kib": 85647,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935359433638171,
+          "process_cpu_ms": 21748,
+          "process_pss_kib": 85635,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        }
+      ],
+      "protocol": "tcp",
+      "frames": 1205,
+      "bytes": 78970880,
+      "request_sha256": "b99fc9014736b35e28353820a4be49e8f3358949197997be543b1414cd115fd8",
+      "response_sha256": "b99fc9014736b35e28353820a4be49e8f3358949197997be543b1414cd115fd8",
+      "goodput_mbps": 10.524880487982331,
+      "source_ip": "10.222.0.2"
+    },
+    "udp": {
+      "duration_seconds": 60.021558623,
+      "cpu_one_core_percent": 13.381858425985914,
+      "pss_kib_start": 85754,
+      "pss_kib_end": 73442,
+      "samples": [
+        {
+          "elapsed_ns": 935359459165098,
+          "process_cpu_ms": 21773,
+          "process_pss_kib": 85754,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935360471518639,
+          "process_cpu_ms": 21875,
+          "process_pss_kib": 85981,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935361498751868,
+          "process_cpu_ms": 21986,
+          "process_pss_kib": 86181,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935362529228899,
+          "process_cpu_ms": 22095,
+          "process_pss_kib": 86373,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935363554072648,
+          "process_cpu_ms": 22203,
+          "process_pss_kib": 86565,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935364578965252,
+          "process_cpu_ms": 22311,
+          "process_pss_kib": 86757,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935365605118168,
+          "process_cpu_ms": 22421,
+          "process_pss_kib": 86949,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935366634183897,
+          "process_cpu_ms": 22546,
+          "process_pss_kib": 87141,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935367658615720,
+          "process_cpu_ms": 22655,
+          "process_pss_kib": 87341,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935368694761969,
+          "process_cpu_ms": 22782,
+          "process_pss_kib": 87533,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935369730648427,
+          "process_cpu_ms": 22900,
+          "process_pss_kib": 87773,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935370758118687,
+          "process_cpu_ms": 23013,
+          "process_pss_kib": 87908,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935371784622489,
+          "process_cpu_ms": 23113,
+          "process_pss_kib": 88108,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935372818928322,
+          "process_cpu_ms": 23218,
+          "process_pss_kib": 88236,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935373845712697,
+          "process_cpu_ms": 23328,
+          "process_pss_kib": 88428,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935374872374311,
+          "process_cpu_ms": 23445,
+          "process_pss_kib": 88620,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935375893549362,
+          "process_cpu_ms": 23557,
+          "process_pss_kib": 88812,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935376931672018,
+          "process_cpu_ms": 23675,
+          "process_pss_kib": 89072,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935377959528685,
+          "process_cpu_ms": 23791,
+          "process_pss_kib": 89264,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935378987780976,
+          "process_cpu_ms": 23906,
+          "process_pss_kib": 89392,
+          "charge_uah": 4737000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935380020369934,
+          "process_cpu_ms": 24030,
+          "process_pss_kib": 89632,
+          "charge_uah": 4737000,
+          "energy_nwh": null,
+          "plugged": 1,
+          "voltage_mv": 4080,
+          "temperature_tenths_c": 344,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935381048411808,
+          "process_cpu_ms": 24149,
+          "process_pss_kib": 89896,
+          "charge_uah": 4737000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": true
+        },
+        {
+          "elapsed_ns": 935382061919412,
+          "process_cpu_ms": 24237,
+          "process_pss_kib": 90144,
+          "charge_uah": 4737000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935383080663683,
+          "process_cpu_ms": 24349,
+          "process_pss_kib": 65156,
+          "charge_uah": 4737000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935384095477693,
+          "process_cpu_ms": 24443,
+          "process_pss_kib": 65303,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935385125731963,
+          "process_cpu_ms": 24567,
+          "process_pss_kib": 65563,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935386152920765,
+          "process_cpu_ms": 24690,
+          "process_pss_kib": 65819,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935387177755348,
+          "process_cpu_ms": 24827,
+          "process_pss_kib": 66095,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935388197590347,
+          "process_cpu_ms": 24944,
+          "process_pss_kib": 66351,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935389224474774,
+          "process_cpu_ms": 25068,
+          "process_pss_kib": 66607,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935390248146909,
+          "process_cpu_ms": 25190,
+          "process_pss_kib": 66823,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935391275703211,
+          "process_cpu_ms": 25316,
+          "process_pss_kib": 67107,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935392304054981,
+          "process_cpu_ms": 25444,
+          "process_pss_kib": 67367,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935393328795085,
+          "process_cpu_ms": 25568,
+          "process_pss_kib": 67623,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935394356178105,
+          "process_cpu_ms": 25692,
+          "process_pss_kib": 67879,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935395383854980,
+          "process_cpu_ms": 25822,
+          "process_pss_kib": 68135,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935396416083521,
+          "process_cpu_ms": 25954,
+          "process_pss_kib": 68391,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935397439664563,
+          "process_cpu_ms": 26076,
+          "process_pss_kib": 68647,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935398467524979,
+          "process_cpu_ms": 26205,
+          "process_pss_kib": 68967,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935399494884822,
+          "process_cpu_ms": 26339,
+          "process_pss_kib": 69271,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935400517181853,
+          "process_cpu_ms": 26467,
+          "process_pss_kib": 69467,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935401544846801,
+          "process_cpu_ms": 26598,
+          "process_pss_kib": 69723,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935402571899873,
+          "process_cpu_ms": 26725,
+          "process_pss_kib": 69987,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935403599330498,
+          "process_cpu_ms": 26850,
+          "process_pss_kib": 70251,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935404628226331,
+          "process_cpu_ms": 27012,
+          "process_pss_kib": 70443,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935405673278361,
+          "process_cpu_ms": 27204,
+          "process_pss_kib": 70699,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935406714348101,
+          "process_cpu_ms": 27402,
+          "process_pss_kib": 70891,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935407761165809,
+          "process_cpu_ms": 27599,
+          "process_pss_kib": 71083,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935408809692996,
+          "process_cpu_ms": 27793,
+          "process_pss_kib": 71339,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935409854807787,
+          "process_cpu_ms": 27992,
+          "process_pss_kib": 71579,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935410895639557,
+          "process_cpu_ms": 28186,
+          "process_pss_kib": 71723,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935411936057317,
+          "process_cpu_ms": 28381,
+          "process_pss_kib": 71916,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935412984575077,
+          "process_cpu_ms": 28575,
+          "process_pss_kib": 72172,
+          "charge_uah": 4736000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935414031733202,
+          "process_cpu_ms": 28760,
+          "process_pss_kib": 72352,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935415080885337,
+          "process_cpu_ms": 28951,
+          "process_pss_kib": 72552,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935416117103722,
+          "process_cpu_ms": 29148,
+          "process_pss_kib": 72744,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935417157285805,
+          "process_cpu_ms": 29346,
+          "process_pss_kib": 72936,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935418202267732,
+          "process_cpu_ms": 29528,
+          "process_pss_kib": 73128,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935419252766794,
+          "process_cpu_ms": 29734,
+          "process_pss_kib": 73394,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935419480723721,
+          "process_cpu_ms": 29805,
+          "process_pss_kib": 73442,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        }
+      ],
+      "protocol": "udp",
+      "frames": 10019,
+      "bytes": 10259456,
+      "request_sha256": "dccdd59ec38d71b521c1d60f763f7ad4027fd4df67171901e4feb0d359851ed8",
+      "response_sha256": "dccdd59ec38d71b521c1d60f763f7ad4027fd4df67171901e4feb0d359851ed8",
+      "goodput_mbps": 1.3674361326656548,
+      "source_ip": "10.222.0.2"
+    },
+    "idle": {
+      "duration_seconds": 1800.042417973,
+      "cpu_one_core_percent": 0.13027470778386813,
+      "pss_kib_start": 73610,
+      "pss_kib_end": 72576,
+      "samples": [
+        {
+          "elapsed_ns": 935419532039085,
+          "process_cpu_ms": 29852,
+          "process_pss_kib": 73610,
+          "charge_uah": 4734000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4084,
+          "temperature_tenths_c": 343,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935499985611542,
+          "process_cpu_ms": 30032,
+          "process_pss_kib": 73794,
+          "charge_uah": 4731000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4066,
+          "temperature_tenths_c": 339,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935586777695667,
+          "process_cpu_ms": 30206,
+          "process_pss_kib": 73944,
+          "charge_uah": 4729000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4066,
+          "temperature_tenths_c": 339,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935716098612629,
+          "process_cpu_ms": 30441,
+          "process_pss_kib": 74208,
+          "charge_uah": 4727000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4063,
+          "temperature_tenths_c": 329,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 935828494624764,
+          "process_cpu_ms": 30607,
+          "process_pss_kib": 74315,
+          "charge_uah": 4726000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4063,
+          "temperature_tenths_c": 329,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 936005318616553,
+          "process_cpu_ms": 30720,
+          "process_pss_kib": 73793,
+          "charge_uah": 4721000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4063,
+          "temperature_tenths_c": 329,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 936228266413054,
+          "process_cpu_ms": 30831,
+          "process_pss_kib": 73945,
+          "charge_uah": 4718000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4061,
+          "temperature_tenths_c": 319,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 936450001144450,
+          "process_cpu_ms": 30930,
+          "process_pss_kib": 72603,
+          "charge_uah": 4714000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4061,
+          "temperature_tenths_c": 319,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 936616903139320,
+          "process_cpu_ms": 31037,
+          "process_pss_kib": 71966,
+          "charge_uah": 4711000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 936809550561040,
+          "process_cpu_ms": 31153,
+          "process_pss_kib": 71840,
+          "charge_uah": 4707000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 937003741852609,
+          "process_cpu_ms": 31252,
+          "process_pss_kib": 71950,
+          "charge_uah": 4704000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 937033760091712,
+          "process_cpu_ms": 31353,
+          "process_pss_kib": 72155,
+          "charge_uah": 4702000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 937063816966544,
+          "process_cpu_ms": 31496,
+          "process_pss_kib": 71877,
+          "charge_uah": 4702000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 937093841918668,
+          "process_cpu_ms": 31593,
+          "process_pss_kib": 71546,
+          "charge_uah": 4701000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 937123901968917,
+          "process_cpu_ms": 31746,
+          "process_pss_kib": 71676,
+          "charge_uah": 4699000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 937153963480937,
+          "process_cpu_ms": 31893,
+          "process_pss_kib": 71932,
+          "charge_uah": 4699000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 937184018279832,
+          "process_cpu_ms": 32036,
+          "process_pss_kib": 72124,
+          "charge_uah": 4699000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 937214041735185,
+          "process_cpu_ms": 32126,
+          "process_pss_kib": 72316,
+          "charge_uah": 4697000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        },
+        {
+          "elapsed_ns": 937219574457058,
+          "process_cpu_ms": 32197,
+          "process_pss_kib": 72576,
+          "charge_uah": 4697000,
+          "energy_nwh": null,
+          "plugged": 0,
+          "voltage_mv": 4059,
+          "temperature_tenths_c": 309,
+          "screen_interactive": false
+        }
+      ],
+      "conditions_stable": true,
+      "energy_scope": "whole_device_counter_including_wifi_and_other_background_work",
+      "energy_mwh_estimate": 150.6455,
+      "energy_method": "charge_delta_times_endpoint_mean_voltage_estimate"
+    },
+    "network_infos": {
+      "map": {
+        "p00-performance": {
+          "my_node_info": {
+            "virtual_ipv4": {
+              "address": {
+                "addr": 182321154
+              },
+              "network_length": 24
+            },
+            "hostname": "p00-android",
+            "version": "2.7.0-7592951b~",
+            "stun_info": {
+              "last_update_time": "1791732159",
+              "max_port": 65535
+            },
+            "listeners": [
+              {
+                "url": "ring://bde99465-879b-473f-b9dd-59621169c55c"
+              }
+            ],
+            "peer_id": 638954217
+          },
+          "events": [
+            "{\"time\":\"2026-10-11T22:50:43.768616220+08:00\",\"event\":{\"PeerAdded\":3749233624}}",
+            "{\"time\":\"2026-10-11T22:50:43.768605908+08:00\",\"event\":{\"PeerConnAdded\":{\"conn_id\":\"4dd16e31-af37-4698-80ba-774f116731f7\",\"my_peer_id\":638954217,\"peer_id\":3749233624,\"features\":[\"liveness-echo-v1\"],\"tunnel\":{\"tunnel_type\":\"tcp\",\"local_addr\":{\"url\":\"tcp://<DEVICE_LAN_IP>:55092\"},\"remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"},\"resolved_remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"}},\"stats\":{\"rx_bytes\":\"109\",\"tx_bytes\":\"125\",\"rx_packets\":\"1\",\"tx_packets\":\"1\"},\"is_client\":true,\"network_name\":\"chuanmen-p00-isolated\"}}}",
+            "{\"time\":\"2026-10-11T22:50:43.747700283+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_195\"}}",
+            "{\"time\":\"2026-10-11T22:50:43.747693772+08:00\",\"event\":{\"Connecting\":\"tcp://<HOST_LAN_IP>:31270\"}}",
+            "{\"time\":\"2026-10-11T22:50:43.737348668+08:00\",\"event\":{\"ListenerAdded\":\"ring://bde99465-879b-473f-b9dd-59621169c55c\"}}"
+          ],
+          "routes": [
+            {
+              "peer_id": 3749233624,
+              "ipv4_addr": {
+                "address": {
+                  "addr": 182321153
+                },
+                "network_length": 24
+              },
+              "next_hop_peer_id": 3749233624,
+              "cost": 1,
+              "path_latency": 17,
+              "hostname": "p00-host-peer",
+              "stun_info": {},
+              "inst_id": "f3b0e789-57e3-49fe-922d-9cb7a0fdaab7",
+              "version": "2.7.0-7592951b",
+              "feature_flag": {
+                "kcp_input": true,
+                "support_conn_list_sync": true,
+                "quic_input": true,
+                "disable_p2p": true
+              },
+              "next_hop_peer_id_latency_first": 3749233624,
+              "cost_latency_first": 1,
+              "path_latency_latency_first": 17
+            }
+          ],
+          "peers": [
+            {
+              "peer_id": 3749233624,
+              "conns": [
+                {
+                  "conn_id": "4dd16e31-af37-4698-80ba-774f116731f7",
+                  "my_peer_id": 638954217,
+                  "peer_id": 3749233624,
+                  "features": [
+                    "liveness-echo-v1"
+                  ],
+                  "tunnel": {
+                    "tunnel_type": "tcp",
+                    "local_addr": {
+                      "url": "tcp://<DEVICE_LAN_IP>:55092"
+                    },
+                    "remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    },
+                    "resolved_remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    }
+                  },
+                  "stats": {
+                    "rx_bytes": "97468981",
+                    "tx_bytes": "101013587",
+                    "rx_packets": "94883",
+                    "tx_packets": "113987",
+                    "latency_us": "17696"
+                  },
+                  "is_client": true,
+                  "network_name": "chuanmen-p00-isolated"
+                }
+              ],
+              "default_conn_id": {
+                "part1": 1305570865,
+                "part2": 2939635352,
+                "part3": 2159703887,
+                "part4": 291975671
+              },
+              "directly_connected_conns": [
+                {
+                  "part1": 1305570865,
+                  "part2": 2939635352,
+                  "part3": 2159703887,
+                  "part4": 291975671
+                }
+              ]
+            }
+          ],
+          "peer_route_pairs": [
+            {
+              "route": {
+                "peer_id": 3749233624,
+                "ipv4_addr": {
+                  "address": {
+                    "addr": 182321153
+                  },
+                  "network_length": 24
+                },
+                "next_hop_peer_id": 3749233624,
+                "cost": 1,
+                "path_latency": 17,
+                "hostname": "p00-host-peer",
+                "stun_info": {},
+                "inst_id": "f3b0e789-57e3-49fe-922d-9cb7a0fdaab7",
+                "version": "2.7.0-7592951b",
+                "feature_flag": {
+                  "kcp_input": true,
+                  "support_conn_list_sync": true,
+                  "quic_input": true,
+                  "disable_p2p": true
+                },
+                "next_hop_peer_id_latency_first": 3749233624,
+                "cost_latency_first": 1,
+                "path_latency_latency_first": 17
+              },
+              "peer": {
+                "peer_id": 3749233624,
+                "conns": [
+                  {
+                    "conn_id": "4dd16e31-af37-4698-80ba-774f116731f7",
+                    "my_peer_id": 638954217,
+                    "peer_id": 3749233624,
+                    "features": [
+                      "liveness-echo-v1"
+                    ],
+                    "tunnel": {
+                      "tunnel_type": "tcp",
+                      "local_addr": {
+                        "url": "tcp://<DEVICE_LAN_IP>:55092"
+                      },
+                      "remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      },
+                      "resolved_remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      }
+                    },
+                    "stats": {
+                      "rx_bytes": "97468981",
+                      "tx_bytes": "101013587",
+                      "rx_packets": "94883",
+                      "tx_packets": "113987",
+                      "latency_us": "17696"
+                    },
+                    "is_client": true,
+                    "network_name": "chuanmen-p00-isolated"
+                  }
+                ],
+                "default_conn_id": {
+                  "part1": 1305570865,
+                  "part2": 2939635352,
+                  "part3": 2159703887,
+                  "part4": 291975671
+                },
+                "directly_connected_conns": [
+                  {
+                    "part1": 1305570865,
+                    "part2": 2939635352,
+                    "part3": 2159703887,
+                    "part4": 291975671
+                  }
+                ]
+              }
+            }
+          ],
+          "running": true,
+          "foreign_network_summary": {}
+        }
+      }
+    },
+    "observations": {
+      "destinations": {
+        "10.222.0.1": 113423
+      },
+      "protections": [
+        {
+          "before_port": 0,
+          "fd": 174,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 174,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 173,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 173,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 173,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 4,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 4,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 4,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 4,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 4,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 4,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 3,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        }
+      ],
+      "read_packets": 113435,
+      "tun": {
+        "195": "installed"
+      },
+      "write_packets": 94319
+    },
+    "closed": {
+      "fd": 195,
+      "native_state": "released",
+      "valid_before_owner_close": true,
+      "valid_after_owner_close": false
+    },
+    "instances_after": {},
+    "service_destroyed": true,
+    "own_active_notifications_after": 0,
+    "cleanup_error": null
+  },
+  "host_benchmark_records": [
+    {
+      "protocol": "tcp",
+      "frames": 1205,
+      "bytes": 78970880,
+      "request_sha256": "b99fc9014736b35e28353820a4be49e8f3358949197997be543b1414cd115fd8",
+      "response_sha256": "b99fc9014736b35e28353820a4be49e8f3358949197997be543b1414cd115fd8",
+      "completed": true,
+      "error": null,
+      "elapsed_ns": 60020750319,
+      "source": [
+        "127.0.0.1",
+        60804
+      ],
+      "run_id": "p00-5d2cc66e8aee"
+    },
+    {
+      "protocol": "udp",
+      "frames": 10019,
+      "bytes": 10259456,
+      "request_sha256": "dccdd59ec38d71b521c1d60f763f7ad4027fd4df67171901e4feb0d359851ed8",
+      "response_sha256": "dccdd59ec38d71b521c1d60f763f7ad4027fd4df67171901e4feb0d359851ed8",
+      "completed": true,
+      "elapsed_ns": 59994983245,
+      "source": [
+        "127.0.0.1",
+        56120
+      ],
+      "run_id": "p00-5d2cc66e8aee"
+    }
+  ],
+  "idle_observation_valid": true,
+  "host_connect_echo": [
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T14:50:44.588049+00:00",
+      "bytes": 30,
+      "request_sha256": "dfac270a4404912160287b01718e1bc4aae4f5cecc92d54b4343da75fb410722",
+      "source": [
+        "127.0.0.1",
+        37950
+      ]
+    }
+  ],
+  "energy_status": "estimated_whole_device",
+  "services_after": "ACTIVITY MANAGER SERVICES (dumpsys activity services)\n  (nothing)\n",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-native-performance.json",
+        "sha256": "3bfdad4fe95053c138ede05441fa331f69bf7ae9b8f47dd8b8c783912ee19fad"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false,
+    "build_ref": "docs/verification/p00/builds/performance-apk-build.json"
+  }
+}

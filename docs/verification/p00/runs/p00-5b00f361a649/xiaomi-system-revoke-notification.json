@@ -1,0 +1,505 @@
+{
+  "schema_version": 1,
+  "layer": "android_native_revoke",
+  "status": "passed",
+  "environment_kind": "physical_device",
+  "native_status": "unverified",
+  "recorded_at_utc": "2026-10-11T13:32:53.405213+00:00",
+  "device_id": "device-01",
+  "apk_sha256": "3b717f2cee61181239f611ec18380c9c0855d517827062ed81a4f32986af0c8f",
+  "build_report_sha256": "e397007a8977d8902dc1acb1bdd93d94839d54a769969e0e6f9d76362c2cdebc",
+  "commands": [
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "get-state"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "c98373c1abef78070f6beef6b4ae4fbf3de348dac280195c7f93441920584af9",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "1bfaa17007aea1b639eb5c54d1c55d079f30f56b64ed20dfc02faf499d567a48",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.version.sdk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a4b2c5db15348c29451e18b8307e5ef81625ea638e807935f39ceaa8d9ac7758",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.cpu.abi"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "7f10c3cd4593d1d6ded27d658e7c05216011c955c200aac551caad0c979d4d90",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.manufacturer"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "b257d787c7da7056d0400b2829dce276da3bcb93aab6b3a903dd7f70df0e0555",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.model"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "8a1f2faeb360d564e712171d8daf644b072e0c46bc9ca8038e314868ac1ba507",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "pm",
+        "path",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "6f794ef14dfe02271a4b47e5b5cbfbcf605d2c32a1553ea4d4c3300ec19fba11",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "sha256sum",
+        "/data/app/~~-XLHQ9wMOg2yPpG1KDL-cg==/com.github.zzwtsy.chuanmen.p00probe-APdZszFd6qv6_z24hjVNlQ==/base.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "932aeb8830f78d0767b64fc08c7f509b38ead442f8ce247143e99db5e4a7d6f1",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.github.zzwtsy.chuanmen.p00probe/.BoundaryActivity"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a606c542f0f9c185b206fe90d43e487d9614c29039af0b2543add74861893abb",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "instrument",
+        "-w",
+        "-r",
+        "-e",
+        "host_launch",
+        "true",
+        "-e",
+        "peer_host",
+        "<HOST_LAN_IP>",
+        "-e",
+        "run_id",
+        "p00-5b00f361a649",
+        "com.github.zzwtsy.chuanmen.p00probe/.RevokeInstrumentation"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "af1c510c2b21a37fc9b23741cce7183d3f574714e95290e88f6fda9997a02ca4",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "dumpsys",
+        "activity",
+        "services",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e9990d2b9ce9e862271712ca1ecd0c280ac8cd7a2fd48fc18fb69623521c33b0",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    }
+  ],
+  "runner_sha256": "6ce5d00e5c4ebce8286a3225a9ad195749cd5e3bd3624f6706b79696edef0fb4",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "patches": [
+    {
+      "report_path": "/tmp/chuanmen-p00-boundary-core-v3-patch.json",
+      "report_sha256": "98563956236d50e60803327506af709b627a9e99b1cca20cd8dee25458bf18b1",
+      "files": {
+        "easytier/src/p00_observation.rs": {
+          "original_sha256": null,
+          "patched_sha256": "848636b7c17003c7da94006282f59f52ed97a45100208a1357e712ad6fed30b0"
+        },
+        "easytier-contrib/easytier-android-jni/src/p00_jni.rs": {
+          "original_sha256": null,
+          "patched_sha256": "fbb93cdf651f455e44d87d8989b3c84416811c9e2b4deeea656611f3449dd2c7"
+        },
+        "easytier/src/lib.rs": {
+          "original_sha256": "f1d538cd0e48f0d780dfb5ddf4153a0284fb12d30feae5e71adc97755ee7587c",
+          "patched_sha256": "5bf1aa2e120abd2e94a29936c784affad332ea6b8c130f0a0dfb5c0f8bdf4d00"
+        },
+        "easytier-contrib/easytier-android-jni/src/lib.rs": {
+          "original_sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+          "patched_sha256": "85910308e060af1fef16d91cd08417339696a2cd8a9580d808218cadf2403fcf"
+        },
+        "easytier/src/instance/virtual_nic.rs": {
+          "original_sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+          "patched_sha256": "a85a519168cb785897772e4882c3fcbf60529f6e26369309d0467054bd9a159b"
+        },
+        "easytier/src/instance/runtime_host/tun_common.rs": {
+          "original_sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+          "patched_sha256": "bef34f9d67b89415f7584fd7f6fc780234c40c8719f3ae948119c873abb88b59"
+        }
+      },
+      "production_approved": false
+    }
+  ],
+  "acceptance_scope": "system_vpn_revoke",
+  "vpn_acceptance": "unverified",
+  "run_id": "p00-5b00f361a649",
+  "controlled_topology": {
+    "host_bind": "<HOST_LAN_IP>:31270",
+    "virtual_ip": "10.222.0.1/24",
+    "tcp_echo": "127.0.0.1:31271",
+    "udp_echo": "127.0.0.1:31272",
+    "requires_host_tun": false,
+    "public_discovery": false,
+    "system_routes_modified": false
+  },
+  "peer_binary_sha256": "75387de6bbd85f0de5bcd613f74968f473d7c2b6bbeb9692e22dcea69ec4af2c",
+  "peer_ready_report_sha256": "16b0cd688f5cf86ac47da5448c78ff28cff4ef6ee31ded81df50e4c1da8d30ce",
+  "device": {
+    "ro.build.fingerprint": "Xiaomi/popsicle/popsicle:16/BP2A.250605.031.A3/OS3.0.319.0.WPBCNXM:user/release-keys",
+    "ro.build.version.sdk": "36",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.product.manufacturer": "Xiaomi",
+    "ro.product.model": "2509FPN0BC",
+    "ro.kernel.qemu": ""
+  },
+  "native_library_sha256": "8e523672e0b5c0efb80ed8e649f8308f5e8ef84924bbdef5ab06d06cb4ba5065",
+  "installed_apk_sha256": "3b717f2cee61181239f611ec18380c9c0855d517827062ed81a4f32986af0c8f",
+  "observations": {
+    "layer": "android_native_revoke",
+    "status": "passed",
+    "before_revoke": {
+      "map": {
+        "p00-datapath": {
+          "my_node_info": {
+            "virtual_ipv4": {
+              "address": {
+                "addr": 182321154
+              },
+              "network_length": 24
+            },
+            "hostname": "p00-android",
+            "version": "2.7.0-7592951b~",
+            "stun_info": {
+              "last_update_time": "1791725573",
+              "max_port": 65535
+            },
+            "listeners": [
+              {
+                "url": "ring://4435da61-d620-4b42-b303-afc7517a5918"
+              }
+            ],
+            "peer_id": 1770210087
+          },
+          "events": [
+            "{\"time\":\"2026-10-11T21:32:53.300094877+08:00\",\"event\":{\"PeerAdded\":3690303627}}",
+            "{\"time\":\"2026-10-11T21:32:53.299940137+08:00\",\"event\":{\"PeerConnAdded\":{\"conn_id\":\"8004f21d-3b65-449e-87bf-5aa6424f2c1f\",\"my_peer_id\":1770210087,\"peer_id\":3690303627,\"features\":[\"liveness-echo-v1\"],\"tunnel\":{\"tunnel_type\":\"tcp\",\"local_addr\":{\"url\":\"tcp://<DEVICE_LAN_IP>:33704\"},\"remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"},\"resolved_remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"}},\"stats\":{\"rx_bytes\":\"109\",\"tx_bytes\":\"125\",\"rx_packets\":\"1\",\"tx_packets\":\"1\"},\"is_client\":true,\"network_name\":\"chuanmen-p00-isolated\"}}}",
+            "{\"time\":\"2026-10-11T21:32:53.281828262+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_189\"}}",
+            "{\"time\":\"2026-10-11T21:32:53.281824460+08:00\",\"event\":{\"Connecting\":\"tcp://<HOST_LAN_IP>:31270\"}}",
+            "{\"time\":\"2026-10-11T21:32:53.271213731+08:00\",\"event\":{\"ListenerAdded\":\"ring://4435da61-d620-4b42-b303-afc7517a5918\"}}"
+          ],
+          "routes": [
+            {
+              "peer_id": 3690303627,
+              "ipv4_addr": {
+                "address": {
+                  "addr": 182321153
+                },
+                "network_length": 24
+              },
+              "next_hop_peer_id": 3690303627,
+              "cost": 1,
+              "path_latency": 500,
+              "hostname": "p00-host-peer",
+              "stun_info": {},
+              "inst_id": "b7c26015-9b4e-4609-9db4-d269e59d9591",
+              "version": "2.7.0-7592951b",
+              "feature_flag": {
+                "kcp_input": true,
+                "support_conn_list_sync": true,
+                "quic_input": true,
+                "disable_p2p": true
+              },
+              "next_hop_peer_id_latency_first": 3690303627,
+              "cost_latency_first": 1,
+              "path_latency_latency_first": 500
+            }
+          ],
+          "peers": [
+            {
+              "peer_id": 3690303627,
+              "conns": [
+                {
+                  "conn_id": "8004f21d-3b65-449e-87bf-5aa6424f2c1f",
+                  "my_peer_id": 1770210087,
+                  "peer_id": 3690303627,
+                  "features": [
+                    "liveness-echo-v1"
+                  ],
+                  "tunnel": {
+                    "tunnel_type": "tcp",
+                    "local_addr": {
+                      "url": "tcp://<DEVICE_LAN_IP>:33704"
+                    },
+                    "remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    },
+                    "resolved_remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    }
+                  },
+                  "stats": {
+                    "rx_bytes": "429",
+                    "tx_bytes": "665",
+                    "rx_packets": "3",
+                    "tx_packets": "5"
+                  },
+                  "is_client": true,
+                  "network_name": "chuanmen-p00-isolated"
+                }
+              ],
+              "default_conn_id": {
+                "part1": 2147807773,
+                "part2": 996492446,
+                "part3": 2277464742,
+                "part4": 1112484895
+              },
+              "directly_connected_conns": [
+                {
+                  "part1": 2147807773,
+                  "part2": 996492446,
+                  "part3": 2277464742,
+                  "part4": 1112484895
+                }
+              ]
+            }
+          ],
+          "peer_route_pairs": [
+            {
+              "route": {
+                "peer_id": 3690303627,
+                "ipv4_addr": {
+                  "address": {
+                    "addr": 182321153
+                  },
+                  "network_length": 24
+                },
+                "next_hop_peer_id": 3690303627,
+                "cost": 1,
+                "path_latency": 500,
+                "hostname": "p00-host-peer",
+                "stun_info": {},
+                "inst_id": "b7c26015-9b4e-4609-9db4-d269e59d9591",
+                "version": "2.7.0-7592951b",
+                "feature_flag": {
+                  "kcp_input": true,
+                  "support_conn_list_sync": true,
+                  "quic_input": true,
+                  "disable_p2p": true
+                },
+                "next_hop_peer_id_latency_first": 3690303627,
+                "cost_latency_first": 1,
+                "path_latency_latency_first": 500
+              },
+              "peer": {
+                "peer_id": 3690303627,
+                "conns": [
+                  {
+                    "conn_id": "8004f21d-3b65-449e-87bf-5aa6424f2c1f",
+                    "my_peer_id": 1770210087,
+                    "peer_id": 3690303627,
+                    "features": [
+                      "liveness-echo-v1"
+                    ],
+                    "tunnel": {
+                      "tunnel_type": "tcp",
+                      "local_addr": {
+                        "url": "tcp://<DEVICE_LAN_IP>:33704"
+                      },
+                      "remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      },
+                      "resolved_remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      }
+                    },
+                    "stats": {
+                      "rx_bytes": "429",
+                      "tx_bytes": "665",
+                      "rx_packets": "3",
+                      "tx_packets": "5"
+                    },
+                    "is_client": true,
+                    "network_name": "chuanmen-p00-isolated"
+                  }
+                ],
+                "default_conn_id": {
+                  "part1": 2147807773,
+                  "part2": 996492446,
+                  "part3": 2277464742,
+                  "part4": 1112484895
+                },
+                "directly_connected_conns": [
+                  {
+                    "part1": 2147807773,
+                    "part2": 996492446,
+                    "part3": 2277464742,
+                    "part4": 1112484895
+                  }
+                ]
+              }
+            }
+          ],
+          "running": true,
+          "foreign_network_summary": {}
+        }
+      }
+    },
+    "revoked": true,
+    "closed": {
+      "fd": 189,
+      "native_state": "released",
+      "valid_before_owner_close": true,
+      "valid_after_owner_close": false
+    },
+    "permission_granted_after": false,
+    "instances_after": {},
+    "observations": {
+      "destinations": {},
+      "protections": [
+        {
+          "before_port": 0,
+          "fd": 183,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 184,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 167,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 149,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 149,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        }
+      ],
+      "read_packets": 8,
+      "tun": {
+        "189": "released"
+      },
+      "write_packets": 0
+    },
+    "service_destroyed": true,
+    "cleanup_error": null,
+    "own_active_notifications_after": 0
+  },
+  "services_after": "ACTIVITY MANAGER SERVICES (dumpsys activity services)\n  (nothing)\n",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-system-revoke-notification.json",
+        "sha256": "c2540f8a2e972dbda73139e7d0b45bec8dcd8f3aedbb8d8540baff61d412a476"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false,
+    "build_ref": "docs/verification/p00/builds/revoke-notification-apk-build.json"
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "layer": "android_native_permission_denial",
+  "status": "passed",
+  "environment_kind": "physical_device",
+  "native_status": "unverified",
+  "recorded_at_utc": "2026-10-11T13:22:12.966664+00:00",
+  "device_id": "device-01",
+  "apk_sha256": "b3c5b8377131faca50ffbecb5d407efcab7af3ef3eb4b74c74cd1bfc4e7b1985",
+  "build_report_sha256": "b1fc8277bd42d1e10c78168c006b939d39b868d24424ed01515e5c1aa0be5fe4",
+  "commands": [
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "get-state"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "c98373c1abef78070f6beef6b4ae4fbf3de348dac280195c7f93441920584af9",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "1bfaa17007aea1b639eb5c54d1c55d079f30f56b64ed20dfc02faf499d567a48",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.version.sdk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a4b2c5db15348c29451e18b8307e5ef81625ea638e807935f39ceaa8d9ac7758",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.cpu.abi"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "7f10c3cd4593d1d6ded27d658e7c05216011c955c200aac551caad0c979d4d90",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.manufacturer"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "b257d787c7da7056d0400b2829dce276da3bcb93aab6b3a903dd7f70df0e0555",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.model"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "8a1f2faeb360d564e712171d8daf644b072e0c46bc9ca8038e314868ac1ba507",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "pm",
+        "path",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e32e07bdde07788a4269ef9833149872e92bb11eaf255130879f9e753cb548ed",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "sha256sum",
+        "/data/app/~~ekqcQqDnGHCkzoshNmg8xg==/com.github.zzwtsy.chuanmen.p00probe-9R5hxbLJgWgRO0QBk6swOw==/base.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "03f32a569be361534656905b6067e4d66eea8cf513dfa7614ab557fe0f954c7a",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.github.zzwtsy.chuanmen.p00probe/.BoundaryActivity"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a606c542f0f9c185b206fe90d43e487d9614c29039af0b2543add74861893abb",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "instrument",
+        "-w",
+        "-r",
+        "-e",
+        "host_launch",
+        "true",
+        "com.github.zzwtsy.chuanmen.p00probe/.PermissionDeniedInstrumentation"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "eadedf94a8ed4d7ae71fc2ca9506e82ebf893dd3ef89f94893feba32ac48c87f",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "dumpsys",
+        "activity",
+        "services",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e9990d2b9ce9e862271712ca1ecd0c280ac8cd7a2fd48fc18fb69623521c33b0",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    }
+  ],
+  "runner_sha256": "e0ff13106f20cfa65f25139c79c36a35b669cec6e6ca7896be1e8e7f213e8db3",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "patches": [
+    {
+      "report_path": "/tmp/chuanmen-p00-boundary-core-v3-patch.json",
+      "report_sha256": "98563956236d50e60803327506af709b627a9e99b1cca20cd8dee25458bf18b1",
+      "files": {
+        "easytier/src/p00_observation.rs": {
+          "original_sha256": null,
+          "patched_sha256": "848636b7c17003c7da94006282f59f52ed97a45100208a1357e712ad6fed30b0"
+        },
+        "easytier-contrib/easytier-android-jni/src/p00_jni.rs": {
+          "original_sha256": null,
+          "patched_sha256": "fbb93cdf651f455e44d87d8989b3c84416811c9e2b4deeea656611f3449dd2c7"
+        },
+        "easytier/src/lib.rs": {
+          "original_sha256": "f1d538cd0e48f0d780dfb5ddf4153a0284fb12d30feae5e71adc97755ee7587c",
+          "patched_sha256": "5bf1aa2e120abd2e94a29936c784affad332ea6b8c130f0a0dfb5c0f8bdf4d00"
+        },
+        "easytier-contrib/easytier-android-jni/src/lib.rs": {
+          "original_sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+          "patched_sha256": "85910308e060af1fef16d91cd08417339696a2cd8a9580d808218cadf2403fcf"
+        },
+        "easytier/src/instance/virtual_nic.rs": {
+          "original_sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+          "patched_sha256": "a85a519168cb785897772e4882c3fcbf60529f6e26369309d0467054bd9a159b"
+        },
+        "easytier/src/instance/runtime_host/tun_common.rs": {
+          "original_sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+          "patched_sha256": "bef34f9d67b89415f7584fd7f6fc780234c40c8719f3ae948119c873abb88b59"
+        }
+      },
+      "production_approved": false
+    }
+  ],
+  "acceptance_scope": "protect_callback_and_tun_borrow_only",
+  "vpn_acceptance": "unverified",
+  "device": {
+    "ro.build.fingerprint": "Xiaomi/popsicle/popsicle:16/BP2A.250605.031.A3/OS3.0.319.0.WPBCNXM:user/release-keys",
+    "ro.build.version.sdk": "36",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.product.manufacturer": "Xiaomi",
+    "ro.product.model": "2509FPN0BC",
+    "ro.kernel.qemu": ""
+  },
+  "native_library_sha256": "8e523672e0b5c0efb80ed8e649f8308f5e8ef84924bbdef5ab06d06cb4ba5065",
+  "installed_apk_sha256": "b3c5b8377131faca50ffbecb5d407efcab7af3ef3eb4b74c74cd1bfc4e7b1985",
+  "observations": {
+    "layer": "android_native_permission_denial",
+    "status": "passed",
+    "system_dialog_package": "com.android.vpndialogs",
+    "action": "actual_cancel_button",
+    "permission_result": 0,
+    "permission_granted": false,
+    "instances_after": {},
+    "service_destroyed": true
+  },
+  "services_after": "ACTIVITY MANAGER SERVICES (dumpsys activity services)\n  (nothing)\n",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-system-denied.json",
+        "sha256": "3fdb09be00cb70b93e90191ec86f63a20bc0e2e205f6b08854662ae76dc983e1"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false,
+    "build_ref": "docs/verification/p00/builds/system-denied-apk-build.json"
+  }
+}

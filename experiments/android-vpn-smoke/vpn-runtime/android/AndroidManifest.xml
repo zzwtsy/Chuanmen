@@ -1,0 +1,37 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.zzwtsy.chuanmen.p00probe"
+    android:versionCode="2" android:versionName="0.0.2-p00-native-boundary">
+    <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="37" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
+    <application android:label="Chuanmen P00 原生边界实验" android:debuggable="true"
+        android:allowBackup="false" android:extractNativeLibs="false"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar">
+        <activity android:name=".BoundaryActivity" android:exported="true" />
+        <service android:name=".BoundaryVpnService" android:exported="false"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:foregroundServiceType="systemExempted">
+            <intent-filter><action android:name="android.net.VpnService" /></intent-filter>
+        </service>
+    </application>
+    <instrumentation android:name=".BoundaryInstrumentation"
+        android:targetPackage="com.github.zzwtsy.chuanmen.p00probe"
+        android:label="P00 自有补丁的真实 JNI protect 与 TUN 借用实验" />
+    <instrumentation android:name=".DatapathInstrumentation"
+        android:targetPackage="com.github.zzwtsy.chuanmen.p00probe"
+        android:label="受控开发主机对端的真实 TCP/UDP 往返" />
+    <instrumentation android:name=".RevokeInstrumentation"
+        android:targetPackage="com.github.zzwtsy.chuanmen.p00probe"
+        android:label="等待系统实际撤销实验 VPN，不直接调用 onRevoke" />
+    <instrumentation android:name=".PermissionDeniedInstrumentation"
+        android:targetPackage="com.github.zzwtsy.chuanmen.p00probe"
+        android:label="点击真实系统 VPN 授权对话框的取消按钮" />
+    <instrumentation android:name=".AddressInstrumentation"
+        android:targetPackage="com.github.zzwtsy.chuanmen.p00probe"
+        android:label="真实地址、平台参数替换与旧 JNI 快照过滤" />
+    <instrumentation android:name=".AdvancedInstrumentation"
+        android:targetPackage="com.github.zzwtsy.chuanmen.p00probe"
+        android:label="合成回显的 SOCKS、转发、子网、出口与 Portal 绑定探针" />
+</manifest>

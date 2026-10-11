@@ -1,0 +1,34 @@
+{
+  "layer": "upstream_source",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "path": "easytier/src/instance/config.rs",
+  "sha256": "ff69b2a824e872b0444cf6d13814f3990067de49c476fff71051a840c313a6cb",
+  "git_blob_sha": "d4451275b5268a3aa2953457c9d8dd2722d0764f",
+  "excerpts": [
+    {
+      "start_line": 49,
+      "end_line": 57,
+      "text": "            target_os = \"linux\",\n            feature = \"public-ipv6-provider\"\n        )),\n        gateway_enabled: cfg!(feature = \"socks5\"),\n        proxy_enabled: cfg!(any(feature = \"kcp\", feature = \"quic\")),\n        vpn_portal_enabled: cfg!(feature = \"wireguard\"),\n        magic_dns_enabled: cfg!(feature = \"magic-dns\"),\n        kcp_enabled: cfg!(feature = \"kcp\"),\n        quic_enabled: cfg!(feature = \"quic\"),"
+    }
+  ],
+  "finding": "proxy_enabled 依赖 kcp 或 quic 编译特性；仅 smoltcp 不会启动 packet_proxy",
+  "failed_run": "docs/verification/p00/runs/p00-47b1a033c36c/xiaomi-datapath-proxy-disabled.json",
+  "scope": "构建特性条件，不代表 QUIC 传输已经验证",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "host-proxy-feature-evidence.json",
+        "sha256": "b2d187276fe4b0d85d18dfddfc297f8be9b3d5edf6a6e3db9b2a66de16ebb8ba"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

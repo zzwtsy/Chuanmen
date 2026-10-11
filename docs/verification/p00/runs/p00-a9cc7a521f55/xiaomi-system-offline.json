@@ -1,0 +1,615 @@
+{
+  "layer": "android_native_offline",
+  "status": "passed",
+  "native_status": "unverified",
+  "environment_kind": "physical_device",
+  "recorded_at_utc": "2026-10-11T13:31:33.539875+00:00",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "apk_sha256": "9128768381b33e6403d4e406879004a341774b713360b8b3612465bdec721405",
+  "libraries": [
+    {
+      "abi": "arm64-v8a",
+      "path": "/tmp/chuanmen-p00-boundary-native-v3/target/aarch64-linux-android/release/libeasytier_android_jni.so",
+      "sha256": "8e523672e0b5c0efb80ed8e649f8308f5e8ef84924bbdef5ab06d06cb4ba5065",
+      "size_bytes": 16840840,
+      "elf": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00\n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - System V\n  ABI Version:                       0\n  Type:                              DYN (Shared object file)\n  Machine:                           AArch64\n  Version:                           0x1\n  Entry point address:               0x0\n  Start of program headers:          64 (bytes into file)\n  Start of section headers:          16839176 (bytes into file)\n  Flags:                             0x0\n  Size of this header:               64 (bytes)\n  Size of program headers:           56 (bytes)\n  Number of program headers:         9\n  Size of section headers:           64 (bytes)\n  Number of section headers:         26\n  Section header string table index: 25\nDynamic section at offset 0x1005648 contains 27 entries:\n  Tag                Type           Name/Value\n  0x0000000000000001 (NEEDED)       Shared library: [liblog.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libdl.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libm.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libc.so]\n  0x000000000000001e (FLAGS)        BIND_NOW \n  0x000000006ffffffb (FLAGS_1)      NOW \n  0x0000000000000007 (RELA)         0x1d80\n  0x0000000000000008 (RELASZ)       791328 (bytes)\n  0x0000000000000009 (RELAENT)      24 (bytes)\n  0x000000006ffffff9 (RELACOUNT)    32964\n  0x0000000000000017 (JMPREL)       0xc30a0\n  0x0000000000000002 (PLTRELSZ)     3240 (bytes)\n  0x0000000000000003 (PLTGOT)       0x1009850\n  0x0000000000000014 (PLTREL)       RELA\n  0x0000000000000006 (SYMTAB)       0x2d0\n  0x000000000000000b (SYMENT)       24 (bytes)\n  0x0000000000000005 (STRTAB)       0x13a0\n  0x000000000000000a (STRSZ)        2528 (bytes)\n  0x000000006ffffef5 (GNU_HASH)     0x1318\n  0x0000000000000019 (INIT_ARRAY)   0x10095c8\n  0x000000000000001b (INIT_ARRAYSZ) 128 (bytes)\n  0x000000000000001a (FINI_ARRAY)   0x10095b8\n  0x000000000000001c (FINI_ARRAYSZ) 16 (bytes)\n  0x000000006ffffff0 (VERSYM)       0x1170\n  0x000000006ffffffe (VERNEED)      0x12a8\n  0x000000006fffffff (VERNEEDNUM)   3\n  0x0000000000000000 (NULL)         0x0\n\nSymbol table '.dynsym' contains 156 entries:\n   Num:    Value          Size Type    Bind   Vis       Ndx Name\n     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT   UND \n     1: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __cxa_finalize@LIBC\n     2: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __register_atfork@LIBC\n     3: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND free@LIBC\n     4: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_getspecific@LIBC\n     5: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND malloc@LIBC\n     6: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND strlen@LIBC\n     7: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memcpy@LIBC\n     8: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND syscall@LIBC\n     9: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memset@LIBC\n    10: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memcmp@LIBC\n    11: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memmove@LIBC\n    12: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND posix_memalign@LIBC\n    13: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND calloc@LIBC\n    14: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getsockname@LIBC\n    15: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __errno@LIBC\n    16: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND realloc@LIBC\n    17: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __android_log_buf_write\n    18: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __android_log_write\n    19: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_setspecific@LIBC\n    20: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND renameat@LIBC\n    21: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND open@LIBC\n    22: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND openat@LIBC\n    23: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND unlinkat@LIBC\n    24: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fstatat@LIBC\n    25: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND close@LIBC\n    26: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fchmod@LIBC\n    27: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fchown@LIBC\n    28: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND geteuid@LIBC\n    29: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fsync@LIBC\n    30: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND lstat@LIBC\n    31: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND read@LIBC\n    32: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sched_yield@LIBC\n    33: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND clock_gettime@LIBC\n    34: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND exp@LIBC\n    35: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_ctl@LIBC\n    36: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_detach@LIBC\n    37: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND shutdown@LIBC\n    38: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND socket@LIBC\n    39: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND bind@LIBC\n    40: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setsockopt@LIBC\n    41: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND connect@LIBC\n    42: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getsockopt@LIBC\n    43: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fcntl@LIBC\n    44: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND poll@LIBC\n    45: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sendto@LIBC\n    46: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND listen@LIBC\n    47: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sendmsg@LIBC\n    48: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvmsg@LIBC\n    49: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND write@LIBC\n    50: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvfrom@LIBC\n    51: 0000000000000000     0 OBJECT  GLOBAL DEFAULT   UND environ@LIBC\n    52: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fork@LIBC\n    53: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND _exit@LIBC\n    54: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND flock@LIBC\n    55: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND clock_nanosleep@LIBC\n    56: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getpid@LIBC\n    57: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND rename@LIBC\n    58: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND opendir@LIBC\n    59: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND readdir@LIBC\n    60: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND uname@LIBC\n    61: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND strerror_r@LIBC\n    62: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_mutex_lock@LIBC\n    63: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_mutex_unlock@LIBC\n    64: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlsym@LIBC\n    65: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND gethostname@LIBC\n    66: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlopen@LIBC\n    67: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlclose@LIBC\n    68: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recv@LIBC\n    69: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND send@LIBC\n    70: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND if_nametoindex@LIBC\n    71: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlerror@LIBC\n    72: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getifaddrs@LIBC_N\n    73: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND freeifaddrs@LIBC_N\n    74: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvmmsg@LIBC\n    75: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getauxval@LIBC\n    76: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND abort@LIBC\n    77: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_key_create@LIBC\n    78: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_key_delete@LIBC\n    79: 0000000000000000     0 FUNC    WEAK   DEFAULT   UND gettid@LIBC\n    80: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getcwd@LIBC\n    81: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dl_iterate_phdr@LIBC\n    82: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fstat@LIBC\n    83: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND mmap@LIBC\n    84: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND munmap@LIBC\n    85: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND lseek64@LIBC\n    86: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND realpath@LIBC\n    87: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND stat@LIBC\n    88: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND readlink@LIBC\n    89: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND writev@LIBC\n    90: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getenv@LIBC\n    91: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getpeername@LIBC\n    92: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_init@LIBC\n    93: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_setstacksize@LIBC\n    94: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sysconf@LIBC\n    95: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_destroy@LIBC\n    96: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_create@LIBC\n    97: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND prctl@LIBC\n    98: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND mkdir@LIBC\n    99: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND waitpid@LIBC\n   100: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pipe2@LIBC\n   101: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dup2@LIBC\n   102: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setgroups@LIBC\n   103: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setgid@LIBC\n   104: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setuid@LIBC\n   105: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND chroot@LIBC\n   106: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND chdir@LIBC\n   107: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setpgid@LIBC\n   108: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setsid@LIBC\n   109: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sigaction@LIBC\n   110: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND execvp@LIBC\n   111: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dirfd@LIBC\n   112: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND closedir@LIBC\n   113: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND unlink@LIBC\n   114: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sched_getaffinity@LIBC\n   115: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND getrandom\n   116: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getaddrinfo@LIBC\n   117: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND gai_strerror@LIBC\n   118: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND freeaddrinfo@LIBC\n   119: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_join@LIBC\n   120: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND socketpair@LIBC\n   121: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_create1@LIBC\n   122: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND eventfd@LIBC\n   123: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pow@LIBC\n   124: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_wait@LIBC\n   125: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND vsprintf@LIBC\n   126: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __assert2@LIBC\n   127: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_compress_begin\n   128: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_compress_end\n   129: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_decompress_begin\n   130: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_decompress_end\n   131: 0000000000000000     0 OBJECT  GLOBAL DEFAULT   UND __sF@LIBC\n   132: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fprintf@LIBC\n   133: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fflush@LIBC\n   134: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_wrlock@LIBC\n   135: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_unlock@LIBC\n   136: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_rdlock@LIBC\n   137: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fwrite@LIBC\n   138: 00000000002e1bf4   608 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_parseConfig\n   139: 00000000002e3f30   844 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_setTunFd\n   140: 00000000002e4d84    32 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_abortForExperiment\n   141: 00000000002de9cc  5264 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_deleteNetworkInstance\n   142: 00000000002dfe5c   156 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_getLastError\n   143: 00000000002e1e54  3388 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_retainNetworkInstance\n   144: 00000000002e427c  2232 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_startConfigServerClient\n   145: 00000000002e4b34   592 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_stopConfigServerClient\n   146: 00000000002e4da4     8 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_clearProtector\n   147: 00000000002e4dac  2352 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_installProtector\n   148: 00000000002dcbb0  7636 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_callJsonRpc\n   149: 00000000002de984    72 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_collectNetworkInfos\n   150: 00000000002dfef8   544 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_isConfigServerClientConnected\n   151: 00000000002e60f4  4996 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_probeProtectedSockets\n   152: 00000000002e7478  1096 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_resetObservations\n   153: 00000000002e0118  6876 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_listInstances\n   154: 00000000002e2b90  5024 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_runNetworkInstance\n   155: 00000000002e56dc  2584 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_observations\n"
+    }
+  ],
+  "build_report_sha256": "f0476dfd2d2332a69ed8a744acb9c84e193022aff73ce0d69a99b170030fcfb5",
+  "peer_ready_report_sha256": "9dbbf4c55d772886ce80b3dce3588164aed80a7c3d426cdc083e8408d9f72b29",
+  "runner_sha256": "600973effacd7758329f1d7caf6e2d58b915f315b9ea01dbdab2143461cda04a",
+  "run_id": "p00-a9cc7a521f55",
+  "commands": [
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "1bfaa17007aea1b639eb5c54d1c55d079f30f56b64ed20dfc02faf499d567a48",
+      "command_output_retention": "structured_observations_and_exit_code_only",
+      "error": ""
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "command_output_retention": "structured_observations_and_exit_code_only",
+      "error": ""
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "pm",
+        "path",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "382532d7109fcdf04360da8392604b398656b578d86ed71e7a4db0147f19862b",
+      "command_output_retention": "structured_observations_and_exit_code_only",
+      "error": ""
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "sha256sum",
+        "/data/app/~~FgHlG1aEf5gC0_kY0f1gGQ==/com.github.zzwtsy.chuanmen.p00probe-ZnCwFqy0aTubx90cLkCxUQ==/base.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "f7e16be5a77db49046e4884d6eea85249e92714cbd9d0c5513618f9692ec733f",
+      "command_output_retention": "structured_observations_and_exit_code_only",
+      "error": ""
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "appops",
+        "get",
+        "com.github.zzwtsy.chuanmen.p00probe",
+        "ACTIVATE_VPN"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a535cede9b588e86d8733c5c574faae564d5b3728a572794207364142d372bc1",
+      "command_output_retention": "structured_observations_and_exit_code_only",
+      "error": ""
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "dumpsys",
+        "activity",
+        "services",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e9990d2b9ce9e862271712ca1ecd0c280ac8cd7a2fd48fc18fb69623521c33b0",
+      "command_output_retention": "structured_observations_and_exit_code_only",
+      "error": ""
+    }
+  ],
+  "device_fingerprint": "Xiaomi/popsicle/popsicle:16/BP2A.250605.031.A3/OS3.0.319.0.WPBCNXM:user/release-keys",
+  "resume_ready": {
+    "path": "/tmp/chuanmen-p00-xiaomi-offline.ready.json",
+    "sha256": "328228724a44db74c40120b5caf64e127cf4d5b88e4c0b2d96ecc446c2d4345a"
+  },
+  "ready_observations": {
+    "layer": "android_native_offline",
+    "status": "waiting_offline",
+    "run_id": "p00-a9cc7a521f55",
+    "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "stop_policy_owner": "experiment_worker",
+    "before_request_sha256": "b24535113341553ba39cb08f931d6841bbb9d723a72fa98996e47dc4fb9b6232",
+    "before_network_infos": {
+      "map": {
+        "p00-datapath": {
+          "my_node_info": {
+            "virtual_ipv4": {
+              "address": {
+                "addr": 182321154
+              },
+              "network_length": 24
+            },
+            "hostname": "p00-android",
+            "version": "2.7.0-7592951b~",
+            "stun_info": {
+              "last_update_time": "1791725396",
+              "max_port": 65535
+            },
+            "listeners": [
+              {
+                "url": "ring://51baf35b-657d-4a01-b7fc-a1e48038328c"
+              }
+            ],
+            "peer_id": 3207660350
+          },
+          "events": [
+            "{\"time\":\"2026-10-11T21:29:56.650223382+08:00\",\"event\":{\"PeerAdded\":3600388660}}",
+            "{\"time\":\"2026-10-11T21:29:56.650213694+08:00\",\"event\":{\"PeerConnAdded\":{\"conn_id\":\"1b5e9068-d027-43b3-887b-e022aabf363c\",\"my_peer_id\":3207660350,\"peer_id\":3600388660,\"features\":[\"liveness-echo-v1\"],\"tunnel\":{\"tunnel_type\":\"tcp\",\"local_addr\":{\"url\":\"tcp://<DEVICE_LAN_IP>:45980\"},\"remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"},\"resolved_remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"}},\"stats\":{\"rx_bytes\":\"109\",\"tx_bytes\":\"125\",\"rx_packets\":\"1\",\"tx_packets\":\"1\"},\"is_client\":true,\"network_name\":\"chuanmen-p00-isolated\"}}}",
+            "{\"time\":\"2026-10-11T21:29:56.638169892+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_190\"}}",
+            "{\"time\":\"2026-10-11T21:29:56.638045621+08:00\",\"event\":{\"Connecting\":\"tcp://<HOST_LAN_IP>:31270\"}}",
+            "{\"time\":\"2026-10-11T21:29:56.628032080+08:00\",\"event\":{\"ListenerAdded\":\"ring://51baf35b-657d-4a01-b7fc-a1e48038328c\"}}"
+          ],
+          "routes": [
+            {
+              "peer_id": 3600388660,
+              "ipv4_addr": {
+                "address": {
+                  "addr": 182321153
+                },
+                "network_length": 24
+              },
+              "next_hop_peer_id": 3600388660,
+              "cost": 1,
+              "path_latency": 500,
+              "hostname": "p00-host-peer",
+              "stun_info": {},
+              "inst_id": "e1d295f0-b775-4e0d-996b-5db5a7026bc2",
+              "version": "2.7.0-7592951b",
+              "feature_flag": {
+                "kcp_input": true,
+                "support_conn_list_sync": true,
+                "quic_input": true,
+                "disable_p2p": true
+              },
+              "next_hop_peer_id_latency_first": 3600388660,
+              "cost_latency_first": 1,
+              "path_latency_latency_first": 500
+            }
+          ],
+          "peers": [
+            {
+              "peer_id": 3600388660,
+              "conns": [
+                {
+                  "conn_id": "1b5e9068-d027-43b3-887b-e022aabf363c",
+                  "my_peer_id": 3207660350,
+                  "peer_id": 3600388660,
+                  "features": [
+                    "liveness-echo-v1"
+                  ],
+                  "tunnel": {
+                    "tunnel_type": "tcp",
+                    "local_addr": {
+                      "url": "tcp://<DEVICE_LAN_IP>:45980"
+                    },
+                    "remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    },
+                    "resolved_remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    }
+                  },
+                  "stats": {
+                    "rx_bytes": "829",
+                    "tx_bytes": "1239",
+                    "rx_packets": "7",
+                    "tx_packets": "10",
+                    "latency_us": "6324"
+                  },
+                  "is_client": true,
+                  "network_name": "chuanmen-p00-isolated"
+                }
+              ],
+              "default_conn_id": {
+                "part1": 459182184,
+                "part2": 3492234163,
+                "part3": 2289819682,
+                "part4": 2864657980
+              },
+              "directly_connected_conns": [
+                {
+                  "part1": 459182184,
+                  "part2": 3492234163,
+                  "part3": 2289819682,
+                  "part4": 2864657980
+                }
+              ]
+            }
+          ],
+          "peer_route_pairs": [
+            {
+              "route": {
+                "peer_id": 3600388660,
+                "ipv4_addr": {
+                  "address": {
+                    "addr": 182321153
+                  },
+                  "network_length": 24
+                },
+                "next_hop_peer_id": 3600388660,
+                "cost": 1,
+                "path_latency": 500,
+                "hostname": "p00-host-peer",
+                "stun_info": {},
+                "inst_id": "e1d295f0-b775-4e0d-996b-5db5a7026bc2",
+                "version": "2.7.0-7592951b",
+                "feature_flag": {
+                  "kcp_input": true,
+                  "support_conn_list_sync": true,
+                  "quic_input": true,
+                  "disable_p2p": true
+                },
+                "next_hop_peer_id_latency_first": 3600388660,
+                "cost_latency_first": 1,
+                "path_latency_latency_first": 500
+              },
+              "peer": {
+                "peer_id": 3600388660,
+                "conns": [
+                  {
+                    "conn_id": "1b5e9068-d027-43b3-887b-e022aabf363c",
+                    "my_peer_id": 3207660350,
+                    "peer_id": 3600388660,
+                    "features": [
+                      "liveness-echo-v1"
+                    ],
+                    "tunnel": {
+                      "tunnel_type": "tcp",
+                      "local_addr": {
+                        "url": "tcp://<DEVICE_LAN_IP>:45980"
+                      },
+                      "remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      },
+                      "resolved_remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      }
+                    },
+                    "stats": {
+                      "rx_bytes": "829",
+                      "tx_bytes": "1239",
+                      "rx_packets": "7",
+                      "tx_packets": "10",
+                      "latency_us": "6324"
+                    },
+                    "is_client": true,
+                    "network_name": "chuanmen-p00-isolated"
+                  }
+                ],
+                "default_conn_id": {
+                  "part1": 459182184,
+                  "part2": 3492234163,
+                  "part3": 2289819682,
+                  "part4": 2864657980
+                },
+                "directly_connected_conns": [
+                  {
+                    "part1": 459182184,
+                    "part2": 3492234163,
+                    "part3": 2289819682,
+                    "part4": 2864657980
+                  }
+                ]
+              }
+            }
+          ],
+          "running": true,
+          "foreign_network_summary": {}
+        }
+      }
+    },
+    "physical_networks_before": 2
+  },
+  "observations": {
+    "layer": "android_native_offline",
+    "status": "passed",
+    "run_id": "p00-a9cc7a521f55",
+    "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "stop_policy_owner": "experiment_worker",
+    "before_request_sha256": "b24535113341553ba39cb08f931d6841bbb9d723a72fa98996e47dc4fb9b6232",
+    "before_network_infos": {
+      "map": {
+        "p00-datapath": {
+          "my_node_info": {
+            "virtual_ipv4": {
+              "address": {
+                "addr": 182321154
+              },
+              "network_length": 24
+            },
+            "hostname": "p00-android",
+            "version": "2.7.0-7592951b~",
+            "stun_info": {
+              "last_update_time": "1791725396",
+              "max_port": 65535
+            },
+            "listeners": [
+              {
+                "url": "ring://51baf35b-657d-4a01-b7fc-a1e48038328c"
+              }
+            ],
+            "peer_id": 3207660350
+          },
+          "events": [
+            "{\"time\":\"2026-10-11T21:29:56.650223382+08:00\",\"event\":{\"PeerAdded\":3600388660}}",
+            "{\"time\":\"2026-10-11T21:29:56.650213694+08:00\",\"event\":{\"PeerConnAdded\":{\"conn_id\":\"1b5e9068-d027-43b3-887b-e022aabf363c\",\"my_peer_id\":3207660350,\"peer_id\":3600388660,\"features\":[\"liveness-echo-v1\"],\"tunnel\":{\"tunnel_type\":\"tcp\",\"local_addr\":{\"url\":\"tcp://<DEVICE_LAN_IP>:45980\"},\"remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"},\"resolved_remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"}},\"stats\":{\"rx_bytes\":\"109\",\"tx_bytes\":\"125\",\"rx_packets\":\"1\",\"tx_packets\":\"1\"},\"is_client\":true,\"network_name\":\"chuanmen-p00-isolated\"}}}",
+            "{\"time\":\"2026-10-11T21:29:56.638169892+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_190\"}}",
+            "{\"time\":\"2026-10-11T21:29:56.638045621+08:00\",\"event\":{\"Connecting\":\"tcp://<HOST_LAN_IP>:31270\"}}",
+            "{\"time\":\"2026-10-11T21:29:56.628032080+08:00\",\"event\":{\"ListenerAdded\":\"ring://51baf35b-657d-4a01-b7fc-a1e48038328c\"}}"
+          ],
+          "routes": [
+            {
+              "peer_id": 3600388660,
+              "ipv4_addr": {
+                "address": {
+                  "addr": 182321153
+                },
+                "network_length": 24
+              },
+              "next_hop_peer_id": 3600388660,
+              "cost": 1,
+              "path_latency": 500,
+              "hostname": "p00-host-peer",
+              "stun_info": {},
+              "inst_id": "e1d295f0-b775-4e0d-996b-5db5a7026bc2",
+              "version": "2.7.0-7592951b",
+              "feature_flag": {
+                "kcp_input": true,
+                "support_conn_list_sync": true,
+                "quic_input": true,
+                "disable_p2p": true
+              },
+              "next_hop_peer_id_latency_first": 3600388660,
+              "cost_latency_first": 1,
+              "path_latency_latency_first": 500
+            }
+          ],
+          "peers": [
+            {
+              "peer_id": 3600388660,
+              "conns": [
+                {
+                  "conn_id": "1b5e9068-d027-43b3-887b-e022aabf363c",
+                  "my_peer_id": 3207660350,
+                  "peer_id": 3600388660,
+                  "features": [
+                    "liveness-echo-v1"
+                  ],
+                  "tunnel": {
+                    "tunnel_type": "tcp",
+                    "local_addr": {
+                      "url": "tcp://<DEVICE_LAN_IP>:45980"
+                    },
+                    "remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    },
+                    "resolved_remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    }
+                  },
+                  "stats": {
+                    "rx_bytes": "829",
+                    "tx_bytes": "1239",
+                    "rx_packets": "7",
+                    "tx_packets": "10",
+                    "latency_us": "6324"
+                  },
+                  "is_client": true,
+                  "network_name": "chuanmen-p00-isolated"
+                }
+              ],
+              "default_conn_id": {
+                "part1": 459182184,
+                "part2": 3492234163,
+                "part3": 2289819682,
+                "part4": 2864657980
+              },
+              "directly_connected_conns": [
+                {
+                  "part1": 459182184,
+                  "part2": 3492234163,
+                  "part3": 2289819682,
+                  "part4": 2864657980
+                }
+              ]
+            }
+          ],
+          "peer_route_pairs": [
+            {
+              "route": {
+                "peer_id": 3600388660,
+                "ipv4_addr": {
+                  "address": {
+                    "addr": 182321153
+                  },
+                  "network_length": 24
+                },
+                "next_hop_peer_id": 3600388660,
+                "cost": 1,
+                "path_latency": 500,
+                "hostname": "p00-host-peer",
+                "stun_info": {},
+                "inst_id": "e1d295f0-b775-4e0d-996b-5db5a7026bc2",
+                "version": "2.7.0-7592951b",
+                "feature_flag": {
+                  "kcp_input": true,
+                  "support_conn_list_sync": true,
+                  "quic_input": true,
+                  "disable_p2p": true
+                },
+                "next_hop_peer_id_latency_first": 3600388660,
+                "cost_latency_first": 1,
+                "path_latency_latency_first": 500
+              },
+              "peer": {
+                "peer_id": 3600388660,
+                "conns": [
+                  {
+                    "conn_id": "1b5e9068-d027-43b3-887b-e022aabf363c",
+                    "my_peer_id": 3207660350,
+                    "peer_id": 3600388660,
+                    "features": [
+                      "liveness-echo-v1"
+                    ],
+                    "tunnel": {
+                      "tunnel_type": "tcp",
+                      "local_addr": {
+                        "url": "tcp://<DEVICE_LAN_IP>:45980"
+                      },
+                      "remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      },
+                      "resolved_remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      }
+                    },
+                    "stats": {
+                      "rx_bytes": "829",
+                      "tx_bytes": "1239",
+                      "rx_packets": "7",
+                      "tx_packets": "10",
+                      "latency_us": "6324"
+                    },
+                    "is_client": true,
+                    "network_name": "chuanmen-p00-isolated"
+                  }
+                ],
+                "default_conn_id": {
+                  "part1": 459182184,
+                  "part2": 3492234163,
+                  "part3": 2289819682,
+                  "part4": 2864657980
+                },
+                "directly_connected_conns": [
+                  {
+                    "part1": 459182184,
+                    "part2": 3492234163,
+                    "part3": 2289819682,
+                    "part4": 2864657980
+                  }
+                ]
+              }
+            }
+          ],
+          "running": true,
+          "foreign_network_summary": {}
+        }
+      }
+    },
+    "physical_networks_before": 2,
+    "physical_networks_after": 0,
+    "network_loss_observed": true,
+    "network_loss_elapsed_ns": 930465435839413,
+    "offline_connect_error": "java.net.SocketTimeoutException: failed to connect to /10.222.0.1 (port 31271) from /10.222.0.2 (port 53152) after 3000ms",
+    "closed": {
+      "fd": 190,
+      "native_state": "released",
+      "valid_before_owner_close": true,
+      "valid_after_owner_close": false
+    },
+    "instances_after": {},
+    "observations": {
+      "destinations": {
+        "10.222.0.1": 9
+      },
+      "protections": [
+        {
+          "before_port": 0,
+          "fd": 184,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 184,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 169,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 169,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 184,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 184,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 184,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        }
+      ],
+      "read_packets": 16,
+      "tun": {
+        "190": "released"
+      },
+      "write_packets": 4
+    },
+    "permission_granted_after": true,
+    "service_destroyed": true,
+    "cleanup_error": null,
+    "own_active_notifications_after": 0
+  },
+  "host_echo_records": [
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:29:57.444691+00:00",
+      "bytes": 32,
+      "request_sha256": "b24535113341553ba39cb08f931d6841bbb9d723a72fa98996e47dc4fb9b6232",
+      "source": [
+        "127.0.0.1",
+        54010
+      ]
+    }
+  ],
+  "services_after": "ACTIVITY MANAGER SERVICES (dumpsys activity services)\n  (nothing)\n",
+  "device_id": "device-01",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-system-offline.json",
+        "sha256": "649dc5a2da3e01f7915fcf53d63ab3ad8e1ba21053eb5d53f1bfe303f2d0c82f"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false,
+    "build_ref": "docs/verification/p00/builds/offline-apk-build.json"
+  }
+}

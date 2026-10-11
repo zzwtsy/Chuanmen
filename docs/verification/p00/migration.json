@@ -1,0 +1,3659 @@
+{
+  "schema_version": 1,
+  "scope": "verification_and_experiments_with_required_checkers",
+  "original_bytes_retained": false,
+  "old_digest_is_not_original_byte_recovery": true,
+  "experiment_reexecuted": false,
+  "before": {
+    "docs/verification": {
+      "files": 385,
+      "bytes": 10461471
+    },
+    "experiments/android-vpn-smoke": {
+      "files": 52,
+      "bytes": 346699
+    }
+  },
+  "semantic_checks": [
+    {
+      "record": "docs/verification/p00/runs/legacy-boundary/xiaomi-native-boundary.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/legacy-boundary/xiaomi-native-panic.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/legacy-jni-parser/xiaomi-jni-parser.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/p00-7dd889eefb90/xiaomi-native-datapath.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/p00-5425a620eda2/xiaomi-native-connected-cycles.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/legacy-permission-denial/xiaomi-system-denied.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/p00-5b00f361a649/xiaomi-system-revoke-notification.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/p00-a9cc7a521f55/xiaomi-system-offline.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/p00-e15d11f7efca/xiaomi-native-address.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/p00-b1b1b40d0ad3/xiaomi-native-advanced.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/p00-5d2cc66e8aee/xiaomi-native-performance.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/p00-159e4cbdd2e9/xiaomi-datapath-write-counter-failure.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/p00-47b1a033c36c/xiaomi-datapath-proxy-disabled.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    },
+    {
+      "record": "docs/verification/p00/runs/p00-d4144c7b6771/xiaomi-advanced-required-key-failure.json",
+      "status": "passed",
+      "checked": "observations_numeric_status_and_artifact_identity"
+    }
+  ],
+  "rows": [
+    {
+      "old_path": "docs/verification/directory-migration.json",
+      "old_sha256": "122d058008dad65d60bccacaed82a863f44cad084e5170fcfba3ff9a1ef07f8a",
+      "old_bytes": 12880,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/prototype-baseline.json",
+      "new_sha256": "b2a200abf0db3f771cc360704eed9bc04102baadc793a636f24a21da24825dd4"
+    },
+    {
+      "old_path": "docs/verification/catalog-audit.json",
+      "old_sha256": "858544ce532326d254cc601fae203b9f264539c4fe274dbe97e712d44774ba35",
+      "old_bytes": 706,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/prototype-export-check.json",
+      "old_sha256": "3fcf06e4c8f8f57388a1a723c6eeadf42d74772c91f6ee8075878eecf009dbd6",
+      "old_bytes": 1072,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/prototype-baseline.json",
+      "new_sha256": "b2a200abf0db3f771cc360704eed9bc04102baadc793a636f24a21da24825dd4"
+    },
+    {
+      "old_path": "docs/verification/handoff-structure.json",
+      "old_sha256": "655a25dd843bafc4582258c50afa9c393deff237f2494c836b58b921bb7a259e",
+      "old_bytes": 636,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/catalog-cli-tests.json",
+      "old_sha256": "f9a0e01652c23328ae922408797001b37c48c1a8c9ec5449f66bd893f151de54",
+      "old_bytes": 223,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/skill-forward-check.md",
+      "old_sha256": "b83f92878fd9db88068abf6797e3240c0c53f104d63c48f908fb0a55b4906f3e",
+      "old_bytes": 2377,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/README.md",
+      "old_sha256": "9190d2846f9f16ed05a6de34cdb45a5d18e7146e4af56d8687b893784a3d5e49",
+      "old_bytes": 5503,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/README.md",
+      "new_sha256": "11a73612873a1b443253f1ea792d6de54562d4e6cd35b1300f50d5225ff2b7c3"
+    },
+    {
+      "old_path": "docs/verification/prototype-original-qa.json",
+      "old_sha256": "785fdeb9f81ee0fb7864ffd9c79f0c6c81af7f30e312bb4241c62d36fa96f88d",
+      "old_bytes": 3218,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/prototype-baseline.json",
+      "new_sha256": "b2a200abf0db3f771cc360704eed9bc04102baadc793a636f24a21da24825dd4"
+    },
+    {
+      "old_path": "docs/verification/catalog-cli-tests.txt",
+      "old_sha256": "a1c37d7428fa93ee31a66b4fc319791e07e815c0c3c531bb68b2238846b78a39",
+      "old_bytes": 1817,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/manifest.json",
+      "old_sha256": "b4a3f405260917ee006313f403dae1a0961f6acc0668544b9c6eb3c18ba69b11",
+      "old_bytes": 103580,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/report.md",
+      "old_sha256": "2065bd0516083478eea33abd55f60e8de4fbe41f6f8d36f6e6e6bd7f6fc6c709",
+      "old_bytes": 5628,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/report.md",
+      "new_sha256": "2c61451698ee39d14bc4cfcc331d025d9d4d61d45a83e70c6db2198a0058a24a"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence-index.json",
+      "old_sha256": "68b5ed8588ff74aaf64fd7445dece6b5de2b06d718d831093e018e073d2d56d1",
+      "old_bytes": 450548,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/README.md",
+      "old_sha256": "345b979a326c65b5cdc9d0a151d3d173e509fd9e71012162d194dd4d28abb349",
+      "old_bytes": 2557,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/report.md",
+      "new_sha256": "2c61451698ee39d14bc4cfcc331d025d9d4d61d45a83e70c6db2198a0058a24a"
+    },
+    {
+      "old_path": "docs/verification/p00/exit-review.md",
+      "old_sha256": "7c341ba0e72e8fda314430ab840e414b5ba3238be94c5ea7633942e65b0bc961",
+      "old_bytes": 5522,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/report.md",
+      "new_sha256": "2c61451698ee39d14bc4cfcc331d025d9d4d61d45a83e70c6db2198a0058a24a"
+    },
+    {
+      "old_path": "docs/verification/p00/capability-matrix.md",
+      "old_sha256": "d4cfaaa43a0b2d54f9f00f2cfeda210784c81a834640f9268bba59b06789da83",
+      "old_bytes": 9388,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/report.md",
+      "new_sha256": "2c61451698ee39d14bc4cfcc331d025d9d4d61d45a83e70c6db2198a0058a24a"
+    },
+    {
+      "old_path": "docs/verification/p00/reproduce/README.md",
+      "old_sha256": "f96fb5d73144ac95e3a4f675539bc24adf531a3aa7489ebc810d1d95494a6196",
+      "old_bytes": 8066,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reproduce/README.md",
+      "new_sha256": "c4825d2a24dad109ba5cc023ef82ce1af73cb972994bab7b57111601be13b3a6"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/config-mapping.json",
+      "old_sha256": "c1c6ab376f6d16323cf83a1590ff6d361649e327779c5682bc4a3a5b3c87e791",
+      "old_bytes": 126542,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/config-mapping.json",
+      "new_sha256": "2220d187d2b98eabe8fb680dd19341bbc1678942f95a5bb6fd57c8ecd9081466"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/reproduction-inputs.json",
+      "old_sha256": "8aac6557ccbe8d5b751bbc8e9fe7bc147593948e6c3a44e652bb1aa2344f4624",
+      "old_bytes": 50830,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/reproduction-inputs.json",
+      "new_sha256": "1eb325dcaaae240096bb2bae48502f7d1f055a5593e38bebbe71ebadd80ab8d0"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/requirements-baseline.json",
+      "old_sha256": "3453a88d701c0e9d2f899211c8401f973f2b720817b690b50562686d4a84c4e7",
+      "old_bytes": 7223,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/requirements-baseline.json",
+      "new_sha256": "fc2b7aa2bbbc75c113d17397ea07d1afac09d24322b3037418d53b902f3a73bb"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/toolchain.json",
+      "old_sha256": "c7297ed1b4c706523c1ff6f6216449b5605d519a931cef0111493f2b677a16e7",
+      "old_bytes": 3448,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/staging-scope.json",
+      "old_sha256": "7c3030cd4ac82e265dd39bd09f5c4905257844e30148f8addbf354b62112aefa",
+      "old_bytes": 10664,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/transport-members.json",
+      "old_sha256": "549fb05e4fa13e79923b18ca1c5954c77cf36ae82731ffbd0c583057fec5e3d6",
+      "old_bytes": 18297,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/p00-06-address.md",
+      "old_sha256": "80230f78a742d940b142cd9ebc49f6daa6b71737fdf393f5e5bec7d47a858333",
+      "old_bytes": 5562,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reports/p00-06-address.md",
+      "new_sha256": "8b8be2e8ddf1ebb46f89927cb440c8256b1d445694b3ac8584f72eafd651be3e"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/p00-08-measurement.md",
+      "old_sha256": "b44a442b64cd24f8de7392dbed14da12c6ebc885510b87a59fd67f5d3111c76c",
+      "old_bytes": 8473,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reports/p00-08-measurement.md",
+      "new_sha256": "c12196228d239944535cb0d78f796dd8d9cfb5b07f4ad9ebc3b983b37f83e030"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/p00-02-versions.md",
+      "old_sha256": "6fac515667673f0c9fcec1f022caa1dcca4d08937aa4f4ce94ec18e8f67b88a7",
+      "old_bytes": 13358,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reports/p00-02-versions.md",
+      "new_sha256": "7bed97cffd6cd408d5f5b28518252d23ebb68f289090418dd298d6d04a68e4e8"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/p00-01-baseline.md",
+      "old_sha256": "57903a4bfc6072fff0ec244fe4fbbef6278bf3eb18df21de8304d2fdafb3ccc1",
+      "old_bytes": 2090,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reports/p00-01-baseline.md",
+      "new_sha256": "812efe62c31e75bef4fd0fcfb6a5dd83835403c4a93fa50e674db3a68abda870"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/p00-05-datapath.md",
+      "old_sha256": "4b5febfc1feaf6da4c7dec1660fe855b9b1a9391901a8e76bb267e95f79721b8",
+      "old_bytes": 8435,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reports/p00-05-datapath.md",
+      "new_sha256": "5166675735b4ba400db55db647455fdfd3a50b7a6576d0b3b4b322b3198db31a"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/p00-03-config.md",
+      "old_sha256": "17a099bcad052d1b79d1cbf059c5687eed5c8feb87a7effa79a54633ef371e84",
+      "old_bytes": 7711,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reports/p00-03-config.md",
+      "new_sha256": "b529661da5dd82d284f48dcdf33acecab5efe5eb0ddae74be03ce7bcbea39593"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/platform-probes.md",
+      "old_sha256": "abafc23f514921177d05a11f975f20c29cffc8894ac6d7988f6f06955c8289de",
+      "old_bytes": 3851,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/p00-07-advanced.md",
+      "old_sha256": "6d03109802f1423c43a6179caf511d4fec61d878ad1aa8891e1f843ce441ef10",
+      "old_bytes": 8307,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reports/p00-07-advanced.md",
+      "new_sha256": "cb1713617a1387e1502b5a3be6fe6b5a584659b99a6c90b45d0dd0fb53a4847e"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/p00-04-native-boundary.md",
+      "old_sha256": "a577f7a807a2970dcc928e3bcbb7c98c2dd4d9213a7bf89b54687cf449932f17",
+      "old_bytes": 5701,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reports/p00-04-native-boundary.md",
+      "new_sha256": "568653f5759fe963bad38f6ac09cab5cec587c82fb08fbcc141357dc02eb1a42"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/measurement/baseline-method.json",
+      "old_sha256": "7fca8bdb23154dc97360f61d0f03740e17fb6d62b57742c048f476eddf5a3f88",
+      "old_bytes": 1405,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reports/measurement/baseline-method.json",
+      "new_sha256": "8b2c7043dfce22c6d9c731a3425bdf1acd2381228a9ec92347291c5a15d0eba9"
+    },
+    {
+      "old_path": "docs/verification/p00/reports/measurement/baseline.csv",
+      "old_sha256": "5b800428567591810409c5f2e0d830568ba731c384527f7374056badb5331907",
+      "old_bytes": 2468,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reports/measurement/baseline.csv",
+      "new_sha256": "790197a1f28069360babc076d1c93dfcbe0a4e45c480d30620beb3347be538ac"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/p00-04-evidence.json",
+      "old_sha256": "83598d63257bac4dd88dc5cf7f719931c69d9841042fa235e53aa105d5a754ae",
+      "old_bytes": 95754,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/source/p00-04-evidence.json",
+      "new_sha256": "df92329dc242e0a6f17472e0f007919fafc9f162be621d821fef2e9b6c2a7d13"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/current-artifact-check.json",
+      "old_sha256": "818b668f48b098a2900c802f811ccd71e4ff8f1ec48b8300dbb4ad98e823936d",
+      "old_bytes": 849,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/advanced-source-evidence.json",
+      "old_sha256": "1f490fda5113e93068b7ac66253b8e79a27735aeb99ea6ed8359711d6ede58b5",
+      "old_bytes": 1618,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/source/advanced-source-evidence.json",
+      "new_sha256": "ac1da09f536d6fa28fa2589641d8adcafe2b915cb1f3014dbbc32de208dee54f"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/protoc-tool-candidate.json",
+      "old_sha256": "7c1ff5da44f8fc5d350579bf32d3b295b7ddcb21a1573d8e4c1dea237afe16f6",
+      "old_bytes": 763,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/protoc-release.json",
+      "old_sha256": "adf60132312cdd94cb49345534e366fae6c715cf8e49538a51f2a3bbf160646f",
+      "old_bytes": 26332,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/scope-check.json",
+      "old_sha256": "6ddfce3316a3945a617860819661d2875d9d1d4d64fe20fa4991fdb38d013e7e",
+      "old_bytes": 846,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/elf-alignment.json",
+      "old_sha256": "2de75f8dcaf17f46eb7acf6e11e6ae4a0b6555c06026ae1095571ae7053ed307",
+      "old_bytes": 6036,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/address-source-evidence.json",
+      "old_sha256": "437605864ed64a357f0bc204ff935bb9d5684c626ab3c0fe664d82901917953a",
+      "old_bytes": 1278,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/source/address-source-evidence.json",
+      "new_sha256": "109b590b93bbbd09da7376d5f3a736569ce789691486be59aa50ba72b93a0013"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/environment-preflight.json",
+      "old_sha256": "68530bedcf150115e8d7a6dbbbaf343965506a336b9d0add7c2ac8501d1ada17",
+      "old_bytes": 11566,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/core-checkout.json",
+      "old_sha256": "89fa9044a7ad89657d3ea4f55f1697c97c07232fd0bd66c972f7a1356d0f926c",
+      "old_bytes": 1639,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/config-source-evidence.json",
+      "old_sha256": "55771a5876bde08fa8af6fbe74a7fce2f95d6a7b40736089878ee1bdd9671dff",
+      "old_bytes": 13221,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/source/config-source-evidence.json",
+      "new_sha256": "e91c683476ac3b7f5e24c3874afe6138a619b1813d244644f53210be4ad1bc52"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/host-proxy-feature-evidence.json",
+      "old_sha256": "b2d187276fe4b0d85d18dfddfc297f8be9b3d5edf6a6e3db9b2a66de16ebb8ba",
+      "old_bytes": 1064,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/source/host-proxy-feature-evidence.json",
+      "new_sha256": "f804c57429a75b76edc5930681a2eca4ca7e6d5251ffcc66fb0ca2b42424e67d"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/source/requirements-freeze-check.json",
+      "old_sha256": "0b3790b9f4c45775b56e4b3269a9df61e91063f588bdb73a280c13fbcefcc554",
+      "old_bytes": 790,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/checks/validation.json",
+      "old_sha256": "9ac1e4dc069ee17ad5c8f8205ba08e376793bfcdb9b1bf28a02791e1113399b5",
+      "old_bytes": 8562,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/checks/validation-initial.json",
+      "old_sha256": "ffaafe77b4d7ee63e31f0b777e7714f7d96357748bfa4dcd6cb9520a2fb110b6",
+      "old_bytes": 13392,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/checks/validation-p00-05.json",
+      "old_sha256": "72afaeaa166b4a1319711d8661010a54008cbbd068f460779c0cd161e7d0c8d4",
+      "old_bytes": 7574,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/dependency-license-text-inventory.json",
+      "old_sha256": "ad562c525ab0fcc5808e82023f1f08f6a3ddb22e0a992fcb904b3e165033b770",
+      "old_bytes": 425437,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/inventory.json",
+      "new_sha256": "6537d282068fc154f64225f5f4b667a32d392df1958eb6f8de81795fe7e1a1bc"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/dependency-license-text-inventory-initial.json",
+      "old_sha256": "d1a40131aa0f3f8c2f8e9ceed89798272e10640f417161819a5acd106acd663b",
+      "old_bytes": 340822,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/dependency-license-inventory.json",
+      "old_sha256": "7efd0f2b304ddce0c50b6335dc7dee22c6969bc9a6f8e5a2f8151fc50c6b39c4",
+      "old_bytes": 50060,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-be4c84b1968c/xiaomi-advanced-start-failure.json",
+      "old_sha256": "c023fe74870060b55cd066590419658af399e917da24f08a1d61ef9caf0f959c",
+      "old_bytes": 10403,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-be4c84b1968c/host-peer-final-14.json",
+      "old_sha256": "9427ab6ebb209f03d5e234c8e2c77dbebd928144f264e560b8aa7fd5d11ca126",
+      "old_bytes": 2616,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-be4c84b1968c/host-peer-ready-14.json",
+      "old_sha256": "a664faec01a29ed1c5ce5341765fc5f11f14cf24b4d7a5ae8432e284e1231892",
+      "old_bytes": 2359,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-be4c84b1968c/host-peer-log-14.txt",
+      "old_sha256": "54b20fd6f1731b60e20e29d3ed0980a1ded68d1c25c5cbba779aae1b3065c288",
+      "old_bytes": 733,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-7dd889eefb90/host-peer-log-06.txt",
+      "old_sha256": "7a2c8faca13d0dc7dca737ccb4d9ec1462dc7f6362af497eb6be62e0ad9ff0e0",
+      "old_bytes": 2182,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-7dd889eefb90/host-echo-06.jsonl",
+      "old_sha256": "3b0c12121ef77c6451eaafde152155d70d8e44a6b06c23a6752eb74ba44b5c1e",
+      "old_bytes": 7760,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-7dd889eefb90/xiaomi-native-datapath.json",
+      "old_sha256": "60166f2e364d52ed6fc14b6e6d0a60aa1dd345cd3eb307bf28ba3db50c97d94c",
+      "old_bytes": 54577,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/p00-7dd889eefb90/xiaomi-native-datapath.json",
+      "new_sha256": "c785dbf632b7764bde5b665dbd06ad174bb87a79774c6af044e8e39933292538"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-7dd889eefb90/host-peer-final-06.json",
+      "old_sha256": "b251d8872ae74a2fb4e3ab038ed2d85c0d1b7373c41712e54971435d773e4e2c",
+      "old_bytes": 2421,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-7dd889eefb90/host-peer-ready-06.json",
+      "old_sha256": "23ae3596dd3dbdb679e2f279203c30f6ce18b87c69a5357879f65d5c1baa65a3",
+      "old_bytes": 2046,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5b00f361a649/host-peer-ready-11.json",
+      "old_sha256": "16b0cd688f5cf86ac47da5448c78ff28cff4ef6ee31ded81df50e4c1da8d30ce",
+      "old_bytes": 2046,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5b00f361a649/host-peer-final-11.json",
+      "old_sha256": "e5cd235033fc925e73e41a43e912e3d8ae56674dda572d7ae0e08ade039473c3",
+      "old_bytes": 2329,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5b00f361a649/host-peer-log-11.txt",
+      "old_sha256": "0e9d59220579f84aa8a3d10f4cabdd490ca75cc8da94fd1483d7c4420ce76119",
+      "old_bytes": 2182,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5b00f361a649/xiaomi-system-revoke-notification.json",
+      "old_sha256": "c2540f8a2e972dbda73139e7d0b45bec8dcd8f3aedbb8d8540baff61d412a476",
+      "old_bytes": 20807,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/p00-5b00f361a649/xiaomi-system-revoke-notification.json",
+      "new_sha256": "86e4a4cbb4e90ba3d487da64210cf21b9f9790c41759a0343c7b0846111038c3"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-d4144c7b6771/host-peer-final-15.json",
+      "old_sha256": "a369d3a3ea3fa9b250c931bf500d0c20305ae2cd2004158ce4d9a51ccc816630",
+      "old_bytes": 2642,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-d4144c7b6771/xiaomi-advanced-required-key-failure.json",
+      "old_sha256": "fb9eac5041a2e0e4b4d96c2689fa2343f737bbbb14f548f1ffa231642b68c5b5",
+      "old_bytes": 11695,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/p00-d4144c7b6771/xiaomi-advanced-required-key-failure.json",
+      "new_sha256": "4f32c67038a780fe247e134abc73d46b37228ef556ee72410ebd2f3d743c40bc"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-d4144c7b6771/host-peer-log-15.txt",
+      "old_sha256": "383ff8b9e3af9f66a01de17bdd5713ba3fb5251ce4b82a720b4abaf0f66f5c31",
+      "old_bytes": 733,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-159e4cbdd2e9/host-peer-log-04.txt",
+      "old_sha256": "e25639bcc3fb58c6e731b2fb612cfff21173f09a1c7777df339af7755b9e6e65",
+      "old_bytes": 48019,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-159e4cbdd2e9/host-echo-04.jsonl",
+      "old_sha256": "73f02d45cca6a47b87fb34acf195d3d14003fac45eb64c95f4f8a953e1f640dd",
+      "old_bytes": 7760,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-159e4cbdd2e9/xiaomi-datapath-write-counter-failure.json",
+      "old_sha256": "ff4154ff93892e5b5f7be6bef0cb7531da59bd962694fbef34d282c8f34707ef",
+      "old_bytes": 87654,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/p00-159e4cbdd2e9/xiaomi-datapath-write-counter-failure.json",
+      "new_sha256": "c63e6d951cecde350ac087d4facca39c5fa1658c1d44fb255dc5213e3e528bf8"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-159e4cbdd2e9/host-peer-final-04.json",
+      "old_sha256": "8bdd998a44f6c76ab3b3dfc6d12d84da9d0c8d351aa41bc8f6dea487af0f6af8",
+      "old_bytes": 2491,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-159e4cbdd2e9/host-peer-log-04-redaction.json",
+      "old_sha256": "6cf2a175ca23e89cf205d766020d855387ac7ac883725925cc8286cb5abdf969",
+      "old_bytes": 483,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-159e4cbdd2e9/host-peer-ready-04.json",
+      "old_sha256": "113ffa9f2941ef501e45e6ea749db357114b3a56ed1eb3751b597b6463e26a12",
+      "old_bytes": 2116,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-e15d11f7efca/host-echo-13.jsonl",
+      "old_sha256": "39898fe4b6169a98ea2e6287be5ce5f53dc426d9086b512b654c756e80891504",
+      "old_bytes": 1164,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-e15d11f7efca/xiaomi-native-address.json",
+      "old_sha256": "fa0eca11edbc56bf48f3e8015fce73969e0f02262e0d2b7095ea80331265bdbf",
+      "old_bytes": 452848,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/p00-e15d11f7efca/xiaomi-native-address.json",
+      "new_sha256": "baed9fa5ea91adb4c192fa69c1d05b5780ae915e94a2ea6f132743abd1c5cdfa"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-e15d11f7efca/host-peer-final-13.json",
+      "old_sha256": "5ed50b1715be2d0a1fd03dc123d8f1c2e063363432e5cbc052b5828f655d2f06",
+      "old_bytes": 2460,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-e15d11f7efca/host-peer-log-13.txt",
+      "old_sha256": "89756f099cfe54272b7c46a8824b6bbe8e6d9ea9a8aca9ee9420c62cb8e3579c",
+      "old_bytes": 5135,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-e15d11f7efca/host-peer-ready-13.json",
+      "old_sha256": "9a87f4edebe6e1428cecec562c3ceb985cfa602316c0d88ad034ef2abc91d3a2",
+      "old_bytes": 2086,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/xiaomi-preflight.json",
+      "old_sha256": "c4cdc81ed627f27a7ce5cd944ec27a804f0dc8fc65c1e61f6b4b4c0f2595e01c",
+      "old_bytes": 2767,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/xiaomi-install.json",
+      "old_sha256": "debe8a070366ce4333f3803d089fd6acdf480f43f9cbbc8de57ba6648c917e96",
+      "old_bytes": 1278,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/emulator-platform.json",
+      "old_sha256": "1c72cfc0a2cffe4780e9e380089363ea7a24eb24d998eb05826b6ada533b9cb2",
+      "old_bytes": 7055,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/emulator-preflight.json",
+      "old_sha256": "79a06ddfdd7451675f13aebcee1777e57768277086a8469aa2cecb2283cb22ab",
+      "old_bytes": 2576,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/xiaomi-platform-bounded-failure.json",
+      "old_sha256": "c66103d15d9a69e4bb4a26da88a6b07f6d1f36d7f23749f3b515fb23f2c7f3f0",
+      "old_bytes": 4454,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/xiaomi-platform-host-launch.json",
+      "old_sha256": "128c957fb4478b411d55f55facf9b2789b4ca514fa215054baf3a13a99385721",
+      "old_bytes": 1879,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/xiaomi-platform.json",
+      "old_sha256": "c3bbb70fc2a445f3970e4b50ee16ce03f764fe3bb06b917c6b230c28f5d43d58",
+      "old_bytes": 8309,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/xiaomi-platform-timeout-cleanup.json",
+      "old_sha256": "85d8411d4878fd51837dc6ef69903cc7dda86916b1c6fc6161dd25fa44cd7542",
+      "old_bytes": 1659,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/xiaomi-platform-timeout.json",
+      "old_sha256": "94244780d11bc8638c53dd7397a4f5cc584d1d020aca320b002d3acd759f7aa7",
+      "old_bytes": 3426,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/emulator-reproduced.json",
+      "old_sha256": "acbe0f1ec619a67a44ae196ae3660216154719710b8002be5144a03406d66d99",
+      "old_bytes": 7827,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/xiaomi-exit-info.json",
+      "old_sha256": "76e3b6bdd8029b0312ea0950d1cc1ea671eae004cbc085e85e5ddbaac0c976bc",
+      "old_bytes": 2139,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/xiaomi-platform-first-failure.json",
+      "old_sha256": "183b8a041b187cd1500a36dbeb31df8b7b1e5ba380e9e85f817babecf37cc631",
+      "old_bytes": 3657,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/platform/xiaomi-install-restricted.json",
+      "old_sha256": "7f60d86a3ebc7b2a71622942a506f397457c37c700dbe44f5727d02a73907c0b",
+      "old_bytes": 1180,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-b1b1b40d0ad3/host-echo-16.jsonl",
+      "old_sha256": "ec4a90cfd5325ff792bce34a448f180f4fdbdf186773487cd5167893d8216017",
+      "old_bytes": 785,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-b1b1b40d0ad3/xiaomi-native-advanced.json",
+      "old_sha256": "7d3d17f0da6d5338725d0aff01c41e1be0b18dc67aa4f0704bab68c307f1c5c7",
+      "old_bytes": 31348,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/p00-b1b1b40d0ad3/xiaomi-native-advanced.json",
+      "new_sha256": "d2823b93692c789b87f903310bf3b6cf90e23f3b2826ba9f53ac0cd1b91c78c6"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-b1b1b40d0ad3/host-peer-final-16.json",
+      "old_sha256": "42fa298d52bcb39c309f5496e3b190348a41a9cb9f72caec99654d884dcd337a",
+      "old_bytes": 2733,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-b1b1b40d0ad3/host-peer-log-16.txt",
+      "old_sha256": "3b32317718b1af5b0484da5213cb5009fb5d171293ec0d5b4d80041be5e5c7c6",
+      "old_bytes": 2181,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-82368439f051/host-peer-final-02.json",
+      "old_sha256": "579ac0ff4ad0373a26ef19418cb4f53527550e729566f7c75afaa59aa93aad8e",
+      "old_bytes": 2054,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-82368439f051/host-peer-log-02.txt",
+      "old_sha256": "4bff84492c26c282e6ecc930cb682b0a94972c3f6eac6dd08bcb92985b21aee3",
+      "old_bytes": 2246,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-82368439f051/xiaomi-datapath-first-failure.json",
+      "old_sha256": "376dc4299626663ffd2f4f56ac6d5a8d2b3fbcb7ea4fe692f20f2f056d1d805d",
+      "old_bytes": 9366,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/supporting/xiaomi-jni-parser.json",
+      "old_sha256": "3c654a3da2414dd5d4bac60fc3bd0a0554c43a05053975e69e662a60a0cd8812",
+      "old_bytes": 28796,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/legacy-jni-parser/xiaomi-jni-parser.json",
+      "new_sha256": "4ea87f8154c7465aae236446aeda1f1f1fe49e96d1ade6d4833501ba885d1ef8"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/supporting/xiaomi-config-parser.json",
+      "old_sha256": "f4e789a3b2e0015e32cc756fa418f12ba2c354927bbc1697e24c179f2693b1d4",
+      "old_bytes": 44367,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "new_sha256": "5cdfe9d9c1ea5750eb492d0ca034a71db8e6cfe3fd11f8f66d9523904803a3d3"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/supporting/xiaomi-native-panic.json",
+      "old_sha256": "234ba7b8dda3de908917ae8cb1253c26b9878b66f6336fd5333a4ff5aa2a06c7",
+      "old_bytes": 5924,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/legacy-boundary/xiaomi-native-panic.json",
+      "new_sha256": "ae61a02393a61346fc8cddd3b30c206614434b874f6af076d13f73058c9a6e55"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/supporting/host-peer-aes-feature-failure.json",
+      "old_sha256": "082b5c34988765f2ff6da7db59f4f08158bd8ef25282479e9de7265c1470f41a",
+      "old_bytes": 2114,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/supporting/host-peer-restart-port-failure.json",
+      "old_sha256": "05ef140c1a69d782888d8e1f35e5d92ccc42ed9bfb946294f55c8438d754f597",
+      "old_bytes": 1028,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/supporting/xiaomi-jni-parser-initial-failure.json",
+      "old_sha256": "724d682f36c0e671d0574d7e8a1178ed2a2c1e1c195ce6175f041a8724cb6b2a",
+      "old_bytes": 21380,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/supporting/xiaomi-system-denied.json",
+      "old_sha256": "3fdb09be00cb70b93e90191ec86f63a20bc0e2e205f6b08854662ae76dc983e1",
+      "old_bytes": 7090,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/legacy-permission-denial/xiaomi-system-denied.json",
+      "new_sha256": "80c116a83b84ace50a0f7a119ebcd964a21a2b98dd8f8b38325919b4f263e61e"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/supporting/xiaomi-native-boundary.json",
+      "old_sha256": "00538725327032c6445ce9a20611f516cbdcea52c05cf1eeba5d96a27ecddafd",
+      "old_bytes": 46679,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/legacy-boundary/xiaomi-native-boundary.json",
+      "new_sha256": "431f629addc11c8ce83e3b0316e582bbd8579ebc5334487adfef51cebdd8e3b9"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/supporting/system-errors-acceptance.json",
+      "old_sha256": "74680929e4375656e1ecb1548cfe22a38ee2392a7397a7c506c3d0e118d19fbd",
+      "old_bytes": 2447,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/supporting/host-peer-aes-feature-failure.txt",
+      "old_sha256": "8f90c9007d850de33c6dd83245f10c0ace313ee14f138fbe733f0d127edc3f19",
+      "old_bytes": 129,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-47b1a033c36c/host-peer-log-03.txt",
+      "old_sha256": "a7fa52b26502ec871a700cef63380650091190d07377ebcbb7c932c8eb48d45e",
+      "old_bytes": 2239,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-47b1a033c36c/host-peer-ready-03.json",
+      "old_sha256": "348f94abd980f1001c09b7c9db409207517816bafe27a6afafae333ad876d644",
+      "old_bytes": 1797,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-47b1a033c36c/xiaomi-datapath-proxy-disabled.json",
+      "old_sha256": "8f81ed80f66aef1d2a82fb5145a3b5d52e3e3f918d35de095046523b8cd98119",
+      "old_bytes": 28180,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/p00-47b1a033c36c/xiaomi-datapath-proxy-disabled.json",
+      "new_sha256": "6b544415866f1619b1edead50de226d3792b5d6c558551c70f1ceb52464a5258"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-47b1a033c36c/host-peer-final-03.json",
+      "old_sha256": "db0876a8d8a6f4bfd67008d5a72fe87a58b7aa879c685285efa6da5ec560542f",
+      "old_bytes": 2054,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-71f05607f707/host-peer-ready-05.json",
+      "old_sha256": "e4c95b137dbf42144c6d5f58e55323c78a59357b62dfba6809ad08ecfb10ad5d",
+      "old_bytes": 2046,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-71f05607f707/host-peer-log-05.txt",
+      "old_sha256": "1c371ad8b82099708ce2688604bb7b65609a11924ec8dce4f2f62cbc67aabe87",
+      "old_bytes": 2006,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-71f05607f707/host-peer-final-05.json",
+      "old_sha256": "f13be851af9d4dbd205682ce5a4cdeaff1eb3efa0b710c70a09bc4c8ffc0839a",
+      "old_bytes": 2329,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-71f05607f707/xiaomi-datapath-after-network-reset-failure.json",
+      "old_sha256": "fad6089ac6fb13b841e9acdde36efa211585aba2efc906316304ae12cb092f3e",
+      "old_bytes": 27965,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5425a620eda2/host-echo-08.jsonl",
+      "old_sha256": "1112932aa9bac03ba422c313de11dcfa4d2409b6ff4547984e2f0a6cb1ee4737",
+      "old_bytes": 7760,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5425a620eda2/host-peer-final-08.json",
+      "old_sha256": "e0b88f495fa52ca83d0343d5cde616fa03c82d0a59fb7173b0c4892e01be4652",
+      "old_bytes": 2421,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5425a620eda2/host-peer-ready-08.json",
+      "old_sha256": "03ceaaec72b06f0a8294c3ec190a147dc941e2e9b0cf874c223db21e02303b66",
+      "old_bytes": 2046,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5425a620eda2/xiaomi-native-connected-cycles.json",
+      "old_sha256": "885790097e83109072d393bfb4422fb44896f70e7986dc837943541c134d93e7",
+      "old_bytes": 309732,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/p00-5425a620eda2/xiaomi-native-connected-cycles.json",
+      "new_sha256": "45de6cb1bfed2a0ce4fab5d48dabea78755dd446d03672791b05e8af01f90fb6"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5425a620eda2/host-peer-log-08.txt",
+      "old_sha256": "5c5338b6afebc640ca0d363d54b7b125688b0f37e34e290fb0e2bbbf7df30cc4",
+      "old_bytes": 34688,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-a9cc7a521f55/xiaomi-offline-adb-timeout.json",
+      "old_sha256": "1cc200f2b1dc466435f95440a242bc5f73ca8d370b27c23d76989ce40bdf1c0a",
+      "old_bytes": 26539,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-a9cc7a521f55/host-peer-ready-10.json",
+      "old_sha256": "9dbbf4c55d772886ce80b3dce3588164aed80a7c3d426cdc083e8408d9f72b29",
+      "old_bytes": 2046,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-a9cc7a521f55/host-peer-log-10.txt",
+      "old_sha256": "fc7150ac7c8df77691dfdc0fe290dfd37f7013166cd1a3649bc07eaa7cdf7d59",
+      "old_bytes": 2671,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-a9cc7a521f55/host-peer-echo-10.jsonl",
+      "old_sha256": "06dd5121477e863c7e9991e87dfeac6d9d5ce40c9c194eacf912d66d7027a057",
+      "old_bytes": 194,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-a9cc7a521f55/xiaomi-system-offline.json",
+      "old_sha256": "649dc5a2da3e01f7915fcf53d63ab3ad8e1ba21053eb5d53f1bfe303f2d0c82f",
+      "old_bytes": 35803,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/p00-a9cc7a521f55/xiaomi-system-offline.json",
+      "new_sha256": "7a54173e61252ef3ced9d9045e493689611a4b032f25246ff150cddcfc781b8a"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-a9cc7a521f55/xiaomi-offline-ready.json",
+      "old_sha256": "328228724a44db74c40120b5caf64e127cf4d5b88e4c0b2d96ecc446c2d4345a",
+      "old_bytes": 26273,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-a9cc7a521f55/host-peer-final-10.json",
+      "old_sha256": "ce89d95b7047bbd68ee180d85c831963616cf48756d18609a48b6fadf5768200",
+      "old_bytes": 2420,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-17e998faa0c1/host-peer-log-09.txt",
+      "old_sha256": "1ebb3862d2cbd93b38915deb9814fcf83e86408c75fff08343c16213ae6e053b",
+      "old_bytes": 2137,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-17e998faa0c1/xiaomi-system-revoke.json",
+      "old_sha256": "2dabb487a14f6c858bff6c4933edcb2ed15d0b87ea631de7dba31dbdd3ed36fb",
+      "old_bytes": 21085,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-17e998faa0c1/host-peer-final-09.json",
+      "old_sha256": "498e3d2727a83a7ec247bcea9008f36513d756bbbbb0fc7d09379dbf2f99d257",
+      "old_bytes": 2329,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-17e998faa0c1/host-peer-ready-09.json",
+      "old_sha256": "01f1a45f81a4c72bf97307d38a06e7d5c8886cb52b634f41220680d6865c7f05",
+      "old_bytes": 2046,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5d2cc66e8aee/host-peer-ready-17.json",
+      "old_sha256": "d6a4417a0b7a0a4ef5221e5a4ef7764487f23df33ec50b90e08d9cba69129a02",
+      "old_bytes": 2247,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5d2cc66e8aee/host-echo-17.jsonl",
+      "old_sha256": "4dfc53046c7fa68266adb10656ab2cfb7b51c4b9aee90ae1b2205449d31e6f36",
+      "old_bytes": 194,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5d2cc66e8aee/host-peer-log-17.txt",
+      "old_sha256": "734aabebc9372d8e25fdcd3ab652b20bab86ce88ff943776ed158fe7e14d2bbf",
+      "old_bytes": 2495,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5d2cc66e8aee/host-benchmark-17.jsonl",
+      "old_sha256": "e00b637f670de1bc3111f94e35a1b4d808e3576965c268e57e6f544633a98dd4",
+      "old_bytes": 688,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5d2cc66e8aee/xiaomi-performance-adb-disconnected.json",
+      "old_sha256": "beb811ec4b2cc133ab4a05fed1456198e492b314d73a5ffb80f296108aa867bf",
+      "old_bytes": 1103,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5d2cc66e8aee/xiaomi-native-performance.json",
+      "old_sha256": "3bfdad4fe95053c138ede05441fa331f69bf7ae9b8f47dd8b8c783912ee19fad",
+      "old_bytes": 110657,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/p00-5d2cc66e8aee/xiaomi-native-performance.json",
+      "new_sha256": "5112344eb382bdd97bd4201b1610125c245d7e32baf227d9a1c7839bbbd77b7d"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5d2cc66e8aee/host-peer-final-17.json",
+      "old_sha256": "63c6d6e8f03453e8515a237985c27e7a8339bc94fe55a1bc739c414f8034b38f",
+      "old_bytes": 2754,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/runs/p00-5d2cc66e8aee/xiaomi-performance-start.json",
+      "old_sha256": "1b301712b36ebd4e0b5903721bfbe2fd2a519dd610a0b19eb98c6b5ad7c2f1f1",
+      "old_bytes": 14480,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a.txt",
+      "old_sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "old_bytes": 9723,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a.txt",
+      "new_sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1.txt",
+      "old_sha256": "f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1",
+      "old_bytes": 1995,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1.txt",
+      "new_sha256": "f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/fixed-source-license-f2ff6db400a0cd6fbfd894ba618772abcedb92c301055ad0840d971883730d83.txt",
+      "old_sha256": "f2ff6db400a0cd6fbfd894ba618772abcedb92c301055ad0840d971883730d83",
+      "old_bytes": 344,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/f2ff6db400a0cd6fbfd894ba618772abcedb92c301055ad0840d971883730d83.txt",
+      "new_sha256": "f2ff6db400a0cd6fbfd894ba618772abcedb92c301055ad0840d971883730d83"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-838118388fe5c2e7f1dbbaeed13e1c7f3ebf88be91319c7c1d77c18e987d1a50.txt",
+      "old_sha256": "838118388fe5c2e7f1dbbaeed13e1c7f3ebf88be91319c7c1d77c18e987d1a50",
+      "old_bytes": 1501,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/838118388fe5c2e7f1dbbaeed13e1c7f3ebf88be91319c7c1d77c18e987d1a50.txt",
+      "new_sha256": "838118388fe5c2e7f1dbbaeed13e1c7f3ebf88be91319c7c1d77c18e987d1a50"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-7fe7e5e13e445074314ba0aa12ec2e71132931632876ba27b98a1020cf24eb57.txt",
+      "old_sha256": "7fe7e5e13e445074314ba0aa12ec2e71132931632876ba27b98a1020cf24eb57",
+      "old_bytes": 1078,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/7fe7e5e13e445074314ba0aa12ec2e71132931632876ba27b98a1020cf24eb57.txt",
+      "new_sha256": "7fe7e5e13e445074314ba0aa12ec2e71132931632876ba27b98a1020cf24eb57"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-6ee2ed6c77710de911761acd5fc1ad1da00f476beb1a7ef27e78c2d1858deafc.txt",
+      "old_sha256": "6ee2ed6c77710de911761acd5fc1ad1da00f476beb1a7ef27e78c2d1858deafc",
+      "old_bytes": 1022,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/6ee2ed6c77710de911761acd5fc1ad1da00f476beb1a7ef27e78c2d1858deafc.txt",
+      "new_sha256": "6ee2ed6c77710de911761acd5fc1ad1da00f476beb1a7ef27e78c2d1858deafc"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/fixed-source-license-56808e11a09029613aecf966a70c8192b77eb691de8ee5d813d079ab9b1e87af.txt",
+      "old_sha256": "56808e11a09029613aecf966a70c8192b77eb691de8ee5d813d079ab9b1e87af",
+      "old_bytes": 12388,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/56808e11a09029613aecf966a70c8192b77eb691de8ee5d813d079ab9b1e87af.txt",
+      "new_sha256": "56808e11a09029613aecf966a70c8192b77eb691de8ee5d813d079ab9b1e87af"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-021f4a01e58372b826203064fac216e15d51e07f7739b8ca33d4b746ec8abb3b.txt",
+      "old_sha256": "021f4a01e58372b826203064fac216e15d51e07f7739b8ca33d4b746ec8abb3b",
+      "old_bytes": 11351,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/021f4a01e58372b826203064fac216e15d51e07f7739b8ca33d4b746ec8abb3b.txt",
+      "new_sha256": "021f4a01e58372b826203064fac216e15d51e07f7739b8ca33d4b746ec8abb3b"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-f6d3f84b39d597c19748c6b50a04abe1634edb3c0b15392daa217ec44119f652.txt",
+      "old_sha256": "f6d3f84b39d597c19748c6b50a04abe1634edb3c0b15392daa217ec44119f652",
+      "old_bytes": 449,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/f6d3f84b39d597c19748c6b50a04abe1634edb3c0b15392daa217ec44119f652.txt",
+      "new_sha256": "f6d3f84b39d597c19748c6b50a04abe1634edb3c0b15392daa217ec44119f652"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/fixed-source-license-e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118.txt",
+      "old_sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+      "old_bytes": 7652,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118.txt",
+      "new_sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3.txt",
+      "old_sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "old_bytes": 1023,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3.txt",
+      "new_sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-3fa4ca83dcc9237839b1bdeb2e6d16bdfb5ec0c5ce42b24694d8bbf0dcbef72c.txt",
+      "old_sha256": "3fa4ca83dcc9237839b1bdeb2e6d16bdfb5ec0c5ce42b24694d8bbf0dcbef72c",
+      "old_bytes": 1053,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/3fa4ca83dcc9237839b1bdeb2e6d16bdfb5ec0c5ce42b24694d8bbf0dcbef72c.txt",
+      "new_sha256": "3fa4ca83dcc9237839b1bdeb2e6d16bdfb5ec0c5ce42b24694d8bbf0dcbef72c"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-b3d734001a94efff3579978d953391aa7115f877657d25eb54037a43875d078a.txt",
+      "old_sha256": "b3d734001a94efff3579978d953391aa7115f877657d25eb54037a43875d078a",
+      "old_bytes": 499,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/b3d734001a94efff3579978d953391aa7115f877657d25eb54037a43875d078a.txt",
+      "new_sha256": "b3d734001a94efff3579978d953391aa7115f877657d25eb54037a43875d078a"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172.txt",
+      "old_sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172",
+      "old_bytes": 16727,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172.txt",
+      "new_sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-e271993808fec50ab29350b39539cdec611a9103f827e0aa26d61da70e2d33f8.txt",
+      "old_sha256": "e271993808fec50ab29350b39539cdec611a9103f827e0aa26d61da70e2d33f8",
+      "old_bytes": 2371,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/e271993808fec50ab29350b39539cdec611a9103f827e0aa26d61da70e2d33f8.txt",
+      "new_sha256": "e271993808fec50ab29350b39539cdec611a9103f827e0aa26d61da70e2d33f8"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-11789f45bb180841cd362a5eee6789c68ddb573a11105e30768c308a6add0190.txt",
+      "old_sha256": "11789f45bb180841cd362a5eee6789c68ddb573a11105e30768c308a6add0190",
+      "old_bytes": 713,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/11789f45bb180841cd362a5eee6789c68ddb573a11105e30768c308a6add0190.txt",
+      "new_sha256": "11789f45bb180841cd362a5eee6789c68ddb573a11105e30768c308a6add0190"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/fixed-source-license-a89137c40f91e102d1e3b6aa5061fbd84f6e39638e69f6bda124c104a6e1c83d.txt",
+      "old_sha256": "a89137c40f91e102d1e3b6aa5061fbd84f6e39638e69f6bda124c104a6e1c83d",
+      "old_bytes": 1090,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/a89137c40f91e102d1e3b6aa5061fbd84f6e39638e69f6bda124c104a6e1c83d.txt",
+      "new_sha256": "a89137c40f91e102d1e3b6aa5061fbd84f6e39638e69f6bda124c104a6e1c83d"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-005fc765ddc5115da796cca915baa9557abae13ff35e0a47c47affc56f6c414d.txt",
+      "old_sha256": "005fc765ddc5115da796cca915baa9557abae13ff35e0a47c47affc56f6c414d",
+      "old_bytes": 14870,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/005fc765ddc5115da796cca915baa9557abae13ff35e0a47c47affc56f6c414d.txt",
+      "new_sha256": "005fc765ddc5115da796cca915baa9557abae13ff35e0a47c47affc56f6c414d"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-9eacbcb81be660840c714a560a9d65ba07913db98dd4baf969f78dd499fdd60f.txt",
+      "old_sha256": "9eacbcb81be660840c714a560a9d65ba07913db98dd4baf969f78dd499fdd60f",
+      "old_bytes": 638,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/9eacbcb81be660840c714a560a9d65ba07913db98dd4baf969f78dd499fdd60f.txt",
+      "new_sha256": "9eacbcb81be660840c714a560a9d65ba07913db98dd4baf969f78dd499fdd60f"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/dependency-notice-f025ccfb7dfb6bdfedc75ca0f67acc69e6fb4998143d834f7c2f38a29989680f.txt",
+      "old_sha256": "f025ccfb7dfb6bdfedc75ca0f67acc69e6fb4998143d834f7c2f38a29989680f",
+      "old_bytes": 731,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/f025ccfb7dfb6bdfedc75ca0f67acc69e6fb4998143d834f7c2f38a29989680f.txt",
+      "new_sha256": "f025ccfb7dfb6bdfedc75ca0f67acc69e6fb4998143d834f7c2f38a29989680f"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/independent-ai-rebuild/fixed-source-license-f80f0b4d28db4b51d16ae8485bce49265738e59df5e647ebc09467693e66e731.txt",
+      "old_sha256": "f80f0b4d28db4b51d16ae8485bce49265738e59df5e647ebc09467693e66e731",
+      "old_bytes": 1075,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/f80f0b4d28db4b51d16ae8485bce49265738e59df5e647ebc09467693e66e731.txt",
+      "new_sha256": "f80f0b4d28db4b51d16ae8485bce49265738e59df5e647ebc09467693e66e731"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-supplement/d3cdb764b98283ee7c3a3cea8d374e2a2957322374378d1f3263f4d512741fc3.txt",
+      "old_sha256": "d3cdb764b98283ee7c3a3cea8d374e2a2957322374378d1f3263f4d512741fc3",
+      "old_bytes": 11346,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/d3cdb764b98283ee7c3a3cea8d374e2a2957322374378d1f3263f4d512741fc3.txt",
+      "new_sha256": "d3cdb764b98283ee7c3a3cea8d374e2a2957322374378d1f3263f4d512741fc3"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-supplement/5ef8fcfb6cccec8fcae043c834099a60c8b7406408db576e026d2b7e67dc5cf5.txt",
+      "old_sha256": "5ef8fcfb6cccec8fcae043c834099a60c8b7406408db576e026d2b7e67dc5cf5",
+      "old_bytes": 1073,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/5ef8fcfb6cccec8fcae043c834099a60c8b7406408db576e026d2b7e67dc5cf5.txt",
+      "new_sha256": "5ef8fcfb6cccec8fcae043c834099a60c8b7406408db576e026d2b7e67dc5cf5"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-supplement/f9d857970963648b4e089bd25c11183e7c960fe901c25b41b1e805ce9bd59415.txt",
+      "old_sha256": "f9d857970963648b4e089bd25c11183e7c960fe901c25b41b1e805ce9bd59415",
+      "old_bytes": 529,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/f9d857970963648b4e089bd25c11183e7c960fe901c25b41b1e805ce9bd59415.txt",
+      "new_sha256": "f9d857970963648b4e089bd25c11183e7c960fe901c25b41b1e805ce9bd59415"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-supplement/report.json",
+      "old_sha256": "c1595e30ea029e90cb25b652cd33789a57a8f174e727a401fe06382b6c45a4c5",
+      "old_bytes": 4533,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/inventory.json",
+      "new_sha256": "6537d282068fc154f64225f5f4b667a32d392df1958eb6f8de81795fe7e1a1bc"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-standard-texts/Apache-2.0.txt",
+      "old_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "old_bytes": 11358,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30.txt",
+      "new_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-standard-texts/cesu8-README.md",
+      "old_sha256": "4fcc5d9b5db444ad3c33c79aebe18de4fa6351982646da0b78830fbad67f9e8f",
+      "old_bytes": 1475,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/4fcc5d9b5db444ad3c33c79aebe18de4fa6351982646da0b78830fbad67f9e8f.md",
+      "new_sha256": "4fcc5d9b5db444ad3c33c79aebe18de4fa6351982646da0b78830fbad67f9e8f"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-standard-texts/cesu8-Cargo.toml",
+      "old_sha256": "78e66dd24c12e0ac858e7524cdd7d51d1eee753c1e9c32e5b915dc9f1d767870",
+      "old_bytes": 505,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/78e66dd24c12e0ac858e7524cdd7d51d1eee753c1e9c32e5b915dc9f1d767870.toml",
+      "new_sha256": "78e66dd24c12e0ac858e7524cdd7d51d1eee753c1e9c32e5b915dc9f1d767870"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-standard-texts/cesu8-src-unicode.rs-header.txt",
+      "old_sha256": "26b6be649244dcf3ade7fc02879afa87529f8da2214ecc4d24f7ef0d591601fd",
+      "old_bytes": 416,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/26b6be649244dcf3ade7fc02879afa87529f8da2214ecc4d24f7ef0d591601fd.txt",
+      "new_sha256": "26b6be649244dcf3ade7fc02879afa87529f8da2214ecc4d24f7ef0d591601fd"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-standard-texts/cesu8-COPYRIGHT-RUST.txt",
+      "old_sha256": "5ca77347e58205d3b543c04a9c5bdd11d20a9f3108a7b246640edffa999b5f35",
+      "old_bytes": 17426,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/5ca77347e58205d3b543c04a9c5bdd11d20a9f3108a7b246640edffa999b5f35.txt",
+      "new_sha256": "5ca77347e58205d3b543c04a9c5bdd11d20a9f3108a7b246640edffa999b5f35"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-standard-texts/MIT.txt",
+      "old_sha256": "44d8275fd2d5c63931edd0a7cdf8986ce93998125ebf34df032bc3d5a12b93cb",
+      "old_bytes": 1065,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/44d8275fd2d5c63931edd0a7cdf8986ce93998125ebf34df032bc3d5a12b93cb.txt",
+      "new_sha256": "44d8275fd2d5c63931edd0a7cdf8986ce93998125ebf34df032bc3d5a12b93cb"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-standard-texts/MIT-source.html",
+      "old_sha256": "63413ecfa6c29f46b9bb2607cacfbea3321ff44b9baca37b02b4be59c3fc67ec",
+      "old_bytes": 185316,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-standard-texts/report.json",
+      "old_sha256": "48f875d08786dae03432a42abe7a344c0327f7ce6d252fc3281daf378c55e534",
+      "old_bytes": 3626,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/inventory.json",
+      "new_sha256": "6537d282068fc154f64225f5f4b667a32d392df1958eb6f8de81795fe7e1a1bc"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-standard-texts/cesu8-src-lib.rs-header.txt",
+      "old_sha256": "869f33d1c6a0c94b3200413d8c9ebdfe50351d7f69b250962758400b0d295f3d",
+      "old_bytes": 454,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/869f33d1c6a0c94b3200413d8c9ebdfe50351d7f69b250962758400b0d295f3d.txt",
+      "new_sha256": "869f33d1c6a0c94b3200413d8c9ebdfe50351d7f69b250962758400b0d295f3d"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-source-texts/c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08.txt",
+      "old_sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+      "old_bytes": 11358,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08.txt",
+      "new_sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-source-texts/791a00933f2ea7e512856361e026998362241c3918d7be948c24d29441033b55.txt",
+      "old_sha256": "791a00933f2ea7e512856361e026998362241c3918d7be948c24d29441033b55",
+      "old_bytes": 1054,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/791a00933f2ea7e512856361e026998362241c3918d7be948c24d29441033b55.txt",
+      "new_sha256": "791a00933f2ea7e512856361e026998362241c3918d7be948c24d29441033b55"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-source-texts/d6fde6c28ecbccfc7f6d97c0badbb14bbea2cc8f5e81a8c1537204bdfed9a6d5.txt",
+      "old_sha256": "d6fde6c28ecbccfc7f6d97c0badbb14bbea2cc8f5e81a8c1537204bdfed9a6d5",
+      "old_bytes": 1067,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/d6fde6c28ecbccfc7f6d97c0badbb14bbea2cc8f5e81a8c1537204bdfed9a6d5.txt",
+      "new_sha256": "d6fde6c28ecbccfc7f6d97c0badbb14bbea2cc8f5e81a8c1537204bdfed9a6d5"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-source-texts/1d85bd754b04ceec93e98e890edd1fa3c6a22e81bcb32135806beeccefa51cd1.txt",
+      "old_sha256": "1d85bd754b04ceec93e98e890edd1fa3c6a22e81bcb32135806beeccefa51cd1",
+      "old_bytes": 1071,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/1d85bd754b04ceec93e98e890edd1fa3c6a22e81bcb32135806beeccefa51cd1.txt",
+      "new_sha256": "1d85bd754b04ceec93e98e890edd1fa3c6a22e81bcb32135806beeccefa51cd1"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-source-texts/fea1d5bf3dd71605ce5d7d2ff695c1837e914c77195e523a86b5391716477960.txt",
+      "old_sha256": "fea1d5bf3dd71605ce5d7d2ff695c1837e914c77195e523a86b5391716477960",
+      "old_bytes": 1104,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/fea1d5bf3dd71605ce5d7d2ff695c1837e914c77195e523a86b5391716477960.txt",
+      "new_sha256": "fea1d5bf3dd71605ce5d7d2ff695c1837e914c77195e523a86b5391716477960"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-source-texts/f6dede52f74e360219bc8e7ba1155dbcf4f34a9c1b77612aa9bc41d1a3a04fad.txt",
+      "old_sha256": "f6dede52f74e360219bc8e7ba1155dbcf4f34a9c1b77612aa9bc41d1a3a04fad",
+      "old_bytes": 1077,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/f6dede52f74e360219bc8e7ba1155dbcf4f34a9c1b77612aa9bc41d1a3a04fad.txt",
+      "new_sha256": "f6dede52f74e360219bc8e7ba1155dbcf4f34a9c1b77612aa9bc41d1a3a04fad"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-source-texts/a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2.txt",
+      "old_sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+      "old_bytes": 10847,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2.txt",
+      "new_sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-source-texts/report.json",
+      "old_sha256": "aba84698082e8c8a6fe1146d3353aa846a03d7ab6bec1e4e86ffc295da4c865e",
+      "old_bytes": 60716,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/inventory.json",
+      "new_sha256": "6537d282068fc154f64225f5f4b667a32d392df1958eb6f8de81795fe7e1a1bc"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-source-texts/6dbef24708bad8c727bd80cca58ba8aa1637cdcb2cc6e9a31ea49235717e9391.txt",
+      "old_sha256": "6dbef24708bad8c727bd80cca58ba8aa1637cdcb2cc6e9a31ea49235717e9391",
+      "old_bytes": 1496,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/6dbef24708bad8c727bd80cca58ba8aa1637cdcb2cc6e9a31ea49235717e9391.txt",
+      "new_sha256": "6dbef24708bad8c727bd80cca58ba8aa1637cdcb2cc6e9a31ea49235717e9391"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-tree-investigation/rustls-platform-verifier-parent.json",
+      "old_sha256": "38c63eeeb6101ba263bbd5fde4eca415fbe791cfbd9786818076c0459638ad25",
+      "old_bytes": 31338,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-tree-investigation/android-parent-LICENSE-MIT.txt",
+      "old_sha256": "72af89a828df52a9dcc42512ed64663b3b8d7961dd7a5586d44478eede82bc7a",
+      "old_bytes": 14,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/72af89a828df52a9dcc42512ed64663b3b8d7961dd7a5586d44478eede82bc7a.txt",
+      "new_sha256": "72af89a828df52a9dcc42512ed64663b3b8d7961dd7a5586d44478eede82bc7a"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-tree-investigation/android-parent-LICENSE-APACHE.txt",
+      "old_sha256": "154397a08d0cb342110281129971868cd562542d0780b0d10722788cd11a1399",
+      "old_bytes": 17,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/154397a08d0cb342110281129971868cd562542d0780b0d10722788cd11a1399.txt",
+      "new_sha256": "154397a08d0cb342110281129971868cd562542d0780b0d10722788cd11a1399"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-tree-investigation/android-parent-report.json",
+      "old_sha256": "4367d5b3d447bf3560f45e4e0e67461d9a4f6076148b7921a4d5451f1fbb68bc",
+      "old_bytes": 1466,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-tree-investigation/android-parent-Cargo.toml.txt",
+      "old_sha256": "06142c21559d66a76c8740d8c505a2f7ed9078c45e7baee49dac58a131362640",
+      "old_bytes": 661,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/06142c21559d66a76c8740d8c505a2f7ed9078c45e7baee49dac58a131362640.txt",
+      "new_sha256": "06142c21559d66a76c8740d8c505a2f7ed9078c45e7baee49dac58a131362640"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-tree-investigation/android-parent-lib.rs.txt",
+      "old_sha256": "d24acbec7495ccbbe7a3760bad1e7a80cb8fa7e2e8a05831798261c749e86c73",
+      "old_bytes": 6327,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/texts/d24acbec7495ccbbe7a3760bad1e7a80cb8fa7e2e8a05831798261c749e86c73.txt",
+      "new_sha256": "d24acbec7495ccbbe7a3760bad1e7a80cb8fa7e2e8a05831798261c749e86c73"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-tree-investigation/seahash.json",
+      "old_sha256": "cfbb13c0a4cbd61b9acef27f6b84841cdec2156eed0332d5e8c355d105487d15",
+      "old_bytes": 2055,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-tree-investigation/report.json",
+      "old_sha256": "379f17e453e54983fd1f33872ca1b4e6a3483d8919704ba13ccff1fa8bfcab4a",
+      "old_bytes": 2738,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-tree-investigation/encoding-utils.json",
+      "old_sha256": "65a6ce286a6530446c6620a9ac0e4b2d2bf3e04e131ef4fd5595e43b80d3352f",
+      "old_bytes": 1765,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/licensing/license-tree-investigation/android-association.json",
+      "old_sha256": "9380dcab50bb5630e518f39c540652d31c2d481e06f8bdf5e2149a3d94f9d209",
+      "old_bytes": 1195,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/config/core-parser-bfd.json",
+      "old_sha256": "7fe3f6f2ebc48f98a743fbf9722060c7753eb534748dc93a29414855ab2d2a84",
+      "old_bytes": 101903,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/config/config-build-failure-02.json",
+      "old_sha256": "e6af3efd560db9194231c7d51a10bb1147fd8422448a781ef88ffa5bd7e4fe16",
+      "old_bytes": 2163,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/config/config-build-failure-03.json",
+      "old_sha256": "a06707a6e1ad4a993a82f43b0015772909b895f926dff962c9c7b9cc5bc8add9",
+      "old_bytes": 2877,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/config/core-parser-mold-failure.json",
+      "old_sha256": "994f6974f0125e0c14120b9118210602c8a670a91b925295137c0169b363e4f3",
+      "old_bytes": 23309,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/config/config-roundtrip-build.json",
+      "old_sha256": "96384c5c30afbf8635d07455882e55ab45d0c3e39bf041bb24248c10107b27e3",
+      "old_bytes": 3403,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/config-roundtrip-build.json",
+      "new_sha256": "c40d89891f99b315d10189ba30dfd9bb85e46caaed1b537b5ea4d3e639272b0f"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/config/config-build-failure-01.json",
+      "old_sha256": "71ade25d78a0ca3ac426112bf895fe4369a14b15b8ed747baa19c9f58749f507",
+      "old_bytes": 9263,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/config/config-roundtrip-initial.json",
+      "old_sha256": "22bf5d9b210bd5d5471fb3fdd25082e66b623e2eb28340d8c383b95f1a68a2f3",
+      "old_bytes": 230742,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/config/config-parser-apk-build.json",
+      "old_sha256": "50511a510d8fc9841b85b78d1ba4939e5577b00af8ba4ece539035acf6cea9c6",
+      "old_bytes": 38903,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/config-parser-apk-build.json",
+      "new_sha256": "25bd27e22c1dda85efaf1ee2af98b77120069925444d488a05e85a1f571f6762"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/config/config-roundtrip.json",
+      "old_sha256": "d4c80552350ff61e5edeb3f7c67eada256ca3e9e9a63a0a7b262596b12e09fd9",
+      "old_bytes": 310376,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "new_sha256": "d0f2a5071b0827345ed13ad6b7e2fc571e53ad8e8b72d08b7efa0cec217556e2"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/offline-apk-build.json",
+      "old_sha256": "f0476dfd2d2332a69ed8a744acb9c84e193022aff73ce0d69a99b170030fcfb5",
+      "old_bytes": 31033,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/offline-apk-build.json",
+      "new_sha256": "89a9db12f7b1f5b8bc033fe0d694bba9f203fb6f4672ab0499dffa8061339c79"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/datapath-diagnostic-build-failure.json",
+      "old_sha256": "4d8301c00f25ef3b62969e82cbe02c781c49f4db08ad1e75b9ee846af108bb1b",
+      "old_bytes": 23689,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/advanced-apk-diagnostics-build.json",
+      "old_sha256": "96f0ec63acec02f9f86a1cb5a261ab0bfc12aff85094fae03275a57d7be9e2be",
+      "old_bytes": 33869,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/advanced-apk-diagnostics-build.json",
+      "new_sha256": "a1036fcad33dd6d4f3889ea994c07f4be433732a00ae295699e213f9af3ffafd"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/native-boundary-apk-build.json",
+      "old_sha256": "9f35f6ef86ca43ec7bed30fe50995b26fb7574fbd580481349cd69665bd6899c",
+      "old_bytes": 27990,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/native-boundary-apk-build.json",
+      "new_sha256": "9bd8e83c677dd4df510e4b754375f5ccf74a15b3a2b34a4ba13b58d818621041"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/host-peer-build-offline-failure.json",
+      "old_sha256": "4e4e24524ae662ee5c4ad5f9a1c49b02c84dcb19cf687c04067caf2c572611cd",
+      "old_bytes": 3256,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/datapath-apk-build-v3-routing.json",
+      "old_sha256": "18a2f216a817e90f610fbf35fbaeb2420b45cdda274b89e04df70a950e0ac444",
+      "old_bytes": 29506,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/datapath-apk-build-v3-routing.json",
+      "new_sha256": "21cffe09fc99b5d2dc328db2187d7b3c2802af4e0de227be8c4b73063cc4a683"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/datapath-apk-build-v3.json",
+      "old_sha256": "c1dfc69ce7c72bee467d8d737be7ed4adfb0b2e42a0b93dbd0aca535396bd84f",
+      "old_bytes": 29578,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/native-boundary-build-v3.json",
+      "old_sha256": "0bf334ee06bb034097bfb055e2479b0ac20adfd61717be7067827dc94d4b6aea",
+      "old_bytes": 22675,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/native-boundary-build-v3.json",
+      "new_sha256": "ea53724bc88011d5f953efc2893bce5134a61c1d9ed2c0dc08a1b9f9e72e0051"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/datapath-diagnostic-apk-build.json",
+      "old_sha256": "799a3f4d678594f54bb2c19c3bb09b5e1203598b68920518cd6032c7725788c4",
+      "old_bytes": 29522,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/datapath-diagnostic-apk-build.json",
+      "new_sha256": "4726ea329e3b66094b609603f5434e1cb33b4088dd2b3fafc14b1300e76936af"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/host-peer-build-minimal.json",
+      "old_sha256": "4ffa357f9fbb87777876794944251339d3357704d80009a5134b7448a9358977",
+      "old_bytes": 4472,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/revoke-notification-apk-build.json",
+      "old_sha256": "e397007a8977d8902dc1acb1bdd93d94839d54a769969e0e6f9d76362c2cdebc",
+      "old_bytes": 31417,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/revoke-notification-apk-build.json",
+      "new_sha256": "81b93d5eff6c715c4c1fdf0e03bc8dbbaf53e6bc7427db8ed68c169601d1a799"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/jni-parser-build-initial.json",
+      "old_sha256": "bb678dc6f0e39381a2cc8a87b575e109dcdb2c28a4c31bcad1e8414b12d4ecff",
+      "old_bytes": 38462,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/advanced-apk-signing-path-failure.json",
+      "old_sha256": "2c72155adef8a0ac5cae8b43a86c4c7d65989ea8494cbd30cb745b7fe8684105",
+      "old_bytes": 31128,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/address-build-quota-failure.json",
+      "old_sha256": "a89dcc7ae46f7fcb019d231ab91de8df6fc04712c5064bd2651dc917eeb4e8fc",
+      "old_bytes": 686,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/host-peer-build.json",
+      "old_sha256": "8686d8403531cb9021340e47a57c89e606bea907a5c38a434835517f0b7229d1",
+      "old_bytes": 4115,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/host-peer-build.json",
+      "new_sha256": "2e754223510c291461347614aef99a88ce421142b27b54a8736f535109b70429"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/native-build.json",
+      "old_sha256": "1ac5d15525f343697af8cdfc80a4b08ddef5e7fbff79cdee514333beb2c6d5e2",
+      "old_bytes": 35772,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/native-build.json",
+      "new_sha256": "b7d0928408e5290170437a850c77671877269c3db3454b594899a84dbb218eee"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/host-advanced-build.json",
+      "old_sha256": "3713f1c5abd7426fb95c2142701157c819f9c22bf3807fa061c2bff756452c08",
+      "old_bytes": 4868,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/host-advanced-build.json",
+      "new_sha256": "964887ee8474959dfa90e06e94782542b37b49f730e143c3e5c1f91670250abb"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/datapath-apk-build.json",
+      "old_sha256": "f5c63531b1c58e7fdf829181639eba8b3456bf905a00da610714c23abbb07d17",
+      "old_bytes": 29131,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/address-apk-build.json",
+      "old_sha256": "31b56c1714350ff3a353cdba1a4fcf852b84c1e54e850bdf7d4309f91937ee7e",
+      "old_bytes": 31948,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/address-apk-build.json",
+      "new_sha256": "31afff1f20d5287a747970ea080d7e99a1f3299b58d707a7fd4149745f278192"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/native-boundary-build-lock-failure.json",
+      "old_sha256": "6f33166592b225d7abec6848d044458acbdb8cdbc134fb4ae68c56a2967d2469",
+      "old_bytes": 7182,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/native-build-initial-failure.json",
+      "old_sha256": "bb296a9104990e20158e6a1a84a99efffec2792d931e235f5b79b24d8fe6bb10",
+      "old_bytes": 36638,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/performance-apk-build.json",
+      "old_sha256": "7b266fa77b7fe1fbdd7f042744b913820f245ac272c3b2d1dae2c1f19ffe9428",
+      "old_bytes": 34063,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/performance-apk-build.json",
+      "new_sha256": "688854670d5b861b301a6304e64b0d1ea40ac05b26b81237506da63792b09ade"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/advanced-apk-build-initial.json",
+      "old_sha256": "355b07346ae43ec2776a2aacf2ce771b39714cb51fbff2ee414300953f12dd2d",
+      "old_bytes": 33239,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/host-peer-build-proxy-disabled.json",
+      "old_sha256": "721327c485975c627d4c3a89da262f85ce0d768eeb0ebe172ccaac9ebb86c13a",
+      "old_bytes": 4091,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/native-boundary-build.json",
+      "old_sha256": "736f6f8ed896fb5a36c9432d5f3e8da119a63e5f4e442ddf263d33930e3530a7",
+      "old_bytes": 22605,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/native-boundary-build.json",
+      "new_sha256": "424cba62ba2ac3027a66284cff4550cc3b5c35029d1ac854af6545c63368f61a"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/jni-parser-build.json",
+      "old_sha256": "fecc33bd22503a60021867e0ac7885cb005ea35c80c8372175c3daf394129117",
+      "old_bytes": 38262,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/jni-parser-build.json",
+      "new_sha256": "c242e6e9ee55e145657c3a7c12d3f88a62d7491f567344acae0f25222ec870dc"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/datapath-lambda-build-failure.json",
+      "old_sha256": "1ac3d65519f37c8e8641e66fd04da66c0332e15625fa6b6d29375782e2425d96",
+      "old_bytes": 23111,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/system-errors-apk-build.json",
+      "old_sha256": "340c38543d4ddf558f0d8ee6233aed3a75fa8bd3d428fe0d748e6665f01ecbaa",
+      "old_bytes": 30120,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/system-denied-apk-build.json",
+      "old_sha256": "b1fc8277bd42d1e10c78168c006b939d39b868d24424ed01515e5c1aa0be5fe4",
+      "old_bytes": 30776,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/system-denied-apk-build.json",
+      "new_sha256": "745569693e7e11f04ee266887609ca0a037e3b6bee7451bb036a71016ba71309"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/native/advanced-apk-build.json",
+      "old_sha256": "0dc594f6bbe3578a993f599e0336a3d39d29505561733e3125857ba860d71d13",
+      "old_bytes": 33701,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/builds/advanced-apk-build.json",
+      "new_sha256": "53b6f0ddc8263fdb4f2d5a96d303d547c6d356ee3d75032aca2b77643dcb2603"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/platform/platform-build-initial-failure.json",
+      "old_sha256": "2d45e5e943a165a0905d30f13d0eaa3da6c1746a48cc78c40faa292478c70198",
+      "old_bytes": 4239,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/platform/platform-build-original.json",
+      "old_sha256": "cfc7301346498c66c85952faaafd93ed3478a16a5e57f1deb7054ab5fdc9cfd5",
+      "old_bytes": 10807,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/platform/platform-build.json",
+      "old_sha256": "5190d0e86cbf62fdb630b5119304aa76b33b1a8f5d181a12b557637ae2d2b5c5",
+      "old_bytes": 10396,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/platform/platform-build-bounded.json",
+      "old_sha256": "d25a37cfbd05eca27b38a32440083c772c091040252e517c1e45500c1fc2f592",
+      "old_bytes": 12466,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/independent-ai-rebuild--raw-build-04--native-build/output.txt",
+      "old_sha256": "48cb055ee921984c3bb2e4faeccb00de8bbba1e031f43f43f940c75bb8055be4",
+      "old_bytes": 58327,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/second-host-failure-02-logs/output.txt",
+      "old_sha256": "eeb4517c12e7fb339f87b08f6fd168ec71672e3fba44d0d533650cb2145c9aa7",
+      "old_bytes": 80687,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/host-peer-build-logs/output.txt",
+      "old_sha256": "cab03af5762e620482955c7a113ae740f19324d78252e25e5858ef500a9b770b",
+      "old_bytes": 8186,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/native-build-logs/output.txt",
+      "old_sha256": "b04d2fcdc071d504934fdd0a384da9448811e5fbf2fee297b92987233bba3704",
+      "old_bytes": 57846,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/native-boundary-build-v3-logs/output.txt",
+      "old_sha256": "762d18b295f4774ee713d5b1d7dc3d8023611478b8ad7746aea884726e6cc846",
+      "old_bytes": 17999,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/second-host-rebuild-03--native-build/output.txt",
+      "old_sha256": "d9826c802db3d03ff4bccb999c0c6a7476f4dde0349f2cda6c5d8e51e12964a8",
+      "old_bytes": 58217,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/second-host-config-failure-02-logs/output.txt",
+      "old_sha256": "69807ab5361ca9f419f5566adc5ca1af265b45de6a80eca3b40437a21f7ad114",
+      "old_bytes": 32457,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/second-host-failure-01-logs/output.txt",
+      "old_sha256": "3b9077c82292905dace186634238997453848eeb1dd517bf00019243921d475d",
+      "old_bytes": 932,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/host-peer-build-minimal-logs/output.txt",
+      "old_sha256": "75ecd2eba0e95a697f34b732de84620f81ae5e56127762b643c696fa8e49db2e",
+      "old_bytes": 39946,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/independent-ai-rebuild--raw-build-04--logs/output.txt",
+      "old_sha256": "3991b8a11a2897670dc09d24f2ee684053f0ffd48c76ec3e2cc4dd2b272ec2dc",
+      "old_bytes": 82484,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/config-roundtrip-build-logs/output.txt",
+      "old_sha256": "bdaae09209ff4f6fccd71d4c7630f23ce6d3ebe72bcc44c2341fafce51257b2f",
+      "old_bytes": 28508,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/host-advanced-build-logs/output.txt",
+      "old_sha256": "3b45c158abbca60a347c3a68b627ddb0a20f33a054f132e64dac8b94fb89142d",
+      "old_bytes": 6807,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/second-host-continuation-03--boundary-build/output.txt",
+      "old_sha256": "7fcafc5ea5920eabd57e4ac3f03810d21b95c2d34461bac9b72ee307f316bb10",
+      "old_bytes": 32625,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/independent-ai-rebuild--raw-build-04--boundary-build/output.txt",
+      "old_sha256": "e06e7d37f5ad528fc132a8efa01c35ff6c1fc97ce0cfcd0ac3fc7a7e3ca64d63",
+      "old_bytes": 32620,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/native-boundary-build-logs/output.txt",
+      "old_sha256": "e155b79b960c1dfde07397dcf7ceb07335fd451a83661c135f6580561791282f",
+      "old_bytes": 32410,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/host-peer-build-proxy-disabled-logs/output.txt",
+      "old_sha256": "0ec37542f6f7a44228f7a229846104b4fc1f68a99915dfbb3a4d52d244409f01",
+      "old_bytes": 7466,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/independent-ai-rebuild--raw-build-04--config-build/output.txt",
+      "old_sha256": "ee9d64a8afc3d6310987167536aec16c3351342d400f0f7cf5d148a1f57a5ed0",
+      "old_bytes": 34806,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/second-host-continuation-03--logs/output.txt",
+      "old_sha256": "55ad4f52b79c4c2b4902b44e6069fd8b30242c8823ce19c6b498405d152b2c7d",
+      "old_bytes": 997,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/second-host-rebuild-03--logs/output.txt",
+      "old_sha256": "7f849951717c49bc09afa0f3fef4b95726a7cc95458caf42aa20690dfc7ae384",
+      "old_bytes": 81884,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/builds/logs/second-host-rebuild-03--config-build/output.txt",
+      "old_sha256": "20b72af6a713d46a9b2533f6ef5f22a33730b724087f666457f075d8a09d51d2",
+      "old_bytes": 34716,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/checks/exit/manifest.json",
+      "old_sha256": "bc49d95d4d9845273686e6096f5ab1835b584d71ac37c544bf34fc7b924ee102",
+      "old_bytes": 118661,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/checks/delivery/build-review.json",
+      "old_sha256": "3530f772da294b3958c39ac436d6fc7b8cdf97db1296208e9b7f85738c3339f6",
+      "old_bytes": 11038,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/checks/delivery/status-review.json",
+      "old_sha256": "dcda4e999dc5d77ffb547f3ee7cee1e4732da7aa52098ea0a02b77c6fb3a6f60",
+      "old_bytes": 1087,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/checks/delivery/observations-review.json",
+      "old_sha256": "53d52fd2a3d9b9a5371aa2745508478c0590ae02c604c19883fb6748bce75dc0",
+      "old_bytes": 6872,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/cargo-config-observation-command.json",
+      "old_sha256": "d83a4008d51d6db37155158972ee1e99385b7f4f4d9de5ca2af5f5bd85e9468e",
+      "old_bytes": 1172,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/final-inspection-ssh-command.json",
+      "old_sha256": "c8cdbdf3d42c959a8b476a93f4514baa8ae19756dedd7b9235d6ed80cff1a0cb",
+      "old_bytes": 1533,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/final-build-review.json",
+      "old_sha256": "9d5482c0ab2478697d6df42a69b78f0bac0008d82a607e4a7a4700fce9c168b5",
+      "old_bytes": 10966,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reviews/independent-build-check.json",
+      "new_sha256": "395a7d1bd12a8a07d91ffef992bb1de04e8165de04767154ead55f48c8d04e4e"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/launch-04-retry.json",
+      "old_sha256": "31a4022e21d8ef0319e98df2aad4e7d0059c5785b9f76d8ab10534ddbb692b02",
+      "old_bytes": 1076,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/existing-evidence-cross-review.json",
+      "old_sha256": "bb0d17203f3865bef4c4ab9f3b98c58c22767bf82aead413e6a4bf934cd52929",
+      "old_bytes": 6740,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/local-review-command-results.json",
+      "old_sha256": "4c691de6b7aab26e44ce9dc8d42608c10904e41914f81ddb2f73d4929c86e31b",
+      "old_bytes": 1172,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/launch-command-04.json",
+      "old_sha256": "d600cb509d2cc8d59109b464f9b3cbeed5284d3de88da8baa6234938dde50927",
+      "old_bytes": 1490,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/inspect-parser-ssh-command.json",
+      "old_sha256": "8371605760433cdc1ea15efd9e7d918c850dc6c947ea2dbfeeff4a5628d990bd",
+      "old_bytes": 1083,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/final-status-initial-checker-failure.json",
+      "old_sha256": "798c6c00f086f49d3840e02c8f5f45692ed3d64a4a52c83eaed011ed80e1c256",
+      "old_bytes": 457,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/final-build-review-command.json",
+      "old_sha256": "a6f15716b07691b3d4e5a9645b95e60a2d01fe43b3e3b710478002aed02e2504",
+      "old_bytes": 708,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/independent-ai-evidence-index-04.json",
+      "old_sha256": "35e165cc03a17fd47f72a44cb84c60667b9e1485b63b935d032a338737dc09ad",
+      "old_bytes": 8243,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/launch-04.json",
+      "old_sha256": "efc78bd5effde9cb8aa032c24e0ca0bcd6d4313a489c8b66c5bb38369580baa9",
+      "old_bytes": 1103,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/jdk-repair-command.json",
+      "old_sha256": "c69121c9102cfd60d6d4be8ab084dfaab115530c2d1a4a15ad8d440b6bb08cb8",
+      "old_bytes": 5327,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/license-archive-and-notice-review.json",
+      "old_sha256": "99bb0038a7144f9a35528a8a9156b39b421dbb7ea29a1413902d9d93973e17fc",
+      "old_bytes": 278574,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/licensing/inventory.json",
+      "new_sha256": "6537d282068fc154f64225f5f4b667a32d392df1958eb6f8de81795fe7e1a1bc"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/independent-ai-review.md",
+      "old_sha256": "f3527915dbe2c21a22161a68884a550318db4215709482462f148a5f4378fc18",
+      "old_bytes": 12132,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/final-status-m1-field-transition-observation.json",
+      "old_sha256": "20c41d4c96d51852561c0e440e8307151f29504d185cb4735bc9d5bef842c022",
+      "old_bytes": 3974,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/config-mapping-review.json",
+      "old_sha256": "a4f9d6b9fcdef48b0241aaa3844b4304319e29aad07c5a132fddb71a8b27848f",
+      "old_bytes": 802,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/final-status-command.json",
+      "old_sha256": "bdde31defbd6a8ad50919261cd3f15fd5cfb613d161cf9440c22f53080d4d7a8",
+      "old_bytes": 639,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/launch-command-04-retry.json",
+      "old_sha256": "99976eb0bb9273bf6b67db1dd14eea8f710465a9a4af02b5ebcc3f35e6a7c0d1",
+      "old_bytes": 1460,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/frozen-inputs-04.json",
+      "old_sha256": "8f2d08f5a40e924ce280b976b2ed563064b6f3e4fccbfcbc1d742592f28fd844",
+      "old_bytes": 7260,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/final-build-review-initial-checker-failure.json",
+      "old_sha256": "ec9e1319da69cc005b51191b2ff90a70152dfe61d534360945f9963ce884da22",
+      "old_bytes": 11189,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/launch-04-first-failure-observation.json",
+      "old_sha256": "007758fc5e5e001e9c326a27330e78244259cf197e4027a864d17aefb7f73836",
+      "old_bytes": 397,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/evidence-recovery-check.json",
+      "old_sha256": "51cb28cfd1db787bdeddbace97fe56a567cedc4b05896551ce74600df987477b",
+      "old_bytes": 3144,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/final-inspection-and-archive.json",
+      "old_sha256": "0f82e1afdee22fcb80b642bb8d1c4f2a314b69d0182c5810dd11d0bd2b2ccab7",
+      "old_bytes": 1135,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/config-comparison.json",
+      "old_sha256": "0dd4632077cff30a2df900c26bbd3554c3c6ce2cf5372471ed1a1b5b8f724b8d",
+      "old_bytes": 1141,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/final-status-consistency.json",
+      "old_sha256": "8fb20c770a0c00cbb32073215b15c134b4c695185154bd5521272a6d8b577186",
+      "old_bytes": 3744,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/config-mapping-review-initial-checker-failure.json",
+      "old_sha256": "6608b261991b8348c7e15c0f0e3ce7129a074d2d3ac8105f570ac7c57c985d6b",
+      "old_bytes": 569,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/independent-ai-review.json",
+      "old_sha256": "e79289b90d6b3c3d3da34cf82860dca57c6a1002fc70412b2bb95e88e07f3a9f",
+      "old_bytes": 13272,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/reviews/independent-review.json",
+      "new_sha256": "377e50731ec717f9504e9cda9811a581fc621435674f279f0bf67d8519e2162e"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-transfer-and-start-01.json",
+      "old_sha256": "7c726f34145d53a709fd13dffa0af58abfbc009f4ed05a009e479092266357f2",
+      "old_bytes": 939,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-build-failure-03.json",
+      "old_sha256": "771d64c353237448be07ecdba838b34f7d0840dbef67ce0242843a14fb306b29",
+      "old_bytes": 20152,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-runner-check.json",
+      "old_sha256": "708ddf1e781885a882ad262f5ff2832c2d2d2c41dc279ca06cdca67cca6243af",
+      "old_bytes": 2927,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-preflight.json",
+      "old_sha256": "287759242db224dbf21719b844f86319211ee4035317d15dcd0b03ad94b685fa",
+      "old_bytes": 2401,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-build-failure-02.json",
+      "old_sha256": "372c6b9ea103e9f6d00c652801098c5a3d6f62f358dbc42454efbc64cdb3ad8b",
+      "old_bytes": 14156,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-inputs.json",
+      "old_sha256": "5519dd38d9979e5167696ac1ebaf5ac31d146ab98c16819423ae6af1838fd7d6",
+      "old_bytes": 8312,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-build-failure-01.json",
+      "old_sha256": "214ec13b6bf0fc57cc41dbe702c7aae43e0de3ee12b29e376fc6726ed8735be6",
+      "old_bytes": 3560,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-transfer-and-start-03.json",
+      "old_sha256": "c617735672576d895519e639bf02fcf9ea42c3475efdba709b9d60caf9c29775",
+      "old_bytes": 958,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-inputs-02.json",
+      "old_sha256": "ccd17a04122c8a3e568f7c0950a62f0f97502a03bb185fb48b8a56f09c76cbc1",
+      "old_bytes": 8083,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-launch-03.json",
+      "old_sha256": "4c85af885303e377037b06fb50c78f3a77cc10334a97532461e6c9023ae5d8d0",
+      "old_bytes": 937,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-transfer-and-start-02.json",
+      "old_sha256": "eeb18a894d4102f23e11b6ea84ad12b93f417a1e473440b8c53312955a640664",
+      "old_bytes": 958,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-inputs-03.json",
+      "old_sha256": "35877ca0e491a816dbece0ed9b74065c481531bcbcfa261697584aa970ae45d8",
+      "old_bytes": 8283,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/execution-sources/independent-ai-rebuild--cargo-config-observation-remote-code.py",
+      "old_sha256": "0264e1decbbc2dd0caa6cb9e16a247e40ef8fe6a748a9d9f658c1b58ac5411dd",
+      "old_bytes": 1602,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/execution-sources/independent-ai-rebuild--final-inspection-and-archive-remote-code.py",
+      "old_sha256": "4d7e83acd1c33c203c9e1ec5303cbae64117e13bb7069e4a6140cf83dc091e91",
+      "old_bytes": 2952,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/execution-sources/independent-ai-rebuild--inspect-parser-remote-code.py",
+      "old_sha256": "ab452cb84761dc7de3224e184caae19e5ea2563f832a68209b1e78e77ef1dd32",
+      "old_bytes": 1000,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/execution-sources/p00-04-preflight.py",
+      "old_sha256": "84e9cfada1fb7f7febc51fc4383b782b908e0563e6a54f32dbb46c2056649b90",
+      "old_bytes": 11003,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/execution-sources/independent-ai-rebuild--jdk-repair-remote-code.py",
+      "old_sha256": "cdc6b2b932c29f450415481b811bf83c41e17ca9b226c3709938f264d5b3fbd8",
+      "old_bytes": 2939,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/execution-sources/independent-ai-rebuild--launch-independent-build.py",
+      "old_sha256": "c6d473aad0f04557dbbdba0616ee444f2eb7f9ace63118fab474d355674b4791",
+      "old_bytes": 3725,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/artifact-comparison.json",
+      "old_sha256": "a3246ecd257c284c0b900ef9c6346628f76da7e6ed25bcb66ebe7f4f4f042c79",
+      "old_bytes": 8397,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/parser-structure-command.json",
+      "old_sha256": "ee8764860cacb79e66d750663a5868a7434aa42ce08701ff918f54f87c8ac24f",
+      "old_bytes": 598,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/boundary-structure-command.json",
+      "old_sha256": "cfb7a80868b8edf728dfcfa3c5a6fb685133ea525ba49d464b695a0f0dfa38f9",
+      "old_bytes": 514,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/boundary-core-patch.json",
+      "old_sha256": "d24e73b549975cbf850b088b740f81d97afdd481ccc6d7884452094366b31e4a",
+      "old_bytes": 1791,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/report.json",
+      "old_sha256": "7dff416c9e4c4a62a77e8b756a893241861b7a2f6409c35115bb6912bd4aa3f2",
+      "old_bytes": 8360,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/process-exit.json",
+      "old_sha256": "53d4f67e89f02af388f755793513903c09ac1e4cd147a6132c16dde4867fb886",
+      "old_bytes": 78,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-rebuild-03/config-cases.json",
+      "old_sha256": "4a6019eeca0bca28849ba2cbcba341423cb673c211551182149eca5d8d7a93b8",
+      "old_bytes": 310376,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-rebuild-03/config-comparison.json",
+      "old_sha256": "7825cecc9510cab9b614f38cacf8b22e71d6aefe46ed80e01f197cd783471a15",
+      "old_bytes": 1372,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-rebuild-03/cargo-config-observation.json",
+      "old_sha256": "4b2e81671f1bcb776f859bcc42ba2c93f80374d29fb49432848554fda848ddac",
+      "old_bytes": 905,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-config-failure-02-logs/build-report.json",
+      "old_sha256": "e77e57ae908d9569269c5a9aaccfb680f5e88c1ba022961a7198c2d91b0fde77",
+      "old_bytes": 2620,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-rebuild-03/native-build/native-build-report.json",
+      "old_sha256": "94678e9d3c2317a0ffd431079300880b3de436a7eb5573390ea26865e9ced56b",
+      "old_bytes": 36450,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-rebuild-03/parser-apk/build-report.json",
+      "old_sha256": "baa90d4892359ea9af5db818c7c5d886ada8caaa2d0acb5d8430ba58117a2b87",
+      "old_bytes": 36328,
+      "action": "merged",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/failures.json",
+      "new_sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-rebuild-03/config-build/build-report.json",
+      "old_sha256": "b1a675fb9114a2b10d9f4817445c66b61175a3adf2b458bfcfa8e80b5f651731",
+      "old_bytes": 3102,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/boundary-apk/build-report.json",
+      "old_sha256": "2b75fd2632b58e1c584bba7f066db4c39cf2e3f3b9d507bacf9dc7e34c5f088f",
+      "old_bytes": 36509,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/boundary-apk/structure-report.json",
+      "old_sha256": "f8e38a84bc94be6324cd06695146d8098ff6b744a216d7b9de396757f9acec6d",
+      "old_bytes": 4269,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/parser-apk/build-report.json",
+      "old_sha256": "ab67978e47b9c7645ccdf07711c109a9e2416ed1b72650528dbd9cc7d10d5da0",
+      "old_bytes": 39976,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/parser-apk/structure-report.json",
+      "old_sha256": "92d19b95bd3fb05e1e8b42e869acb99e1b085dfe05980036835cd5eb2f012e13",
+      "old_bytes": 2460,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/boundary-build/native-build-report.json",
+      "old_sha256": "9b60893dc3bca34cda3c6f93690db0455a1e1df4aebadc43aba5607f7bccdd03",
+      "old_bytes": 23266,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/independent-ai-process-exit.json",
+      "old_sha256": "2615f470feacf44f8b15941352420f2fb3ffdc8c41199ba7ffc743c789ebf289",
+      "old_bytes": 706,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/independent-build-04/independent-ai-process-exit.json",
+      "new_sha256": "17bf676ae48fd791f1bffd24212e8215b03f89d79fa2c02e1ebf5c76149112ae"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/boundary-structure-independent-command.json",
+      "old_sha256": "65f9a1dd2e049ed2ddcb7f75ee2e7096a883660642d01c5ac8e48775b7a610ed",
+      "old_bytes": 726,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/config-cases.json",
+      "old_sha256": "51323eee4af7a10fad9e39ae09ff93af39c5004ddbc6bc1a5062dceaec5bee8c",
+      "old_bytes": 310376,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/independent-build-04/config-result.json",
+      "new_sha256": "99a5e862b7e42ee3032d35f4b9de46d4e877311880de1ed5756802b9993c246f"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/parser-structure-independent.json",
+      "old_sha256": "9fa14756b96d42dce69c08b535a74d0e642e5fe67ead0772804e4af8656ce6fb",
+      "old_bytes": 2460,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/independent-build-04/parser-structure-independent.json",
+      "new_sha256": "a1658df02a8ac8f71b8c2c2143cc0bb81d617d726aa06b9e4f97525c98628553"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/independent-ai-cargo-config-observation.json",
+      "old_sha256": "5f5204b9abb1a8601dd9c3a50600d242561c5b1b4fd9319ef382ddec74d21502",
+      "old_bytes": 821,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/parser-structure-independent-command.json",
+      "old_sha256": "6d874ecc6780456adfcd40903c283ecb5f235bfd0e6f515f9186be828cfa2bd9",
+      "old_bytes": 720,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/boundary-core-patch.json",
+      "old_sha256": "d1c219f298ecfdccc64ac8f17f606cd60a95b9ceb17bab2b3b857642f73f2279",
+      "old_bytes": 1788,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/independent-ai-jdk-repair.json",
+      "old_sha256": "c6ba43491b43173a89b79ddeaff99f7adea16269692bf322a92f316b51c08f18",
+      "old_bytes": 4741,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/report.json",
+      "old_sha256": "a0f9aada8d70c303a11f470c4a1a8b15cb46f1f672fa036404c081c3093e2703",
+      "old_bytes": 24786,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/independent-build-04/report.json",
+      "new_sha256": "d31a84e48aa6a28cee52815a022d327d47c714d8678b7cb45ef61338c9f3b1d2"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/boundary-structure-independent.json",
+      "old_sha256": "63e49958f6c6a5d550d935341640a87c7b515f049716c42f7611e7e1a1ab547e",
+      "old_bytes": 4269,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/native-build/native-build-report.json",
+      "old_sha256": "99f4e9362395475532d8159faa39ef3907722180d96456295ef9a67a80a362bc",
+      "old_bytes": 36690,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/independent-build-04/native-build-native-build-report.json",
+      "new_sha256": "2162ced7f92f914bb85535250ae70e31be61c6bfe14f79c2d29a32569a4fd713"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/boundary-apk/build-report.json",
+      "old_sha256": "e44b4bf0aa79d8c2445c2530c6683993866e3d222c266ca5379a084ef49c176c",
+      "old_bytes": 36448,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/independent-build-04/boundary-apk-build-report.json",
+      "new_sha256": "70c5281fd2704d1cedccf3b7a24ee346e235f1254e0ef90473fccfe361043a35"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/parser-apk/build-report.json",
+      "old_sha256": "7c29fa938ae7cc5d810e84a0ce8bd0113e14c975517e85aaacf1b354a4f53682",
+      "old_bytes": 40034,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/independent-build-04/parser-apk-build-report.json",
+      "new_sha256": "d48606a640e896bc0c24dbb955990a676f5638bdd4ed5fa841c6dd5485733c12"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/config-build/build-report.json",
+      "old_sha256": "8a951cdace51b37f54e83c719ad9aa63ce5a5bc37b55810ff195b0a593c5c384",
+      "old_bytes": 3172,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/evidence/reviews/independent-ai/raw-build-04/boundary-build/native-build-report.json",
+      "old_sha256": "980ed36e034880176de3fb2892b2a7b33d893dd2bcf2de7ce6fe2f72a27a79e4",
+      "old_bytes": 23287,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/runs/independent-build-04/boundary-build-native-build-report.json",
+      "new_sha256": "3150a6671eb346bc069a9fce25014b661fd52ca025802f067661e5123538bd18"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/assistant/bundle.js",
+      "old_sha256": "6f8b57a22e2a348d9d1e6b078d04ddf80d1895adcccc2a91c3a45f188ccd41d5",
+      "old_bytes": 1821267,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/assistant/bundle.js",
+      "new_sha256": "6f8b57a22e2a348d9d1e6b078d04ddf80d1895adcccc2a91c3a45f188ccd41d5"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/assistant/entry.html",
+      "old_sha256": "2ff541efed99e1e873f68ad5640cf12d93b1af7276ef19e171849a51b4a13eae",
+      "old_bytes": 411,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/assistant/entry.html",
+      "new_sha256": "2ff541efed99e1e873f68ad5640cf12d93b1af7276ef19e171849a51b4a13eae"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/assistant/fetch.json",
+      "old_sha256": "f7f3f7a72cb16a37a295872a8c57276eeb381a463ede0355e772602de59c478b",
+      "old_bytes": 1305,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/assistant/fetch.json",
+      "new_sha256": "b6720afeb6213e8f3f1640b2eada1f225df8610a8308bb8a3bd5baee326f53f4"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/upstream/native-boundary-patch-v3.diff",
+      "old_sha256": "b0a67519a3fba1bdbec2213719e7939cd5083216f27c04a24cc47a899f9683b6",
+      "old_bytes": 5116,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/upstream/native-boundary-patch-v3.diff",
+      "new_sha256": "b0a67519a3fba1bdbec2213719e7939cd5083216f27c04a24cc47a899f9683b6"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/upstream/native-boundary-patch.json",
+      "old_sha256": "b404f33f3e5db41738a38b12761ca28b4245648fa39154c9ace91989d7ae35e0",
+      "old_bytes": 1753,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/upstream/native-boundary-patch.json",
+      "new_sha256": "6bacd9af88a0573274e78c2dcc70166598aaae653ccca57be718bc266b761e8e"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/upstream/config-roundtrip.Cargo.lock",
+      "old_sha256": "09d1b01943c9cd8a5686a00ac4d97accadb6325b7bd8fa0ccaa631ab4287eb1c",
+      "old_bytes": 86241,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/upstream/config-roundtrip.Cargo.lock",
+      "new_sha256": "09d1b01943c9cd8a5686a00ac4d97accadb6325b7bd8fa0ccaa631ab4287eb1c"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/upstream/Cargo.lock",
+      "old_sha256": "cd5a7951f897e45f1988b0a4896ab1f336e03e4cb6d70ca1db2a7b9b477d774b",
+      "old_bytes": 298467,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/upstream/Cargo.lock",
+      "new_sha256": "cd5a7951f897e45f1988b0a4896ab1f336e03e4cb6d70ca1db2a7b9b477d774b"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/upstream/native-boundary-patch-v3.json",
+      "old_sha256": "98563956236d50e60803327506af709b627a9e99b1cca20cd8dee25458bf18b1",
+      "old_bytes": 1753,
+      "action": "converted",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/upstream/native-boundary-patch-v3.json",
+      "new_sha256": "b4a3b9df995cc50dc0d534253c664036c2e889d256c307e348577472a04bc819"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/upstream/native-boundary-patch.diff",
+      "old_sha256": "bd6b569d602f2bde78232bc0fa413993194b404161dc2395836df228effaf1c8",
+      "old_bytes": 4631,
+      "action": "retained",
+      "reason": "支撑保留结论或必要基线；筛选脱敏并保留运行身份",
+      "new_path": "docs/verification/p00/inputs/upstream/native-boundary-patch.diff",
+      "new_sha256": "bd6b569d602f2bde78232bc0fa413993194b404161dc2395836df228effaf1c8"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/397d888cc1da19ab740d8c3477f273f7293241ac17afcf59787c32839e1e8a1e/README.md",
+      "old_sha256": "397d888cc1da19ab740d8c3477f273f7293241ac17afcf59787c32839e1e8a1e",
+      "old_bytes": 7045,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/ebde9658397880e47b751ca2cce03d5473996c2bea2fd5586392e19d4a473fe5/AGENTS.md",
+      "old_sha256": "ebde9658397880e47b751ca2cce03d5473996c2bea2fd5586392e19d4a473fe5",
+      "old_bytes": 4440,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/29dff7bd2efc394d4127ac44b848a96e3b2d911410f660336473dfc08d13fc8a/docs/verification/p00/test-evidence.py",
+      "old_sha256": "29dff7bd2efc394d4127ac44b848a96e3b2d911410f660336473dfc08d13fc8a",
+      "old_bytes": 3423,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/6c13aa5ba36690ccfbbb25a8807d01d98c15833e446d7ae82ddc726472cb8ef7/gradle/gradle-daemon-jvm.properties",
+      "old_sha256": "6c13aa5ba36690ccfbbb25a8807d01d98c15833e446d7ae82ddc726472cb8ef7",
+      "old_bytes": 1138,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/7e1f4d2032bfcfae14af19585d91eeeb8db3397cef8e6181ccbd55f99a8df7e9/docs/verification/p00/second-host-rebuild.py",
+      "old_sha256": "7e1f4d2032bfcfae14af19585d91eeeb8db3397cef8e6181ccbd55f99a8df7e9",
+      "old_bytes": 13538,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/cfb229b23509e0613ecc416815d48e9bbc31ba25c59880a9f8f9af636dec960c/gradle/wrapper/gradle-wrapper.properties",
+      "old_sha256": "cfb229b23509e0613ecc416815d48e9bbc31ba25c59880a9f8f9af636dec960c",
+      "old_bytes": 369,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/ea91f5d45d83ea142ad8621daaf9bd957f9071a2af56a4a3a0ec25f0e636dc59/docs/verification/p00/p00-07-advanced.md",
+      "old_sha256": "ea91f5d45d83ea142ad8621daaf9bd957f9071a2af56a4a3a0ec25f0e636dc59",
+      "old_bytes": 8032,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/916ff69bd7287a86fc9c51da166d5a9b745681496a6b1977ce4acd4dcf20cbe0/docs/verification/p00/second-host-rebuild.py",
+      "old_sha256": "916ff69bd7287a86fc9c51da166d5a9b745681496a6b1977ce4acd4dcf20cbe0",
+      "old_bytes": 11720,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/9ae518e6b524ac91d134251e2948b2cffe5d1104bfd79c06982b4acbb1a241e5/scripts/validate_handoff.py",
+      "old_sha256": "9ae518e6b524ac91d134251e2948b2cffe5d1104bfd79c06982b4acbb1a241e5",
+      "old_bytes": 7911,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/f063fb1af4ecdbe0b5e69d61bf383558f93f1d470616ba799c7666fb02acf81e/docs/verification/p00/network-lab.md",
+      "old_sha256": "f063fb1af4ecdbe0b5e69d61bf383558f93f1d470616ba799c7666fb02acf81e",
+      "old_bytes": 19888,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/3450599e9f3b18d5d93f8b7d339f4076fcbd5ea7fccdff7e359bc74af0809972/docs/verification/p00/second-host-rebuild.py",
+      "old_sha256": "3450599e9f3b18d5d93f8b7d339f4076fcbd5ea7fccdff7e359bc74af0809972",
+      "old_bytes": 15528,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/f2fecac3539eb39783b2e37d0fa65d52dccb173bc154a4da84463a9f856f7fe3/docs/design/overall-design.md",
+      "old_sha256": "f2fecac3539eb39783b2e37d0fa65d52dccb173bc154a4da84463a9f856f7fe3",
+      "old_bytes": 19538,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/bfb139732b6330d30b420a307cd23c12634c5728244779e9247bb73c79c6bfa2/docs/research/android-core-evidence.md",
+      "old_sha256": "bfb139732b6330d30b420a307cd23c12634c5728244779e9247bb73c79c6bfa2",
+      "old_bytes": 21341,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/5ba54be683973ae353aab74187ec78610204bff1bb676e9bb866ccd74fd3ede1/docs/verification/p00/p00-05-datapath.md",
+      "old_sha256": "5ba54be683973ae353aab74187ec78610204bff1bb676e9bb866ccd74fd3ede1",
+      "old_bytes": 7769,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/c4788ec09b7f6c7baf2e36c505d4d04852bcebb7654151e3ddbec248eff67add/docs/verification/p00/independent-ai-rebuild/review-existing-evidence.py",
+      "old_sha256": "c4788ec09b7f6c7baf2e36c505d4d04852bcebb7654151e3ddbec248eff67add",
+      "old_bytes": 7271,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/6893c0261c4667a1b3c4f7634793916c99c6f2545db9413e315e51dc020d8d5e/docs/verification/p00/independent-ai-rebuild/review-license-inputs.py",
+      "old_sha256": "6893c0261c4667a1b3c4f7634793916c99c6f2545db9413e315e51dc020d8d5e",
+      "old_bytes": 5075,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/0e7c7e84813a697681b06afbe8bc68a3e8334a9c3e7bcd950e3ac41f49b0a988/docs/verification/p00/independent-ai-rebuild/review-final-status.py",
+      "old_sha256": "0e7c7e84813a697681b06afbe8bc68a3e8334a9c3e7bcd950e3ac41f49b0a988",
+      "old_bytes": 10882,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/1e20977e2b80a4134746cdcb862675a73e13154ec6304b7a8624de20ac2014fc/docs/verification/p00/capability-matrix.md",
+      "old_sha256": "1e20977e2b80a4134746cdcb862675a73e13154ec6304b7a8624de20ac2014fc",
+      "old_bytes": 9211,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/5378878f0a10bfdb55ffd9d62ac252ec13dd990dc9d317fb93f4510b183a1a09/docs/verification/p00/p00-04-native-boundary.md",
+      "old_sha256": "5378878f0a10bfdb55ffd9d62ac252ec13dd990dc9d317fb93f4510b183a1a09",
+      "old_bytes": 19344,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/daf84373777d787a8052078139d0a0a2d04fda66f526ca8461e1ac30029ff186/docs/verification/p00/p00-03-config.md",
+      "old_sha256": "daf84373777d787a8052078139d0a0a2d04fda66f526ca8461e1ac30029ff186",
+      "old_bytes": 7480,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/14412a501e5f0339d50016fde038b76031dce46f86290b26c917271a314c1b69/docs/verification/p00/p00-08-measurement.md",
+      "old_sha256": "14412a501e5f0339d50016fde038b76031dce46f86290b26c917271a314c1b69",
+      "old_bytes": 8205,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/ced855c38430c352777835b36039509a28620b836e6cb3216b770aaa5e57f313/docs/verification/p00/p00-06-address.md",
+      "old_sha256": "ced855c38430c352777835b36039509a28620b836e6cb3216b770aaa5e57f313",
+      "old_bytes": 5408,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/5aa6c58873c4857f14a80b4a05c6c54284e7b50d5de8add23a3eb3e9d29f496d/docs/verification/p00/emulator-platform.md",
+      "old_sha256": "5aa6c58873c4857f14a80b4a05c6c54284e7b50d5de8add23a3eb3e9d29f496d",
+      "old_bytes": 3679,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/dfbb0d344bf19a252c3c6f017724cb263a0bb4c7cbf0ed01de1fc03909ae182a/docs/verification/p00/second-host-rebuild.py",
+      "old_sha256": "dfbb0d344bf19a252c3c6f017724cb263a0bb4c7cbf0ed01de1fc03909ae182a",
+      "old_bytes": 11700,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/5d4f28b5341107580809a5e821fd6db24b5ec8fab7aead5ffee9332791a1e2fd/docs/verification/p00/continue-second-host-rebuild.py",
+      "old_sha256": "5d4f28b5341107580809a5e821fd6db24b5ec8fab7aead5ffee9332791a1e2fd",
+      "old_bytes": 8002,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/1318cc5c95b43d9b94d7580f065b3194590403917b2483ed492108922c1bb193/experiments/android-vpn-smoke/make-config-cases.py",
+      "old_sha256": "1318cc5c95b43d9b94d7580f065b3194590403917b2483ed492108922c1bb193",
+      "old_bytes": 5011,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/815c0687a225f512c381ba356dbc4e35b6b5d9e5a8360888671e315375e7aff2/docs/verification/p00/check-evidence.py",
+      "old_sha256": "815c0687a225f512c381ba356dbc4e35b6b5d9e5a8360888671e315375e7aff2",
+      "old_bytes": 7742,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/c0a8a36c779be007389f81b4778151b84354796a6f42a16d8d6ef7a5a82d2b6d/docs/design/technical-architecture.md",
+      "old_sha256": "c0a8a36c779be007389f81b4778151b84354796a6f42a16d8d6ef7a5a82d2b6d",
+      "old_bytes": 37528,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/a0588c4ba4942756e71643f9168d9a9101f44bea8d07b9d2899ca5c9f1172784/docs/verification/p00/second-host-rebuild.md",
+      "old_sha256": "a0588c4ba4942756e71643f9168d9a9101f44bea8d07b9d2899ca5c9f1172784",
+      "old_bytes": 8362,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/2c40e2dcbf934669c82c58dce857aa5f3bb5867ce48d1a7ca19aed87d5443617/gradle/libs.versions.toml",
+      "old_sha256": "2c40e2dcbf934669c82c58dce857aa5f3bb5867ce48d1a7ca19aed87d5443617",
+      "old_bytes": 1751,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/bb88e4a883e8a72e8003f977e575224ddfe2910910bab8eaaf1f9b54ccbae38a/docs/verification/p00/exit-review.md",
+      "old_sha256": "bb88e4a883e8a72e8003f977e575224ddfe2910910bab8eaaf1f9b54ccbae38a",
+      "old_bytes": 5071,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/ecd4c2cbbf36f842218ac5051e5d67047070e9806346cad389c8c80cdae53df0/docs/verification/p00/independent-ai-rebuild/review-final-build.py",
+      "old_sha256": "ecd4c2cbbf36f842218ac5051e5d67047070e9806346cad389c8c80cdae53df0",
+      "old_bytes": 9673,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/4d9e00a87a0e522b3b2f64b0fa33b9286a744e49c0c49e9547004d077a77987c/docs/verification/p00/requirements-baseline.md",
+      "old_sha256": "4d9e00a87a0e522b3b2f64b0fa33b9286a744e49c0c49e9547004d077a77987c",
+      "old_bytes": 2053,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/10c0bae7eed03a6191113d8355219671f5bef8b44a9a28ea7f198851a5a5b551/docs/verification/p00/native-boundary.md",
+      "old_sha256": "10c0bae7eed03a6191113d8355219671f5bef8b44a9a28ea7f198851a5a5b551",
+      "old_bytes": 6554,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/dccef6e6864c3d9621ddee160d91e9dfbaba5317f6090cbe2d82812803e3dec7/docs/verification/p00/p00-02-versions.md",
+      "old_sha256": "dccef6e6864c3d9621ddee160d91e9dfbaba5317f6090cbe2d82812803e3dec7",
+      "old_bytes": 12653,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "docs/verification/p00/inputs/snapshots/2b0a237d446f18fadbcb38c3cbe07f5b1fc40a409361b4e7977256285bfb7cf9/experiments/android-vpn-smoke/README.md",
+      "old_sha256": "2b0a237d446f18fadbcb38c3cbe07f5b1fc40a409361b4e7977256285bfb7cf9",
+      "old_bytes": 4564,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/benchmark_endpoints.py",
+      "old_sha256": "3919f88f28b8552e69fd78a3b1e8ed85c08cccbed2c829f4bbd1b32f2c9b2c76",
+      "old_bytes": 4327,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/benchmark_endpoints.py",
+      "new_sha256": "7427863fa6e7769291a392e4e3b20c2ef6f3352cccab90d3a7398632f82b50f3"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/build.py",
+      "old_sha256": "4ff1bfa4c2fb467e92464710b3e7faec509b5eb614d76f625ee5f72558e4cd9c",
+      "old_bytes": 7075,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/.gitignore",
+      "old_sha256": "3cc0a0c622293c9ae41d04d6b66be375dfbe82ca1a00ffda5ddcabc53b49de48",
+      "old_bytes": 9,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/.gitignore",
+      "new_sha256": "3cc0a0c622293c9ae41d04d6b66be375dfbe82ca1a00ffda5ddcabc53b49de48"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/run-performance.py",
+      "old_sha256": "32964e94b88b1ac726affa61a80e02f0ada522c81e7952e25bd16d7392513ce6",
+      "old_bytes": 9722,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/run-performance.py",
+      "new_sha256": "4a7ee203bb3864c3f2084e4736312b1296f99e4021a37b3f9a11962bf4f7ba13"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/run-native-probe.py",
+      "old_sha256": "2de8fdbafd6598ad108b0668cb55e8eb20e2e3fda37245393220c18ecd3428c4",
+      "old_bytes": 6370,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/run-native-probe.py",
+      "new_sha256": "7b6bcb8092bc1ff421ec7a8c56406be1934304520691605c89896d0ed5260e84"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/make-config-cases.py",
+      "old_sha256": "40d66de08bb1dd06aac0a8bd6ce2a5565e6be17c328ec42f4ae12be5016e893b",
+      "old_bytes": 5331,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/make-config-cases.py",
+      "new_sha256": "c6084f02130cbf3bda16399bec28f1c32d4ba85c383715309de5a01e7bdb1f75"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/AndroidManifest.xml",
+      "old_sha256": "e5aa004e126f5aeb5824cc47fc4b14a3608b6e468d540ef026484cecfd5605dd",
+      "old_bytes": 1570,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/run-config-roundtrip.py",
+      "old_sha256": "4f1df8668e67aa33a383a04ac1ec23174fd7d337354fb262bb59cc17d068a8bc",
+      "old_bytes": 2868,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/run-config-roundtrip.py",
+      "new_sha256": "c139ca183f6a9293deda5470532c736c82d2102d1c5893ead625a5d16f6773b1"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/build-config-roundtrip.py",
+      "old_sha256": "871bd04d770b04987f27e17319f10ede4a61b9b80a4e9ce297162e2c500bde67",
+      "old_bytes": 5435,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/build-config-roundtrip.py",
+      "new_sha256": "ea8677266ee96f04b23865698b4b7d29ff9f92bfc29c18d1ac840c7f48b2c712"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/run-offline.py",
+      "old_sha256": "600973effacd7758329f1d7caf6e2d58b915f315b9ea01dbdab2143461cda04a",
+      "old_bytes": 9010,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/run-offline.py",
+      "new_sha256": "2c8799aac66070aeb1c39ec8ef9fcbbd4ff6c2240830af11b5e331cd6c74ac05"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/run-emulator.py",
+      "old_sha256": "6bc913bb4a0f993b10d988ee3fdff9341629661725122f1b3f811eac6592b345",
+      "old_bytes": 328,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/run-device.py",
+      "old_sha256": "7a1670fbdadd98b40ced708c09c26c115fb5d0026c773658499888d6ce45542f",
+      "old_bytes": 23009,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/run-device.py",
+      "new_sha256": "cfce66ec5bf97ddf519a848254a876fd05f21a5ff031df5b2d4c68d1fe1d017c"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/controlled-host-peer.py",
+      "old_sha256": "437a450ec79133f38b7ae90f159d064c2755924148ac9eacb9d4af1edcf9b7be",
+      "old_bytes": 12050,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/controlled-host-peer.py",
+      "new_sha256": "0a11be888db61c335d5feb42fd97733641261b924192e0d7a81416c604336a63"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/README.md",
+      "old_sha256": "0f92554638360e70c143a81a508a8347de6d5d69cb63b5209b9f0ff0d83068b4",
+      "old_bytes": 4667,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/README.md",
+      "new_sha256": "8209d5ed32df0ae2b7d480e56216e119d05da7aae7f25af3fead81501649bb9e"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/prepare-native-boundary.py",
+      "old_sha256": "a585bf739be905303e2daf286ddaf61b9d1242e125473ce9377db4b6791186cd",
+      "old_bytes": 5637,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/prepare-native-boundary.py",
+      "new_sha256": "b26a5ba367bfc1dbe0672175a1f8c22864ae01e1a28773dbbcb0216632de66bb"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/build-host-peer.py",
+      "old_sha256": "2cef287141fc6db3f58401fa6f88c47cd792be930ffb8abc8661c39792e0e8a4",
+      "old_bytes": 5382,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/build-host-peer.py",
+      "new_sha256": "f5410531167298599b3f50f89bd3e0c763129ae2fc871797263f710cccb3ca16"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/build-native-probe.py",
+      "old_sha256": "219ff7402f894e13bfec7b29d86673da6264d941b21da1413e7d36ced708ef26",
+      "old_bytes": 7580,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/build-native-probe.py",
+      "new_sha256": "8634d8b01650ec785abc1357d51568b439291aff32c8289acf97fd3d67a67420"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-probe/AndroidManifest.xml",
+      "old_sha256": "5a0826a30d56a86ab4eb42e43ce383d315c5c81c47a62eaf7081c2edd7f8e49a",
+      "old_bytes": 895,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-probe/AndroidManifest.xml",
+      "new_sha256": "5a0826a30d56a86ab4eb42e43ce383d315c5c81c47a62eaf7081c2edd7f8e49a"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/p00_observation.rs",
+      "old_sha256": "848636b7c17003c7da94006282f59f52ed97a45100208a1357e712ad6fed30b0",
+      "old_bytes": 2845,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/p00_observation.rs",
+      "new_sha256": "848636b7c17003c7da94006282f59f52ed97a45100208a1357e712ad6fed30b0"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/p00_jni.rs",
+      "old_sha256": "fbb93cdf651f455e44d87d8989b3c84416811c9e2b4deeea656611f3449dd2c7",
+      "old_bytes": 3315,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/p00_jni.rs",
+      "new_sha256": "fbb93cdf651f455e44d87d8989b3c84416811c9e2b4deeea656611f3449dd2c7"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/config-roundtrip/main.rs",
+      "old_sha256": "dc7ad821bcc5d43706344e1b7b8b994f58f173898a52c8da0287935522ceaabd",
+      "old_bytes": 3561,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/config-roundtrip/main.rs",
+      "new_sha256": "dc7ad821bcc5d43706344e1b7b8b994f58f173898a52c8da0287935522ceaabd"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/tools/inspect-built-apk.py",
+      "old_sha256": "5be7f4a42711b9d3c736f2646d47267f056fd8271a3e3561b1ebb19096c9c219",
+      "old_bytes": 3839,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/tools/inspect-built-apk.py",
+      "new_sha256": "3506fea41fcdaf0b6a652455c0d9b8b7d551d3ef5fc87dda32a6cb1628200d14"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/tools/continue-second-host-rebuild.py",
+      "old_sha256": "f3d8cb5010f1131690c5bba9698f68fb4ed65ea3f8879b91f5333d48ecd23787",
+      "old_bytes": 8066,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/tools/run-native-build.py",
+      "old_sha256": "10b8cab4019a038b8ebee924f6654acdf7b55c8933a4dc9c601e6d4f4b393e3a",
+      "old_bytes": 9830,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/tools/run-native-build.py",
+      "new_sha256": "22be6c8d6fdc8c452be2395555945e0848da7ca2d73f14fc338662b1210a4558"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/tools/fetch-license-texts.py",
+      "old_sha256": "21267aa1d3d351f05275ba7eecc39519ba5baba1db82781c04402141b7b26783",
+      "old_bytes": 5170,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/tools/run-core-parser.py",
+      "old_sha256": "b6942fc51700bab8d8be25d7ad30c029c3d2ff5e0fdf4e49f1b2b064ec1e0c3e",
+      "old_bytes": 6781,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/tools/inventory-license-texts.py",
+      "old_sha256": "6c72aa0dd8b9d5da638710704c98efe0d5e737a62b09e57fc3e2f4d31ee91ba5",
+      "old_bytes": 5944,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/tools/supplement-license-texts.py",
+      "old_sha256": "36c7f347e8a62d3138ba00c77214afdc9dc1e7d53c45b643c6d733202cc2082b",
+      "old_bytes": 5740,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/tools/collect-license-standard-texts.py",
+      "old_sha256": "3e32f92701e3c0b4c7e383f1107cad6d842edfcb50fea5eb63963478215c057d",
+      "old_bytes": 5732,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/tools/second-host-rebuild.py",
+      "old_sha256": "69ab94635b665534e550eacd8d8dbb4a4b07a115f946b57eb5b0eb5e0d37b7d1",
+      "old_bytes": 15550,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/tools/second-host-rebuild.py",
+      "new_sha256": "cf4fe71a32c4d341a1f5a00913201e8f8ada49de13c3a2026db37de8c984ab8b"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/src/com/github/zzwtsy/chuanmen/p00probe/PlatformInstrumentation.java",
+      "old_sha256": "bf9770d5857163e167e0b7ef5c22eae420936146471982f022744cca13aefd30",
+      "old_bytes": 5599,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/src/com/github/zzwtsy/chuanmen/p00probe/PlatformVpnService.java",
+      "old_sha256": "8962fe7a635a7f10ed94645ca6b2c48070ada282f644989f2363419e61f78dba",
+      "old_bytes": 4927,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/src/com/github/zzwtsy/chuanmen/p00probe/ConsentActivity.java",
+      "old_sha256": "a192fdb57e49102eb2ce4343de8ff9f9993cc4ec99bf9025878316ee0d8c4734",
+      "old_bytes": 3221,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+      "old_sha256": "a98c11760c69e7f5e98c939d6c6722f422555987114139b0a38955a81fa1b568",
+      "old_bytes": 2540,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+      "new_sha256": "a98c11760c69e7f5e98c939d6c6722f422555987114139b0a38955a81fa1b568"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/easytier/jni/EasyTierJNI.java",
+      "old_sha256": "2673a0e17139476c65f2165bb667c43370cce6780b16819257143cc0be1009a7",
+      "old_bytes": 668,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/easytier/jni/EasyTierJNI.java",
+      "new_sha256": "2673a0e17139476c65f2165bb667c43370cce6780b16819257143cc0be1009a7"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.java",
+      "old_sha256": "d00800e0bb63732dd666d8fb571e7baab97774cc4eabfac7ae4b24ba56e761d9",
+      "old_bytes": 14265,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.java",
+      "new_sha256": "d00800e0bb63732dd666d8fb571e7baab97774cc4eabfac7ae4b24ba56e761d9"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/PermissionDeniedInstrumentation.java",
+      "old_sha256": "0183c5c46823a6622f5683047979d0e05801009ec0f396c6028514dca6feea36",
+      "old_bytes": 3785,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/PermissionDeniedInstrumentation.java",
+      "new_sha256": "0183c5c46823a6622f5683047979d0e05801009ec0f396c6028514dca6feea36"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/RevokeInstrumentation.java",
+      "old_sha256": "ccb36e51c198a70779c674f5775ad446e6a7329fdea918bca3a054a96d2dcc51",
+      "old_bytes": 6224,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/RevokeInstrumentation.java",
+      "new_sha256": "ccb36e51c198a70779c674f5775ad446e6a7329fdea918bca3a054a96d2dcc51"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryInstrumentation.java",
+      "old_sha256": "859e89278ae8ab1b1946156c61e0bd79f2af1b2c6f86545b585f0dee619e4610",
+      "old_bytes": 8011,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryInstrumentation.java",
+      "new_sha256": "859e89278ae8ab1b1946156c61e0bd79f2af1b2c6f86545b585f0dee619e4610"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+      "old_sha256": "40f5a6def7a7c0b286f5358f365353b42c1644bce4b3d3078ffc005e52bd88eb",
+      "old_bytes": 13711,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+      "new_sha256": "40f5a6def7a7c0b286f5358f365353b42c1644bce4b3d3078ffc005e52bd88eb"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/AdvancedInstrumentation.java",
+      "old_sha256": "8f449edb5e7a29234ed56fee7510c062d301f58dc4bb848bc27e2ce2cd785720",
+      "old_bytes": 12404,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/AdvancedInstrumentation.java",
+      "new_sha256": "8f449edb5e7a29234ed56fee7510c062d301f58dc4bb848bc27e2ce2cd785720"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/NativeReportInfo.java",
+      "old_sha256": "6827b3bfe4ab730b4d04ceebb8ba625c07fca7e426151bbf3a1a35e189bbdaf9",
+      "old_bytes": 705,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/NativeReportInfo.java",
+      "new_sha256": "6827b3bfe4ab730b4d04ceebb8ba625c07fca7e426151bbf3a1a35e189bbdaf9"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/PerformanceExperiment.java",
+      "old_sha256": "3b494fc7c877d63d2e7610aaf7a39a20da4aaa2678f1a9927e697c8887918565",
+      "old_bytes": 17013,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/PerformanceExperiment.java",
+      "new_sha256": "3b494fc7c877d63d2e7610aaf7a39a20da4aaa2678f1a9927e697c8887918565"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+      "old_sha256": "74c6a75c43a09a66fae1fd8928cece444b8338e4fb12a10fda2240e492cfdbc9",
+      "old_bytes": 4537,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+      "new_sha256": "74c6a75c43a09a66fae1fd8928cece444b8338e4fb12a10fda2240e492cfdbc9"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/AdvancedLoopback.java",
+      "old_sha256": "098176adbab0c5e77617291c650257609b86eb4b324f7c3136b87af38bbc901d",
+      "old_bytes": 3931,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/AdvancedLoopback.java",
+      "new_sha256": "098176adbab0c5e77617291c650257609b86eb4b324f7c3136b87af38bbc901d"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/OfflineExperiment.java",
+      "old_sha256": "b2c609a099f4d47e10b819900a5f31a202debbef657022e9e49d9c5a53b96321",
+      "old_bytes": 9120,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/OfflineExperiment.java",
+      "new_sha256": "b2c609a099f4d47e10b819900a5f31a202debbef657022e9e49d9c5a53b96321"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/P00NativeBridge.java",
+      "old_sha256": "d75e44a3bf129e87ddee5c12d78d785ba47da4d044cf8b44926d978560365c7c",
+      "old_bytes": 594,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/P00NativeBridge.java",
+      "new_sha256": "d75e44a3bf129e87ddee5c12d78d785ba47da4d044cf8b44926d978560365c7c"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/AddressInstrumentation.java",
+      "old_sha256": "680a500840bcd6a636893ff1883f37fdc3e5792ff70b0745b9353ff93c5507fe",
+      "old_bytes": 12957,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/AddressInstrumentation.java",
+      "new_sha256": "680a500840bcd6a636893ff1883f37fdc3e5792ff70b0745b9353ff93c5507fe"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-probe/assets/config-cases.json",
+      "old_sha256": "bbcbde8659ed6d4f478612c5b61ecb17bfaf395d72e06f055587cf793a9ab691",
+      "old_bytes": 26493,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-probe/assets/config-cases.json",
+      "new_sha256": "bbcbde8659ed6d4f478612c5b61ecb17bfaf395d72e06f055587cf793a9ab691"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-probe/src/com/easytier/jni/EasyTierJNI.java",
+      "old_sha256": "458063f663ad18fda3e74b18296fd738d0f7c7e5dc39583594b81e80c4739bea",
+      "old_bytes": 492,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-probe/src/com/easytier/jni/EasyTierJNI.java",
+      "new_sha256": "458063f663ad18fda3e74b18296fd738d0f7c7e5dc39583594b81e80c4739bea"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-probe/src/com/github/zzwtsy/chuanmen/p00nativeprobe/NativeInstrumentation.java",
+      "old_sha256": "1a23d9cf9f819e7e7eb3beef00aa58d05fa82ae72a01f4599b7eed38f6b9168d",
+      "old_bytes": 4397,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-probe/src/com/github/zzwtsy/chuanmen/p00nativeprobe/NativeInstrumentation.java",
+      "new_sha256": "1a23d9cf9f819e7e7eb3beef00aa58d05fa82ae72a01f4599b7eed38f6b9168d"
+    },
+    {
+      "old_path": "experiments/android-vpn-smoke/native-probe/src/com/github/zzwtsy/chuanmen/p00nativeprobe/MappingInstrumentation.java",
+      "old_sha256": "c577505339ca930424641acba9a5500ae81892831468c919c8014dd4669bb12b",
+      "old_bytes": 3467,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "experiments/android-vpn-smoke/native-probe/src/com/github/zzwtsy/chuanmen/p00nativeprobe/MappingInstrumentation.java",
+      "new_sha256": "c577505339ca930424641acba9a5500ae81892831468c919c8014dd4669bb12b"
+    },
+    {
+      "old_path": "scripts/verification/export_reproduction.py",
+      "old_sha256": "d79a37b725977c9bdaba35f784d1ef44260e33469663a3bf6acb9b881e61afaf",
+      "old_bytes": 2236,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "scripts/verification/export_reproduction.py",
+      "new_sha256": "d3b52e5d05fa27faa7644cffd3c48996b7e3c7b5ff0ef35065b26fa8f3325629"
+    },
+    {
+      "old_path": "scripts/verification/check-evidence.py",
+      "old_sha256": "98994135fe05a02d78c8823a0648e7b5c2ae756ac3f01e9e416009158b284dfe",
+      "old_bytes": 11330,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "scripts/verification/check-evidence.py",
+      "new_sha256": "d39dcc5a05635dbcd30ca1d3188e98e20a36c66ecd887b1eeaef6a19e8a6e990"
+    },
+    {
+      "old_path": "scripts/verification/review-final-status.py",
+      "old_sha256": "c92c9af6cb7545ff1ea844d7b3be4676cb3cc36565b498e8bbdab4e22d1cb3bb",
+      "old_bytes": 2519,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "scripts/verification/freeze_handoff.py",
+      "old_sha256": "4856fa6efbaa0e5e4d6418c000103312b60e0da96c5afb7bd60d15deffd9492e",
+      "old_bytes": 2924,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "scripts/verification/freeze_handoff.py",
+      "new_sha256": "e32f73a518d7f8769ac3c589e5464427d6f28bd0f85b483c9024d471b18b6263"
+    },
+    {
+      "old_path": "scripts/verification/test-evidence.py",
+      "old_sha256": "668792ebce4ba6e87a8bf3b5f6e0b612158bce25885858328ccdd06682c0d730",
+      "old_bytes": 10515,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "scripts/verification/test-evidence.py",
+      "new_sha256": "82a09d17015ece7cace0a6633a47ffeda0b755e03e19ad04b9d29ae84c4bd639"
+    },
+    {
+      "old_path": "scripts/verification/evidence_io.py",
+      "old_sha256": "b0e42e179efe26ca1e5221216e172255df01cc61471b595edd0502dd77dee264",
+      "old_bytes": 6273,
+      "action": "maintained",
+      "reason": "当前最小探针或通用检查；不绑定历史执行摘要",
+      "new_path": "scripts/verification/evidence_io.py",
+      "new_sha256": "2ba1f1442d819c4cff3ba142d594ee5da816989a229ccda0494fddcae0a50e28"
+    },
+    {
+      "old_path": "scripts/verification/review-final-build.py",
+      "old_sha256": "068cca32f8784e68c48d94a2641f35a0d16b78ec49d970b9cffabf68b8b85b56",
+      "old_bytes": 9716,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "scripts/verification/review-existing-evidence.py",
+      "old_sha256": "bbe82f8720101bd9c3367898241b99f09d4750d53219eea4f9140cf475144352",
+      "old_bytes": 7291,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    },
+    {
+      "old_path": "scripts/verification/review-license-inputs.py",
+      "old_sha256": "b0e4008b6051655461eb4b2f505114714a003bd8309173248672394607b08f5c",
+      "old_bytes": 5503,
+      "action": "deleted",
+      "reason": "由所选观察/规范/维护入口取代，或仅为运输、进度、旧副本和重复检查"
+    }
+  ],
+  "maintenance_validation": {
+    "host_parser_execution": {
+      "status": "passed",
+      "cases": 88,
+      "accepted": 82,
+      "rejected": 6,
+      "binary_sha256": "fe28bb9d9a6f4012eb546c369a7f093de43cdf417650e15567fe1a2e94efc05d",
+      "runner_sha256": "c139ca183f6a9293deda5470532c736c82d2102d1c5893ead625a5d16f6773b1",
+      "source_rebuild": "not_run_required_rust_1_99_and_checkout_unavailable",
+      "actual_exit_code": 0
+    },
+    "android_native_rebuild": "not_run",
+    "physical_reexecution": "not_run",
+    "skill_format_validation": "passed_official_validator",
+    "note": "宿主运行使用既有固定身份二进制；完整复建条件不足，不替代真机实验"
+  },
+  "ignored_outputs": {
+    "action": "relocated_from_source_directory",
+    "destination": "build/experiments/android-vpn-smoke/legacy-local-cache",
+    "files": 7861,
+    "bytes": 2755016533,
+    "retention_days": 7,
+    "current_reproduction_input": false,
+    "note": "原本被忽略的临时构建/缓存；旧本地收据位置不可作新复跑入口，不进入阶段证据或归档"
+  }
+}

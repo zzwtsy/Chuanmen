@@ -1,0 +1,47 @@
+{
+  "layer": "upstream_source",
+  "sources": [
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/instance/runtime_host/tun_mobile.rs",
+      "sha256": "bb60244dcb182c5263bf669ba4c9e28a23e68155d167633edcd99e81a4ed0c2b",
+      "git_blob_sha": "4f4593261056bd816004cb1d9d8010717f66bf38"
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-core/src/gateway/dhcp.rs",
+      "sha256": "98ebbfd53e813df6ca6c2e49e73d0130ea2dd80e3fc896e49eed18aebf77a9e2",
+      "git_blob_sha": "8ad8bb6f1f249a485b683f91556b230edcab4ce6"
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/common/global_ctx.rs",
+      "sha256": "6e76ba44036d85b21bba11aeb95e744923637ed16203feb022e4832aa02f61d7",
+      "git_blob_sha": "f3000d0829fd9f680407985312c0202b7b862d73"
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/instance/runtime_host/event_journal.rs",
+      "sha256": "5ed5f0b77445297c0aacb77e0af8f9584fe20168d37532e64686c9f7887edeb6",
+      "git_blob_sha": "3d2814ad6320539c7a5e7f84cd58d2aaab9c80c5"
+    }
+  ],
+  "scope": "DHCP actual address publication and mobile NIC drain; no invented JNI subscription API",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "address-source-evidence.json",
+        "sha256": "437605864ed64a357f0bc204ff935bb9d5684c626ab3c0fe664d82901917953a"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

@@ -1,0 +1,13 @@
+interface:
+  display_name: Android Kotlin 中文注释
+  short_description: 审查 Kotlin 与 Compose 中文注释，并逐例说明测试条件、操作和可验证结果
+  default_prompt: 请使用 $android-kotlin-comments 审查并完善当前 Android 项目的中文注释与 KDoc，逐个用中文写清测试条件、操作和实际断言的结果。
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

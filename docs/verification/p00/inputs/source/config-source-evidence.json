@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "candidate_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "status": "source_verified",
+  "parser_status": "unverified",
+  "sources": [
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-core/src/config/toml.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/src/config/toml.rs",
+      "git_blob_sha": "c0835fea08e1e058d65af172f37b4cf625b26bc3",
+      "sha256": "4c748a4faea9a0cad68d9495b311f1c57736873d8f9b2cc3acbe2c0d5db21311",
+      "size_bytes": 59801,
+      "verification": "Git blob SHA independently matched",
+      "excerpts": [
+        {
+          "start_line": 308,
+          "end_line": 341,
+          "text": "pub struct VpnPortalConfig {\n    #[serde(default, skip_serializing_if = \"Option::is_none\")]\n    pub enabled: Option<bool>,\n    pub wireguard_listen: SocketAddr,\n    #[serde(default, skip_serializing_if = \"Option::is_none\")]\n    pub wireguard_private_key: Option<String>,\n    #[serde(default)]\n    pub clients: Vec<VpnPortalClientConfig>,\n}\n\nimpl std::fmt::Debug for VpnPortalConfig {\n    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {\n        formatter\n            .debug_struct(\"VpnPortalConfig\")\n            .field(\"enabled\", &self.enabled)\n            .field(\"wireguard_listen\", &self.wireguard_listen)\n            .field(\n                \"wireguard_private_key\",\n                &self.wireguard_private_key.as_ref().map(|_| \"<redacted>\"),\n            )\n            .field(\"clients\", &self.clients)\n            .finish()\n    }\n}\n\n#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq)]\n#[serde(deny_unknown_fields)]\npub struct VpnPortalClientConfig {\n    pub name: String,\n    pub virtual_ip: cidr::Ipv4Inet,\n    #[serde(default)]\n    pub groups: Vec<String>,\n}\n"
+        },
+        {
+          "start_line": 389,
+          "end_line": 425,
+          "text": "#[cfg_attr(feature = \"config-write\", derive(Serialize))]\nstruct Config {\n    netns: Option<String>,\n    hostname: Option<String>,\n    instance_name: Option<String>,\n    instance_id: Option<uuid::Uuid>,\n    ipv4: Option<String>,\n    ipv6: Option<String>,\n    ipv6_public_addr_provider: Option<bool>,\n    ipv6_public_addr_auto: Option<bool>,\n    ipv6_public_addr_prefix: Option<String>,\n    dhcp: Option<bool>,\n    network_identity: Option<NetworkIdentity>,\n    listeners: Option<Vec<url::Url>>,\n    mapped_listeners: Option<Vec<url::Url>>,\n    exit_nodes: Option<Vec<IpAddr>>,\n\n    peer: Option<Vec<PeerConfig>>,\n    proxy_network: Option<Vec<ProxyNetworkConfig>>,\n\n    vpn_portal_config: Option<VpnPortalConfig>,\n\n    routes: Option<Vec<cidr::Ipv4Cidr>>,\n\n    socks5_proxy: Option<url::Url>,\n\n    port_forward: Option<Vec<PortForwardConfig>>,\n\n    secure_mode: Option<SecureModeConfig>,\n\n    #[serde(default)]\n    flags: FlagsPatch,\n\n    acl: Option<Acl>,\n\n    tcp_whitelist: Option<Vec<String>>,\n    udp_whitelist: Option<Vec<String>>,"
+        },
+        {
+          "start_line": 1120,
+          "end_line": 1133,
+          "text": "    fn legacy_vpn_portal_client_cidr_is_rejected_explicitly() {\n        let error = TomlConfig::new_from_str(\n            r#\"\n[vpn_portal_config]\nclient_cidr = \"10.14.14.0/24\"\nwireguard_listen = \"0.0.0.0:51820\"\n\"#,\n        )\n        .unwrap_err()\n        .to_string();\n\n        assert!(error.contains(\"client_cidr\"), \"{error}\");\n    }\n"
+        },
+        {
+          "start_line": 1681,
+          "end_line": 1705,
+          "text": "    fn test_acl_toml_rule_uses_defaults_for_omitted_fields() {\n        use crate::proto::acl::{Action, ChainType, Protocol};\n\n        let config_str = r#\"\n[[acl.acl_v1.chains]]\nname = \"subnet_proxy_protect\"\nchain_type = 3\nenabled = true\ndefault_action = 2\n\n[[acl.acl_v1.chains.rules]]\nname = \"allow_my_devices\"\npriority = 1000\naction = 1\nsource_ips = [\"10.172.192.2/32\"]\nprotocol = 5\nenabled = true\n\"#;\n\n        let config = TomlConfigLoader::new_from_str(config_str).unwrap();\n        let acl = config.get_acl().unwrap();\n        let acl_v1 = acl.acl_v1.unwrap();\n        let chain = &acl_v1.chains[0];\n        let rule = &chain.rules[0];\n"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-core/src/config/toml/snapshot.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/src/config/toml/snapshot.rs",
+      "git_blob_sha": "f3bb7e90224f580fa9e44e92b84623ab7e3b346a",
+      "sha256": "2c0869afabb0f6290550dfca9d866210824121d038c05649348519affa164c76",
+      "size_bytes": 432,
+      "verification": "Git blob SHA independently matched",
+      "excerpts": [
+        {
+          "start_line": 1,
+          "end_line": 8,
+          "text": "use super::{Arc, Mutex, TomlConfig};\n\nimpl TomlConfig {\n    pub(crate) fn detached_snapshot(&self) -> Self {\n        let config = self.config.lock().unwrap().clone();\n        Self {\n            config: Arc::new(Mutex::new(config)),\n        }"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/instance/host.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/host.rs",
+      "git_blob_sha": "5b4b2b5323eaf62f35c06298c92ed5c11658f67c",
+      "sha256": "40dc198014f1952ebac2f8d10b766ed5d53e8c1693623556945c30209be10afa",
+      "size_bytes": 1870,
+      "verification": "Git blob SHA independently matched",
+      "excerpts": [
+        {
+          "start_line": 1,
+          "end_line": 8,
+          "text": "use std::{net::IpAddr, sync::Arc};\n\nuse easytier_core::{\n    connectivity::composite::{ConnectorEnvironment, ConnectorHostAdapter},\n    socket::{NetNamespace, SocketContext},\n};\n\nuse crate::{"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-proto/proto/api_config.proto",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-proto/proto/api_config.proto",
+      "git_blob_sha": "ae299b7b6a45db4eda9b01aa7c35548a7c76810d",
+      "sha256": "620ad8426b60a29fdf409fdbc0b6e71ad9cf8ce30de8b6a221652fe73421a30f",
+      "size_bytes": 2240,
+      "verification": "Git blob SHA independently matched",
+      "excerpts": [
+        {
+          "start_line": 1,
+          "end_line": 8,
+          "text": "syntax = \"proto3\";\n\nimport \"common.proto\";\nimport \"acl.proto\";\nimport \"api_instance.proto\";\nimport \"api_manage.proto\";\n\npackage api.config;"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-proto/proto/common.proto",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-proto/proto/common.proto",
+      "git_blob_sha": "90ffa11923e21b165ccaa4e7f195db7edc72fe99",
+      "sha256": "ba2be001c6f079dcb63ce62960c7e1b6e855368def6bfe17f54af0e381261a8e",
+      "size_bytes": 8546,
+      "verification": "Git blob SHA independently matched",
+      "excerpts": [
+        {
+          "start_line": 8,
+          "end_line": 26,
+          "text": "message Flags {\n  string default_protocol = 1 [(easytier.flag) = { default: \"tcp\" }];\n  string dev_name = 2 [(easytier.flag) = { default: \"\", form: true }];\n  bool enable_encryption = 3 [(easytier.flag) = { default: \"true\", api: { field: \"disable_encryption\", negate: true } }];\n  bool enable_ipv6 = 4 [(easytier.flag) = { default: \"true\", api: { field: \"disable_ipv6\", negate: true } }];\n  uint32 mtu = 5 [(easytier.flag) = { default: \"1380\", form: true }];\n  bool latency_first = 6 [(easytier.flag) = { default: \"false\" }];\n  bool enable_exit_node = 7 [(easytier.flag) = { default: \"false\" }];\n  bool no_tun = 8 [(easytier.flag) = { default: \"false\" }];\n  bool use_smoltcp = 9 [(easytier.flag) = { default: \"false\" }];\n  string relay_network_whitelist = 10 [(easytier.flag) = { default: \"*\", form: true }];\n  bool disable_p2p = 11 [(easytier.flag) = { default: \"false\" }];\n  bool relay_all_peer_rpc = 12 [(easytier.flag) = { default: \"false\" }];\n  bool disable_udp_hole_punching = 13 [(easytier.flag) = { default: \"false\" }];\n  // string ipv6_listener = 14; [deprecated = true]; use -l udp://[::]:12345\n  // instead\n  bool multi_thread = 15 [(easytier.flag) = { default: \"true\" }];\n  CompressionAlgoPb data_compress_algo = 16 [(easytier.flag) = { default: \"None\", form: true }];\n  bool bind_device = 17 [(easytier.flag) = { default: \"true\" }];"
+        },
+        {
+          "start_line": 34,
+          "end_line": 39,
+          "text": "  bool proxy_forward_by_system = 21 [(easytier.flag) = { default: \"false\" }];\n\n  // enable magic dns or not\n  bool accept_dns = 22 [(easytier.flag) = { default: \"false\", api: { field: \"enable_magic_dns\" } }];\n  // enable private mode\n  bool private_mode = 23 [(easytier.flag) = { default: \"false\", api: { field: \"enable_private_mode\" } }];"
+        },
+        {
+          "start_line": 73,
+          "end_line": 80,
+          "text": "  bool disable_tcp_hole_punching = 34 [(easytier.flag) = { default: \"false\" }];\n\n  bool lazy_p2p = 37 [(easytier.flag) = { default: \"false\" }];\n  bool need_p2p = 38 [(easytier.flag) = { default: \"false\" }];\n  uint64 instance_recv_bps_limit = 39 [(easytier.flag) = { default: \"18446744073709551615\", form: true }];\n  bool disable_upnp = 40 [(easytier.flag) = { default: \"false\" }];\n  bool disable_relay_data = 41 [(easytier.flag) = { default: \"false\" }];\n  bool enable_udp_broadcast_relay = 42 [(easytier.flag) = { default: \"false\" }];"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-proto/src/common.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-proto/src/common.rs",
+      "git_blob_sha": "1db0d3e26b493a9de916c04af0d75ffb00605ee2",
+      "sha256": "ef05c26d107674f4cc664e1abc8a0c7bc8cef910dd235b73db3c3dd0f3428b70",
+      "size_bytes": 22055,
+      "verification": "Git blob SHA independently matched",
+      "excerpts": [
+        {
+          "start_line": 46,
+          "end_line": 69,
+          "text": "    }\n\n    /// The values a network runs with when a configuration states no flag.\n    ///\n    /// The build script reads them off the `(easytier.flag)` annotations on the\n    /// message, in protobuf JSON, and the config UI reads the same annotations\n    /// from its own bindings, so an unset flag means the same thing on both\n    /// sides.\n    pub fn defaults() -> Self {\n        static DEFAULTS: OnceLock<Flags> = OnceLock::new();\n        DEFAULTS\n            .get_or_init(|| {\n                serde_json::from_str(flags::DEFAULTS)\n                    .expect(\"the build script writes the defaults from the schema\")\n            })\n            .clone()\n    }\n\n    /// Applies `patch` over [`Flags::defaults`]. A field the user left out keeps\n    /// its default, so nothing downstream has to decide what \"unset\" means.\n    pub fn resolve(patch: FlagsPatch) -> Self {\n        let mut flags = Self::defaults();\n        flags.load(patch);\n        flags"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "LICENSE",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/LICENSE",
+      "git_blob_sha": "0a041280bd00a9d068f503b8ee7ce35214bd24a1",
+      "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+      "size_bytes": 7652,
+      "verification": "Git blob SHA independently matched",
+      "excerpts": [
+        {
+          "start_line": 1,
+          "end_line": 2,
+          "text": "                   GNU LESSER GENERAL PUBLIC LICENSE\n                       Version 3, 29 June 2007"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-core/Cargo.toml",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/Cargo.toml",
+      "git_blob_sha": "0edba3377fa3ec033d2cfe92e77de02c4c3490e7",
+      "sha256": "423df617e255516144f97818ccdb8eba8de7c460ab73ce05ddbe975b53068254",
+      "size_bytes": 6163,
+      "verification": "Git blob SHA independently matched",
+      "excerpts": [
+        {
+          "start_line": 1,
+          "end_line": 8,
+          "text": "[package]\nname = \"easytier-core\"\ndescription = \"EasyTier OS-free control-plane core primitives.\"\nhomepage = \"https://github.com/EasyTier/EasyTier\"\nrepository = \"https://github.com/EasyTier/EasyTier\"\nversion = \"2.7.0\"\nedition.workspace = true\nrust-version.workspace = true"
+        }
+      ]
+    }
+  ],
+  "license_symlink_note": "easytier/LICENSE 是符号链接；读取工具返回目标内容，未将该内容冒充链接本身的 blob。根 LICENSE 独立核对。",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "config-source-evidence.json",
+        "sha256": "55771a5876bde08fa8af6fbe74a7fce2f95d6a7b40736089878ee1bdd9671dff"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "layer": "assistant_deployment",
+  "recorded_at_utc": "2026-10-11T11:45:12.411768+00:00",
+  "status": "passed",
+  "resources": [
+    {
+      "url": "https://easytier.cn/assistant/",
+      "resolved_url": "https://easytier.cn/assistant/",
+      "sha256": "2ff541efed99e1e873f68ad5640cf12d93b1af7276ef19e171849a51b4a13eae",
+      "size_bytes": 411,
+      "headers": {
+        "content-type": "text/html",
+        "etag": "\"51133480EC4543F1D4339A507A4A0E64\""
+      },
+      "local_path": "/tmp/chuanmen-p00-assistant-entry.html"
+    },
+    {
+      "url": "https://easytier.cn/assistant/assets/index-CU7Lyann.js",
+      "resolved_url": "https://easytier.cn/assistant/assets/index-CU7Lyann.js",
+      "sha256": "6f8b57a22e2a348d9d1e6b078d04ddf80d1895adcccc2a91c3a45f188ccd41d5",
+      "size_bytes": 1821267,
+      "headers": {
+        "content-type": "application/javascript",
+        "etag": "\"3AAF3E95132EC92905B8C16B994BE494\""
+      },
+      "local_path": "/tmp/chuanmen-p00-assistant-bundle.js"
+    }
+  ],
+  "historical_entry_sha256": "2ff541efed99e1e873f68ad5640cf12d93b1af7276ef19e171849a51b4a13eae",
+  "historical_bundle_sha256": "6f8b57a22e2a348d9d1e6b078d04ddf80d1895adcccc2a91c3a45f188ccd41d5",
+  "matches_historical_entry": true,
+  "matches_historical_bundle": true,
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "fetch.json",
+        "sha256": "f7f3f7a72cb16a37a295872a8c57276eeb381a463ede0355e772602de59c478b"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

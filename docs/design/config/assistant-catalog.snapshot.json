@@ -1,0 +1,1419 @@
+{
+  "meta": {
+    "scope": "以 easytier.cn/assistant 实际部署组件的可见输入与动态 flags 表为范围，映射到当前核心 TOML；Android 自有选项单独分组。",
+    "capturedAtUtc": "2026-10-10T21:57:46.170012+00:00",
+    "deployed": {
+      "url": "https://easytier.cn/assistant/",
+      "entrySha256": "2ff541efed99e1e873f68ad5640cf12d93b1af7276ef19e171849a51b4a13eae",
+      "bundleUrl": "https://easytier.cn/assistant/assets/index-CU7Lyann.js",
+      "bundleSha256": "6f8b57a22e2a348d9d1e6b078d04ddf80d1895adcccc2a91c3a45f188ccd41d5",
+      "framework": "Vue",
+      "commit": null,
+      "basis": "Config component actual model bindings plus its 26-item dynamic boolean table; protobuf-only fields are not a visible-form source.",
+      "sourceFields": [
+        "acl",
+        "bind_device",
+        "dev_name",
+        "dhcp",
+        "disable_encryption",
+        "disable_ipv6",
+        "disable_kcp_input",
+        "disable_p2p",
+        "disable_quic_input",
+        "disable_sym_hole_punching",
+        "disable_tcp_hole_punching",
+        "disable_udp_hole_punching",
+        "disable_upnp",
+        "enable_exit_node",
+        "enable_kcp_proxy",
+        "enable_magic_dns",
+        "enable_manual_routes",
+        "enable_private_mode",
+        "enable_quic_proxy",
+        "enable_relay_network_whitelist",
+        "enable_socks5",
+        "enable_udp_broadcast_relay",
+        "enable_vpn_portal",
+        "exit_nodes",
+        "hostname",
+        "instance_recv_bps_limit",
+        "ipv6_public_addr_auto",
+        "latency_first",
+        "lazy_p2p",
+        "listener_urls",
+        "mapped_listeners",
+        "mtu",
+        "multi_thread",
+        "need_p2p",
+        "network_length",
+        "network_name",
+        "network_secret",
+        "no_tun",
+        "p2p_only",
+        "peer_urls",
+        "port_forwards",
+        "proxy_cidrs",
+        "proxy_forward_by_system",
+        "relay_all_peer_rpc",
+        "relay_network_whitelist",
+        "routes",
+        "socks5_port",
+        "use_smoltcp",
+        "virtual_ipv4",
+        "vpn_portal_client_network_addr",
+        "vpn_portal_client_network_len",
+        "vpn_portal_listen_port"
+      ],
+      "dynamicFlags": [
+        "latency_first",
+        "use_smoltcp",
+        "disable_ipv6",
+        "ipv6_public_addr_auto",
+        "enable_kcp_proxy",
+        "disable_kcp_input",
+        "enable_quic_proxy",
+        "disable_quic_input",
+        "disable_p2p",
+        "p2p_only",
+        "lazy_p2p",
+        "bind_device",
+        "no_tun",
+        "enable_exit_node",
+        "relay_all_peer_rpc",
+        "need_p2p",
+        "multi_thread",
+        "proxy_forward_by_system",
+        "disable_encryption",
+        "disable_tcp_hole_punching",
+        "disable_udp_hole_punching",
+        "enable_udp_broadcast_relay",
+        "disable_upnp",
+        "disable_sym_hole_punching",
+        "enable_magic_dns",
+        "enable_private_mode"
+      ]
+    },
+    "comparisonSources": [
+      {
+        "url": "https://github.com/EasyTier/assistant/blob/f809b2e1f175ed744fa66a3e73c196edbffa13ce/src/types/config.ts",
+        "match": false,
+        "note": "React Wizard/Expert reference differs from deployed Vue UI; not used to expand scope."
+      },
+      {
+        "url": "https://github.com/EasyTier/EasyTier/blob/83baead0599110bee0d47f4c70b63b23753252a7/easytier-web/frontend-lib/src/components/Config.vue",
+        "match": false,
+        "note": "Current official shared component has newer controls; deployed bundle remains authoritative for UI scope."
+      }
+    ],
+    "coreSemanticsRevision": "83baead0599110bee0d47f4c70b63b23753252a7",
+    "simpleKeys": [
+      "network_identity.network_name",
+      "network_identity.network_secret",
+      "peer"
+    ],
+    "simpleAddressSummary": "DHCP 默认为自动；已有静态地址如实显示。简单和全部复用同一组表单节点与 draft/raw/errors/saved。",
+    "visibleCoreCount": 37,
+    "visibleAndroidCount": 7,
+    "visibleFieldCount": 44,
+    "hiddenAssistantFields": [
+      {
+        "key": "flags.bind_device",
+        "assistantFields": [
+          "bind_device"
+        ],
+        "reason": "当前 Android native host 设置 allow_interface_bind=false，物理网卡绑定由平台适配管理。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      {
+        "key": "flags.dev_name",
+        "assistantFields": [
+          "dev_name"
+        ],
+        "reason": "本客户端采用免 Root VpnService；TUN 由 Android 创建，接口名称由平台管理。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      {
+        "key": "flags.enable_udp_broadcast_relay",
+        "assistantFields": [
+          "enable_udp_broadcast_relay"
+        ],
+        "reason": "此实现捕获物理网卡 UDP 广播的路径限定 Windows + tun；当前 Android 客户端不提供。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      {
+        "key": "ipv6_public_addr_auto",
+        "assistantFields": [
+          "ipv6_public_addr_auto"
+        ],
+        "reason": "当前客户端尚未提供公网 IPv6 自动分配与 TUN 路由同步适配；保留来源映射但不展示为可操作选项。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      {
+        "key": "flags.multi_thread",
+        "assistantFields": [
+          "multi_thread"
+        ],
+        "reason": "JNI 共享运行时由应用初始化，不作为单网络的可编辑开关。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      {
+        "key": "flags.no_tun",
+        "assistantFields": [
+          "no_tun"
+        ],
+        "reason": "本客户端运行模式固定为免 Root VPN；不提供改变数据路径的 NO_TUN 模式开关。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      {
+        "key": "flags.proxy_forward_by_system",
+        "assistantFields": [
+          "proxy_forward_by_system"
+        ],
+        "reason": "免 Root VpnService 不提供 Linux 内核转发管理；本客户端采用用户态代理。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      {
+        "key": "flags.use_smoltcp",
+        "assistantFields": [
+          "use_smoltcp"
+        ],
+        "reason": "当前 Android native host 要求用户态协议栈，属于宿主接管选项。",
+        "ui": "hidden",
+        "search": "hidden"
+      }
+    ],
+    "excludedLegacyFields": [
+      {
+        "key": "instance_name",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "ipv6",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "stun_servers",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "tcp_stun_servers",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "stun_servers_v6",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "secure_mode.enabled",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "secure_mode.local_private_key",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "secure_mode.local_public_key",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "credential_file",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "managed_credentials",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "tcp_whitelist",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "udp_whitelist",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "ipv6_public_addr_auto",
+        "reason": "当前客户端尚未提供公网 IPv6 自动分配与 TUN 路由同步适配；保留来源映射但不展示为可操作选项。"
+      },
+      {
+        "key": "ipv6_public_addr_provider",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "ipv6_public_addr_prefix",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "instance_id",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "source.source",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "netns",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.default_protocol",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.dev_name",
+        "reason": "本客户端采用免 Root VpnService；TUN 由 Android 创建，接口名称由平台管理。"
+      },
+      {
+        "key": "flags.no_tun",
+        "reason": "本客户端运行模式固定为免 Root VPN；不提供改变数据路径的 NO_TUN 模式开关。"
+      },
+      {
+        "key": "flags.use_smoltcp",
+        "reason": "当前 Android native host 要求用户态协议栈，属于宿主接管选项。"
+      },
+      {
+        "key": "flags.multi_thread",
+        "reason": "JNI 共享运行时由应用初始化，不作为单网络的可编辑开关。"
+      },
+      {
+        "key": "flags.data_compress_algo",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.bind_device",
+        "reason": "当前 Android native host 设置 allow_interface_bind=false，物理网卡绑定由平台适配管理。"
+      },
+      {
+        "key": "flags.disable_relay_kcp",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.proxy_forward_by_system",
+        "reason": "免 Root VpnService 不提供 Linux 内核转发管理；本客户端采用用户态代理。"
+      },
+      {
+        "key": "flags.disable_relay_quic",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.quic_listen_port",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.foreign_relay_bps_limit",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.multi_thread_count",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.enable_relay_foreign_network_kcp",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.enable_relay_foreign_network_quic",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.encryption_algorithm",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.tld_dns_zone",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.disable_relay_data",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.enable_udp_broadcast_relay",
+        "reason": "此实现捕获物理网卡 UDP 广播的路径限定 Windows + tun；当前 Android 客户端不提供。"
+      },
+      {
+        "key": "flags.socket_mark",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "flags.prefer_peer_relay",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "android.runtimeMode",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "android.configServerUrl",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "android.machineId",
+        "reason": "不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"
+      },
+      {
+        "key": "process.easytierLogLevel",
+        "reason": "进程级日志在日志页管理。"
+      },
+      {
+        "key": "app.logLevel",
+        "reason": "进程级日志在日志页管理。"
+      },
+      {
+        "key": "app.logRetention",
+        "reason": "进程级日志在日志页管理。"
+      }
+    ],
+    "scopeWarnings": [
+      "部署 commit 未从 bundle 公开；以实际下载文件 SHA256 固定证据，不把仓库主干当作已部署版本。",
+      "Portal 的旧 UI 子网/监听模型与当前核心结构有差异；配置保存采用当前核心对象结构，未声称可直接发送旧管理投影。",
+      "页面数量表示编辑单元，不等于全部嵌套叶子字段。",
+      "隐藏配置仍可保留在已有保存数据中；隐藏不代表从原配置删除。"
+    ]
+  },
+  "groups": [
+    {
+      "id": "identity",
+      "label": "网络与地址"
+    },
+    {
+      "id": "connection",
+      "label": "节点与直连"
+    },
+    {
+      "id": "routing",
+      "label": "路由与服务"
+    },
+    {
+      "id": "security",
+      "label": "安全与访问"
+    },
+    {
+      "id": "performance",
+      "label": "中继与性能"
+    },
+    {
+      "id": "android",
+      "label": "Android 应用设置"
+    }
+  ],
+  "fields": [
+    {
+      "key": "network_identity.network_name",
+      "label": "网络名称",
+      "group": "identity",
+      "type": "text",
+      "default": null,
+      "help": "所有加入同一网络的设备使用相同名称。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "sample": "home-mesh",
+      "uiDefault": null,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "network_name"
+      ]
+    },
+    {
+      "key": "network_identity.network_secret",
+      "label": "网络密码",
+      "group": "identity",
+      "type": "secret",
+      "default": null,
+      "help": "共享密钥模式下使用；凭据节点省略此键，不等同于将密码设为空字符串。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "sample": "••••••••",
+      "secret": true,
+      "dependencies": [
+        "凭据模式：不写入本字段；保留 missing 与 empty 的差异"
+      ],
+      "uiDefault": null,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "network_secret"
+      ]
+    },
+    {
+      "key": "hostname",
+      "label": "本设备名称",
+      "group": "identity",
+      "type": "text",
+      "default": null,
+      "help": "对端看到的主机名称。核心会去除控制字符并限制为 32 个字符。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "core-hot",
+      "source": "deployed-assistant",
+      "sample": "我的手机",
+      "maxLength": 32,
+      "uiDefault": null,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "hostname"
+      ]
+    },
+    {
+      "key": "dhcp",
+      "label": "自动分配 IPv4",
+      "group": "identity",
+      "type": "boolean",
+      "default": false,
+      "help": "核心缺省为 false；本客户端建议新建配置默认开启自动分配。静态地址模式关闭此项。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "recommendedDefault": true,
+      "sample": true,
+      "dependencies": [
+        "关闭后显示 ipv4"
+      ],
+      "capability": "dhcp-ipv4",
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "dhcp"
+      ]
+    },
+    {
+      "key": "ipv4",
+      "label": "虚拟 IPv4 地址",
+      "group": "identity",
+      "type": "cidr",
+      "default": null,
+      "help": "使用地址与前缀长度；仅静态模式可编辑，避免和其他设备冲突。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "core-hot-and-rebuild-vpn",
+      "source": "deployed-assistant",
+      "sample": "10.144.0.6/24",
+      "dependencies": [
+        "dhcp=false"
+      ],
+      "note": "PatchConfig 在 dhcp=true 时不会应用 IPv4 修改",
+      "uiDefault": null,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "network_length",
+        "virtual_ipv4"
+      ]
+    },
+    {
+      "key": "flags.enable_ipv6",
+      "label": "允许底层 IPv6 连接",
+      "group": "identity",
+      "type": "boolean",
+      "default": true,
+      "help": "控制核心使用 IPv6 连接节点，不代表非组网 IPv6 已进入 VPN。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "uiDefault": true,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "disable_ipv6"
+      ]
+    },
+    {
+      "key": "flags.accept_dns",
+      "label": "MagicDNS 组网域名",
+      "group": "identity",
+      "type": "boolean",
+      "default": false,
+      "help": "允许通过设备名访问组网设备；Android DNS 转发和域名范围需配合实现。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core-and-rebuild-vpn",
+      "source": "deployed-assistant",
+      "capability": "magic-dns",
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "enable_magic_dns"
+      ]
+    },
+    {
+      "key": "peer",
+      "label": "连接节点",
+      "group": "connection",
+      "type": "list",
+      "default": [],
+      "help": "填写完整连接 URI，可添加多个节点。保存协议、路径、查询参数和 IPv6 字面量。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "connector-hot-or-restart",
+      "source": "deployed-assistant",
+      "sample": [
+        {
+          "uri": "tcp://example.net:11010"
+        }
+      ],
+      "note": "URI connector 可热增删；绑定 peer_public_key 的变化应重新校验并重连，不能只热加 URI。",
+      "children": [
+        {
+          "key": "uri",
+          "label": "节点地址",
+          "type": "url"
+        },
+        {
+          "key": "peer_public_key",
+          "label": "固定对端公钥",
+          "type": "text"
+        }
+      ],
+      "uiDefault": [],
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "peer_urls"
+      ]
+    },
+    {
+      "key": "listeners",
+      "label": "监听地址",
+      "group": "connection",
+      "type": "list",
+      "default": null,
+      "help": "允许其他节点连入的本地监听 URI；协议和端口按实际核心构建校验。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "sample": [
+        "tcp://0.0.0.0:11010",
+        "udp://0.0.0.0:11010"
+      ],
+      "uiDefault": null,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "listener_urls"
+      ]
+    },
+    {
+      "key": "mapped_listeners",
+      "label": "公布的外部地址",
+      "group": "connection",
+      "type": "list",
+      "default": null,
+      "help": "手动告知对端可连接本机的外部地址；适用于已配置的端口映射。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "core-hot",
+      "source": "deployed-assistant",
+      "uiDefault": null,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "mapped_listeners"
+      ]
+    },
+    {
+      "key": "flags.disable_p2p",
+      "label": "普通自动 P2P",
+      "group": "connection",
+      "type": "boolean",
+      "default": false,
+      "help": "关闭普通自动 P2P；标记为 need_p2p 的节点仍有特殊建链行为，不等于绝不直连。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "invert": true,
+      "uiDefault": true,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "disable_p2p"
+      ]
+    },
+    {
+      "key": "flags.p2p_only",
+      "label": "仅与已直连节点通信",
+      "group": "connection",
+      "type": "boolean",
+      "default": false,
+      "help": "没有可用 P2P 的目标会不可达，不能把它理解为优先直连。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "p2p_only"
+      ]
+    },
+    {
+      "key": "flags.lazy_p2p",
+      "label": "有流量时再建立 P2P",
+      "group": "connection",
+      "type": "boolean",
+      "default": false,
+      "help": "按需建链；need_p2p 节点仍可能主动建立连接。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "lazy_p2p"
+      ]
+    },
+    {
+      "key": "flags.need_p2p",
+      "label": "要求对端主动建立 P2P",
+      "group": "connection",
+      "type": "boolean",
+      "default": false,
+      "help": "向其他节点声明应主动与本机建链，即使其启用 lazy_p2p。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "need_p2p"
+      ]
+    },
+    {
+      "key": "flags.disable_udp_hole_punching",
+      "label": "UDP 打洞",
+      "group": "connection",
+      "type": "boolean",
+      "default": false,
+      "help": "允许通过 UDP 打洞尝试建立直连。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "invert": true,
+      "uiDefault": true,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "disable_udp_hole_punching"
+      ]
+    },
+    {
+      "key": "flags.disable_tcp_hole_punching",
+      "label": "TCP 打洞",
+      "group": "connection",
+      "type": "boolean",
+      "default": false,
+      "help": "启用编译支持的 TCP 打洞机制。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "invert": true,
+      "capability": "tcp-hole-punch",
+      "uiDefault": true,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "disable_tcp_hole_punching"
+      ]
+    },
+    {
+      "key": "flags.disable_sym_hole_punching",
+      "label": "对称 NAT 打洞",
+      "group": "connection",
+      "type": "boolean",
+      "default": false,
+      "help": "控制对称 NAT 的额外 UDP 打洞尝试；依赖 UDP 打洞。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "invert": true,
+      "dependencies": [
+        "disable_udp_hole_punching=false"
+      ],
+      "uiDefault": true,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "disable_sym_hole_punching"
+      ]
+    },
+    {
+      "key": "flags.disable_upnp",
+      "label": "自动端口映射",
+      "group": "connection",
+      "type": "boolean",
+      "default": false,
+      "help": "对符合条件的监听器尝试 UPnP/NAT-PMP，需要路由器支持。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "invert": true,
+      "capability": "upnp",
+      "uiDefault": true,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "disable_upnp"
+      ]
+    },
+    {
+      "key": "routes",
+      "label": "路由接收方式",
+      "group": "routing",
+      "type": "optional-list",
+      "default": null,
+      "help": "未设置为自动接收；显式列表表示手动路由，替代动态传播的子网/Portal 路由。空列表与未设置不同。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "core-hot-and-rebuild-vpn",
+      "source": "deployed-assistant",
+      "options": [
+        "自动接收路由",
+        "仅使用手动网段"
+      ],
+      "preserveAbsence": true,
+      "uiDefault": null,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "enable_manual_routes",
+        "routes"
+      ]
+    },
+    {
+      "key": "exit_nodes",
+      "label": "互联网出口节点",
+      "group": "routing",
+      "type": "list",
+      "default": [],
+      "help": "按优先级排列的出口节点虚拟 IP。Android 默认路由、DNS 和 IPv6 出口策略需一起应用。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "core-hot-and-rebuild-vpn",
+      "source": "deployed-assistant",
+      "uiDefault": [],
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "exit_nodes"
+      ]
+    },
+    {
+      "key": "proxy_network",
+      "label": "分享本地子网",
+      "group": "routing",
+      "type": "list",
+      "default": [],
+      "help": "使用 Android 用户态代理访问本地子网，不启用系统内核转发。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "core-hot-with-platform-reconcile",
+      "source": "deployed-assistant",
+      "children": [
+        {
+          "key": "cidr",
+          "label": "本地网段",
+          "type": "cidr"
+        },
+        {
+          "key": "mapped_cidr",
+          "label": "映射网段",
+          "type": "cidr"
+        },
+        {
+          "key": "allow",
+          "label": "旧协议限制（兼容保留）",
+          "type": "list",
+          "readOnly": true
+        }
+      ],
+      "note": "ProxyNetworkPatch 只含 cidr/mapped_cidr，不含 allow；当前核心规范化未将 allow 投影到代理路由模型，保留字段不能保证限制已生效，应使用 ACL。",
+      "uiDefault": [],
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "proxy_cidrs"
+      ],
+      "implementationCondition": "使用 Android 用户态代理访问本地子网，不启用系统内核转发。"
+    },
+    {
+      "key": "socks5_proxy",
+      "label": "SOCKS5 监听",
+      "group": "routing",
+      "type": "url",
+      "default": null,
+      "help": "向使用 SOCKS5 的应用提供组网访问；默认建议只绑定本机回环地址。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "sample": "socks5://127.0.0.1:1080",
+      "capability": "proxy-smoltcp-stack + native socks5",
+      "uiDefault": null,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "enable_socks5",
+        "socks5_port"
+      ]
+    },
+    {
+      "key": "port_forward",
+      "label": "端口转发",
+      "group": "routing",
+      "type": "list",
+      "default": [],
+      "help": "将本地端口转到组网内目标，支持 TCP 或 UDP。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "core-hot",
+      "source": "deployed-assistant",
+      "capability": "proxy-smoltcp-stack",
+      "children": [
+        {
+          "key": "bind_addr",
+          "label": "本地监听地址",
+          "type": "text"
+        },
+        {
+          "key": "dst_addr",
+          "label": "目标地址",
+          "type": "text"
+        },
+        {
+          "key": "proto",
+          "label": "协议",
+          "type": "select",
+          "options": [
+            "tcp",
+            "udp"
+          ]
+        }
+      ],
+      "uiDefault": [],
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "port_forwards"
+      ]
+    },
+    {
+      "key": "vpn_portal_config",
+      "label": "WireGuard Portal",
+      "group": "routing",
+      "type": "object",
+      "default": null,
+      "help": "保留 WireGuard Portal；目标构建需启用对应核心能力。监听及客户端按当前核心结构保存。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "children": [
+        {
+          "key": "enabled",
+          "label": "启用门户",
+          "type": "boolean"
+        },
+        {
+          "key": "wireguard_listen",
+          "label": "监听 IP 与端口",
+          "type": "text"
+        },
+        {
+          "key": "wireguard_private_key",
+          "label": "服务端私钥",
+          "type": "secret"
+        },
+        {
+          "key": "clients",
+          "label": "具名客户端与虚拟 IP/组",
+          "type": "list"
+        }
+      ],
+      "note": "仅 clients 增删有热补丁；修改监听、私钥、enabled 按重启。TOML 与 NetworkConfig 的 wireguard_listen 都解析为 SocketAddr，不能直接写 CLI Portal URL。",
+      "uiDefault": null,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "enable_vpn_portal",
+        "vpn_portal_client_network_addr",
+        "vpn_portal_client_network_len",
+        "vpn_portal_listen_port"
+      ],
+      "implementationCondition": "保留 WireGuard Portal；目标构建需启用对应核心能力。监听及客户端按当前核心结构保存。"
+    },
+    {
+      "key": "flags.enable_exit_node",
+      "label": "允许本机作为出口",
+      "group": "routing",
+      "type": "boolean",
+      "default": false,
+      "help": "通过当前客户端的用户态协议栈转发出口流量。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "enable_exit_node"
+      ],
+      "implementationCondition": "通过当前客户端的用户态协议栈转发出口流量。"
+    },
+    {
+      "key": "flags.enable_encryption",
+      "label": "通信加密",
+      "group": "security",
+      "type": "boolean",
+      "default": true,
+      "help": "新配置保持开启；关闭时需对端兼容。安全算法与身份模式分别配置。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "uiDefault": true,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "disable_encryption"
+      ]
+    },
+    {
+      "key": "flags.private_mode",
+      "label": "限制外部网络接入",
+      "group": "security",
+      "type": "boolean",
+      "default": false,
+      "help": "按相同网络密钥或已受信任凭据限制 foreign network 接入，不等同于设备隐身。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "enable_private_mode"
+      ]
+    },
+    {
+      "key": "acl",
+      "label": "访问控制 ACL",
+      "group": "security",
+      "type": "object",
+      "default": null,
+      "help": "按入站/出站/转发组织规则，显示优先级、默认动作与命中情况；优先级数字越大越先匹配。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "core-hot",
+      "source": "deployed-assistant",
+      "children": [
+        {
+          "key": "acl_v1.chains",
+          "label": "规则链",
+          "type": "list"
+        },
+        {
+          "key": "acl_v1.chains[].rules",
+          "label": "有序规则",
+          "type": "list"
+        },
+        {
+          "key": "acl_v1.group",
+          "label": "身份组",
+          "type": "object"
+        }
+      ],
+      "expertEditor": true,
+      "note": "Rule 包含名称/描述/启用、协议、端口、源目标 IP、源端口、源目标组、动作、限速/突发、stateful。TimeWindow 虽在 proto 定义，但未挂到 Rule，不应宣传为已支持的时间规则。",
+      "uiDefault": null,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "acl"
+      ]
+    },
+    {
+      "key": "flags.latency_first",
+      "label": "优先低延迟路径",
+      "group": "performance",
+      "type": "boolean",
+      "default": false,
+      "help": "默认采用较短路径；开启后优先选择低延迟路径，可能经中继。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "latency_first"
+      ]
+    },
+    {
+      "key": "flags.mtu",
+      "label": "隧道 MTU",
+      "group": "performance",
+      "type": "number",
+      "default": 1380,
+      "help": "隧道数据包的大小上限，范围为 400～1380。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core-and-rebuild-vpn",
+      "source": "deployed-assistant",
+      "unit": "bytes",
+      "uiDefault": 1380,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "mtu"
+      ],
+      "min": 400,
+      "max": 1380
+    },
+    {
+      "key": "flags.instance_recv_bps_limit",
+      "label": "本网络接收限速",
+      "group": "performance",
+      "type": "number",
+      "default": "18446744073709551615",
+      "help": "限制当前实例整体接收速率，单位为字节每秒，默认不限速。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "unit": "B/s",
+      "displayDefault": "不限速",
+      "storageType": "decimal-string",
+      "unlimitedSentinel": "18446744073709551615",
+      "uiDefault": "18446744073709551615",
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "instance_recv_bps_limit"
+      ]
+    },
+    {
+      "key": "flags.relay_network_whitelist",
+      "label": "允许中继的网络",
+      "group": "performance",
+      "type": "text",
+      "default": "*",
+      "help": "支持 * 和网络名模式；空值禁用转发。部分本地网络回退行为以核心为准。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "uiDefault": "*",
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "enable_relay_network_whitelist",
+        "relay_network_whitelist"
+      ]
+    },
+    {
+      "key": "flags.relay_all_peer_rpc",
+      "label": "帮助其他网络交换建链信息",
+      "group": "performance",
+      "type": "boolean",
+      "default": false,
+      "help": "转发不在中继白名单中的对端 RPC，可帮助这些网络建立 P2P。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "relay_all_peer_rpc"
+      ]
+    },
+    {
+      "key": "flags.enable_kcp_proxy",
+      "label": "KCP 代理 TCP 流",
+      "group": "performance",
+      "type": "boolean",
+      "default": false,
+      "help": "对 TCP 流使用 KCP 代理；结合对端输入能力与真实链路测试，不保证更快。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "capability": "kcp",
+      "dependencies": [
+        "与 QUIC 代理同时启用的有效策略必须由当前核心校验/回读，UI 不隐式改另一项"
+      ],
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "enable_kcp_proxy"
+      ]
+    },
+    {
+      "key": "flags.disable_kcp_input",
+      "label": "允许 KCP 代理接入",
+      "group": "performance",
+      "type": "boolean",
+      "default": false,
+      "help": "控制对端是否可使用 KCP 代理 TCP 流到本节点。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "invert": true,
+      "capability": "kcp",
+      "uiDefault": true,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "disable_kcp_input"
+      ]
+    },
+    {
+      "key": "flags.enable_quic_proxy",
+      "label": "QUIC 代理 TCP 流",
+      "group": "performance",
+      "type": "boolean",
+      "default": false,
+      "help": "对 TCP 流使用 QUIC 代理，依赖实际构建和对端支持。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "capability": "quic",
+      "uiDefault": false,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "enable_quic_proxy"
+      ]
+    },
+    {
+      "key": "flags.disable_quic_input",
+      "label": "允许 QUIC 代理接入",
+      "group": "performance",
+      "type": "boolean",
+      "default": false,
+      "help": "控制对端是否可使用 QUIC 代理 TCP 流到本节点。",
+      "scope": "core",
+      "availability": "available",
+      "apply": "restart-core",
+      "source": "deployed-assistant",
+      "invert": true,
+      "capability": "quic",
+      "uiDefault": true,
+      "origin": "deployed-official-assistant",
+      "assistantFields": [
+        "disable_quic_input"
+      ]
+    },
+    {
+      "key": "android.appRoutingMode",
+      "label": "应用范围",
+      "group": "android",
+      "type": "select",
+      "default": "all",
+      "help": "全部应用、仅选中的应用、排除选中的应用；后两者互斥。",
+      "scope": "android",
+      "availability": "available",
+      "apply": "rebuild-vpn",
+      "source": "app-design",
+      "options": [
+        "all",
+        "allowlist",
+        "denylist"
+      ],
+      "uiDefault": "all",
+      "origin": "android-client"
+    },
+    {
+      "key": "android.appPackages",
+      "label": "选中的应用",
+      "group": "android",
+      "type": "application-list",
+      "default": [],
+      "help": "支持搜索与多选，处理卸载；只有应用范围不是 all 时显示。",
+      "scope": "android",
+      "availability": "available",
+      "apply": "rebuild-vpn",
+      "source": "app-design",
+      "dependencies": [
+        "android.appRoutingMode != all"
+      ],
+      "uiDefault": [],
+      "origin": "android-client"
+    },
+    {
+      "key": "android.internetRouting",
+      "label": "互联网流量范围",
+      "group": "android",
+      "type": "select",
+      "default": "overlay-only",
+      "help": "仅组网或通过指定出口；选择出口时同时校验 IPv4、IPv6 和 DNS。",
+      "scope": "android",
+      "availability": "available",
+      "apply": "rebuild-vpn",
+      "source": "app-design",
+      "options": [
+        "overlay-only",
+        "exit-node"
+      ],
+      "uiDefault": "overlay-only",
+      "origin": "android-client"
+    },
+    {
+      "key": "android.ipv6Policy",
+      "label": "非组网 IPv6 策略",
+      "group": "android",
+      "type": "select",
+      "default": "bypass",
+      "help": "绕过、通过组网、阻断要明确；全流量出口不得静默绕过 IPv6。",
+      "scope": "android",
+      "availability": "available",
+      "apply": "rebuild-vpn",
+      "source": "app-design",
+      "options": [
+        "bypass",
+        "tunnel",
+        "block"
+      ],
+      "uiDefault": "bypass",
+      "origin": "android-client"
+    },
+    {
+      "key": "android.dnsMode",
+      "label": "DNS 策略",
+      "group": "android",
+      "type": "select",
+      "default": "system",
+      "help": "系统 DNS、自定义 DNS 与组网域名解析分别建模，不默认硬编码公共 DNS。",
+      "scope": "android",
+      "availability": "available",
+      "apply": "rebuild-vpn",
+      "source": "app-design",
+      "options": [
+        "system",
+        "custom"
+      ],
+      "uiDefault": "system",
+      "origin": "android-client"
+    },
+    {
+      "key": "android.dnsServers",
+      "label": "自定义 DNS 地址",
+      "group": "android",
+      "type": "list",
+      "default": [],
+      "help": "仅自定义 DNS 模式显示；与 MagicDNS 转发策略共同校验。",
+      "scope": "android",
+      "availability": "available",
+      "apply": "rebuild-vpn",
+      "source": "app-design",
+      "dependencies": [
+        "android.dnsMode=custom"
+      ],
+      "uiDefault": [],
+      "origin": "android-client"
+    },
+    {
+      "key": "android.autoReconnect",
+      "label": "网络恢复后自动重连",
+      "group": "android",
+      "type": "boolean",
+      "default": true,
+      "help": "只恢复仍有连接意图的会话，用户主动断开优先。",
+      "scope": "android",
+      "availability": "available",
+      "apply": "app-immediate",
+      "source": "app-design",
+      "uiDefault": true,
+      "origin": "android-client"
+    }
+  ],
+  "runtimeDefaults": {
+    "instance_name": "default",
+    "network_identity.network_name": null,
+    "network_identity.network_secret": null,
+    "hostname": null,
+    "dhcp": false,
+    "ipv4": null,
+    "ipv6": null,
+    "peer": [],
+    "listeners": null,
+    "mapped_listeners": null,
+    "stun_servers": null,
+    "tcp_stun_servers": null,
+    "stun_servers_v6": null,
+    "routes": null,
+    "exit_nodes": [],
+    "proxy_network": [],
+    "socks5_proxy": null,
+    "port_forward": [],
+    "vpn_portal_config": null,
+    "secure_mode.enabled": false,
+    "secure_mode.local_private_key": null,
+    "secure_mode.local_public_key": null,
+    "credential_file": null,
+    "managed_credentials": [],
+    "tcp_whitelist": [],
+    "udp_whitelist": [],
+    "acl": null,
+    "ipv6_public_addr_auto": false,
+    "ipv6_public_addr_provider": false,
+    "ipv6_public_addr_prefix": null,
+    "instance_id": null,
+    "source.source": "user",
+    "netns": null,
+    "flags.default_protocol": "tcp",
+    "flags.dev_name": "",
+    "flags.enable_encryption": true,
+    "flags.enable_ipv6": true,
+    "flags.mtu": 1380,
+    "flags.latency_first": false,
+    "flags.enable_exit_node": false,
+    "flags.no_tun": false,
+    "flags.use_smoltcp": false,
+    "flags.relay_network_whitelist": "*",
+    "flags.disable_p2p": false,
+    "flags.relay_all_peer_rpc": false,
+    "flags.disable_udp_hole_punching": false,
+    "flags.multi_thread": true,
+    "flags.data_compress_algo": "None",
+    "flags.bind_device": true,
+    "flags.enable_kcp_proxy": false,
+    "flags.disable_kcp_input": false,
+    "flags.disable_relay_kcp": false,
+    "flags.proxy_forward_by_system": false,
+    "flags.accept_dns": false,
+    "flags.private_mode": false,
+    "flags.enable_quic_proxy": false,
+    "flags.disable_quic_input": false,
+    "flags.disable_relay_quic": false,
+    "flags.quic_listen_port": 4294967295,
+    "flags.foreign_relay_bps_limit": "18446744073709551615",
+    "flags.multi_thread_count": 2,
+    "flags.enable_relay_foreign_network_kcp": false,
+    "flags.enable_relay_foreign_network_quic": false,
+    "flags.encryption_algorithm": "aes-gcm",
+    "flags.disable_sym_hole_punching": false,
+    "flags.tld_dns_zone": "et.net.",
+    "flags.p2p_only": false,
+    "flags.disable_tcp_hole_punching": false,
+    "flags.lazy_p2p": false,
+    "flags.need_p2p": false,
+    "flags.instance_recv_bps_limit": "18446744073709551615",
+    "flags.disable_upnp": false,
+    "flags.disable_relay_data": false,
+    "flags.enable_udp_broadcast_relay": false,
+    "flags.socket_mark": null,
+    "flags.prefer_peer_relay": false,
+    "android.appRoutingMode": "all",
+    "android.appPackages": [],
+    "android.dnsMode": "system",
+    "android.dnsServers": [],
+    "android.ipv6Policy": "bypass",
+    "android.internetRouting": "overlay-only",
+    "android.runtimeMode": "vpn",
+    "android.autoReconnect": true,
+    "android.configServerUrl": null,
+    "android.machineId": null,
+    "process.easytierLogLevel": "info",
+    "app.logLevel": "info",
+    "app.logRetention": "bounded"
+  }
+}

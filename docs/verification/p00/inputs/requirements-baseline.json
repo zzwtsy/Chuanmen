@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "task": "P00-01",
+  "status": "verified",
+  "layer": "design_baseline",
+  "source": "docs/design/requirements-traceability.md",
+  "source_sha256": "f9309eb4551eb00ed164a2895285d27c03a3ff20e16d661ec0cb46de9154609a",
+  "requirements": [
+    {
+      "id": "R01",
+      "requirement": "Material 3 Expressive 与系统动态取色",
+      "design_location": "总体设计 §8",
+      "stages": "P01/P06",
+      "acceptance": "真机动态色、深浅色、实验 API 边界与回退",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R02",
+      "requirement": "四个稳定主目的地，减少跳转",
+      "design_location": "总体设计 §3",
+      "stages": "P01/P04",
+      "acceptance": "返回顺序正确，切页保留上下文",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R03",
+      "requirement": "查看网络与运行网络分离",
+      "design_location": "总体设计 §3/6",
+      "stages": "P02/P03",
+      "acceptance": "切换查看不发出 connect；恢复目标不变",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R04",
+      "requirement": "在线设备摘要并入虚拟网络卡片",
+      "design_location": "总体设计 §4",
+      "stages": "P04",
+      "acceptance": "总览没有重复在线卡片，设备入口直达",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R05",
+      "requirement": "固定 60 秒纯趋势图",
+      "design_location": "总体设计 §4",
+      "stages": "P04",
+      "acceptance": "无详情/拖动/范围控件；零/缺样/重连各自正确",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R06",
+      "requirement": "当前上下行统计本机 TUN 路径 IP 字节",
+      "design_location": "总体设计 §4；技术架构",
+      "stages": "P00/P02/P04",
+      "acceptance": "含该路径的DNS/系统流量；无第二消费者，不用核心保活伪造曲线",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R07",
+      "requirement": "流量范围位于设置",
+      "design_location": "总体设计 §6",
+      "stages": "P03/P05",
+      "acceptance": "总览没有范围切换；设置与平台策略同一状态",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R08",
+      "requirement": "设备原地展开，详情集中",
+      "design_location": "总体设计 §5",
+      "stages": "P04/P06",
+      "acceptance": "返回保留列表，宽窄屏信息层级一致",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R09",
+      "requirement": "NAT、收发、丢包、核心版本",
+      "design_location": "总体设计 §5",
+      "stages": "P00/P04",
+      "acceptance": "来源可追踪，未知不当 0，中继统计不冒充端到端",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R10",
+      "requirement": "设备没有相关日志入口",
+      "design_location": "总体设计 §5",
+      "stages": "P04",
+      "acceptance": "卡片和详情都不产生相关日志路由",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R11",
+      "requirement": "IP 复制共享样式与短反馈",
+      "design_location": "总体设计 §5",
+      "stages": "P04/P06",
+      "acceptance": "真实写入后提示；Android13+避免重复通知",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R12",
+      "requirement": "基础配置 / 完整配置",
+      "design_location": "总体设计 §6",
+      "stages": "P03",
+      "acceptance": "三个基础编辑项；同一草稿；无标签切换数据丢失",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R13",
+      "requirement": "配置范围对齐实际部署助手",
+      "design_location": "配置目录",
+      "stages": "P00/P03/P05",
+      "acceptance": "逐项映射、默认值/类型/依赖/序列化有证据",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R14",
+      "requirement": "Android 不适用项不展示",
+      "design_location": "配置目录",
+      "stages": "P00/P05",
+      "acceptance": "平台托管/不适用/暂未实现分开；表单与搜索一致",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R15",
+      "requirement": "本地名称可编辑、可选",
+      "design_location": "总体设计 §6",
+      "stages": "P03",
+      "acceptance": "改名只改 metadata；核心保存/恢复不覆盖昵称",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R16",
+      "requirement": "去掉常驻配置已应用横条",
+      "design_location": "总体设计 §6",
+      "stages": "P03",
+      "acceptance": "干净/离线保存无横条；待处理才有底部操作区",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R17",
+      "requirement": "draft / saved / applied 分离",
+      "design_location": "总体设计 §6",
+      "stages": "P02/P03",
+      "acceptance": "保存不改变运行IP；失败不更新成功快照",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R18",
+      "requirement": "双来源日志和稳定阅读",
+      "design_location": "总体设计 §7",
+      "stages": "P04",
+      "acceptance": "来源/级别/筛选、采集设置、新增提示互不混淆",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R19",
+      "requirement": "完整高级网络能力",
+      "design_location": "路线图；技术架构",
+      "stages": "P05",
+      "acceptance": "监听、路由、DNS、ACL、代理、出口、Portal逐项互操作",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R20",
+      "requirement": "Android 生命周期可靠",
+      "design_location": "技术架构",
+      "stages": "P02/P06",
+      "acceptance": "授权撤销/取消/进程终止/网络变化/主动断开有结果",
+      "android_status": "unverified"
+    },
+    {
+      "id": "R21",
+      "requirement": "路线图与每阶段一个文件",
+      "design_location": "docs/plan/ROADMAP.md；docs/plan/",
+      "stages": "当前交付",
+      "acceptance": "八阶段完整，每阶段有入口/任务/验收/回退",
+      "android_status": "engineering_not_verified"
+    },
+    {
+      "id": "R22",
+      "requirement": "总体设计与可复现原型",
+      "design_location": "docs/；prototype/",
+      "stages": "当前交付",
+      "acceptance": "原型源哈希一致，资源本地化，设计覆盖全部确认项",
+      "android_status": "engineering_not_verified"
+    },
+    {
+      "id": "R23",
+      "requirement": "AGENTS.md 与 Skill 最佳实践",
+      "design_location": "docs/development/agent-guides/；技能策略",
+      "stages": "当前交付/P01",
+      "acceptance": "真实命令、按需上下文、当前一个项目skill与两个候选",
+      "android_status": "engineering_not_verified"
+    },
+    {
+      "id": "R24",
+      "requirement": "AI 友好 Android 工程",
+      "design_location": "AI 友好工程",
+      "stages": "P01–P07",
+      "acceptance": "干净环境构建、稳定契约、demo/real分离和分层证据",
+      "android_status": "engineering_not_verified"
+    }
+  ],
+  "note": "验收映射是已冻结契约，不是已运行的原生测试",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "requirements-baseline.json",
+        "sha256": "3453a88d701c0e9d2f899211c8401f973f2b720817b690b50562686d4a84c4e7"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

@@ -1,0 +1,471 @@
+{
+  "scope": "prototype_historical_baseline_not_native_verification",
+  "records": {
+    "directory-migration": {
+      "status": "PASS",
+      "date": "2026-10-11",
+      "projectName": "Chuanmen",
+      "scope": "目录内聚、项目命名、文件引用与离线原型重建",
+      "baselineCommit": "4807c754a036e1f63b952e7e604244c54fb29552",
+      "baselineFiles": 60,
+      "movedDocumentationFiles": 36,
+      "renamedPrototypeFiles": 1,
+      "allOriginalFilesAccountedFor": true,
+      "fileMoves": [
+        {
+          "from": "ROADMAP.md",
+          "to": "docs/plan/ROADMAP.md"
+        },
+        {
+          "from": "agent-guides/README.md",
+          "to": "docs/development/agent-guides/README.md"
+        },
+        {
+          "from": "agent-guides/android-ui.example.md",
+          "to": "docs/development/agent-guides/android-ui.example.md"
+        },
+        {
+          "from": "agent-guides/native-bridge.example.md",
+          "to": "docs/development/agent-guides/native-bridge.example.md"
+        },
+        {
+          "from": "config/README.md",
+          "to": "docs/design/config/README.md"
+        },
+        {
+          "from": "config/android-capability-plan.json",
+          "to": "docs/design/config/android-capability-plan.json"
+        },
+        {
+          "from": "config/assistant-catalog.snapshot.json",
+          "to": "docs/design/config/assistant-catalog.snapshot.json"
+        },
+        {
+          "from": "docs/agent-skills-strategy.md",
+          "to": "docs/development/agent-skills-strategy.md"
+        },
+        {
+          "from": "docs/ai-friendly-android.md",
+          "to": "docs/development/ai-friendly-android.md"
+        },
+        {
+          "from": "docs/overall-design.md",
+          "to": "docs/design/overall-design.md"
+        },
+        {
+          "from": "docs/requirements-traceability.md",
+          "to": "docs/design/requirements-traceability.md"
+        },
+        {
+          "from": "docs/technical-architecture.md",
+          "to": "docs/design/technical-architecture.md"
+        },
+        {
+          "from": "evidence/README.md",
+          "to": "docs/verification/README.md"
+        },
+        {
+          "from": "evidence/catalog-audit.json",
+          "to": "docs/verification/catalog-audit.json"
+        },
+        {
+          "from": "evidence/catalog-cli-tests.json",
+          "to": "docs/verification/catalog-cli-tests.json"
+        },
+        {
+          "from": "evidence/catalog-cli-tests.txt",
+          "to": "docs/verification/catalog-cli-tests.txt"
+        },
+        {
+          "from": "evidence/handoff-structure.json",
+          "to": "docs/verification/handoff-structure.json"
+        },
+        {
+          "from": "evidence/prototype-export-check.json",
+          "to": "docs/verification/prototype-export-check.json"
+        },
+        {
+          "from": "evidence/prototype-original-qa.json",
+          "to": "docs/verification/prototype-original-qa.json"
+        },
+        {
+          "from": "evidence/skill-forward-check.md",
+          "to": "docs/verification/skill-forward-check.md"
+        },
+        {
+          "from": "phases/p00-feasibility.md",
+          "to": "docs/plan/p00-feasibility.md"
+        },
+        {
+          "from": "phases/p01-foundation.md",
+          "to": "docs/plan/p01-foundation.md"
+        },
+        {
+          "from": "phases/p02-vpn-core.md",
+          "to": "docs/plan/p02-vpn-core.md"
+        },
+        {
+          "from": "phases/p03-configuration.md",
+          "to": "docs/plan/p03-configuration.md"
+        },
+        {
+          "from": "phases/p04-observability-ui.md",
+          "to": "docs/plan/p04-observability-ui.md"
+        },
+        {
+          "from": "phases/p05-advanced-networking.md",
+          "to": "docs/plan/p05-advanced-networking.md"
+        },
+        {
+          "from": "phases/p06-hardening.md",
+          "to": "docs/plan/p06-hardening.md"
+        },
+        {
+          "from": "phases/p07-release.md",
+          "to": "docs/plan/p07-release.md"
+        },
+        {
+          "from": "prototype/source/easytier-android-config.fragment.html",
+          "to": "prototype/source/chuanmen-android-config.fragment.html"
+        },
+        {
+          "from": "research/README.md",
+          "to": "docs/research/README.md"
+        },
+        {
+          "from": "research/agents-evidence.md",
+          "to": "docs/research/agents-evidence.md"
+        },
+        {
+          "from": "research/android-core-evidence.md",
+          "to": "docs/research/android-core-evidence.md"
+        },
+        {
+          "from": "research/sources-agents.json",
+          "to": "docs/research/sources-agents.json"
+        },
+        {
+          "from": "research/sources-android.json",
+          "to": "docs/research/sources-android.json"
+        },
+        {
+          "from": "skill-drafts/easytier-core-upgrade.md",
+          "to": "docs/development/skill-drafts/easytier-core-upgrade.md"
+        },
+        {
+          "from": "skill-drafts/easytier-vpn-diagnose.md",
+          "to": "docs/development/skill-drafts/easytier-vpn-diagnose.md"
+        },
+        {
+          "from": "templates/task-brief.md",
+          "to": "docs/development/task-brief.md"
+        }
+      ],
+      "unchangedFiles": [
+        {
+          "path": "docs/design/config/android-capability-plan.json",
+          "sha256": "aa69d701fd33203eeec9b157202e3d5842f35dbbf373a0e5303e3199bc4ea72e"
+        },
+        {
+          "path": "docs/design/config/assistant-catalog.snapshot.json",
+          "sha256": "eaac5fd840290719d0ad270ff4ed36730274d946166646824e4757bd05148e63"
+        },
+        {
+          "path": "docs/verification/catalog-audit.json",
+          "sha256": "858544ce532326d254cc601fae203b9f264539c4fe274dbe97e712d44774ba35"
+        },
+        {
+          "path": "docs/verification/catalog-cli-tests.json",
+          "sha256": "f9a0e01652c23328ae922408797001b37c48c1a8c9ec5449f66bd893f151de54"
+        },
+        {
+          "path": "docs/verification/catalog-cli-tests.txt",
+          "sha256": "a1c37d7428fa93ee31a66b4fc319791e07e815c0c3c531bb68b2238846b78a39"
+        },
+        {
+          "path": "docs/verification/handoff-structure.json",
+          "sha256": "655a25dd843bafc4582258c50afa9c393deff237f2494c836b58b921bb7a259e"
+        },
+        {
+          "path": "docs/verification/prototype-export-check.json",
+          "sha256": "3fcf06e4c8f8f57388a1a723c6eeadf42d74772c91f6ee8075878eecf009dbd6"
+        },
+        {
+          "path": "docs/verification/prototype-original-qa.json",
+          "sha256": "785fdeb9f81ee0fb7864ffd9c79f0c6c81af7f30e312bb4241c62d36fa96f88d"
+        },
+        {
+          "path": "docs/verification/skill-forward-check.md",
+          "sha256": "b83f92878fd9db88068abf6797e3240c0c53f104d63c48f908fb0a55b4906f3e"
+        },
+        {
+          "path": "prototype/assets/d3-7.9.0.min.js",
+          "sha256": "f2094bbf6141b359722c4fe454eb6c4b0f0e42cc10cc7af921fc158fceb86539"
+        },
+        {
+          "path": "prototype/assets/d3-LICENSE.txt",
+          "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4"
+        },
+        {
+          "path": "prototype/assets/lucide-1.17.0.js",
+          "sha256": "fde878a4f7aebe548b071eaaf343d898f66d275e93970abe95d8ca5fda290b51"
+        },
+        {
+          "path": "prototype/assets/lucide-LICENSE.txt",
+          "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+        },
+        {
+          "path": "prototype/assets/manifest.json",
+          "sha256": "c619524fca917a0807ee8ac72e927b6902f65b907753e397903bb32dd106cd43"
+        },
+        {
+          "path": "prototype/source/config-ux-config.css",
+          "sha256": "150ce8acde9169bae1cf97a7f724f374b971f1a9128238188f6fb6a39845f20d"
+        },
+        {
+          "path": "prototype/source/config-ux-config.js",
+          "sha256": "c2265e318039ab536d63bebf22a747d14d0bbf7f93611e020c897773da842f2b"
+        },
+        {
+          "path": "prototype/source/focused-monitor.css",
+          "sha256": "37a4fc58d3b23506a02ea719e8c8d69bde9f2798bff4afda1bd7d1cf2cc0ef67"
+        },
+        {
+          "path": "prototype/source/focused-monitor.js",
+          "sha256": "7757249708d68fe2cdd842476c7bde95f5003af5c01fbc292eb9aea9473e90f4"
+        },
+        {
+          "path": "docs/research/sources-agents.json",
+          "sha256": "ca02d787af7855da5c67716c1a24716192ebf42c4882c288c54b1a6a843c66aa"
+        },
+        {
+          "path": "docs/research/sources-android.json",
+          "sha256": "5bd977ecf2f1bf853f14deeb4d66d720ba905b09aa9ff6cc6859dfd1ed523aba"
+        }
+      ],
+      "upstreamUrlSequencesUnchanged": true,
+      "phaseStatusUnchanged": true,
+      "prototypeNameOnlyChanges": [
+        {
+          "previousPath": "prototype/source/config-ux-shell.html",
+          "currentPath": "prototype/source/config-ux-shell.html",
+          "previousSha256": "9d02351345f43ecd437f7f93bc21300f4f85ef7eaa50c20b6670f319e2f25d52",
+          "currentSha256": "77c54cbefd2a17fa8f3412f444608c7d29395ee6a19ed0287446a50a0d226350",
+          "allowedTextReplacements": 3,
+          "matchesExactly": true
+        },
+        {
+          "previousPath": "prototype/source/easytier-android-config.fragment.html",
+          "currentPath": "prototype/source/chuanmen-android-config.fragment.html",
+          "previousSha256": "d363371c93de0a71663764e9c2314ec98ce1c8f99fc6ffe122c1e7244301f33e",
+          "currentSha256": "a1cb4e6cfac934abc5dc56fd84754d1450dac42198b742764fb7ae8e522db83c",
+          "allowedTextReplacements": 3,
+          "matchesExactly": true
+        },
+        {
+          "previousPath": "prototype/index.html",
+          "currentPath": "prototype/index.html",
+          "previousSha256": "7b4219b450bce5618dbab557762504ec728eaf4cf9394cf1f009304846b9cf58",
+          "currentSha256": "a55d55cae932fc7bb263ce07aca0382cbf8ebf111303903a3d1a23fb6169efc5",
+          "allowedTextReplacements": 4,
+          "matchesExactly": true
+        }
+      ],
+      "inlineJavaScriptSyntax": {
+        "exitCode": 0,
+        "scriptsChecked": 2
+      },
+      "commands": [
+        {
+          "command": "python3 scripts/audit_config_catalog.py",
+          "exitCode": 0,
+          "result": {
+            "status": "PASS",
+            "errors": [],
+            "warnings": [
+              "PASS 仅表示目录约束一致，不证明官网当前版本未变化。",
+              "快照 availability/apply 不是原生能力承诺；热更新与平台适配仍需实证。",
+              "暂未适配与平台不适用必须分开，特别复核 ipv6_public_addr_auto。"
+            ],
+            "counts": {
+              "core_editors": 37,
+              "android_editors": 7,
+              "visible_editors": 44,
+              "groups": 6,
+              "source_fields": 52,
+              "hidden_editors": 8
+            },
+            "scope": "目录内部与项目显隐契约；不是官网实时或原生运行验证",
+            "catalog_sha256": "eaac5fd840290719d0ad270ff4ed36730274d946166646824e4757bd05148e63",
+            "capability_plan_checked": true
+          }
+        },
+        {
+          "command": "python3 scripts/test_audit_config_catalog.py",
+          "exitCode": 0,
+          "output": "test_current_baseline (__main__.AuditCliTests.test_current_baseline)\n冻结目录及能力计划有效时，默认 CLI 成功且明确不代表原生运行验证。 ... ok\ntest_duplicate_key (__main__.AuditCliTests.test_duplicate_key)\n声明数量同步增加也不能掩盖重复键，必须指出冲突键并退出 1。 ... ok\ntest_explicit_capability_plan_hash_mismatch (__main__.AuditCliTests.test_explicit_capability_plan_hash_mismatch)\n显式台账即使字段齐全，绑定了另一目录版本也必须失败。 ... ok\ntest_hidden_field_is_visible (__main__.AuditCliTests.test_hidden_field_is_visible)\n平台托管项误进可见编辑器时，显隐冲突必须有明确诊断。 ... ok\ntest_invalid_json (__main__.AuditCliTests.test_invalid_json)\nJSON 被截断时输出输入错误，不能继续推测目录计数。 ... ok\ntest_missing_input (__main__.AuditCliTests.test_missing_input)\n文件不可读时退出 2，不能报告目录完整或退回默认快照。 ... ok\ntest_missing_source_mapping (__main__.AuditCliTests.test_missing_source_mapping)\nMTU 编辑器仍存在但来源映射丢失时，不能仅凭总数正确通过。 ... ok\ntest_nested_child_change_requires_review (__main__.AuditCliTests.test_nested_child_change_requires_review)\n复合节点子字段发生变化时，不能因为父字段类型未变而遗漏差异。 ... ok\ntest_report_cannot_overwrite_input (__main__.AuditCliTests.test_report_cannot_overwrite_input)\n报告误指定为输入路径时失败，原目录字节必须保持不变。 ... ok\ntest_valid_change_requires_review (__main__.AuditCliTests.test_valid_change_requires_review)\n合法的默认值变化仍需评审，报告差异属性但不回显值。 ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.354s\n\nOK"
+        },
+        {
+          "command": "python3 scripts/export_prototype.py",
+          "exitCode": 0,
+          "result": {
+            "status": "PASS",
+            "output": "prototype/index.html",
+            "fragment_sha256": "a1cb4e6cfac934abc5dc56fd84754d1450dac42198b742764fb7ae8e522db83c",
+            "offline_resources": 2,
+            "scope": "重建和资源完整性；不代表浏览器像素或 Android 真机验收"
+          }
+        },
+        {
+          "command": "quick_validate.py .agents/skills/easytier-config-audit",
+          "exitCode": 0,
+          "output": "Skill is valid!",
+          "availability": "创建 Skill 时使用的外部校验工具；不随包分发"
+        }
+      ],
+      "verificationLimits": [
+        "未重跑首次交付的 13 组交互任务；其原始结果仍绑定旧候选哈希。",
+        "名称差异检查证明源码变化范围，不证明浏览器像素、触控或焦点行为。",
+        "未执行 Android 构建、JNI、VpnService、真实网络或系统动态色验收。",
+        "当前整包与校验和结果由 scripts/validate_handoff.py 重新计算；历史报告未被覆盖。"
+      ]
+    },
+    "prototype-original-qa": {
+      "at": "2026-10-10T22:21:09.789Z",
+      "artifact": "/workspace/easytier-android-config.html",
+      "scope": "本地 DOM、状态、事件、计时器执行与静态结构；不包含浏览器像素或 Android 验证",
+      "results": [
+        {
+          "name": "添加配置支持独立名称，留空时使用入网名称",
+          "status": "PASS"
+        },
+        {
+          "name": "重命名取消与 Escape 不修改状态，焦点返回入口",
+          "status": "PASS"
+        },
+        {
+          "name": "有未保存内容和错误时改名只改元数据，不触发核心保存",
+          "status": "PASS"
+        },
+        {
+          "name": "改名空值校验不影响核心错误，修正后可保存",
+          "status": "PASS"
+        },
+        {
+          "name": "改名后保存核心和恢复运行快照都不会覆盖昵称",
+          "status": "PASS"
+        },
+        {
+          "name": "干净配置直接显示表单，两个标签命名正确",
+          "status": "PASS"
+        },
+        {
+          "name": "标签与搜索切换保留原始非法输入和待保存内容",
+          "status": "PASS"
+        },
+        {
+          "name": "未保存与待应用共用底部操作区，保存不会先改运行参数",
+          "status": "PASS"
+        },
+        {
+          "name": "切页与切网清理底部按钮，并保留各网络的草稿",
+          "status": "PASS"
+        },
+        {
+          "name": "应用期间离开配置页不会重挂陈旧操作区",
+          "status": "PASS"
+        },
+        {
+          "name": "错误状态持续可恢复且仅在当前配置呈现",
+          "status": "PASS"
+        },
+        {
+          "name": "60 秒流量图仍纯展示，双来源日志保留",
+          "status": "PASS"
+        },
+        {
+          "name": "候选结构独立有效，无旧标识与未替换占位",
+          "status": "PASS"
+        }
+      ],
+      "bytes": 198435,
+      "sha256": "79237f41fc3b272079037321bf0b4df0653a8d22e87906ecf219b13c7e67699f",
+      "staticReview": {
+        "nativeDialog": "使用原生 dialog/showModal，具备标题和说明关联，输入聚焦、取消事件与关闭后恢复焦点已执行验证；浏览器模态焦点约束不由本适配器验证。",
+        "bottomChrome": "配置操作区在公共 sticky 底部容器内、位于主导航之前；成功 Snackbar 位于零高度层，未使用固定表单高度或添加内部滚动。",
+        "touchTargets": "新增重命名入口/取消/保存沿用 48px 最小点击尺寸，Tab 最小高度 52px；静态样式检查。",
+        "scope": "未发现阻断本轮交付的问题。未做浏览器像素、触控或 Android 真机验证。"
+      },
+      "baselineVerification": {
+        "bytes": 198435,
+        "sha256": "79237f41fc3b272079037321bf0b4df0653a8d22e87906ecf219b13c7e67699f",
+        "taskCount": 13,
+        "note": "13 组基础任务在该基线候选上通过；最终增量只定向复核离线保存边界与语法结构。"
+      },
+      "finalVerification": {
+        "at": "2026-10-10T22:22:20.413Z",
+        "bytes": 198581,
+        "sha256": "d363371c93de0a71663764e9c2314ec98ce1c8f99fc6ffe122c1e7244301f33e",
+        "inlineCount": 1,
+        "results": [
+          {
+            "name": "已运行配置断开后保存，使用 saved 和短暂 Snackbar",
+            "status": "PASS"
+          },
+          {
+            "name": "最终候选语法和片段结构",
+            "status": "PASS"
+          }
+        ]
+      }
+    },
+    "prototype-export-check": {
+      "status": "PASS",
+      "scope": "JS语法、离线依赖加载、静态图标名；不包括浏览器像素或Android",
+      "sourceSha256": "d363371c93de0a71663764e9c2314ec98ce1c8f99fc6ffe122c1e7244301f33e",
+      "checks": [
+        {
+          "name": "inline-script-2",
+          "status": "PASS",
+          "error": ""
+        },
+        {
+          "name": "inline-script-3",
+          "status": "PASS",
+          "error": ""
+        },
+        {
+          "name": "config-ux-config.js",
+          "status": "PASS",
+          "error": ""
+        },
+        {
+          "name": "focused-monitor.js",
+          "status": "PASS",
+          "error": ""
+        },
+        {
+          "name": "d3-7.9.0.min.js",
+          "status": "PASS",
+          "error": ""
+        },
+        {
+          "name": "lucide-1.17.0.js",
+          "status": "PASS",
+          "error": ""
+        },
+        {
+          "name": "offline-library-api-and-icon-names",
+          "status": "PASS",
+          "detail": {
+            "d3": "7.9.0",
+            "lucideFactory": "function",
+            "iconNamesChecked": 11,
+            "missing": [],
+            "scope": "UMD加载与静态可识别图标名；非浏览器DOM渲染"
+          }
+        }
+      ]
+    }
+  }
+}

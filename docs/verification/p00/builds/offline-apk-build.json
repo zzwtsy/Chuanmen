@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "layer": "android_native_boundary",
+  "status": "passed",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "recorded_at_utc": "2026-10-11T13:25:00.678789+00:00",
+  "network_started": false,
+  "patches": [
+    {
+      "report_path": "/tmp/chuanmen-p00-boundary-core-v3-patch.json",
+      "report_sha256": "98563956236d50e60803327506af709b627a9e99b1cca20cd8dee25458bf18b1",
+      "files": {
+        "easytier/src/p00_observation.rs": {
+          "original_sha256": null,
+          "patched_sha256": "848636b7c17003c7da94006282f59f52ed97a45100208a1357e712ad6fed30b0"
+        },
+        "easytier-contrib/easytier-android-jni/src/p00_jni.rs": {
+          "original_sha256": null,
+          "patched_sha256": "fbb93cdf651f455e44d87d8989b3c84416811c9e2b4deeea656611f3449dd2c7"
+        },
+        "easytier/src/lib.rs": {
+          "original_sha256": "f1d538cd0e48f0d780dfb5ddf4153a0284fb12d30feae5e71adc97755ee7587c",
+          "patched_sha256": "5bf1aa2e120abd2e94a29936c784affad332ea6b8c130f0a0dfb5c0f8bdf4d00"
+        },
+        "easytier-contrib/easytier-android-jni/src/lib.rs": {
+          "original_sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+          "patched_sha256": "85910308e060af1fef16d91cd08417339696a2cd8a9580d808218cadf2403fcf"
+        },
+        "easytier/src/instance/virtual_nic.rs": {
+          "original_sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+          "patched_sha256": "a85a519168cb785897772e4882c3fcbf60529f6e26369309d0467054bd9a159b"
+        },
+        "easytier/src/instance/runtime_host/tun_common.rs": {
+          "original_sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+          "patched_sha256": "bef34f9d67b89415f7584fd7f6fc780234c40c8719f3ae948119c873abb88b59"
+        }
+      },
+      "production_approved": false
+    }
+  ],
+  "libraries": [
+    {
+      "abi": "arm64-v8a",
+      "path": "/tmp/chuanmen-p00-boundary-native-v3/target/aarch64-linux-android/release/libeasytier_android_jni.so",
+      "sha256": "8e523672e0b5c0efb80ed8e649f8308f5e8ef84924bbdef5ab06d06cb4ba5065",
+      "size_bytes": 16840840,
+      "elf": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00\n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - System V\n  ABI Version:                       0\n  Type:                              DYN (Shared object file)\n  Machine:                           AArch64\n  Version:                           0x1\n  Entry point address:               0x0\n  Start of program headers:          64 (bytes into file)\n  Start of section headers:          16839176 (bytes into file)\n  Flags:                             0x0\n  Size of this header:               64 (bytes)\n  Size of program headers:           56 (bytes)\n  Number of program headers:         9\n  Size of section headers:           64 (bytes)\n  Number of section headers:         26\n  Section header string table index: 25\nDynamic section at offset 0x1005648 contains 27 entries:\n  Tag                Type           Name/Value\n  0x0000000000000001 (NEEDED)       Shared library: [liblog.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libdl.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libm.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libc.so]\n  0x000000000000001e (FLAGS)        BIND_NOW \n  0x000000006ffffffb (FLAGS_1)      NOW \n  0x0000000000000007 (RELA)         0x1d80\n  0x0000000000000008 (RELASZ)       791328 (bytes)\n  0x0000000000000009 (RELAENT)      24 (bytes)\n  0x000000006ffffff9 (RELACOUNT)    32964\n  0x0000000000000017 (JMPREL)       0xc30a0\n  0x0000000000000002 (PLTRELSZ)     3240 (bytes)\n  0x0000000000000003 (PLTGOT)       0x1009850\n  0x0000000000000014 (PLTREL)       RELA\n  0x0000000000000006 (SYMTAB)       0x2d0\n  0x000000000000000b (SYMENT)       24 (bytes)\n  0x0000000000000005 (STRTAB)       0x13a0\n  0x000000000000000a (STRSZ)        2528 (bytes)\n  0x000000006ffffef5 (GNU_HASH)     0x1318\n  0x0000000000000019 (INIT_ARRAY)   0x10095c8\n  0x000000000000001b (INIT_ARRAYSZ) 128 (bytes)\n  0x000000000000001a (FINI_ARRAY)   0x10095b8\n  0x000000000000001c (FINI_ARRAYSZ) 16 (bytes)\n  0x000000006ffffff0 (VERSYM)       0x1170\n  0x000000006ffffffe (VERNEED)      0x12a8\n  0x000000006fffffff (VERNEEDNUM)   3\n  0x0000000000000000 (NULL)         0x0\n\nSymbol table '.dynsym' contains 156 entries:\n   Num:    Value          Size Type    Bind   Vis       Ndx Name\n     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT   UND \n     1: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __cxa_finalize@LIBC\n     2: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __register_atfork@LIBC\n     3: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND free@LIBC\n     4: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_getspecific@LIBC\n     5: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND malloc@LIBC\n     6: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND strlen@LIBC\n     7: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memcpy@LIBC\n     8: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND syscall@LIBC\n     9: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memset@LIBC\n    10: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memcmp@LIBC\n    11: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memmove@LIBC\n    12: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND posix_memalign@LIBC\n    13: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND calloc@LIBC\n    14: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getsockname@LIBC\n    15: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __errno@LIBC\n    16: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND realloc@LIBC\n    17: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __android_log_buf_write\n    18: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __android_log_write\n    19: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_setspecific@LIBC\n    20: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND renameat@LIBC\n    21: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND open@LIBC\n    22: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND openat@LIBC\n    23: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND unlinkat@LIBC\n    24: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fstatat@LIBC\n    25: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND close@LIBC\n    26: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fchmod@LIBC\n    27: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fchown@LIBC\n    28: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND geteuid@LIBC\n    29: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fsync@LIBC\n    30: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND lstat@LIBC\n    31: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND read@LIBC\n    32: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sched_yield@LIBC\n    33: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND clock_gettime@LIBC\n    34: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND exp@LIBC\n    35: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_ctl@LIBC\n    36: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_detach@LIBC\n    37: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND shutdown@LIBC\n    38: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND socket@LIBC\n    39: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND bind@LIBC\n    40: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setsockopt@LIBC\n    41: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND connect@LIBC\n    42: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getsockopt@LIBC\n    43: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fcntl@LIBC\n    44: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND poll@LIBC\n    45: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sendto@LIBC\n    46: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND listen@LIBC\n    47: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sendmsg@LIBC\n    48: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvmsg@LIBC\n    49: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND write@LIBC\n    50: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvfrom@LIBC\n    51: 0000000000000000     0 OBJECT  GLOBAL DEFAULT   UND environ@LIBC\n    52: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fork@LIBC\n    53: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND _exit@LIBC\n    54: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND flock@LIBC\n    55: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND clock_nanosleep@LIBC\n    56: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getpid@LIBC\n    57: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND rename@LIBC\n    58: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND opendir@LIBC\n    59: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND readdir@LIBC\n    60: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND uname@LIBC\n    61: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND strerror_r@LIBC\n    62: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_mutex_lock@LIBC\n    63: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_mutex_unlock@LIBC\n    64: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlsym@LIBC\n    65: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND gethostname@LIBC\n    66: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlopen@LIBC\n    67: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlclose@LIBC\n    68: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recv@LIBC\n    69: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND send@LIBC\n    70: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND if_nametoindex@LIBC\n    71: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlerror@LIBC\n    72: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getifaddrs@LIBC_N\n    73: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND freeifaddrs@LIBC_N\n    74: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvmmsg@LIBC\n    75: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getauxval@LIBC\n    76: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND abort@LIBC\n    77: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_key_create@LIBC\n    78: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_key_delete@LIBC\n    79: 0000000000000000     0 FUNC    WEAK   DEFAULT   UND gettid@LIBC\n    80: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getcwd@LIBC\n    81: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dl_iterate_phdr@LIBC\n    82: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fstat@LIBC\n    83: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND mmap@LIBC\n    84: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND munmap@LIBC\n    85: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND lseek64@LIBC\n    86: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND realpath@LIBC\n    87: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND stat@LIBC\n    88: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND readlink@LIBC\n    89: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND writev@LIBC\n    90: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getenv@LIBC\n    91: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getpeername@LIBC\n    92: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_init@LIBC\n    93: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_setstacksize@LIBC\n    94: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sysconf@LIBC\n    95: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_destroy@LIBC\n    96: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_create@LIBC\n    97: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND prctl@LIBC\n    98: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND mkdir@LIBC\n    99: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND waitpid@LIBC\n   100: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pipe2@LIBC\n   101: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dup2@LIBC\n   102: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setgroups@LIBC\n   103: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setgid@LIBC\n   104: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setuid@LIBC\n   105: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND chroot@LIBC\n   106: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND chdir@LIBC\n   107: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setpgid@LIBC\n   108: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setsid@LIBC\n   109: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sigaction@LIBC\n   110: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND execvp@LIBC\n   111: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dirfd@LIBC\n   112: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND closedir@LIBC\n   113: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND unlink@LIBC\n   114: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sched_getaffinity@LIBC\n   115: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND getrandom\n   116: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getaddrinfo@LIBC\n   117: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND gai_strerror@LIBC\n   118: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND freeaddrinfo@LIBC\n   119: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_join@LIBC\n   120: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND socketpair@LIBC\n   121: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_create1@LIBC\n   122: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND eventfd@LIBC\n   123: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pow@LIBC\n   124: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_wait@LIBC\n   125: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND vsprintf@LIBC\n   126: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __assert2@LIBC\n   127: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_compress_begin\n   128: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_compress_end\n   129: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_decompress_begin\n   130: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_decompress_end\n   131: 0000000000000000     0 OBJECT  GLOBAL DEFAULT   UND __sF@LIBC\n   132: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fprintf@LIBC\n   133: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fflush@LIBC\n   134: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_wrlock@LIBC\n   135: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_unlock@LIBC\n   136: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_rdlock@LIBC\n   137: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fwrite@LIBC\n   138: 00000000002e1bf4   608 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_parseConfig\n   139: 00000000002e3f30   844 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_setTunFd\n   140: 00000000002e4d84    32 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_abortForExperiment\n   141: 00000000002de9cc  5264 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_deleteNetworkInstance\n   142: 00000000002dfe5c   156 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_getLastError\n   143: 00000000002e1e54  3388 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_retainNetworkInstance\n   144: 00000000002e427c  2232 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_startConfigServerClient\n   145: 00000000002e4b34   592 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_stopConfigServerClient\n   146: 00000000002e4da4     8 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_clearProtector\n   147: 00000000002e4dac  2352 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_installProtector\n   148: 00000000002dcbb0  7636 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_callJsonRpc\n   149: 00000000002de984    72 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_collectNetworkInfos\n   150: 00000000002dfef8   544 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_isConfigServerClientConnected\n   151: 00000000002e60f4  4996 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_probeProtectedSockets\n   152: 00000000002e7478  1096 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_resetObservations\n   153: 00000000002e0118  6876 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_listInstances\n   154: 00000000002e2b90  5024 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_runNetworkInstance\n   155: 00000000002e56dc  2584 FUNC    GLOBAL DEFAULT    13 Java_com_github_zzwtsy_chuanmen_p00probe_P00NativeBridge_observations\n"
+    }
+  ],
+  "native_build_report_sha256": "0bf334ee06bb034097bfb055e2479b0ac20adfd61717be7067827dc94d4b6aea",
+  "source_sha256": {
+    "build-native-probe.py": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+    "native-boundary/android/AndroidManifest.xml": "1997005223593356620567d56090192805eed8f1686086e0a2f357ce3bbaea0f",
+    "native-boundary/android/src/com/easytier/jni/EasyTierJNI.java": "2673a0e17139476c65f2165bb667c43370cce6780b16819257143cc0be1009a7",
+    "native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java": "8714cd61edf621b2701dcbe86b115c7203df4398611a20e1750bf1b6dc6f4862",
+    "native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryInstrumentation.java": "859e89278ae8ab1b1946156c61e0bd79f2af1b2c6f86545b585f0dee619e4610",
+    "native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java": "6b7201e80a7e04dd7d749af59a98e4426451a828427023eb83040b18892e7635",
+    "native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.java": "d00800e0bb63732dd666d8fb571e7baab97774cc4eabfac7ae4b24ba56e761d9",
+    "native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/NativeReportInfo.java": "6827b3bfe4ab730b4d04ceebb8ba625c07fca7e426151bbf3a1a35e189bbdaf9",
+    "native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/OfflineExperiment.java": "b2c609a099f4d47e10b819900a5f31a202debbef657022e9e49d9c5a53b96321",
+    "native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/P00NativeBridge.java": "d75e44a3bf129e87ddee5c12d78d785ba47da4d044cf8b44926d978560365c7c",
+    "native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/PermissionDeniedInstrumentation.java": "0183c5c46823a6622f5683047979d0e05801009ec0f396c6028514dca6feea36",
+    "native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/RevokeInstrumentation.java": "7e6388e1b0d70ea9c4eaf091d3eca1a74cf29ff08c06614cbc4a6930bd025bf2"
+  },
+  "tool_sha256": {
+    "aapt2": "1a6a396b9cd071f7040071fdd108718cb98c3c9f4960044f373b288993d19eb7",
+    "d8": "b773a721be3d4988dea9660815a9e441b76100e5b0f5c72b5893cfadadc76c6f",
+    "zipalign": "c5f559e946de5a9e7d58792181db20383b228877812136bc469d97ae00a43b0a",
+    "apksigner": "b47549e373b895ce6ca620d0c7887e674d9615ffa837a86ac601dcfd04adb0f0",
+    "d8.jar": "4097ff9c46c185c6e7214da7fe9b1befb5adeea5cc9ca349270e0249904f9240",
+    "apksigner.jar": "3716d9311e55d2b0918a2fd9d54ba9e406c5f6abeea700b287f11259bc163dec",
+    "java": "e08a8b21479a8d39d46b23af483d78fb88a891b7fe0e2c9abd50a8fe16ad2a15",
+    "javac": "a1959e0e41ac84e2acb0a39977706749f280a9336584336596234362511d9838",
+    "keytool": "19c754a6430a2f0b5fb67bce0c5f58cfbb63229dc576f03a0771936afb868940"
+  },
+  "commands": [
+    {
+      "argv": [
+        "java",
+        "-version"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "425dca5c07c18893d58f4fa4b2f9d97529a6af7dca417e9458e7045d7eb533ae",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "javac",
+        "-encoding",
+        "UTF-8",
+        "-source",
+        "8",
+        "-target",
+        "8",
+        "-bootclasspath",
+        "<USER_HOME>/Android/Sdk/platforms/android-37.0/android.jar",
+        "-d",
+        "/tmp/chuanmen-p00-offline-apk/classes",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/src/com/easytier/jni/EasyTierJNI.java",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryInstrumentation.java",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.java",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/NativeReportInfo.java",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/OfflineExperiment.java",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/P00NativeBridge.java",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/PermissionDeniedInstrumentation.java",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/RevokeInstrumentation.java"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "565773c6c6ed8cdcde85b8368f813f8ab867dbd5e85d821baa1f6ee0ccbbccdf",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "<USER_HOME>/Android/Sdk/build-tools/36.0.0/d8",
+        "--lib",
+        "<USER_HOME>/Android/Sdk/platforms/android-37.0/android.jar",
+        "--min-api",
+        "24",
+        "--output",
+        "/tmp/chuanmen-p00-offline-apk/dex",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/easytier/jni/EasyTierJNI.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity$1.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/BoundaryInstrumentation$1.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/BoundaryInstrumentation$2.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/BoundaryInstrumentation.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService$LocalBinder.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation$1.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation$2.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/NativeReportInfo.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/OfflineExperiment$1.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/OfflineExperiment$2.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/OfflineExperiment.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/P00NativeBridge.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/PermissionDeniedInstrumentation$1.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/PermissionDeniedInstrumentation.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/RevokeInstrumentation$1.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/RevokeInstrumentation$2.class",
+        "/tmp/chuanmen-p00-offline-apk/classes/com/github/zzwtsy/chuanmen/p00probe/RevokeInstrumentation.class"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "<USER_HOME>/Android/Sdk/build-tools/36.0.0/aapt2",
+        "link",
+        "-I",
+        "<USER_HOME>/Android/Sdk/platforms/android-37.0/android.jar",
+        "--manifest",
+        "<REPO_ROOT>/experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+        "--min-sdk-version",
+        "24",
+        "--target-sdk-version",
+        "37",
+        "-o",
+        "/tmp/chuanmen-p00-offline-apk/unsigned.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "<USER_HOME>/Android/Sdk/build-tools/36.0.0/zipalign",
+        "-f",
+        "-P",
+        "16",
+        "4",
+        "/tmp/chuanmen-p00-offline-apk/unsigned.apk",
+        "/tmp/chuanmen-p00-offline-apk/aligned.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "apksigner",
+        "sign",
+        "experiment-only.p12",
+        "/tmp/chuanmen-p00-offline-apk/p00-native-boundary.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "<USER_HOME>/Android/Sdk/build-tools/36.0.0/apksigner",
+        "verify",
+        "--verbose",
+        "--print-certs",
+        "/tmp/chuanmen-p00-offline-apk/p00-native-boundary.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "4192036b9a6eeec74a0782d478119ac7f15f23a27c32ebac81151c025e4f023e",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "<USER_HOME>/Android/Sdk/build-tools/36.0.0/zipalign",
+        "-c",
+        "-P",
+        "16",
+        "-v",
+        "4",
+        "/tmp/chuanmen-p00-offline-apk/p00-native-boundary.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "d0894453d6f99a92da80f7f97cf760a0797047207961dcef3e7d7f3892d084f7",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    }
+  ],
+  "min_sdk": 24,
+  "target_sdk": 37,
+  "compile_sdk": "37.0",
+  "build_tools": "36.0.0",
+  "android_jar_sha256": "bf1b4387cc7ca94fc6ef684f040d9d16fbf16248e181819f020736ea2053f177",
+  "platform_source_properties": "Pkg.Desc=Android SDK Platform 17\nPkg.UserSrc=false\nPlatform.Version=17\nPlatform.CodeName=\nPkg.Revision=2\nAndroidVersion.ApiLevel=37.0\nAndroidVersion.CodeName=\nAndroidVersion.ExtensionLevel=22\nAndroidVersion.IsBaseSdk=true\nAndroidVersion.PreviewSdkInt=0\nAndroidVersion.BetaVersion=\nLayoutlib.Api=15\nLayoutlib.Revision=1\nPlatform.MinToolsRev=22\n",
+  "build_tools_source_properties": "Pkg.UserSrc=false\nPkg.Revision=36.0.0\n#Pkg.Revision=36.0.0 rc5",
+  "jdk": "openjdk version \"21.0.12.1\" 2026-08-18\nOpenJDK Runtime Environment (build 21.0.12.1+1)\nOpenJDK 64-Bit Server VM (build 21.0.12.1+1, mixed mode, sharing)\n",
+  "temporary_test_signature_reused": true,
+  "signature_verification": "Verifies\nVerified using v1 scheme (JAR signing): false\nVerified using v2 scheme (APK Signature Scheme v2): true\nVerified using v3 scheme (APK Signature Scheme v3): true\nVerified using v3.1 scheme (APK Signature Scheme v3.1): false\nVerified using v4 scheme (APK Signature Scheme v4): false\nVerified for SourceStamp: false\nNumber of signers: 1\nSigner #1 certificate DN: CN=Chuanmen P00 experiment\nSigner #1 certificate SHA-256 digest: 8f4a8c1bd22ad5948ec56e88e070466bb5c6f7ef87a019b1dc18dc8ab861a13b\nSigner #1 certificate SHA-1 digest: 58076f5d60c39f3b460a5aba1df4596aed528995\nSigner #1 certificate MD5 digest: 4e64f34d2a8208efd581a9ab5fa89280\nSigner #1 key algorithm: RSA\nSigner #1 key size (bits): 2048\nSigner #1 public key SHA-256 digest: 4336ce5d016b0c7aa3e54d1802153e4918d407c7c5d63807756e802a6549ccf2\nSigner #1 public key SHA-1 digest: 57ad9eb0934dbcd39afb353c283ce4605ceaf487\nSigner #1 public key MD5 digest: f93b667967f55b96054fe7b035d8408e\n",
+  "apk_alignment": "Verifying alignment of /tmp/chuanmen-p00-offline-apk/p00-native-boundary.apk (4)...\n      49 AndroidManifest.xml (OK - compressed)\n    1508 resources.arsc (OK)\n    1589 classes.dex (OK - compressed)\n   32768 lib/arm64-v8a/libeasytier_android_jni.so (OK)\n16873653 META-INF/P00.SF (OK - compressed)\n16874069 META-INF/P00.RSA (OK - compressed)\n16875167 META-INF/MANIFEST.MF (OK - compressed)\nVerification successful\n",
+  "apk_path": "/tmp/chuanmen-p00-offline-apk/p00-native-boundary.apk",
+  "apk_sha256": "9128768381b33e6403d4e406879004a341774b713360b8b3612465bdec721405",
+  "apk_bytes": 16880095,
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "offline-apk-build.json",
+        "sha256": "f0476dfd2d2332a69ed8a744acb9c84e193022aff73ce0d69a99b170030fcfb5"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

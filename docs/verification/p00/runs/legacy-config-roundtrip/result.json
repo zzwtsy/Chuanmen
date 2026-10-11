@@ -1,0 +1,36 @@
+{
+  "task": "P00-03",
+  "layer": "host_core_config_roundtrip",
+  "network_started": false,
+  "status": "passed",
+  "recorded_at_utc": "2026-10-11T14:43:22.956935+00:00",
+  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "fixture_sha256": "bbcbde8659ed6d4f478612c5b61ecb17bfaf395d72e06f055587cf793a9ab691",
+  "binary_sha256": "fe28bb9d9a6f4012eb546c369a7f093de43cdf417650e15567fe1a2e94efc05d",
+  "build_report_sha256": "96384c5c30afbf8635d07455882e55ab45d0c3e39bf041bb24248c10107b27e3",
+  "runner_sha256": "4f1df8668e67aa33a383a04ac1ec23174fd7d337354fb262bb59cc17d068a8bc",
+  "exit_code": 0,
+  "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "command_output_retention": "structured_observations_and_exit_code_only",
+  "failures": [],
+  "case_payload_ref": "docs/verification/p00/inputs/config-roundtrip-results.json",
+  "accepted_count": 82,
+  "rejected_count": 6,
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "config-roundtrip.json",
+        "sha256": "d4c80552350ff61e5edeb3f7c67eada256ca3e9e9a63a0a7b262596b12e09fd9"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

@@ -1,0 +1,13 @@
+interface:
+  display_name: 写作过程残留清理
+  short_description: 清理注释与文档中的会话残留，保留事实、约束、证据和真实不确定性
+  default_prompt: 使用 $trim-authoring-residue 审查指定文本或文件中的写作过程残留，报告建议修改、应保留的信息和待核实项。
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

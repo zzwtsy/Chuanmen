@@ -1,0 +1,59 @@
+{
+  "task": "P00-07",
+  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "layer": "source_inspection",
+  "files": [
+    {
+      "path": "easytier/src/instance/config.rs",
+      "git_blob": "d4451275b5268a3aa2953457c9d8dd2722d0764f",
+      "sha256": "ff69b2a824e872b0444cf6d13814f3990067de49c476fff71051a840c313a6cb"
+    },
+    {
+      "path": "easytier/Cargo.toml",
+      "git_blob": "6939019e2c47438844978c93997c3d966ad3856b",
+      "sha256": "30b626131ed2e39e5692b4eabaa281143a25a89b0f61be6be9e485a4ed39ee44"
+    },
+    {
+      "path": "easytier-contrib/easytier-android-jni/Cargo.toml",
+      "git_blob": "6cb68059da482278661fa28def69b5eb265dec59",
+      "sha256": "ae2d347ea3f9581e94f0b9d066e84a6ab90ff3d57721e9c0f1fddbb8dcb5ea65"
+    },
+    {
+      "path": "easytier/src/vpn_portal/wireguard.rs",
+      "git_blob": "5fa52c1f22f291b53e27d9874558192cd8a12904",
+      "sha256": "6ede27452cbd554435080e098ce75f3c0fd7d88e44c3a78b83d3336010eda814"
+    },
+    {
+      "path": "easytier-core/src/gateway/vpn_portal/runtime.rs",
+      "git_blob": "418ab298da8b2f65c4ffd6e175fd97300884f24b",
+      "sha256": "781ca2b5c076e9226137dfc42b0537552ece953f70df7367d883021e8add5f87"
+    },
+    {
+      "path": "easytier-core/src/gateway/port_forward.rs",
+      "git_blob": "a3a0a88f435198ee4762dfa89925336f7418b768",
+      "sha256": "1d614628e31dfee6b0574ed7f12d2836bdef1c179a98d2185ab9d0f8c0c473c6"
+    },
+    {
+      "path": "easytier-core/src/instance/config.rs",
+      "git_blob": "7bfdd23a10f719ce1a0c02938c80c1e0e35c8d42",
+      "sha256": "7365b483076ab1ef9813be4baf3a58725742142e75d517463c8ef0f20e214421"
+    }
+  ],
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "advanced-source-evidence.json",
+        "sha256": "1f490fda5113e93068b7ac66253b8e79a27735aeb99ea6ed8359711d6ede58b5"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

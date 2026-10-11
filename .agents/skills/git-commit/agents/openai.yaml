@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git 提交编写"
+  short_description: "按 Conventional Commits 编写提交信息、划分逻辑提交并执行已授权提交"
+  default_prompt: "使用 $git-commit 检查当前差异并按 Conventional Commits 起草提交信息并遵守仓库的类型与 scope 约束；只有明确授权提交时才执行本地提交。"

@@ -1,0 +1,539 @@
+{
+  "schemaVersion": 1,
+  "status": "planning-baseline",
+  "checkedDate": "2026-10-11",
+  "scope": "与原型冻结目录一一对应；不等于原生接口已实现或永久功能上限",
+  "catalogSha256": "eaac5fd840290719d0ad270ff4ed36730274d946166646824e4757bd05148e63",
+  "authority": "以P00选定二进制与阶段实证更新，snapshot中的availability/apply不可作为完成凭据",
+  "localMetadata": {
+    "key": "profile.label",
+    "exportToCore": false,
+    "affectsCoreRevision": false,
+    "note": "原型profile.label只映射到这一份原生元数据，禁止并行label/displayName双写",
+    "nativeKey": "ProfileMetadata.localDisplayName"
+  },
+  "fields": [
+    {
+      "key": "network_identity.network_name",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P03",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+    },
+    {
+      "key": "network_identity.network_secret",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P03",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+    },
+    {
+      "key": "hostname",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P03",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+    },
+    {
+      "key": "dhcp",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P03",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+    },
+    {
+      "key": "ipv4",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P03",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+    },
+    {
+      "key": "flags.enable_ipv6",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+    },
+    {
+      "key": "flags.accept_dns",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+    },
+    {
+      "key": "peer",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P03",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "listeners",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "mapped_listeners",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "flags.disable_p2p",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "flags.p2p_only",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "flags.lazy_p2p",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "flags.need_p2p",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "flags.disable_udp_hole_punching",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "flags.disable_tcp_hole_punching",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "flags.disable_sym_hole_punching",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "flags.disable_upnp",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+    },
+    {
+      "key": "routes",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+    },
+    {
+      "key": "exit_nodes",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+    },
+    {
+      "key": "proxy_network",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+    },
+    {
+      "key": "socks5_proxy",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+    },
+    {
+      "key": "port_forward",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+    },
+    {
+      "key": "vpn_portal_config",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+    },
+    {
+      "key": "flags.enable_exit_node",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+    },
+    {
+      "key": "flags.enable_encryption",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "允许与拒绝样例、秘密脱敏、对端互操作与冲突验证"
+    },
+    {
+      "key": "flags.private_mode",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "允许与拒绝样例、秘密脱敏、对端互操作与冲突验证"
+    },
+    {
+      "key": "acl",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "允许与拒绝样例、秘密脱敏、对端互操作与冲突验证"
+    },
+    {
+      "key": "flags.latency_first",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+    },
+    {
+      "key": "flags.mtu",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+    },
+    {
+      "key": "flags.instance_recv_bps_limit",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+    },
+    {
+      "key": "flags.relay_network_whitelist",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+    },
+    {
+      "key": "flags.relay_all_peer_rpc",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+    },
+    {
+      "key": "flags.enable_kcp_proxy",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+    },
+    {
+      "key": "flags.disable_kcp_input",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+    },
+    {
+      "key": "flags.enable_quic_proxy",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+    },
+    {
+      "key": "flags.disable_quic_input",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": true,
+      "applyPolicy": "verify-before-hot-apply",
+      "evidence": [],
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+    },
+    {
+      "key": "android.appRoutingMode",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": false,
+      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "evidence": [],
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+    },
+    {
+      "key": "android.appPackages",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": false,
+      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "evidence": [],
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+    },
+    {
+      "key": "android.internetRouting",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": false,
+      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "evidence": [],
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+    },
+    {
+      "key": "android.ipv6Policy",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": false,
+      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "evidence": [],
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+    },
+    {
+      "key": "android.dnsMode",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": false,
+      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "evidence": [],
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+    },
+    {
+      "key": "android.dnsServers",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": false,
+      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "evidence": [],
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+    },
+    {
+      "key": "android.autoReconnect",
+      "nativeStatus": "not_verified",
+      "editorStage": "P03",
+      "runtimeVerificationStage": "P05",
+      "exportToCore": false,
+      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "evidence": [],
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+    }
+  ],
+  "hiddenReview": [
+    {
+      "key": "flags.bind_device",
+      "nativeStatus": "not_verified",
+      "reviewStage": "P00",
+      "baselineDecision": "hidden-in-prototype",
+      "reasonClass": "platform-managed-or-product-mode",
+      "productionDecision": "requires_platform_review",
+      "evidence": [],
+      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+    },
+    {
+      "key": "flags.dev_name",
+      "nativeStatus": "not_verified",
+      "reviewStage": "P00",
+      "baselineDecision": "hidden-in-prototype",
+      "reasonClass": "platform-managed-or-product-mode",
+      "productionDecision": "requires_platform_review",
+      "evidence": [],
+      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+    },
+    {
+      "key": "flags.enable_udp_broadcast_relay",
+      "nativeStatus": "not_verified",
+      "reviewStage": "P00",
+      "baselineDecision": "hidden-in-prototype",
+      "reasonClass": "current-platform-implementation-limited",
+      "productionDecision": "requires_platform_review",
+      "evidence": [],
+      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+    },
+    {
+      "key": "ipv6_public_addr_auto",
+      "nativeStatus": "not_verified",
+      "reviewStage": "P00",
+      "baselineDecision": "hidden-in-prototype",
+      "reasonClass": "unimplemented-not-proven-inapplicable",
+      "productionDecision": "requires_platform_review",
+      "evidence": [],
+      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+    },
+    {
+      "key": "flags.multi_thread",
+      "nativeStatus": "not_verified",
+      "reviewStage": "P00",
+      "baselineDecision": "hidden-in-prototype",
+      "reasonClass": "platform-managed-or-product-mode",
+      "productionDecision": "requires_platform_review",
+      "evidence": [],
+      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+    },
+    {
+      "key": "flags.no_tun",
+      "nativeStatus": "not_verified",
+      "reviewStage": "P00",
+      "baselineDecision": "hidden-in-prototype",
+      "reasonClass": "platform-managed-or-product-mode",
+      "productionDecision": "requires_platform_review",
+      "evidence": [],
+      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+    },
+    {
+      "key": "flags.proxy_forward_by_system",
+      "nativeStatus": "not_verified",
+      "reviewStage": "P00",
+      "baselineDecision": "hidden-in-prototype",
+      "reasonClass": "platform-managed-or-product-mode",
+      "productionDecision": "requires_platform_review",
+      "evidence": [],
+      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+    },
+    {
+      "key": "flags.use_smoltcp",
+      "nativeStatus": "not_verified",
+      "reviewStage": "P00",
+      "baselineDecision": "hidden-in-prototype",
+      "reasonClass": "platform-managed-or-product-mode",
+      "productionDecision": "requires_platform_review",
+      "evidence": [],
+      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+{
+  "schema_version": 1,
+  "layer": "android_native_build",
+  "status": "passed",
+  "device_status": "unverified",
+  "candidate_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "recorded_at_utc": "2026-10-11T16:30:39.425066+00:00",
+  "patches": [],
+  "copied_cache_from": null,
+  "ndk_revision": "30.0.16248370",
+  "api": 24,
+  "package": "easytier-android-jni",
+  "features": "upstream default features",
+  "profile": "release",
+  "abis": [
+    "arm64-v8a",
+    "x86_64"
+  ],
+  "runner_sha256": "10b8cab4019a038b8ebee924f6654acdf7b55c8933a4dc9c601e6d4f4b393e3a",
+  "bindgen_api_target": true,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-01.txt",
+      "exit_code": 0,
+      "log_sha256": "f7ea3d5a914fb873240646df6870e92b74cfd5bd73985886fa13bfc43c01cbd0"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-02.txt",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "rustc",
+        "-Vv"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-03.txt",
+      "exit_code": 0,
+      "log_sha256": "b569b0c98ea3133c7252b4b8ea6b39b7b353813df0dd5f5c412c355691424112"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "-V"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-04.txt",
+      "exit_code": 0,
+      "log_sha256": "1f88eaf7fe1aaec83184752cf4c944cd22f00184136ff36a3e4c318cc60ef566"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "ndk",
+        "--version"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-05.txt",
+      "exit_code": 0,
+      "log_sha256": "5f042adc0f0b7b69fe1a626abd968cfb28aed6c5fa48ddafd7fc46cca6659aba"
+    },
+    {
+      "argv": [
+        "<RUN_ROOT>/sdk/ndk/30.0.16248370/toolchains/llvm/prebuilt/linux-x86_64/bin/clang",
+        "--version"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-06.txt",
+      "exit_code": 0,
+      "log_sha256": "f6d9642c0b2dc8de9d94d88916cfb522009996e518685de654cae4f38cb25bec"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "ndk",
+        "-t",
+        "arm64-v8a",
+        "-P",
+        "24",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "easytier-android-jni",
+        "--offline"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-07.txt",
+      "exit_code": 0,
+      "log_sha256": "2869f82837323f456dc35f3b492fe4c1ca9fe84ead131bc1acc504bea8e8850d"
+    },
+    {
+      "argv": [
+        "<RUN_ROOT>/sdk/ndk/30.0.16248370/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf",
+        "-h",
+        "-d",
+        "--dyn-syms",
+        "<RUN_ROOT>/native-build/target/aarch64-linux-android/release/libeasytier_android_jni.so"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-08.txt",
+      "exit_code": 0,
+      "log_sha256": "77ba3fe5a7b447a60f19d4a6c01510652953650555e18dbd3d2dca5737032dcc"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "ndk",
+        "-t",
+        "x86_64",
+        "-P",
+        "24",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "easytier-android-jni",
+        "--offline"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-09.txt",
+      "exit_code": 0,
+      "log_sha256": "c040dcb0b6960c4333f322631a7633f0c1d5a4c59ac8760794f67e5f6048b863"
+    },
+    {
+      "argv": [
+        "<RUN_ROOT>/sdk/ndk/30.0.16248370/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-readelf",
+        "-h",
+        "-d",
+        "--dyn-syms",
+        "<RUN_ROOT>/native-build/target/x86_64-linux-android/release/libeasytier_android_jni.so"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-10.txt",
+      "exit_code": 0,
+      "log_sha256": "0e96366eb0a51ed86d2d77ccf7d628c03ff2747952a70f0b5802e49e56335877"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "log_path": "<RUN_ROOT>/native-build/command-11.txt",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "libraries": [
+    {
+      "abi": "arm64-v8a",
+      "path": "<RUN_ROOT>/native-build/target/aarch64-linux-android/release/libeasytier_android_jni.so",
+      "sha256": "749f2ae504b3bfc626b5d0b6106e2a5e71a468d81ae6267f62aa3ce0b22c2f31",
+      "size_bytes": 16852744,
+      "elf": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00\n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - System V\n  ABI Version:                       0\n  Type:                              DYN (Shared object file)\n  Machine:                           AArch64\n  Version:                           0x1\n  Entry point address:               0x0\n  Start of program headers:          64 (bytes into file)\n  Start of section headers:          16851080 (bytes into file)\n  Flags:                             0x0\n  Size of this header:               64 (bytes)\n  Size of program headers:           56 (bytes)\n  Number of program headers:         9\n  Size of section headers:           64 (bytes)\n  Number of section headers:         26\n  Section header string table index: 25\nDynamic section at offset 0x1008568 contains 27 entries:\n  Tag                Type           Name/Value\n  0x0000000000000001 (NEEDED)       Shared library: [liblog.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libdl.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libm.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libc.so]\n  0x000000000000001e (FLAGS)        BIND_NOW \n  0x000000006ffffffb (FLAGS_1)      NOW \n  0x0000000000000007 (RELA)         0x1b10\n  0x0000000000000008 (RELASZ)       789816 (bytes)\n  0x0000000000000009 (RELAENT)      24 (bytes)\n  0x000000006ffffff9 (RELACOUNT)    32901\n  0x0000000000000017 (JMPREL)       0xc2848\n  0x0000000000000002 (PLTRELSZ)     3240 (bytes)\n  0x0000000000000003 (PLTGOT)       0x100c770\n  0x0000000000000014 (PLTREL)       RELA\n  0x0000000000000006 (SYMTAB)       0x2d0\n  0x000000000000000b (SYMENT)       24 (bytes)\n  0x0000000000000005 (STRTAB)       0x12ec\n  0x000000000000000a (STRSZ)        2082 (bytes)\n  0x000000006ffffef5 (GNU_HASH)     0x1280\n  0x0000000000000019 (INIT_ARRAY)   0x100c4e8\n  0x000000000000001b (INIT_ARRAYSZ) 128 (bytes)\n  0x000000000000001a (FINI_ARRAY)   0x100c4d8\n  0x000000000000001c (FINI_ARRAYSZ) 16 (bytes)\n  0x000000006ffffff0 (VERSYM)       0x10e0\n  0x000000006ffffffe (VERNEED)      0x120c\n  0x000000006fffffff (VERNEEDNUM)   3\n  0x0000000000000000 (NULL)         0x0\n\nSymbol table '.dynsym' contains 150 entries:\n   Num:    Value          Size Type    Bind   Vis       Ndx Name\n     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT   UND \n     1: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __cxa_finalize@LIBC\n     2: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __register_atfork@LIBC\n     3: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND free@LIBC\n     4: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_getspecific@LIBC\n     5: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND malloc@LIBC\n     6: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND strlen@LIBC\n     7: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memcpy@LIBC\n     8: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND syscall@LIBC\n     9: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memset@LIBC\n    10: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memcmp@LIBC\n    11: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memmove@LIBC\n    12: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND calloc@LIBC\n    13: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND posix_memalign@LIBC\n    14: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND realloc@LIBC\n    15: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __android_log_buf_write\n    16: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __android_log_write\n    17: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_setspecific@LIBC\n    18: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND renameat@LIBC\n    19: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND open@LIBC\n    20: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND openat@LIBC\n    21: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND unlinkat@LIBC\n    22: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fstatat@LIBC\n    23: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND close@LIBC\n    24: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fchmod@LIBC\n    25: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fchown@LIBC\n    26: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND geteuid@LIBC\n    27: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fsync@LIBC\n    28: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __errno@LIBC\n    29: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND lstat@LIBC\n    30: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND read@LIBC\n    31: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sched_yield@LIBC\n    32: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND clock_gettime@LIBC\n    33: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND exp@LIBC\n    34: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_ctl@LIBC\n    35: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_detach@LIBC\n    36: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND shutdown@LIBC\n    37: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND socket@LIBC\n    38: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND bind@LIBC\n    39: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setsockopt@LIBC\n    40: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND connect@LIBC\n    41: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getsockopt@LIBC\n    42: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fcntl@LIBC\n    43: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND poll@LIBC\n    44: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sendto@LIBC\n    45: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND listen@LIBC\n    46: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sendmsg@LIBC\n    47: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvmsg@LIBC\n    48: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getsockname@LIBC\n    49: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND write@LIBC\n    50: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvfrom@LIBC\n    51: 0000000000000000     0 OBJECT  GLOBAL DEFAULT   UND environ@LIBC\n    52: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fork@LIBC\n    53: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND _exit@LIBC\n    54: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND flock@LIBC\n    55: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND clock_nanosleep@LIBC\n    56: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getpid@LIBC\n    57: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND rename@LIBC\n    58: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND opendir@LIBC\n    59: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND readdir@LIBC\n    60: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND uname@LIBC\n    61: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND strerror_r@LIBC\n    62: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_mutex_lock@LIBC\n    63: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_mutex_unlock@LIBC\n    64: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlsym@LIBC\n    65: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND gethostname@LIBC\n    66: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlopen@LIBC\n    67: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlclose@LIBC\n    68: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recv@LIBC\n    69: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND send@LIBC\n    70: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND if_nametoindex@LIBC\n    71: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlerror@LIBC\n    72: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getifaddrs@LIBC_N\n    73: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND freeifaddrs@LIBC_N\n    74: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvmmsg@LIBC\n    75: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getauxval@LIBC\n    76: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND abort@LIBC\n    77: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_key_create@LIBC\n    78: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_key_delete@LIBC\n    79: 0000000000000000     0 FUNC    WEAK   DEFAULT   UND gettid@LIBC\n    80: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getcwd@LIBC\n    81: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dl_iterate_phdr@LIBC\n    82: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fstat@LIBC\n    83: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND mmap@LIBC\n    84: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND munmap@LIBC\n    85: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND lseek64@LIBC\n    86: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND realpath@LIBC\n    87: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND stat@LIBC\n    88: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND readlink@LIBC\n    89: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND writev@LIBC\n    90: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getenv@LIBC\n    91: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getpeername@LIBC\n    92: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_init@LIBC\n    93: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_setstacksize@LIBC\n    94: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sysconf@LIBC\n    95: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_destroy@LIBC\n    96: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_create@LIBC\n    97: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND prctl@LIBC\n    98: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND mkdir@LIBC\n    99: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND waitpid@LIBC\n   100: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pipe2@LIBC\n   101: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dup2@LIBC\n   102: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setgroups@LIBC\n   103: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setgid@LIBC\n   104: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setuid@LIBC\n   105: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND chroot@LIBC\n   106: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND chdir@LIBC\n   107: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setpgid@LIBC\n   108: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setsid@LIBC\n   109: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sigaction@LIBC\n   110: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND execvp@LIBC\n   111: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dirfd@LIBC\n   112: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND closedir@LIBC\n   113: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND unlink@LIBC\n   114: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sched_getaffinity@LIBC\n   115: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND getrandom\n   116: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getaddrinfo@LIBC\n   117: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND gai_strerror@LIBC\n   118: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND freeaddrinfo@LIBC\n   119: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_join@LIBC\n   120: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND socketpair@LIBC\n   121: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_create1@LIBC\n   122: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND eventfd@LIBC\n   123: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pow@LIBC\n   124: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_wait@LIBC\n   125: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND vsprintf@LIBC\n   126: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __assert2@LIBC\n   127: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_compress_begin\n   128: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_compress_end\n   129: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_decompress_begin\n   130: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_decompress_end\n   131: 0000000000000000     0 OBJECT  GLOBAL DEFAULT   UND __sF@LIBC\n   132: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fprintf@LIBC\n   133: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fflush@LIBC\n   134: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_wrlock@LIBC\n   135: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_unlock@LIBC\n   136: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_rdlock@LIBC\n   137: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fwrite@LIBC\n   138: 00000000002e7484    72 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_collectNetworkInfos\n   139: 00000000002e8c18  6876 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_listInstances\n   140: 00000000002e56b0  7636 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_callJsonRpc\n   141: 00000000002e74cc  5264 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_deleteNetworkInstance\n   142: 00000000002e89f8   544 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_isConfigServerClientConnected\n   143: 00000000002eca30   844 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_setTunFd\n   144: 00000000002e895c   156 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_getLastError\n   145: 00000000002ea6f4   608 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_parseConfig\n   146: 00000000002ea954  3388 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_retainNetworkInstance\n   147: 00000000002eb690  5024 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_runNetworkInstance\n   148: 00000000002ecd7c  2232 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_startConfigServerClient\n   149: 00000000002ed634   592 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_stopConfigServerClient\n"
+    },
+    {
+      "abi": "x86_64",
+      "path": "<RUN_ROOT>/native-build/target/x86_64-linux-android/release/libeasytier_android_jni.so",
+      "sha256": "65fba16622e9bfd4998a374fa003b1f4912f5082f1d0d67030f6b97a0efd4e6b",
+      "size_bytes": 18947688,
+      "elf": "ELF Header:\n  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00\n  Class:                             ELF64\n  Data:                              2's complement, little endian\n  Version:                           1 (current)\n  OS/ABI:                            UNIX - System V\n  ABI Version:                       0\n  Type:                              DYN (Shared object file)\n  Machine:                           Advanced Micro Devices X86-64\n  Version:                           0x1\n  Entry point address:               0x0\n  Start of program headers:          64 (bytes into file)\n  Start of section headers:          18946024 (bytes into file)\n  Flags:                             0x0\n  Size of this header:               64 (bytes)\n  Size of program headers:           56 (bytes)\n  Number of program headers:         9\n  Size of section headers:           64 (bytes)\n  Number of section headers:         26\n  Section header string table index: 25\nDynamic section at offset 0x1207950 contains 27 entries:\n  Tag                Type           Name/Value\n  0x0000000000000001 (NEEDED)       Shared library: [liblog.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libdl.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libm.so]\n  0x0000000000000001 (NEEDED)       Shared library: [libc.so]\n  0x000000000000001e (FLAGS)        BIND_NOW \n  0x000000006ffffffb (FLAGS_1)      NOW \n  0x0000000000000007 (RELA)         0x1af0\n  0x0000000000000008 (RELASZ)       796128 (bytes)\n  0x0000000000000009 (RELAENT)      24 (bytes)\n  0x000000006ffffff9 (RELACOUNT)    33046\n  0x0000000000000017 (JMPREL)       0xc40d0\n  0x0000000000000002 (PLTRELSZ)     528 (bytes)\n  0x0000000000000003 (PLTGOT)       0x120c2a8\n  0x0000000000000014 (PLTREL)       RELA\n  0x0000000000000006 (SYMTAB)       0x2d0\n  0x000000000000000b (SYMENT)       24 (bytes)\n  0x0000000000000005 (STRTAB)       0x12d4\n  0x000000000000000a (STRSZ)        2072 (bytes)\n  0x000000006ffffef5 (GNU_HASH)     0x1268\n  0x0000000000000019 (INIT_ARRAY)   0x120b8d0\n  0x000000000000001b (INIT_ARRAYSZ) 128 (bytes)\n  0x000000000000001a (FINI_ARRAY)   0x120b8c0\n  0x000000000000001c (FINI_ARRAYSZ) 16 (bytes)\n  0x000000006ffffff0 (VERSYM)       0x10c8\n  0x000000006ffffffe (VERNEED)      0x11f4\n  0x000000006fffffff (VERNEEDNUM)   3\n  0x0000000000000000 (NULL)         0x0\n\nSymbol table '.dynsym' contains 149 entries:\n   Num:    Value          Size Type    Bind   Vis       Ndx Name\n     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT   UND \n     1: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __cxa_finalize@LIBC\n     2: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __register_atfork@LIBC\n     3: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND free@LIBC\n     4: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_getspecific@LIBC\n     5: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND malloc@LIBC\n     6: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND strlen@LIBC\n     7: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memcpy@LIBC\n     8: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND syscall@LIBC\n     9: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memset@LIBC\n    10: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memcmp@LIBC\n    11: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND memmove@LIBC\n    12: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND calloc@LIBC\n    13: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND posix_memalign@LIBC\n    14: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND realloc@LIBC\n    15: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __android_log_buf_write\n    16: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __android_log_write\n    17: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_setspecific@LIBC\n    18: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND renameat@LIBC\n    19: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND open@LIBC\n    20: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND openat@LIBC\n    21: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND unlinkat@LIBC\n    22: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fstatat@LIBC\n    23: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND close@LIBC\n    24: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fchmod@LIBC\n    25: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fchown@LIBC\n    26: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND geteuid@LIBC\n    27: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fsync@LIBC\n    28: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __errno@LIBC\n    29: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND lstat@LIBC\n    30: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND read@LIBC\n    31: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sched_yield@LIBC\n    32: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND clock_gettime@LIBC\n    33: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND exp@LIBC\n    34: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_ctl@LIBC\n    35: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_detach@LIBC\n    36: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND shutdown@LIBC\n    37: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND socket@LIBC\n    38: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND bind@LIBC\n    39: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setsockopt@LIBC\n    40: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND connect@LIBC\n    41: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getsockopt@LIBC\n    42: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fcntl@LIBC\n    43: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sendto@LIBC\n    44: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND poll@LIBC\n    45: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND listen@LIBC\n    46: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sendmsg@LIBC\n    47: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvmsg@LIBC\n    48: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getsockname@LIBC\n    49: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND write@LIBC\n    50: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvfrom@LIBC\n    51: 0000000000000000     0 OBJECT  GLOBAL DEFAULT   UND environ@LIBC\n    52: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND waitpid@LIBC\n    53: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fork@LIBC\n    54: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND _exit@LIBC\n    55: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND flock@LIBC\n    56: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND clock_nanosleep@LIBC\n    57: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getpid@LIBC\n    58: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND rename@LIBC\n    59: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND opendir@LIBC\n    60: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND readdir@LIBC\n    61: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND uname@LIBC\n    62: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlsym@LIBC\n    63: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND strerror_r@LIBC\n    64: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_mutex_lock@LIBC\n    65: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_mutex_unlock@LIBC\n    66: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND gethostname@LIBC\n    67: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlopen@LIBC\n    68: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlclose@LIBC\n    69: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recv@LIBC\n    70: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND send@LIBC\n    71: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND if_nametoindex@LIBC\n    72: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dlerror@LIBC\n    73: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getifaddrs@LIBC_N\n    74: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND freeifaddrs@LIBC_N\n    75: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND recvmmsg@LIBC\n    76: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND abort@LIBC\n    77: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_key_create@LIBC\n    78: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_key_delete@LIBC\n    79: 0000000000000000     0 FUNC    WEAK   DEFAULT   UND gettid@LIBC\n    80: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getcwd@LIBC\n    81: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dl_iterate_phdr@LIBC\n    82: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fstat@LIBC\n    83: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND mmap@LIBC\n    84: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND munmap@LIBC\n    85: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND lseek64@LIBC\n    86: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND realpath@LIBC\n    87: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND stat@LIBC\n    88: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND readlink@LIBC\n    89: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND writev@LIBC\n    90: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getenv@LIBC\n    91: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getpeername@LIBC\n    92: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_init@LIBC\n    93: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_setstacksize@LIBC\n    94: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sysconf@LIBC\n    95: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_attr_destroy@LIBC\n    96: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_create@LIBC\n    97: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND prctl@LIBC\n    98: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND mkdir@LIBC\n    99: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pipe2@LIBC\n   100: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dup2@LIBC\n   101: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setgroups@LIBC\n   102: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setgid@LIBC\n   103: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setuid@LIBC\n   104: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND chroot@LIBC\n   105: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND chdir@LIBC\n   106: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setpgid@LIBC\n   107: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND setsid@LIBC\n   108: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sigaction@LIBC\n   109: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND execvp@LIBC\n   110: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND dirfd@LIBC\n   111: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND closedir@LIBC\n   112: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND unlink@LIBC\n   113: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND sched_getaffinity@LIBC\n   114: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND getrandom\n   115: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND getaddrinfo@LIBC\n   116: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND gai_strerror@LIBC\n   117: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND freeaddrinfo@LIBC\n   118: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_join@LIBC\n   119: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND socketpair@LIBC\n   120: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_create1@LIBC\n   121: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND eventfd@LIBC\n   122: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pow@LIBC\n   123: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND epoll_wait@LIBC\n   124: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND vsprintf@LIBC\n   125: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND __assert2@LIBC\n   126: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_compress_begin\n   127: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_compress_end\n   128: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_decompress_begin\n   129: 0000000000000000     0 NOTYPE  WEAK   DEFAULT   UND ZSTD_trace_decompress_end\n   130: 0000000000000000     0 OBJECT  GLOBAL DEFAULT   UND __sF@LIBC\n   131: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fprintf@LIBC\n   132: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fflush@LIBC\n   133: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_wrlock@LIBC\n   134: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_unlock@LIBC\n   135: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND pthread_rwlock_rdlock@LIBC\n   136: 0000000000000000     0 FUNC    GLOBAL DEFAULT   UND fwrite@LIBC\n   137: 00000000002f8320    53 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_collectNetworkInfos\n   138: 00000000002f9df0  8837 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_listInstances\n   139: 00000000002f5bc0 10078 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_callJsonRpc\n   140: 00000000002f8360  6211 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_deleteNetworkInstance\n   141: 00000000002f9c30   443 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_isConfigServerClientConnected\n   142: 00000000002feb60  1019 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_setTunFd\n   143: 00000000002f9bb0   113 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_getLastError\n   144: 00000000002fc080   636 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_parseConfig\n   145: 00000000002fc300  4363 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_retainNetworkInstance\n   146: 00000000002fd410  5956 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_runNetworkInstance\n   147: 00000000002fef60  2865 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_startConfigServerClient\n   148: 00000000002ffaa0   568 FUNC    GLOBAL DEFAULT    13 Java_com_easytier_jni_EasyTierJNI_stopConfigServerClient\n"
+    }
+  ],
+  "environment_overrides": {
+    "ANDROID_NDK_HOME": "<RUN_ROOT>/sdk/ndk/30.0.16248370",
+    "ANDROID_NDK_ROOT": "<RUN_ROOT>/sdk/ndk/30.0.16248370",
+    "CARGO_TARGET_DIR": "<RUN_ROOT>/native-build/target",
+    "CARGO_BUILD_JOBS": "2",
+    "CARGO_INCREMENTAL": "0",
+    "BINDGEN_EXTRA_CLANG_ARGS_aarch64-linux-android": "--target=aarch64-linux-android24 --sysroot=<RUN_ROOT>/sdk/ndk/30.0.16248370/toolchains/llvm/prebuilt/linux-x86_64/sysroot",
+    "BINDGEN_EXTRA_CLANG_ARGS_x86_64-linux-android": "--target=x86_64-linux-android24 --sysroot=<RUN_ROOT>/sdk/ndk/30.0.16248370/toolchains/llvm/prebuilt/linux-x86_64/sysroot"
+  },
+  "cargo_lock_sha256": "cd5a7951f897e45f1988b0a4896ab1f336e03e4cb6d70ca1db2a7b9b477d774b",
+  "tool_versions": {
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0\nLLVM version: 23.1.1\n",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)\n",
+    "cargo_ndk": "cargo-ndk 4.1.2\n"
+  },
+  "ndk_source_properties": "Pkg.Desc = Android NDK\nPkg.Revision = 30.0.16248370\nPkg.BaseRevision = 30.0.16248370\nPkg.ReleaseName = r30\n",
+  "ndk_source_properties_sha256": "e73b7dc557cea2da9212c09ee1795434957d62e63b7550eef69fd1887a355d94",
+  "ndk_tool_sha256": {
+    "clang": "ad535f0b6fc303edba958b51636169ff0291c6e36463236c99ff8abcaa34247c",
+    "ld.lld": "e056852f9ab38648c7eed62e29673998e038110641b36d84d5556b5ffc2ecc0d",
+    "llvm-readelf": "ef9d7956a96a76fe58e9dc532736a87873454739d154c1217b94249fb36fb5f1"
+  },
+  "clang_version": "Android (16134705, +pgo, +bolt, +lto, +mlgo, based on r574158c) clang version 21.0.0 (https://android.googlesource.com/toolchain/llvm-project 9f872551d3c681d06fd303b36f16ed5c274735eb)\nTarget: x86_64-unknown-linux-gnu\nThread model: posix\nInstalledDir: <RUN_ROOT>/sdk/ndk/30.0.16248370/toolchains/llvm/prebuilt/linux-x86_64/bin\n",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "native-build-report.json",
+        "sha256": "99f4e9362395475532d8159faa39ef3907722180d96456295ef9a67a80a362bc"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

@@ -1,0 +1,63 @@
+# Gradle、Kotlin 和原生构建缓存；覆盖根工程与所有模块。
+.gradle/
+.kotlin/
+build/
+.externalNativeBuild/
+.cxx/
+target/
+
+# Android SDK 路径、签名配置和本地凭据。
+local.properties
+keystore.properties
+signing.properties
+*.jks
+*.keystore
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+/.aws/
+
+# Android Studio / IntelliJ 个人状态；代码风格、检查和运行配置继续共享。
+*.iml
+*.iws
+/.idea/caches/
+/.idea/libraries/
+/.idea/shelf/
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/tasks.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/.idea/deploymentTargetSelector.xml
+/.idea/deploymentTargetDropDown.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/captures/
+
+# Python 工具缓存、虚拟环境和覆盖率输出。
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.coverage
+.coverage.*
+htmlcov/
+
+# 实验输出统一放 build/experiments；兼容旧探针的本地输出目录。
+/experiments/**/.local/
+
+# 系统、编辑器临时文件和 JVM 崩溃诊断。
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+*~
+*.swp
+*.swo
+hs_err_pid*.log
+replay_pid*.log
+*.hprof

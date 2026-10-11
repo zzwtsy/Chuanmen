@@ -1,0 +1,108 @@
+{
+  "task": "P00-03",
+  "layer": "host_config_probe_build",
+  "status": "passed",
+  "recorded_at_utc": "2026-10-11T14:39:47.229591+00:00",
+  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "network_started": false,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/config-roundtrip-05/command-01.txt",
+      "log_sha256": "f7ea3d5a914fb873240646df6870e92b74cfd5bd73985886fa13bfc43c01cbd0"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/config-roundtrip-05/command-02.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "stable",
+        "rustc",
+        "-Vv"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/config-roundtrip-05/command-03.txt",
+      "log_sha256": "b569b0c98ea3133c7252b4b8ea6b39b7b353813df0dd5f5c412c355691424112"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "update",
+        "--workspace",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/config-roundtrip-05/command-04.txt",
+      "log_sha256": "e5bd82c9e845dc2579d96b0ed332507524f9bc5dd05f165ba81033a05a71f58e"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--release"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/config-roundtrip-05/command-05.txt",
+      "log_sha256": "230841f24dc63234fe7695156c65110c89a6010e1666234485c6701643bc2f97"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/config-roundtrip-05/command-06.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "runner_sha256": "d71a78e4bb57550fc4a421ebb2e15a4c40f67d354a239ed342eabb36864252f2",
+  "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0\nLLVM version: 23.1.1\n",
+  "probe_source_sha256": "dc7ad821bcc5d43706344e1b7b8b994f58f173898a52c8da0287935522ceaabd",
+  "upstream_lock_sha256": "cd5a7951f897e45f1988b0a4896ab1f336e03e4cb6d70ca1db2a7b9b477d774b",
+  "derived_lock_sha256": "09d1b01943c9cd8a5686a00ac4d97accadb6325b7bd8fa0ccaa631ab4287eb1c",
+  "dependency_identity_subset_verified": true,
+  "derived_packages": 352,
+  "binary_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/config-roundtrip-05/target/release/p00-config-roundtrip",
+  "binary_sha256": "fe28bb9d9a6f4012eb546c369a7f093de43cdf417650e15567fe1a2e94efc05d",
+  "binary_bytes": 2296608,
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "config-roundtrip-build.json",
+        "sha256": "96384c5c30afbf8635d07455882e55ab45d0c3e39bf041bb24248c10107b27e3"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "layer": "experimental_project_patch",
+  "status": "prepared",
+  "production_approved": false,
+  "checkout": "/tmp/chuanmen-p00-boundary-core-v3",
+  "files": {
+    "easytier/src/p00_observation.rs": {
+      "original_sha256": null,
+      "patched_sha256": "848636b7c17003c7da94006282f59f52ed97a45100208a1357e712ad6fed30b0"
+    },
+    "easytier-contrib/easytier-android-jni/src/p00_jni.rs": {
+      "original_sha256": null,
+      "patched_sha256": "fbb93cdf651f455e44d87d8989b3c84416811c9e2b4deeea656611f3449dd2c7"
+    },
+    "easytier/src/lib.rs": {
+      "original_sha256": "f1d538cd0e48f0d780dfb5ddf4153a0284fb12d30feae5e71adc97755ee7587c",
+      "patched_sha256": "5bf1aa2e120abd2e94a29936c784affad332ea6b8c130f0a0dfb5c0f8bdf4d00"
+    },
+    "easytier-contrib/easytier-android-jni/src/lib.rs": {
+      "original_sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+      "patched_sha256": "85910308e060af1fef16d91cd08417339696a2cd8a9580d808218cadf2403fcf"
+    },
+    "easytier/src/instance/virtual_nic.rs": {
+      "original_sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+      "patched_sha256": "a85a519168cb785897772e4882c3fcbf60529f6e26369309d0467054bd9a159b"
+    },
+    "easytier/src/instance/runtime_host/tun_common.rs": {
+      "original_sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+      "patched_sha256": "bef34f9d67b89415f7584fd7f6fc780234c40c8719f3ae948119c873abb88b59"
+    }
+  },
+  "prepare_script_sha256": "a585bf739be905303e2daf286ddaf61b9d1242e125473ce9377db4b6791186cd",
+  "lockfile_sha256": "cd5a7951f897e45f1988b0a4896ab1f336e03e4cb6d70ca1db2a7b9b477d774b",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "native-boundary-patch-v3.json",
+        "sha256": "98563956236d50e60803327506af709b627a9e99b1cca20cd8dee25458bf18b1"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

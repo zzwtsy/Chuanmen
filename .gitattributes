@@ -1,0 +1,39 @@
+.agents/** linguist-generated=true
+
+# 默认文本使用 LF，二进制由 Git 自动识别。
+* text=auto eol=lf
+
+# 脚本在对应平台使用明确的换行格式。
+gradlew text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# 图片、文档、归档和编译产物按二进制处理。
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.jar binary
+*.aar binary
+*.zip binary
+*.gz binary
+*.7z binary
+*.apk binary
+*.aab binary
+*.dex binary
+*.class binary
+*.so binary
+*.a binary
+*.o binary
+*.dylib binary
+*.dll binary
+*.exe binary
+
+# 证据和运输清单按原始字节校验 SHA-256，关闭换行转换。
+docs/verification/** -text !eol
+handoff.json -text !eol
+SHA256SUMS -text !eol

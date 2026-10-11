@@ -1,0 +1,4 @@
+interface:
+  display_name: "EasyTier 配置目录审计"
+  short_description: "核对官网配置映射、Android 显隐与基础配置边界并输出可复核差异报告"
+  default_prompt: "使用 $easytier-config-audit 审计当前配置目录，报告缺项、显隐错误和待验证能力。"

@@ -1,0 +1,6 @@
+interface:
+  display_name: "实验与证据治理"
+  short_description: "设计可行性实验，筛选脱敏证据并控制验证目录增长"
+  default_prompt: "使用 $verification-evidence 完成本项目的实验设计、证据整理或阶段发布，并按验证规范检查。"
+policy:
+  allow_implicit_invocation: true

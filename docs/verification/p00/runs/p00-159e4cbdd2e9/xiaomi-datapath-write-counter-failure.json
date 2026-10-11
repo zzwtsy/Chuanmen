@@ -1,0 +1,1435 @@
+{
+  "schema_version": 1,
+  "layer": "android_native_datapath",
+  "status": "failed",
+  "environment_kind": "physical_device",
+  "native_status": "unverified",
+  "recorded_at_utc": "2026-10-11T12:56:02.794767+00:00",
+  "device_id": "device-01",
+  "apk_sha256": "1b5aee417ab33b4aef2ee585ffe76d6e26d2e04d00df99d77f925ae87db0e3c8",
+  "build_report_sha256": "799a3f4d678594f54bb2c19c3bb09b5e1203598b68920518cd6032c7725788c4",
+  "commands": [
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "get-state"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "c98373c1abef78070f6beef6b4ae4fbf3de348dac280195c7f93441920584af9",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "1bfaa17007aea1b639eb5c54d1c55d079f30f56b64ed20dfc02faf499d567a48",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.version.sdk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a4b2c5db15348c29451e18b8307e5ef81625ea638e807935f39ceaa8d9ac7758",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.cpu.abi"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "7f10c3cd4593d1d6ded27d658e7c05216011c955c200aac551caad0c979d4d90",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.manufacturer"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "b257d787c7da7056d0400b2829dce276da3bcb93aab6b3a903dd7f70df0e0555",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.model"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "8a1f2faeb360d564e712171d8daf644b072e0c46bc9ca8038e314868ac1ba507",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "pm",
+        "path",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "ec5bed2877787cb46a1ee1fca4fc111dcbc1ff7d96614170b41a9ac1cf8ad43d",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "sha256sum",
+        "/data/app/~~gr1ji1sScFboe3EafZp4WA==/com.github.zzwtsy.chuanmen.p00probe-FKF2KVcrA1D44EdHq76GWA==/base.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "ab723c75c80c29c1297bfa595f0eb1c825ee8b91013df931a35c39cf1cdcf43c",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.github.zzwtsy.chuanmen.p00probe/.BoundaryActivity"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a606c542f0f9c185b206fe90d43e487d9614c29039af0b2543add74861893abb",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "instrument",
+        "-w",
+        "-r",
+        "-e",
+        "host_launch",
+        "true",
+        "-e",
+        "peer_host",
+        "<HOST_LAN_IP>",
+        "-e",
+        "run_id",
+        "p00-159e4cbdd2e9",
+        "com.github.zzwtsy.chuanmen.p00probe/.DatapathInstrumentation"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e85266b8b7692c3e165fe4b9daaf6cfa985acf0dfd7cac009d83cc5cbdbc4ce6",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "dumpsys",
+        "activity",
+        "services",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e9990d2b9ce9e862271712ca1ecd0c280ac8cd7a2fd48fc18fb69623521c33b0",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    }
+  ],
+  "runner_sha256": "d50b1c373eac2baa1bf359e357c0c666a6951ad5ea607698a9df8c8cb343f5e9",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "patches": [
+    {
+      "report_path": "/tmp/chuanmen-p00-boundary-core-v2-patch.json",
+      "report_sha256": "b404f33f3e5db41738a38b12761ca28b4245648fa39154c9ace91989d7ae35e0",
+      "files": {
+        "easytier/src/p00_observation.rs": {
+          "original_sha256": null,
+          "patched_sha256": "848636b7c17003c7da94006282f59f52ed97a45100208a1357e712ad6fed30b0"
+        },
+        "easytier-contrib/easytier-android-jni/src/p00_jni.rs": {
+          "original_sha256": null,
+          "patched_sha256": "fbb93cdf651f455e44d87d8989b3c84416811c9e2b4deeea656611f3449dd2c7"
+        },
+        "easytier/src/lib.rs": {
+          "original_sha256": "f1d538cd0e48f0d780dfb5ddf4153a0284fb12d30feae5e71adc97755ee7587c",
+          "patched_sha256": "5bf1aa2e120abd2e94a29936c784affad332ea6b8c130f0a0dfb5c0f8bdf4d00"
+        },
+        "easytier-contrib/easytier-android-jni/src/lib.rs": {
+          "original_sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+          "patched_sha256": "85910308e060af1fef16d91cd08417339696a2cd8a9580d808218cadf2403fcf"
+        },
+        "easytier/src/instance/virtual_nic.rs": {
+          "original_sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+          "patched_sha256": "5c52a176adc3165a93b235e9ed6f28480abbb790b50911188fc1f63a13aa9747"
+        },
+        "easytier/src/instance/runtime_host/tun_common.rs": {
+          "original_sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+          "patched_sha256": "bef34f9d67b89415f7584fd7f6fc780234c40c8719f3ae948119c873abb88b59"
+        }
+      },
+      "production_approved": false
+    }
+  ],
+  "acceptance_scope": "tcp_udp_roundtrip_and_scoped_loop_prevention",
+  "vpn_acceptance": "unverified",
+  "run_id": "p00-159e4cbdd2e9",
+  "controlled_topology": {
+    "host_bind": "<HOST_LAN_IP>:31270",
+    "virtual_ip": "10.222.0.1/24",
+    "tcp_echo": "127.0.0.1:31271",
+    "udp_echo": "127.0.0.1:31272",
+    "requires_host_tun": false,
+    "public_discovery": false,
+    "system_routes_modified": false
+  },
+  "peer_binary_sha256": "75387de6bbd85f0de5bcd613f74968f473d7c2b6bbeb9692e22dcea69ec4af2c",
+  "peer_ready_report_sha256": "113ffa9f2941ef501e45e6ea749db357114b3a56ed1eb3751b597b6463e26a12",
+  "device": {
+    "ro.build.fingerprint": "Xiaomi/popsicle/popsicle:16/BP2A.250605.031.A3/OS3.0.319.0.WPBCNXM:user/release-keys",
+    "ro.build.version.sdk": "36",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.product.manufacturer": "Xiaomi",
+    "ro.product.model": "2509FPN0BC",
+    "ro.kernel.qemu": ""
+  },
+  "native_library_sha256": "18a67dd3cd19433d61be5dde9c25fe2365d64f67674a047f9b93e863e2ded1f0",
+  "installed_apk_sha256": "1b5aee417ab33b4aef2ee585ffe76d6e26d2e04d00df99d77f925ae87db0e3c8",
+  "observations": {
+    "schema_version": 1,
+    "layer": "android_native_datapath",
+    "status": "failed",
+    "run_id": "p00-159e4cbdd2e9",
+    "peer_host": "<HOST_LAN_IP>",
+    "virtual_destination": "10.222.0.1",
+    "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "configuration": "instance_name = \"p00-datapath\"\nhostname = \"p00-android\"\nipv4 = \"10.222.0.2/24\"\ndhcp = false\nlisteners = []\nstun_servers = []\ntcp_stun_servers = []\nstun_servers_v6 = []\n[[peer]]\nuri = \"tcp://<HOST_LAN_IP>:31270\"\n[network_identity]\nnetwork_name = \"chuanmen-p00-isolated\"\nnetwork_secret = \"p00-synthetic-public-test-only\"\n[flags]\nenable_ipv6 = false\ndisable_upnp = true\ndisable_udp_hole_punching = true\ndisable_tcp_hole_punching = true\ndisable_p2p = true\nbind_device = false\nprivate_mode = true\n",
+    "tun_install_ms": 35.012552,
+    "tcp": [
+      {
+        "round": 1,
+        "status": "passed",
+        "request_sha256": "e7ac9c3aae5f7f88cee4a672db735f325ddc0053680a5e1fe553d47b9d697821",
+        "response_sha256": "e7ac9c3aae5f7f88cee4a672db735f325ddc0053680a5e1fe553d47b9d697821",
+        "bytes": 23,
+        "elapsed_ms": 16.011042
+      },
+      {
+        "round": 2,
+        "status": "passed",
+        "request_sha256": "10cc878f846f8bc6488bae6f9f119fa84ed68b80ddd04ab339484305db588bef",
+        "response_sha256": "10cc878f846f8bc6488bae6f9f119fa84ed68b80ddd04ab339484305db588bef",
+        "bytes": 23,
+        "elapsed_ms": 13.312396
+      },
+      {
+        "round": 3,
+        "status": "passed",
+        "request_sha256": "e9f05e96ef958ce80d1345109303831a9bf4d508eebb25d5b87b31da05de70bb",
+        "response_sha256": "e9f05e96ef958ce80d1345109303831a9bf4d508eebb25d5b87b31da05de70bb",
+        "bytes": 23,
+        "elapsed_ms": 10.327917
+      },
+      {
+        "round": 4,
+        "status": "passed",
+        "request_sha256": "081cdb822271af2a2e4cf9a3a3f6d948f09c7c1e4407081669486320b70bde4d",
+        "response_sha256": "081cdb822271af2a2e4cf9a3a3f6d948f09c7c1e4407081669486320b70bde4d",
+        "bytes": 23,
+        "elapsed_ms": 13.795521
+      },
+      {
+        "round": 5,
+        "status": "passed",
+        "request_sha256": "bbf6ae33631e8dd1b02df76103ab74b4566f4f6df2e4ee8f9ef232480b8ef126",
+        "response_sha256": "bbf6ae33631e8dd1b02df76103ab74b4566f4f6df2e4ee8f9ef232480b8ef126",
+        "bytes": 23,
+        "elapsed_ms": 15.604583
+      },
+      {
+        "round": 6,
+        "status": "passed",
+        "request_sha256": "6418e868327e449713060a510d4dcd559491db92084d45268d7bcd264cfd8794",
+        "response_sha256": "6418e868327e449713060a510d4dcd559491db92084d45268d7bcd264cfd8794",
+        "bytes": 23,
+        "elapsed_ms": 12.894584
+      },
+      {
+        "round": 7,
+        "status": "passed",
+        "request_sha256": "30a9855a52f26c1ee1009e808c4cabf05407354ea2f5ff99e4640ac3ff1aa458",
+        "response_sha256": "30a9855a52f26c1ee1009e808c4cabf05407354ea2f5ff99e4640ac3ff1aa458",
+        "bytes": 23,
+        "elapsed_ms": 9.016355
+      },
+      {
+        "round": 8,
+        "status": "passed",
+        "request_sha256": "0ee5ff5a5ea0b405de365b135fd66b31b9cbebd1e7aea12dcde09900bcb53ba0",
+        "response_sha256": "0ee5ff5a5ea0b405de365b135fd66b31b9cbebd1e7aea12dcde09900bcb53ba0",
+        "bytes": 23,
+        "elapsed_ms": 12.717188
+      },
+      {
+        "round": 9,
+        "status": "passed",
+        "request_sha256": "45af77fb6bce8d09f71a588d27ded88d97520e0b0aa24348d39ec81f45615ebe",
+        "response_sha256": "45af77fb6bce8d09f71a588d27ded88d97520e0b0aa24348d39ec81f45615ebe",
+        "bytes": 23,
+        "elapsed_ms": 14.249583
+      },
+      {
+        "round": 10,
+        "status": "passed",
+        "request_sha256": "a7dff238907a77fe860e557601da625ec331ad828719b0bb1754f23c2f60c148",
+        "response_sha256": "a7dff238907a77fe860e557601da625ec331ad828719b0bb1754f23c2f60c148",
+        "bytes": 24,
+        "elapsed_ms": 12.774219
+      },
+      {
+        "round": 11,
+        "status": "passed",
+        "request_sha256": "7184571ed022faf487981db02ec86c5b95e7d8f7362b59a13967215fe34b59f7",
+        "response_sha256": "7184571ed022faf487981db02ec86c5b95e7d8f7362b59a13967215fe34b59f7",
+        "bytes": 24,
+        "elapsed_ms": 13.729427
+      },
+      {
+        "round": 12,
+        "status": "passed",
+        "request_sha256": "e9180a40b1a6cbd126ed26bf79550dc43b596cd474bcfdbf3639787c1593ad67",
+        "response_sha256": "e9180a40b1a6cbd126ed26bf79550dc43b596cd474bcfdbf3639787c1593ad67",
+        "bytes": 24,
+        "elapsed_ms": 15.956823
+      },
+      {
+        "round": 13,
+        "status": "passed",
+        "request_sha256": "1cb1062e6d1ddbdce42865d6e4e2124047e382db642412b46aaa78708443f091",
+        "response_sha256": "1cb1062e6d1ddbdce42865d6e4e2124047e382db642412b46aaa78708443f091",
+        "bytes": 24,
+        "elapsed_ms": 16.362865
+      },
+      {
+        "round": 14,
+        "status": "passed",
+        "request_sha256": "d9fd916dcee51a9451845b2116e326ffb25c2aa9021005d18aafaca519405cfb",
+        "response_sha256": "d9fd916dcee51a9451845b2116e326ffb25c2aa9021005d18aafaca519405cfb",
+        "bytes": 24,
+        "elapsed_ms": 17.730886
+      },
+      {
+        "round": 15,
+        "status": "passed",
+        "request_sha256": "4067943e2a2ff4c8959b5f2a3ecbdeb271f8f16b8712a896199c7a6398b5ba5f",
+        "response_sha256": "4067943e2a2ff4c8959b5f2a3ecbdeb271f8f16b8712a896199c7a6398b5ba5f",
+        "bytes": 24,
+        "elapsed_ms": 11.199114
+      },
+      {
+        "round": 16,
+        "status": "passed",
+        "request_sha256": "d0cf4e783a1df7436934d6e7dc868fca3b8046109c633086f8c4ae8e22a48bd4",
+        "response_sha256": "d0cf4e783a1df7436934d6e7dc868fca3b8046109c633086f8c4ae8e22a48bd4",
+        "bytes": 24,
+        "elapsed_ms": 9.329063
+      },
+      {
+        "round": 17,
+        "status": "passed",
+        "request_sha256": "915778fe209aa0d2d5647c4b30d0fdd8d6f9419200ef08949a8e5c6bba8be1f6",
+        "response_sha256": "915778fe209aa0d2d5647c4b30d0fdd8d6f9419200ef08949a8e5c6bba8be1f6",
+        "bytes": 24,
+        "elapsed_ms": 11.553385
+      },
+      {
+        "round": 18,
+        "status": "passed",
+        "request_sha256": "8d81ae61bb365df73ee3db916326a78b2de7e3cca251533d93599f344757db56",
+        "response_sha256": "8d81ae61bb365df73ee3db916326a78b2de7e3cca251533d93599f344757db56",
+        "bytes": 24,
+        "elapsed_ms": 9.362812
+      },
+      {
+        "round": 19,
+        "status": "passed",
+        "request_sha256": "90fa3477a95587cb058969ded296430c17af6c755f818ad8a4909a88174180bf",
+        "response_sha256": "90fa3477a95587cb058969ded296430c17af6c755f818ad8a4909a88174180bf",
+        "bytes": 24,
+        "elapsed_ms": 11.694896
+      },
+      {
+        "round": 20,
+        "status": "passed",
+        "request_sha256": "beab43554f46948ab881d6c432767014727968e2d91fb941d5efa86ea3b7a397",
+        "response_sha256": "beab43554f46948ab881d6c432767014727968e2d91fb941d5efa86ea3b7a397",
+        "bytes": 24,
+        "elapsed_ms": 12.705468
+      }
+    ],
+    "udp": [
+      {
+        "round": 1,
+        "status": "passed",
+        "request_sha256": "60feef7f210533f4fbcac61d03ef89f11ecf336850e7ddb9386dbf581dde8f72",
+        "response_sha256": "60feef7f210533f4fbcac61d03ef89f11ecf336850e7ddb9386dbf581dde8f72",
+        "bytes": 23,
+        "elapsed_ms": 6.062604
+      },
+      {
+        "round": 2,
+        "status": "passed",
+        "request_sha256": "53ba897e28af6242eb249e3d60e7faf59d5fb6783deafe335363f0fdbb92b083",
+        "response_sha256": "53ba897e28af6242eb249e3d60e7faf59d5fb6783deafe335363f0fdbb92b083",
+        "bytes": 23,
+        "elapsed_ms": 5.365156
+      },
+      {
+        "round": 3,
+        "status": "passed",
+        "request_sha256": "6cdb29c04d9ff44c9da681815d2b2538393f9393a5e5b1a44915df457acf4c6f",
+        "response_sha256": "6cdb29c04d9ff44c9da681815d2b2538393f9393a5e5b1a44915df457acf4c6f",
+        "bytes": 23,
+        "elapsed_ms": 6.910052
+      },
+      {
+        "round": 4,
+        "status": "passed",
+        "request_sha256": "1257b9d02cf1b4a70c2b9d3af86f3dc87878f4677e0ed1822ff65cb11d9d01f4",
+        "response_sha256": "1257b9d02cf1b4a70c2b9d3af86f3dc87878f4677e0ed1822ff65cb11d9d01f4",
+        "bytes": 23,
+        "elapsed_ms": 5.641562
+      },
+      {
+        "round": 5,
+        "status": "passed",
+        "request_sha256": "988446cb9041e610635f807a668876653ef0f02b958d4d05ea97c2a5ca380b01",
+        "response_sha256": "988446cb9041e610635f807a668876653ef0f02b958d4d05ea97c2a5ca380b01",
+        "bytes": 23,
+        "elapsed_ms": 3.444115
+      },
+      {
+        "round": 6,
+        "status": "passed",
+        "request_sha256": "aabdaa53b2ef6fba4c48014eaac4e0f04f184f201a1acbb40030df2bfb911461",
+        "response_sha256": "aabdaa53b2ef6fba4c48014eaac4e0f04f184f201a1acbb40030df2bfb911461",
+        "bytes": 23,
+        "elapsed_ms": 7.058386
+      },
+      {
+        "round": 7,
+        "status": "passed",
+        "request_sha256": "1d4c87468309e2899d05e7c4aa16286fb86fd1f8e5a6adc2da36e2a10d919976",
+        "response_sha256": "1d4c87468309e2899d05e7c4aa16286fb86fd1f8e5a6adc2da36e2a10d919976",
+        "bytes": 23,
+        "elapsed_ms": 7.617448
+      },
+      {
+        "round": 8,
+        "status": "passed",
+        "request_sha256": "88bd2d9559bef2913dbbd3d09178aec26f68f14ecdb09a72ca52d155f7342334",
+        "response_sha256": "88bd2d9559bef2913dbbd3d09178aec26f68f14ecdb09a72ca52d155f7342334",
+        "bytes": 23,
+        "elapsed_ms": 1.918854
+      },
+      {
+        "round": 9,
+        "status": "passed",
+        "request_sha256": "c3ab78ec630b8113ccfce29069f026c5380e0acec28661a7e6ca9f65dcceadac",
+        "response_sha256": "c3ab78ec630b8113ccfce29069f026c5380e0acec28661a7e6ca9f65dcceadac",
+        "bytes": 23,
+        "elapsed_ms": 6.484219
+      },
+      {
+        "round": 10,
+        "status": "passed",
+        "request_sha256": "97f39cabc9c19169757d1524847663c999ac6dcd56731864fea863e9b854b397",
+        "response_sha256": "97f39cabc9c19169757d1524847663c999ac6dcd56731864fea863e9b854b397",
+        "bytes": 24,
+        "elapsed_ms": 7.05901
+      },
+      {
+        "round": 11,
+        "status": "passed",
+        "request_sha256": "06ce2d7f224ab1faf2e087f0619c46f78e9916c0524b2ed4aa31352e7e076b65",
+        "response_sha256": "06ce2d7f224ab1faf2e087f0619c46f78e9916c0524b2ed4aa31352e7e076b65",
+        "bytes": 24,
+        "elapsed_ms": 7.914792
+      },
+      {
+        "round": 12,
+        "status": "passed",
+        "request_sha256": "e58800c80a374d33967f1caeaf2197e3e5d57754a50830e078feda7d9ffbcf96",
+        "response_sha256": "e58800c80a374d33967f1caeaf2197e3e5d57754a50830e078feda7d9ffbcf96",
+        "bytes": 24,
+        "elapsed_ms": 8.972552
+      },
+      {
+        "round": 13,
+        "status": "passed",
+        "request_sha256": "75aabed2c5f984206b6d873eb58e8c276182b1f4488cf534f6ec6d236be08a11",
+        "response_sha256": "75aabed2c5f984206b6d873eb58e8c276182b1f4488cf534f6ec6d236be08a11",
+        "bytes": 24,
+        "elapsed_ms": 10.383073
+      },
+      {
+        "round": 14,
+        "status": "passed",
+        "request_sha256": "a76eef46864db7ab39373eb1bab900416e27160bd295050750c7a4f5517c5af9",
+        "response_sha256": "a76eef46864db7ab39373eb1bab900416e27160bd295050750c7a4f5517c5af9",
+        "bytes": 24,
+        "elapsed_ms": 4.725781
+      },
+      {
+        "round": 15,
+        "status": "passed",
+        "request_sha256": "69c4cdd7a38b624be5668e44b38c84580c4bc0c5f481dda4d9cdd4f0f0591bbf",
+        "response_sha256": "69c4cdd7a38b624be5668e44b38c84580c4bc0c5f481dda4d9cdd4f0f0591bbf",
+        "bytes": 24,
+        "elapsed_ms": 8.490677
+      },
+      {
+        "round": 16,
+        "status": "passed",
+        "request_sha256": "e3ebf8f95b2c745999c91eacfa0f680afaecd92c0ae02ad87935483276b93be1",
+        "response_sha256": "e3ebf8f95b2c745999c91eacfa0f680afaecd92c0ae02ad87935483276b93be1",
+        "bytes": 24,
+        "elapsed_ms": 6.599271
+      },
+      {
+        "round": 17,
+        "status": "passed",
+        "request_sha256": "09331d16d628ee048fbaae365d4d5970ca07245530bf6c672bd8675f37fbb531",
+        "response_sha256": "09331d16d628ee048fbaae365d4d5970ca07245530bf6c672bd8675f37fbb531",
+        "bytes": 24,
+        "elapsed_ms": 5.4375
+      },
+      {
+        "round": 18,
+        "status": "passed",
+        "request_sha256": "d6316433c5a0c17960ae6cf83e62b1576ff00269f0c52f6a285b583b8c746aee",
+        "response_sha256": "d6316433c5a0c17960ae6cf83e62b1576ff00269f0c52f6a285b583b8c746aee",
+        "bytes": 24,
+        "elapsed_ms": 6.993334
+      },
+      {
+        "round": 19,
+        "status": "passed",
+        "request_sha256": "9b818e83c5ec22c01b0d779c3520a22d4fd32f7ca632012bc263eda10e8e6f61",
+        "response_sha256": "9b818e83c5ec22c01b0d779c3520a22d4fd32f7ca632012bc263eda10e8e6f61",
+        "bytes": 24,
+        "elapsed_ms": 6.736771
+      },
+      {
+        "round": 20,
+        "status": "passed",
+        "request_sha256": "e1f5fac4511fafeef65fe6d4ed98c9709011f6aad80063cc7aac337dbc48450c",
+        "response_sha256": "e1f5fac4511fafeef65fe6d4ed98c9709011f6aad80063cc7aac337dbc48450c",
+        "bytes": 24,
+        "elapsed_ms": 7.914062
+      }
+    ],
+    "observations": {
+      "destinations": {
+        "10.222.0.1": 139
+      },
+      "protections": [
+        {
+          "before_port": 0,
+          "fd": 182,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 182,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        }
+      ],
+      "read_packets": 143,
+      "tun": {
+        "184": "installed"
+      },
+      "write_packets": 0
+    },
+    "network_infos": {
+      "map": {
+        "p00-datapath": {
+          "my_node_info": {
+            "virtual_ipv4": {
+              "address": {
+                "addr": 182321154
+              },
+              "network_length": 24
+            },
+            "hostname": "p00-android",
+            "version": "2.7.0-7592951b~",
+            "stun_info": {
+              "last_update_time": "1791723362",
+              "max_port": 65535
+            },
+            "listeners": [
+              {
+                "url": "ring://cbf65eb4-af3c-4025-93a1-16df04be27bb"
+              }
+            ],
+            "peer_id": 3301413197
+          },
+          "events": [
+            "{\"time\":\"2026-10-11T20:56:02.934211033+08:00\",\"event\":{\"PeerAdded\":2151896919}}",
+            "{\"time\":\"2026-10-11T20:56:02.934200304+08:00\",\"event\":{\"PeerConnAdded\":{\"conn_id\":\"193e6ee7-aea2-4c8f-a3a4-c5e7faf8f2da\",\"my_peer_id\":3301413197,\"peer_id\":2151896919,\"features\":[\"liveness-echo-v1\"],\"tunnel\":{\"tunnel_type\":\"tcp\",\"local_addr\":{\"url\":\"tcp://<DEVICE_LAN_IP>:53972\"},\"remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"},\"resolved_remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"}},\"stats\":{\"rx_bytes\":\"109\",\"tx_bytes\":\"125\",\"rx_packets\":\"1\",\"tx_packets\":\"1\"},\"is_client\":true,\"network_name\":\"chuanmen-p00-isolated\"}}}",
+            "{\"time\":\"2026-10-11T20:56:02.919561918+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_184\"}}",
+            "{\"time\":\"2026-10-11T20:56:02.916179679+08:00\",\"event\":{\"Connecting\":\"tcp://<HOST_LAN_IP>:31270\"}}",
+            "{\"time\":\"2026-10-11T20:56:02.915781241+08:00\",\"event\":{\"ListenerAdded\":\"ring://cbf65eb4-af3c-4025-93a1-16df04be27bb\"}}"
+          ],
+          "routes": [
+            {
+              "peer_id": 2151896919,
+              "ipv4_addr": {
+                "address": {
+                  "addr": 182321153
+                },
+                "network_length": 24
+              },
+              "next_hop_peer_id": 2151896919,
+              "cost": 1,
+              "path_latency": 500,
+              "hostname": "p00-host-peer",
+              "stun_info": {},
+              "inst_id": "782b82c8-6d20-4956-8f7c-84d89e1e5d13",
+              "version": "2.7.0-7592951b",
+              "feature_flag": {
+                "kcp_input": true,
+                "support_conn_list_sync": true,
+                "quic_input": true,
+                "disable_p2p": true
+              },
+              "next_hop_peer_id_latency_first": 2151896919,
+              "cost_latency_first": 1,
+              "path_latency_latency_first": 500
+            }
+          ],
+          "peers": [
+            {
+              "peer_id": 2151896919,
+              "conns": [
+                {
+                  "conn_id": "193e6ee7-aea2-4c8f-a3a4-c5e7faf8f2da",
+                  "my_peer_id": 3301413197,
+                  "peer_id": 2151896919,
+                  "features": [
+                    "liveness-echo-v1"
+                  ],
+                  "tunnel": {
+                    "tunnel_type": "tcp",
+                    "local_addr": {
+                      "url": "tcp://<DEVICE_LAN_IP>:53972"
+                    },
+                    "remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    },
+                    "resolved_remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    }
+                  },
+                  "stats": {
+                    "rx_bytes": "10649",
+                    "tx_bytes": "16391",
+                    "rx_packets": "106",
+                    "tx_packets": "145",
+                    "latency_us": "6077"
+                  },
+                  "is_client": true,
+                  "network_name": "chuanmen-p00-isolated"
+                }
+              ],
+              "default_conn_id": {
+                "part1": 423522023,
+                "part2": 2929872015,
+                "part3": 2745484775,
+                "part4": 4210619098
+              },
+              "directly_connected_conns": [
+                {
+                  "part1": 423522023,
+                  "part2": 2929872015,
+                  "part3": 2745484775,
+                  "part4": 4210619098
+                }
+              ]
+            }
+          ],
+          "peer_route_pairs": [
+            {
+              "route": {
+                "peer_id": 2151896919,
+                "ipv4_addr": {
+                  "address": {
+                    "addr": 182321153
+                  },
+                  "network_length": 24
+                },
+                "next_hop_peer_id": 2151896919,
+                "cost": 1,
+                "path_latency": 500,
+                "hostname": "p00-host-peer",
+                "stun_info": {},
+                "inst_id": "782b82c8-6d20-4956-8f7c-84d89e1e5d13",
+                "version": "2.7.0-7592951b",
+                "feature_flag": {
+                  "kcp_input": true,
+                  "support_conn_list_sync": true,
+                  "quic_input": true,
+                  "disable_p2p": true
+                },
+                "next_hop_peer_id_latency_first": 2151896919,
+                "cost_latency_first": 1,
+                "path_latency_latency_first": 500
+              },
+              "peer": {
+                "peer_id": 2151896919,
+                "conns": [
+                  {
+                    "conn_id": "193e6ee7-aea2-4c8f-a3a4-c5e7faf8f2da",
+                    "my_peer_id": 3301413197,
+                    "peer_id": 2151896919,
+                    "features": [
+                      "liveness-echo-v1"
+                    ],
+                    "tunnel": {
+                      "tunnel_type": "tcp",
+                      "local_addr": {
+                        "url": "tcp://<DEVICE_LAN_IP>:53972"
+                      },
+                      "remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      },
+                      "resolved_remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      }
+                    },
+                    "stats": {
+                      "rx_bytes": "10649",
+                      "tx_bytes": "16391",
+                      "rx_packets": "106",
+                      "tx_packets": "145",
+                      "latency_us": "6077"
+                    },
+                    "is_client": true,
+                    "network_name": "chuanmen-p00-isolated"
+                  }
+                ],
+                "default_conn_id": {
+                  "part1": 423522023,
+                  "part2": 2929872015,
+                  "part3": 2745484775,
+                  "part4": 4210619098
+                },
+                "directly_connected_conns": [
+                  {
+                    "part1": 423522023,
+                    "part2": 2929872015,
+                    "part3": 2745484775,
+                    "part4": 4210619098
+                  }
+                ]
+              }
+            }
+          ],
+          "running": true,
+          "foreign_network_summary": {}
+        }
+      }
+    },
+    "error": "java.lang.IllegalStateException: TUN 流量或回环证据不符",
+    "failure_io": {
+      "destinations": {
+        "10.222.0.1": 139
+      },
+      "protections": [
+        {
+          "before_port": 0,
+          "fd": 182,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 182,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        }
+      ],
+      "read_packets": 143,
+      "tun": {
+        "184": "installed"
+      },
+      "write_packets": 0
+    },
+    "failure_network_infos": {
+      "map": {
+        "p00-datapath": {
+          "my_node_info": {
+            "virtual_ipv4": {
+              "address": {
+                "addr": 182321154
+              },
+              "network_length": 24
+            },
+            "hostname": "p00-android",
+            "version": "2.7.0-7592951b~",
+            "stun_info": {
+              "last_update_time": "1791723362",
+              "max_port": 65535
+            },
+            "listeners": [
+              {
+                "url": "ring://cbf65eb4-af3c-4025-93a1-16df04be27bb"
+              }
+            ],
+            "peer_id": 3301413197
+          },
+          "events": [
+            "{\"time\":\"2026-10-11T20:56:02.934211033+08:00\",\"event\":{\"PeerAdded\":2151896919}}",
+            "{\"time\":\"2026-10-11T20:56:02.934200304+08:00\",\"event\":{\"PeerConnAdded\":{\"conn_id\":\"193e6ee7-aea2-4c8f-a3a4-c5e7faf8f2da\",\"my_peer_id\":3301413197,\"peer_id\":2151896919,\"features\":[\"liveness-echo-v1\"],\"tunnel\":{\"tunnel_type\":\"tcp\",\"local_addr\":{\"url\":\"tcp://<DEVICE_LAN_IP>:53972\"},\"remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"},\"resolved_remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"}},\"stats\":{\"rx_bytes\":\"109\",\"tx_bytes\":\"125\",\"rx_packets\":\"1\",\"tx_packets\":\"1\"},\"is_client\":true,\"network_name\":\"chuanmen-p00-isolated\"}}}",
+            "{\"time\":\"2026-10-11T20:56:02.919561918+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_184\"}}",
+            "{\"time\":\"2026-10-11T20:56:02.916179679+08:00\",\"event\":{\"Connecting\":\"tcp://<HOST_LAN_IP>:31270\"}}",
+            "{\"time\":\"2026-10-11T20:56:02.915781241+08:00\",\"event\":{\"ListenerAdded\":\"ring://cbf65eb4-af3c-4025-93a1-16df04be27bb\"}}"
+          ],
+          "routes": [
+            {
+              "peer_id": 2151896919,
+              "ipv4_addr": {
+                "address": {
+                  "addr": 182321153
+                },
+                "network_length": 24
+              },
+              "next_hop_peer_id": 2151896919,
+              "cost": 1,
+              "path_latency": 500,
+              "hostname": "p00-host-peer",
+              "stun_info": {},
+              "inst_id": "782b82c8-6d20-4956-8f7c-84d89e1e5d13",
+              "version": "2.7.0-7592951b",
+              "feature_flag": {
+                "kcp_input": true,
+                "support_conn_list_sync": true,
+                "quic_input": true,
+                "disable_p2p": true
+              },
+              "next_hop_peer_id_latency_first": 2151896919,
+              "cost_latency_first": 1,
+              "path_latency_latency_first": 500
+            }
+          ],
+          "peers": [
+            {
+              "peer_id": 2151896919,
+              "conns": [
+                {
+                  "conn_id": "193e6ee7-aea2-4c8f-a3a4-c5e7faf8f2da",
+                  "my_peer_id": 3301413197,
+                  "peer_id": 2151896919,
+                  "features": [
+                    "liveness-echo-v1"
+                  ],
+                  "tunnel": {
+                    "tunnel_type": "tcp",
+                    "local_addr": {
+                      "url": "tcp://<DEVICE_LAN_IP>:53972"
+                    },
+                    "remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    },
+                    "resolved_remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    }
+                  },
+                  "stats": {
+                    "rx_bytes": "10649",
+                    "tx_bytes": "16391",
+                    "rx_packets": "106",
+                    "tx_packets": "145",
+                    "latency_us": "6077"
+                  },
+                  "is_client": true,
+                  "network_name": "chuanmen-p00-isolated"
+                }
+              ],
+              "default_conn_id": {
+                "part1": 423522023,
+                "part2": 2929872015,
+                "part3": 2745484775,
+                "part4": 4210619098
+              },
+              "directly_connected_conns": [
+                {
+                  "part1": 423522023,
+                  "part2": 2929872015,
+                  "part3": 2745484775,
+                  "part4": 4210619098
+                }
+              ]
+            }
+          ],
+          "peer_route_pairs": [
+            {
+              "route": {
+                "peer_id": 2151896919,
+                "ipv4_addr": {
+                  "address": {
+                    "addr": 182321153
+                  },
+                  "network_length": 24
+                },
+                "next_hop_peer_id": 2151896919,
+                "cost": 1,
+                "path_latency": 500,
+                "hostname": "p00-host-peer",
+                "stun_info": {},
+                "inst_id": "782b82c8-6d20-4956-8f7c-84d89e1e5d13",
+                "version": "2.7.0-7592951b",
+                "feature_flag": {
+                  "kcp_input": true,
+                  "support_conn_list_sync": true,
+                  "quic_input": true,
+                  "disable_p2p": true
+                },
+                "next_hop_peer_id_latency_first": 2151896919,
+                "cost_latency_first": 1,
+                "path_latency_latency_first": 500
+              },
+              "peer": {
+                "peer_id": 2151896919,
+                "conns": [
+                  {
+                    "conn_id": "193e6ee7-aea2-4c8f-a3a4-c5e7faf8f2da",
+                    "my_peer_id": 3301413197,
+                    "peer_id": 2151896919,
+                    "features": [
+                      "liveness-echo-v1"
+                    ],
+                    "tunnel": {
+                      "tunnel_type": "tcp",
+                      "local_addr": {
+                        "url": "tcp://<DEVICE_LAN_IP>:53972"
+                      },
+                      "remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      },
+                      "resolved_remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      }
+                    },
+                    "stats": {
+                      "rx_bytes": "10649",
+                      "tx_bytes": "16391",
+                      "rx_packets": "106",
+                      "tx_packets": "145",
+                      "latency_us": "6077"
+                    },
+                    "is_client": true,
+                    "network_name": "chuanmen-p00-isolated"
+                  }
+                ],
+                "default_conn_id": {
+                  "part1": 423522023,
+                  "part2": 2929872015,
+                  "part3": 2745484775,
+                  "part4": 4210619098
+                },
+                "directly_connected_conns": [
+                  {
+                    "part1": 423522023,
+                    "part2": 2929872015,
+                    "part3": 2745484775,
+                    "part4": 4210619098
+                  }
+                ]
+              }
+            }
+          ],
+          "running": true,
+          "foreign_network_summary": {}
+        }
+      }
+    },
+    "failure_closed": {
+      "fd": 184,
+      "native_state": "released",
+      "valid_before_owner_close": true,
+      "valid_after_owner_close": false
+    },
+    "service_destroyed": true,
+    "cleanup_error": null
+  },
+  "host_echo_records": [
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.726361+00:00",
+      "bytes": 23,
+      "request_sha256": "e7ac9c3aae5f7f88cee4a672db735f325ddc0053680a5e1fe553d47b9d697821",
+      "source": [
+        "127.0.0.1",
+        51736
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.736277+00:00",
+      "bytes": 23,
+      "request_sha256": "10cc878f846f8bc6488bae6f9f119fa84ed68b80ddd04ab339484305db588bef",
+      "source": [
+        "127.0.0.1",
+        51748
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.748368+00:00",
+      "bytes": 23,
+      "request_sha256": "e9f05e96ef958ce80d1345109303831a9bf4d508eebb25d5b87b31da05de70bb",
+      "source": [
+        "127.0.0.1",
+        51758
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.763738+00:00",
+      "bytes": 23,
+      "request_sha256": "081cdb822271af2a2e4cf9a3a3f6d948f09c7c1e4407081669486320b70bde4d",
+      "source": [
+        "127.0.0.1",
+        51768
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.777253+00:00",
+      "bytes": 23,
+      "request_sha256": "bbf6ae33631e8dd1b02df76103ab74b4566f4f6df2e4ee8f9ef232480b8ef126",
+      "source": [
+        "127.0.0.1",
+        51776
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.792398+00:00",
+      "bytes": 23,
+      "request_sha256": "6418e868327e449713060a510d4dcd559491db92084d45268d7bcd264cfd8794",
+      "source": [
+        "127.0.0.1",
+        51780
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.802177+00:00",
+      "bytes": 23,
+      "request_sha256": "30a9855a52f26c1ee1009e808c4cabf05407354ea2f5ff99e4640ac3ff1aa458",
+      "source": [
+        "127.0.0.1",
+        51790
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.814517+00:00",
+      "bytes": 23,
+      "request_sha256": "0ee5ff5a5ea0b405de365b135fd66b31b9cbebd1e7aea12dcde09900bcb53ba0",
+      "source": [
+        "127.0.0.1",
+        51798
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.827027+00:00",
+      "bytes": 23,
+      "request_sha256": "45af77fb6bce8d09f71a588d27ded88d97520e0b0aa24348d39ec81f45615ebe",
+      "source": [
+        "127.0.0.1",
+        51808
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.842572+00:00",
+      "bytes": 24,
+      "request_sha256": "a7dff238907a77fe860e557601da625ec331ad828719b0bb1754f23c2f60c148",
+      "source": [
+        "127.0.0.1",
+        51824
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.854893+00:00",
+      "bytes": 24,
+      "request_sha256": "7184571ed022faf487981db02ec86c5b95e7d8f7362b59a13967215fe34b59f7",
+      "source": [
+        "127.0.0.1",
+        51836
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.870340+00:00",
+      "bytes": 24,
+      "request_sha256": "e9180a40b1a6cbd126ed26bf79550dc43b596cd474bcfdbf3639787c1593ad67",
+      "source": [
+        "127.0.0.1",
+        51852
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.887988+00:00",
+      "bytes": 24,
+      "request_sha256": "1cb1062e6d1ddbdce42865d6e4e2124047e382db642412b46aaa78708443f091",
+      "source": [
+        "127.0.0.1",
+        51858
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.907220+00:00",
+      "bytes": 24,
+      "request_sha256": "d9fd916dcee51a9451845b2116e326ffb25c2aa9021005d18aafaca519405cfb",
+      "source": [
+        "127.0.0.1",
+        51872
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.918386+00:00",
+      "bytes": 24,
+      "request_sha256": "4067943e2a2ff4c8959b5f2a3ecbdeb271f8f16b8712a896199c7a6398b5ba5f",
+      "source": [
+        "127.0.0.1",
+        51886
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.927142+00:00",
+      "bytes": 24,
+      "request_sha256": "d0cf4e783a1df7436934d6e7dc868fca3b8046109c633086f8c4ae8e22a48bd4",
+      "source": [
+        "127.0.0.1",
+        51896
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.939778+00:00",
+      "bytes": 24,
+      "request_sha256": "915778fe209aa0d2d5647c4b30d0fdd8d6f9419200ef08949a8e5c6bba8be1f6",
+      "source": [
+        "127.0.0.1",
+        51902
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.949892+00:00",
+      "bytes": 24,
+      "request_sha256": "8d81ae61bb365df73ee3db916326a78b2de7e3cca251533d93599f344757db56",
+      "source": [
+        "127.0.0.1",
+        51914
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.961662+00:00",
+      "bytes": 24,
+      "request_sha256": "90fa3477a95587cb058969ded296430c17af6c755f818ad8a4909a88174180bf",
+      "source": [
+        "127.0.0.1",
+        51922
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T12:56:03.974755+00:00",
+      "bytes": 24,
+      "request_sha256": "beab43554f46948ab881d6c432767014727968e2d91fb941d5efa86ea3b7a397",
+      "source": [
+        "127.0.0.1",
+        51936
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:03.979624+00:00",
+      "bytes": 23,
+      "request_sha256": "60feef7f210533f4fbcac61d03ef89f11ecf336850e7ddb9386dbf581dde8f72",
+      "source": [
+        "127.0.0.1",
+        59703
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:03.986075+00:00",
+      "bytes": 23,
+      "request_sha256": "53ba897e28af6242eb249e3d60e7faf59d5fb6783deafe335363f0fdbb92b083",
+      "source": [
+        "127.0.0.1",
+        43339
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:03.992829+00:00",
+      "bytes": 23,
+      "request_sha256": "6cdb29c04d9ff44c9da681815d2b2538393f9393a5e5b1a44915df457acf4c6f",
+      "source": [
+        "127.0.0.1",
+        35615
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:03.998627+00:00",
+      "bytes": 23,
+      "request_sha256": "1257b9d02cf1b4a70c2b9d3af86f3dc87878f4677e0ed1822ff65cb11d9d01f4",
+      "source": [
+        "127.0.0.1",
+        58062
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.001817+00:00",
+      "bytes": 23,
+      "request_sha256": "988446cb9041e610635f807a668876653ef0f02b958d4d05ea97c2a5ca380b01",
+      "source": [
+        "127.0.0.1",
+        48530
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.009115+00:00",
+      "bytes": 23,
+      "request_sha256": "aabdaa53b2ef6fba4c48014eaac4e0f04f184f201a1acbb40030df2bfb911461",
+      "source": [
+        "127.0.0.1",
+        47154
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.016911+00:00",
+      "bytes": 23,
+      "request_sha256": "1d4c87468309e2899d05e7c4aa16286fb86fd1f8e5a6adc2da36e2a10d919976",
+      "source": [
+        "127.0.0.1",
+        36946
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.019133+00:00",
+      "bytes": 23,
+      "request_sha256": "88bd2d9559bef2913dbbd3d09178aec26f68f14ecdb09a72ca52d155f7342334",
+      "source": [
+        "127.0.0.1",
+        47635
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.025129+00:00",
+      "bytes": 23,
+      "request_sha256": "c3ab78ec630b8113ccfce29069f026c5380e0acec28661a7e6ca9f65dcceadac",
+      "source": [
+        "127.0.0.1",
+        45444
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.032330+00:00",
+      "bytes": 24,
+      "request_sha256": "97f39cabc9c19169757d1524847663c999ac6dcd56731864fea863e9b854b397",
+      "source": [
+        "127.0.0.1",
+        44671
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.040544+00:00",
+      "bytes": 24,
+      "request_sha256": "06ce2d7f224ab1faf2e087f0619c46f78e9916c0524b2ed4aa31352e7e076b65",
+      "source": [
+        "127.0.0.1",
+        38710
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.049239+00:00",
+      "bytes": 24,
+      "request_sha256": "e58800c80a374d33967f1caeaf2197e3e5d57754a50830e078feda7d9ffbcf96",
+      "source": [
+        "127.0.0.1",
+        40998
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.058228+00:00",
+      "bytes": 24,
+      "request_sha256": "75aabed2c5f984206b6d873eb58e8c276182b1f4488cf534f6ec6d236be08a11",
+      "source": [
+        "127.0.0.1",
+        59768
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.064360+00:00",
+      "bytes": 24,
+      "request_sha256": "a76eef46864db7ab39373eb1bab900416e27160bd295050750c7a4f5517c5af9",
+      "source": [
+        "127.0.0.1",
+        42699
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.071893+00:00",
+      "bytes": 24,
+      "request_sha256": "69c4cdd7a38b624be5668e44b38c84580c4bc0c5f481dda4d9cdd4f0f0591bbf",
+      "source": [
+        "127.0.0.1",
+        45868
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.078520+00:00",
+      "bytes": 24,
+      "request_sha256": "e3ebf8f95b2c745999c91eacfa0f680afaecd92c0ae02ad87935483276b93be1",
+      "source": [
+        "127.0.0.1",
+        53431
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.085231+00:00",
+      "bytes": 24,
+      "request_sha256": "09331d16d628ee048fbaae365d4d5970ca07245530bf6c672bd8675f37fbb531",
+      "source": [
+        "127.0.0.1",
+        47408
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.091870+00:00",
+      "bytes": 24,
+      "request_sha256": "d6316433c5a0c17960ae6cf83e62b1576ff00269f0c52f6a285b583b8c746aee",
+      "source": [
+        "127.0.0.1",
+        44379
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.099106+00:00",
+      "bytes": 24,
+      "request_sha256": "9b818e83c5ec22c01b0d779c3520a22d4fd32f7ca632012bc263eda10e8e6f61",
+      "source": [
+        "127.0.0.1",
+        53804
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T12:56:04.106060+00:00",
+      "bytes": 24,
+      "request_sha256": "e1f5fac4511fafeef65fe6d4ed98c9709011f6aad80063cc7aac337dbc48450c",
+      "source": [
+        "127.0.0.1",
+        39158
+      ]
+    }
+  ],
+  "host_echo_sha256": "73f02d45cca6a47b87fb34acf195d3d14003fac45eb64c95f4f8a953e1f640dd",
+  "services_after": "ACTIVITY MANAGER SERVICES (dumpsys activity services)\n  (nothing)\n",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-datapath-write-counter-failure.json",
+        "sha256": "ff4154ff93892e5b5f7be6bef0cb7531da59bd962694fbef34d282c8f34707ef"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false,
+    "build_ref": "docs/verification/p00/builds/datapath-diagnostic-apk-build.json"
+  }
+}

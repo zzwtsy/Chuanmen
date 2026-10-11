@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.zzwtsy.chuanmen.p00nativeprobe"
+    android:versionCode="1" android:versionName="0.0.1-p00-jni-parser">
+    <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="37" />
+    <application android:label="Chuanmen P00 原生解析探针" android:debuggable="true"
+        android:allowBackup="false" android:extractNativeLibs="false" />
+    <instrumentation android:name=".NativeInstrumentation"
+        android:targetPackage="com.github.zzwtsy.chuanmen.p00nativeprobe"
+        android:label="固定上游 JNI 加载与解析；不启动网络实例" />
+    <instrumentation android:name=".MappingInstrumentation"
+        android:targetPackage="com.github.zzwtsy.chuanmen.p00nativeprobe"
+        android:label="37 核心编辑单元和 8 隐藏项的真实解析；不启动网络" />
+</manifest>

@@ -1,0 +1,27 @@
+{
+  "task": "P00-08",
+  "layer": "derived_measurement_metadata",
+  "status": "generated_from_actual_samples",
+  "run_id": "p00-5d2cc66e8aee",
+  "raw_report": "docs/verification/p00/runs/p00-5d2cc66e8aee/xiaomi-native-performance.json",
+  "raw_sha256": "5112344eb382bdd97bd4201b1610125c245d7e32baf227d9a1c7839bbbd77b7d",
+  "csv_sha256": "790197a1f28069360babc076d1c93dfcbe0a4e45c480d30620beb3347be538ac",
+  "cpu_scope": "entire experiment process including Java harness and Rust; single-core equivalent",
+  "memory_scope": "Debug.getPss KiB, actual endpoints and raw samples",
+  "goodput_scope": "serialized echo request payload bytes divided by device elapsed time; each direction, not sum and not maximum bandwidth",
+  "energy_scope": "whole device, no matched VPN-off control; incremental EasyTier energy unverified",
+  "energy_direct_counter": "unsupported (all actual energy_nwh null)",
+  "energy_calculation": {
+    "charge_start_uah": 4734000,
+    "charge_end_uah": 4697000,
+    "voltage_start_mv": 4084,
+    "voltage_end_mv": 4059,
+    "formula": "(4734000-4697000)*(4084+4059)/2000000",
+    "estimated_mwh": 150.6455
+  },
+  "idle_samples": 19,
+  "idle_max_sample_gap_seconds": 222.947796501,
+  "sampling_limit": "nominal 30 s, actual sleeps under device suspension; no interpolation; observed conditions stable at recorded samples only",
+  "empty_cells": "not measured or not applicable, never substituted with zero",
+  "original_raw_sha256": "3bfdad4fe95053c138ede05441fa331f69bf7ae9b8f47dd8b8c783912ee19fad"
+}

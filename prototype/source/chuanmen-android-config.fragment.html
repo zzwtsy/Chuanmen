@@ -1,0 +1,1966 @@
+<div id="easytier-config" class="viz-dotted-background">
+  <div class="eu-preview-note">Chuanmen 交互原型 · 设备、流量与日志均为模拟数据</div>
+  <section class="eu-app" data-theme="system" data-seed="iris" aria-label="Chuanmen 安卓客户端">
+    <header class="eu-appbar">
+      <button type="button" id="eu-back" class="eu-icon-button cursor-interaction" aria-label="返回上一步" hidden><i data-lucide="arrow-left" aria-hidden="true"></i></button>
+      <button type="button" id="eu-network" class="eu-network-button cursor-interaction" aria-label="选择查看的网络"><span class="eu-network-symbol"><i data-lucide="network" aria-hidden="true"></i></span><span class="eu-network-copy"><span id="eu-network-name">家庭网络</span><span id="eu-network-state" class="eu-subtle">已连接</span></span><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+      <div id="eu-route-heading" class="eu-route-heading" hidden><span id="eu-route-title"></span><span id="eu-route-network" class="eu-subtle"></span></div>
+      <button type="button" id="eu-settings" class="eu-icon-button cursor-interaction" aria-label="设置"><i data-lucide="settings-2" aria-hidden="true"></i></button>
+    </header>
+    <div id="eu-runtime-banner" class="eu-runtime-banner" hidden><span id="eu-runtime-text"></span><button type="button" id="eu-runtime-return" class="eu-text-button cursor-interaction">查看</button></div>
+    <div id="eu-operation" class="eu-operation" role="status" hidden></div>
+    <main id="eu-view-host" class="eu-view-host"></main>
+    <footer class="eu-bottom-chrome">
+      <div class="eu-snackbar-layer"><p id="eu-snackbar" class="eu-snackbar" role="status" aria-live="polite" hidden></p></div>
+      <div id="eu-config-dock" class="eu-config-dock" hidden></div>
+      <nav class="eu-nav" aria-label="主导航">
+      <button type="button" id="eu-tab-overview" class="eu-nav-item cursor-interaction" data-tab="overview" aria-current="page"><span><i data-lucide="layout-dashboard" aria-hidden="true"></i></span>总览</button>
+      <button type="button" id="eu-tab-devices" class="eu-nav-item cursor-interaction" data-tab="devices"><span><i data-lucide="monitor-smartphone" aria-hidden="true"></i></span>设备</button>
+      <button type="button" id="eu-tab-config" class="eu-nav-item cursor-interaction" data-tab="config"><span><i data-lucide="sliders-horizontal" aria-hidden="true"></i></span>配置</button>
+      <button type="button" id="eu-tab-logs" class="eu-nav-item cursor-interaction" data-tab="logs"><span><i data-lucide="logs" aria-hidden="true"></i></span>日志</button>
+      </nav>
+    </footer>
+    <div class="eu-toast-layer"><p id="eu-toast" class="eu-toast" role="status" aria-live="polite" hidden></p></div>
+    <p id="eu-feedback" class="eu-feedback" role="status" hidden></p>
+    <dialog id="eu-rename-dialog" class="eu-rename-dialog" aria-labelledby="eu-rename-title" aria-describedby="eu-rename-hint">
+      <form id="eu-rename-form">
+        <h2 id="eu-rename-title">重命名配置</h2>
+        <p id="eu-rename-hint" class="eu-subtle">仅修改本机显示名称，不影响网络连接。</p>
+        <label class="eu-field" for="eu-rename-input"><span>配置名称</span><input id="eu-rename-input" class="eu-input" name="profileLabel" type="text" autocomplete="off" required aria-describedby="eu-rename-error"></label>
+        <p id="eu-rename-error" class="eu-error" role="alert" hidden></p>
+        <div class="eu-rename-actions">
+          <button id="eu-rename-cancel" class="eu-text-button cursor-interaction" type="button" data-rename-action="cancel">取消</button>
+          <button class="eu-button eu-primary cursor-interaction" type="submit" data-rename-action="save">保存名称</button>
+        </div>
+      </form>
+    </dialog>
+  </section>
+</div>
+<style>
+#easytier-config { padding: 16px 10px 24px; }
+#easytier-config .eu-preview-note { text-align:center; font:400 12px/1.5 system-ui,sans-serif; margin:0 auto 10px; color:light-dark(#68616e,#c8bfce); }
+#easytier-config .eu-app {
+  --eu-bg:light-dark(#fbf8ff,#17141d); --eu-surface:light-dark(#f0ecf6,#25212c); --eu-raised:light-dark(#e9e2f0,#302a39); --eu-text:light-dark(#27232d,#eee7f4); --eu-muted:light-dark(#625b6c,#c6bdce); --eu-primary:light-dark(#67508e,#d3bdf5); --eu-on-primary:light-dark(#ffffff,#38234f); --eu-tonal:light-dark(#ebddff,#4a365f); --eu-on-tonal:light-dark(#38214f,#efddff); --eu-line:light-dark(#d9d1e1,#4c4256); --eu-error:light-dark(#a72b32,#ffb3b6); --eu-error-bg:light-dark(#ffe8e8,#482127); --eu-success:light-dark(#31674c,#a5d4b7); --eu-chart-rx:light-dark(#67508e,#d3bdf5); --eu-chart-tx:light-dark(#346d62,#a0d6c8); --eu-shadow:light-dark(#35213e13,#00000033); --eu-sticky-offset:0px;
+  width:100%; max-width:30rem; margin:0 auto; border-radius:28px; background:var(--eu-bg); color:var(--eu-text); box-shadow:0 12px 36px var(--eu-shadow); font:400 16px/1.5 "Roboto","Noto Sans SC",system-ui,sans-serif; color-scheme:inherit; overflow:clip;
+}
+#easytier-config .eu-app[data-theme="light"] { color-scheme:light; }
+#easytier-config .eu-app[data-theme="dark"] { color-scheme:dark; }
+#easytier-config .eu-app[data-seed="teal"] { --eu-bg:light-dark(#f7fbf7,#111a16); --eu-surface:light-dark(#eaf1eb,#202c25); --eu-raised:light-dark(#ddeae0,#2d3a31); --eu-text:light-dark(#1e2b23,#e0efe4); --eu-muted:light-dark(#526458,#bdcec2); --eu-primary:light-dark(#356b51,#a3d5b4); --eu-on-primary:light-dark(#fff,#093823); --eu-tonal:light-dark(#c9eed5,#2a523b); --eu-on-tonal:light-dark(#173d27,#cbedda); --eu-line:light-dark(#ccdace,#425448); --eu-chart-rx:light-dark(#356b51,#a3d5b4); --eu-chart-tx:light-dark(#71577d,#dcbbe8); }
+#easytier-config .eu-app[data-seed="amber"] { --eu-bg:light-dark(#fff9f1,#1c170f); --eu-surface:light-dark(#f5ecdd,#2b241a); --eu-raised:light-dark(#eddfc9,#3b3122); --eu-text:light-dark(#34291b,#f5e7d5); --eu-muted:light-dark(#6c5d46,#d1c3ac); --eu-primary:light-dark(#805b21,#ecc47e); --eu-on-primary:light-dark(#fff,#442c00); --eu-tonal:light-dark(#ffdfac,#5d441b); --eu-on-tonal:light-dark(#4a330d,#ffe3b5); --eu-line:light-dark(#dfd2bd,#564936); --eu-chart-rx:light-dark(#805b21,#ecc47e); --eu-chart-tx:light-dark(#4a6787,#b5cde8); }
+#easytier-config .eu-app *, #easytier-config .eu-app *::before, #easytier-config .eu-app *::after { box-sizing:border-box; }
+#easytier-config .eu-app [hidden] { display:none !important; }
+#easytier-config .eu-app :is(h1,h2,h3,p,dl,dd) { margin:0; }
+#easytier-config .eu-app :where(button,input,select,textarea) { font:inherit; color:inherit; }
+#easytier-config .eu-app :is(button,p,span,label,summary,h1,h2,h3,dd,dt) { min-width:0; overflow-wrap:anywhere; }
+#easytier-config .eu-app button { border:0; }
+#easytier-config .eu-app button:disabled { opacity:.48; }
+#easytier-config .eu-app :is(i[data-lucide],svg[data-lucide]) { width:20px; height:20px; flex-shrink:0; vertical-align:middle; }
+#easytier-config .eu-appbar { display:flex; align-items:center; gap:4px; padding:12px 12px 10px; background:var(--eu-bg); }
+#easytier-config .eu-icon-button { min-width:48px; min-height:48px; display:inline-flex; align-items:center; justify-content:center; border-radius:24px; background:transparent; flex-shrink:0; }
+#easytier-config .eu-icon-button:active { background:var(--eu-raised); }
+#easytier-config .eu-network-button { display:flex; flex:1; align-items:center; gap:10px; text-align:left; padding:4px 8px; border-radius:18px; min-height:52px; background:transparent; }
+#easytier-config .eu-network-copy, #easytier-config .eu-route-heading { display:flex; flex:1; flex-direction:column; min-width:0; }
+#easytier-config .eu-network-copy > :first-child, #easytier-config .eu-route-heading > :first-child { font-weight:500; }
+#easytier-config .eu-network-symbol { display:flex; padding:10px; border-radius:15px; color:var(--eu-on-tonal); background:var(--eu-tonal); }
+#easytier-config .eu-subtle, #easytier-config .eu-label { color:var(--eu-muted); font-size:13px; }
+#easytier-config .eu-label { font-weight:500; }
+#easytier-config .eu-view-host { padding:0 18px 20px; }
+#easytier-config .eu-screen { min-width:0; }
+#easytier-config .eu-title-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:8px 0 16px; }
+#easytier-config .eu-title-row h1 { font-size:24px; font-weight:500; line-height:1.3; }
+#easytier-config .eu-title-row h2, #easytier-config h2 { font-size:18px; font-weight:500; line-height:1.35; }
+#easytier-config h3 { font-size:16px; font-weight:500; }
+#easytier-config .eu-section { margin-top:24px; }
+#easytier-config .eu-list { display:flex; flex-direction:column; gap:2px; border-radius:20px; overflow:clip; }
+#easytier-config .eu-row { display:flex; align-items:center; gap:12px; width:100%; min-height:70px; padding:12px 14px; text-align:left; background:var(--eu-surface); }
+#easytier-config button.eu-row:active { background:var(--eu-raised); }
+#easytier-config .eu-row-copy { flex:1; display:flex; flex-direction:column; gap:3px; min-width:0; }
+#easytier-config .eu-row-title { font-weight:500; }
+#easytier-config .eu-row-icon { color:var(--eu-primary); flex-shrink:0; }
+#easytier-config .eu-button { min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 19px; border-radius:24px; background:var(--eu-surface); text-align:center; line-height:1.4; font-weight:500; }
+#easytier-config .eu-primary { color:var(--eu-on-primary); background:var(--eu-primary); }
+#easytier-config .eu-tonal { color:var(--eu-on-tonal); background:var(--eu-tonal); }
+#easytier-config .eu-text-button { min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:8px 10px; border-radius:16px; background:transparent; color:var(--eu-primary); font-size:14px; font-weight:500; line-height:1.4; }
+#easytier-config .eu-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:14px; }
+#easytier-config .eu-actions .eu-primary { flex-grow:1; }
+#easytier-config .eu-chip { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:48px; padding:8px 12px; border-radius:14px; background:var(--eu-surface); color:var(--eu-text); font-size:14px; }
+#easytier-config .eu-chip[aria-pressed="true"] { background:var(--eu-tonal); color:var(--eu-on-tonal); }
+#easytier-config .eu-chips { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
+#easytier-config .eu-field { display:flex; flex-direction:column; gap:7px; margin:16px 0; }
+#easytier-config .eu-input, #easytier-config .eu-select, #easytier-config .eu-app textarea { width:100%; min-width:0; max-width:100%; min-height:52px; border:1px solid var(--eu-line); border-radius:13px; padding:12px; background:var(--eu-bg); color:var(--eu-text); font-size:16px; line-height:1.5; }
+#easytier-config .eu-app textarea { resize:vertical; }
+#easytier-config .eu-select { padding-right:25px; }
+#easytier-config .eu-notice { display:flex; flex-direction:column; gap:6px; border-radius:16px; padding:12px 14px; background:var(--eu-surface); font-size:14px; margin:12px 0; }
+#easytier-config .eu-error { color:var(--eu-error); }
+#easytier-config .eu-empty { text-align:center; padding:32px 12px; color:var(--eu-muted); }
+#easytier-config .eu-empty h2 { color:var(--eu-text); margin:12px 0 8px; }
+#easytier-config .eu-empty > i, #easytier-config .eu-empty > svg { width:36px; height:36px; }
+#easytier-config .eu-bottom-chrome { position:sticky; bottom:0; z-index:5; background:var(--eu-surface); }
+#easytier-config .eu-config-dock { min-width:0; background:var(--eu-surface); }
+#easytier-config .eu-nav { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px; padding:8px 8px 12px; background:var(--eu-surface); }
+#easytier-config .eu-nav-item { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-height:64px; padding:2px; background:transparent; font-size:13px; }
+#easytier-config .eu-nav-item > span { width:58px; min-height:30px; display:flex; justify-content:center; align-items:center; border-radius:20px; }
+#easytier-config .eu-nav-item[aria-current="page"] { font-weight:500; }
+#easytier-config .eu-nav-item[aria-current="page"] > span { background:var(--eu-tonal); color:var(--eu-on-tonal); }
+#easytier-config .eu-runtime-banner { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:2px 14px 2px 20px; font-size:13px; background:var(--eu-surface); }
+#easytier-config .eu-operation { margin:0 18px 10px; padding:10px 12px; border-radius:13px; background:var(--eu-tonal); color:var(--eu-on-tonal); font-size:13px; }
+#easytier-config .eu-operation[data-phase="error"] { background:var(--eu-error-bg); color:var(--eu-error); }
+#easytier-config .eu-feedback { margin:0; padding:12px 18px; font-size:13px; background:var(--eu-raised); }
+#easytier-config .eu-toast-layer { position:sticky; bottom:98px; height:0; z-index:20; display:flex; justify-content:center; pointer-events:none; }
+#easytier-config .eu-toast { position:absolute; bottom:0; max-width:calc(100% - 36px); border-radius:24px; padding:12px 20px; background:var(--eu-text); color:var(--eu-bg); font-size:14px; line-height:1.5; text-align:center; box-shadow:0 3px 14px var(--eu-shadow); }
+#easytier-config .eu-snackbar-layer { position:relative; height:0; z-index:20; pointer-events:none; }
+#easytier-config .eu-snackbar { position:absolute; inset-inline:12px; bottom:12px; border-radius:14px; padding:14px 16px; background:var(--eu-text); color:var(--eu-bg); font-size:14px; line-height:1.5; box-shadow:0 3px 14px var(--eu-shadow); overflow-wrap:anywhere; }
+#easytier-config .eu-rename-dialog { position:absolute; inset:auto; left:50%; transform:translateX(-50%); width:400px; max-width:calc(100% - 40px); margin:0; padding:24px; border:0; border-radius:28px; background:var(--eu-raised); color:var(--eu-text); font:inherit; overflow:visible; box-shadow:0 12px 36px var(--eu-shadow); }
+#easytier-config .eu-rename-dialog::backdrop { background:light-dark(#17141d66,#00000088); }
+#easytier-config .eu-rename-dialog h2 { margin-bottom:8px; font-size:22px; }
+#easytier-config .eu-rename-dialog .eu-subtle { font-size:14px; }
+#easytier-config .eu-rename-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin-top:20px; }
+#easytier-config .eu-new-label { margin-bottom:24px; }
+#easytier-config .eu-new-label .eu-subtle { font-size:13px; }
+#easytier-config .eu-connection { background:var(--eu-tonal); color:var(--eu-on-tonal); border-radius:25px; padding:20px; }
+#easytier-config .eu-connection[data-phase="idle"] { background:var(--eu-surface); color:var(--eu-text); }
+#easytier-config .eu-connection[data-phase="error"] { background:var(--eu-error-bg); color:var(--eu-error); }
+#easytier-config .eu-connection-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+#easytier-config .eu-connection h1 { font-size:30px; line-height:1.2; font-weight:500; letter-spacing:-.03em; margin:4px 0 7px; }
+#easytier-config .eu-connection-symbol { width:46px; height:46px; display:flex; align-items:center; justify-content:center; border-radius:18px; background:var(--eu-bg); color:var(--eu-primary); }
+#easytier-config .eu-connection .eu-subtle { color:inherit; }
+#easytier-config .eu-address { display:flex; align-items:center; gap:4px; margin-top:10px; }
+#easytier-config .eu-address code { font-family:ui-monospace,monospace; font-size:18px; }
+#easytier-config .eu-copy-ip { color:inherit; }
+#easytier-config .eu-connection-action { margin-top:12px; width:100%; }
+#easytier-config .eu-network-devices { display:flex; align-items:center; gap:10px; width:100%; min-height:56px; margin-top:7px; padding:9px 2px; border-radius:12px; background:transparent; color:inherit; text-align:left; }
+#easytier-config .eu-network-devices .eu-row-title { font-size:15px; }
+#easytier-config .eu-network-devices .eu-subtle { font-size:13px; }
+#easytier-config .eu-network-devices > :last-child { width:18px; }
+#easytier-config .eu-overview-traffic { margin-top:24px; }
+#easytier-config .eu-count { font-size:13px; color:var(--eu-muted); background:var(--eu-surface); border-radius:20px; padding:3px 9px; }
+#easytier-config .eu-peer { margin-bottom:8px; border-radius:19px; background:var(--eu-surface); overflow:clip; }
+#easytier-config .eu-peer summary { display:flex; align-items:center; gap:12px; min-height:78px; padding:13px; list-style:none; }
+#easytier-config .eu-peer summary::-webkit-details-marker { display:none; }
+#easytier-config .eu-peer-brief { padding:0 14px 14px; }
+#easytier-config .eu-peer-brief dl { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+#easytier-config .eu-peer-brief dt, #easytier-config .eu-metric dt { font-size:13px; color:var(--eu-muted); }
+#easytier-config .eu-peer-brief dd { margin-top:3px; font-size:14px; }
+#easytier-config .eu-peer-rates { font-size:13px; color:var(--eu-muted); font-variant-numeric:tabular-nums; margin-top:3px; }
+#easytier-config .eu-peer-title { display:flex; align-items:flex-start; gap:12px; margin:5px 0 18px; }
+#easytier-config .eu-peer-title > :first-child { margin-top:9px; }
+#easytier-config .eu-peer-title .eu-address { margin-top:4px; }
+#easytier-config .eu-peer-title .eu-address code { font-size:18px; }
+#easytier-config .eu-peer-title h1 { font-size:25px; font-weight:500; }
+#easytier-config .eu-data-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; border-radius:19px; overflow:clip; }
+#easytier-config .eu-metric { padding:13px; background:var(--eu-surface); }
+#easytier-config .eu-metric dd { margin-top:5px; font-size:15px; font-variant-numeric:tabular-nums; }
+#easytier-config .eu-definition-row { display:flex; align-items:start; justify-content:space-between; gap:14px; padding:12px 0; border-bottom:1px solid var(--eu-line); font-size:14px; }
+#easytier-config .eu-definition-row > :first-child { color:var(--eu-muted); }
+#easytier-config .eu-definition-row > :last-child { text-align:right; }
+#easytier-config .eu-help { margin-top:16px; font-size:13px; color:var(--eu-muted); }
+#easytier-config .eu-help summary { min-height:48px; display:flex; align-items:center; }
+#easytier-config .eu-help p { padding-bottom:12px; }
+#easytier-config .eu-diagnosis { margin-top:14px; padding:14px; background:var(--eu-surface); border-radius:18px; }
+#easytier-config .eu-diagnosis p { font-size:14px; margin-top:6px; }
+#easytier-config .eu-network-row { display:flex; align-items:center; gap:10px; padding:15px; border-radius:18px; background:var(--eu-surface); margin:8px 0; }
+#easytier-config .eu-network-row[aria-pressed="true"] { background:var(--eu-tonal); color:var(--eu-on-tonal); }
+#easytier-config .eu-settings-row { padding:15px; background:var(--eu-surface); border-radius:17px; margin-bottom:3px; }
+#easytier-config .eu-settings-row label { display:block; margin-bottom:9px; }
+#easytier-config .eu-settings-row .eu-check-row { display:flex; margin-bottom:0; }
+#easytier-config .eu-check-row { display:flex; align-items:center; gap:12px; min-height:48px; }
+#easytier-config .eu-check-row input { width:21px; height:21px; accent-color:var(--eu-primary); flex-shrink:0; }
+#easytier-config .eu-sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media (max-width:360px) { #easytier-config {padding:10px 2px;} #easytier-config .eu-view-host {padding:0 13px 16px;} #easytier-config .eu-connection {padding:17px;} #easytier-config .eu-button {padding:10px 14px;} }
+@media (prefers-reduced-motion:no-preference) { #easytier-config .eu-app button { transition:background-color 120ms ease,color 120ms ease; } #easytier-config .eu-peer[open] .eu-peer-brief {animation:eu-reveal 160ms ease-out;} @keyframes eu-reveal {from{opacity:.4;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}} }
+#easytier-config .eu-config-status{padding:10px 18px 8px;margin:0;background:transparent}
+#easytier-config .eu-config-status-message{margin:0;color:var(--eu-muted);font-size:14px;line-height:1.5}
+#easytier-config .eu-config-has-changes .eu-config-status-message{color:var(--eu-text)}
+#easytier-config .eu-config-has-error .eu-config-status-message{color:var(--eu-error)}
+#easytier-config .eu-config-status-actions{margin-top:6px;gap:6px;flex-wrap:wrap}
+#easytier-config .eu-config-status-message.eu-sr-only+.eu-config-status-actions{margin-top:0}
+#easytier-config .eu-config-status-actions .eu-button{padding-inline:12px;flex-shrink:0}
+#easytier-config .eu-config-status-actions .eu-text-button{padding-inline:8px}
+#easytier-config .eu-config-status-actions:has(>button:not([hidden])){display:flex}
+#easytier-config .eu-config-status-actions:not(:has(>button:not([hidden]))){display:none}
+#easytier-config .eu-config-search-entry{width:100%;display:flex;align-items:center;gap:12px;min-height:52px;padding:12px 18px;border:0;border-radius:28px;background:var(--eu-raised);color:var(--eu-muted);font:inherit;text-align:left;margin:0 0 22px}
+#easytier-config .eu-config-summary-list{display:flex;flex-direction:column}
+#easytier-config .eu-config-row{display:flex;width:100%;gap:12px;align-items:center;min-height:76px;padding:14px 0;border:0;border-bottom:1px solid var(--eu-line);background:transparent;color:var(--eu-text);font:inherit;text-align:left}
+#easytier-config .eu-config-row:last-child{border-bottom:0}
+#easytier-config .eu-config-row-copy{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;overflow-wrap:anywhere}
+#easytier-config .eu-config-row-label{font-weight:500}
+#easytier-config .eu-config-row-value{line-height:1.5}
+#easytier-config .eu-config-row [data-lucide]{flex:none;color:var(--eu-muted)}
+#easytier-config .eu-config-draft-mark{font-size:13px;line-height:1.5;color:var(--eu-primary);white-space:nowrap}
+#easytier-config .eu-config-field{padding:18px 0;border-bottom:1px solid var(--eu-line);min-width:0}
+#easytier-config .eu-config-field:last-child{border-bottom:0}
+#easytier-config .eu-config-field-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+#easytier-config .eu-config-field-heading .eu-label{margin:0;line-height:1.5}
+#easytier-config .eu-config-key{display:block;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere;color:var(--eu-muted);margin:-4px 0 10px}
+#easytier-config .eu-config-input-area{display:flex;flex-direction:column;align-items:stretch;gap:10px;min-width:0}
+#easytier-config .eu-config-input-area>.eu-text-button{align-self:flex-start}
+#easytier-config .eu-config-help{margin:10px 0 0;line-height:1.6;font-size:13px;overflow-wrap:anywhere}
+#easytier-config .eu-config-field-error{color:var(--eu-error);font-size:14px;line-height:1.5;margin:8px 0 0}
+#easytier-config .eu-config-field-disabled .eu-label{color:var(--eu-muted)}
+#easytier-config .eu-config-textarea{width:100%;resize:vertical;min-height:96px;line-height:1.6}
+#easytier-config .eu-config-expert{font-size:13px;margin:0}
+#easytier-config .eu-config-toggle-row{display:flex;align-items:center}
+#easytier-config .eu-config-toggle-label{display:flex;align-items:center;gap:12px;min-height:48px;flex:1}
+#easytier-config .eu-config-toggle{appearance:none;width:52px;height:32px;border:2px solid var(--eu-muted);border-radius:18px;background:var(--eu-raised);position:relative;flex:none;margin:0;transition:background-color .16s,border-color .16s}
+#easytier-config .eu-config-toggle::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:var(--eu-muted);top:6px;left:6px;transition:transform .16s,width .16s,height .16s}
+#easytier-config .eu-config-toggle:checked{background:var(--eu-primary);border-color:var(--eu-primary)}
+#easytier-config .eu-config-toggle:checked::after{width:24px;height:24px;top:2px;left:22px;background:var(--eu-on-primary)}
+#easytier-config .eu-config-toggle:disabled{opacity:.5}
+#easytier-config .eu-config-more{margin:18px 0}
+#easytier-config .eu-config-more>summary,#easytier-config .eu-config-peer-keys>summary{min-height:48px;padding:12px 0;line-height:1.5;color:var(--eu-primary)}
+#easytier-config .eu-config-more[open]>summary{border-bottom:1px solid var(--eu-line);margin-bottom:6px}
+#easytier-config .eu-config-app-count{margin:0;color:var(--eu-muted);font-size:14px}
+#easytier-config .eu-config-app-list{display:flex;flex-direction:column}
+#easytier-config .eu-config-app-row{display:flex;align-items:center;gap:12px;min-height:68px;padding:12px 0;border-bottom:1px solid var(--eu-line)}
+#easytier-config .eu-config-app-row:last-child{border-bottom:0}
+#easytier-config .eu-config-app-check{width:22px;height:22px;flex:none;accent-color:var(--eu-primary);margin:0}
+#easytier-config .eu-config-app-copy{display:flex;flex-direction:column;gap:4px;min-width:0;overflow-wrap:anywhere}
+#easytier-config .eu-config-app-copy>.eu-subtle{font-size:13px}
+#easytier-config .eu-config-peer-key{display:flex;flex-direction:column;gap:8px;padding:10px 0}
+#easytier-config .eu-config-peer-key label{overflow-wrap:anywhere}
+#easytier-config .eu-config-search-filters{margin-top:14px}
+#easytier-config .eu-config-result-group{margin:10px 0}
+#easytier-config .eu-config-result-group>summary{min-height:48px;display:list-item;padding:12px 0;color:var(--eu-text)}
+#easytier-config .eu-config-result-group>summary>span+span{margin-left:12px;font-size:13px}
+#easytier-config .eu-config-result-key{font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--eu-muted);overflow-wrap:anywhere}
+#easytier-config .eu-config-result-error{color:var(--eu-error)}
+#easytier-config .eu-config-preview{width:100%;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;resize:vertical;margin-top:8px}
+#easytier-config .eu-config-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+#easytier-config .eu-config-heading>.eu-text-button{flex-shrink:0}
+#easytier-config .eu-config-tabs{display:grid;grid-template-columns:1fr 1fr;margin-top:4px;border-bottom:1px solid var(--eu-line)}
+#easytier-config .eu-config-tab{position:relative;min-height:52px;padding:14px 12px;background:transparent;color:var(--eu-muted);font:inherit;font-weight:500;text-align:center}
+#easytier-config .eu-config-tab[aria-selected="true"]{color:var(--eu-primary)}
+#easytier-config .eu-config-tab[aria-selected="true"]::after{content:"";position:absolute;bottom:0;left:calc(50% - 28px);width:56px;height:3px;border-radius:3px 3px 0 0;background:var(--eu-primary)}
+#easytier-config .eu-config-simple-body .eu-config-field{padding:16px 0 18px}
+#easytier-config .eu-config-address-summary{display:flex;align-items:center;gap:10px;min-height:52px;width:100%;padding:12px 0;margin-top:10px;background:transparent;color:var(--eu-muted);font:inherit;font-size:14px;text-align:left}
+#easytier-config .eu-config-address-summary>span{flex:1}
+#easytier-config .eu-config-address-summary [data-lucide]{color:var(--eu-primary)}
+#easytier-config .eu-config-all-search{display:flex;flex-direction:column;gap:8px;margin:16px 0 14px}
+#easytier-config .eu-config-inline-group{border-bottom:1px solid var(--eu-line);margin-top:2px}
+#easytier-config .eu-config-inline-group>summary{display:flex;align-items:center;gap:12px;min-height:64px;padding:16px 0;list-style:none}
+#easytier-config .eu-config-inline-group>summary::-webkit-details-marker{display:none}
+#easytier-config .eu-config-group-label{font-weight:500;flex:1}
+#easytier-config .eu-config-inline-group>summary>[data-lucide]{color:var(--eu-muted)}
+#easytier-config .eu-config-inline-group[open]>summary>[data-lucide]{transform:rotate(180deg)}
+#easytier-config .eu-config-inline-group>.eu-config-form{padding-bottom:10px}
+#easytier-config .eu-config-inline-group[data-config-group="android"]>.eu-config-form{padding:0 12px 12px;background:var(--eu-surface);border-radius:16px;margin-bottom:12px}
+#easytier-config .eu-config-all-panel>[role="status"]{font-size:13px;margin-bottom:6px}
+#easytier-config .eu-config-status[hidden],#easytier-config .eu-config-field[hidden],#easytier-config .eu-config-row[hidden],#easytier-config .eu-config-app-row[hidden],#easytier-config .eu-config-result-group[hidden]{display:none}
+@media(max-width:360px){#easytier-config .eu-config-field-heading{gap:8px}#easytier-config .eu-config-status{padding-inline:13px}#easytier-config .eu-config-app-row{gap:10px}}
+@media(prefers-reduced-motion:reduce){#easytier-config .eu-config-toggle,#easytier-config .eu-config-toggle::after{transition:none}}
+
+#easytier-config .eu-log-scope { margin: 0 0 16px; }
+#easytier-config .eu-log-sources { margin: 14px 0; }
+#easytier-config .eu-log-filters { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 12px; }
+#easytier-config .eu-log-filters .eu-field { min-width: 0; }
+#easytier-config .eu-log-reading-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 12px 0 0; scroll-margin-top: 100px; }
+#easytier-config .eu-log-reading-bar .eu-button { flex-shrink: 0; }
+#easytier-config .eu-log-pending { margin: 8px 0; width: 100%; }
+#easytier-config .eu-log-entry { border-bottom: 1px solid var(--eu-line); overflow-anchor: auto; }
+#easytier-config .eu-log-entry > summary { padding: 14px 0; min-height: 48px; list-style: none; }
+#easytier-config .eu-log-entry > summary::-webkit-details-marker { display: none; }
+#easytier-config .eu-log-meta { display: flex; align-items: center; gap: 10px; color: var(--eu-muted); font-size: .8125rem; }
+#easytier-config .eu-log-time { font-variant-numeric: tabular-nums; }
+#easytier-config .eu-log-source { min-width: 4em; }
+#easytier-config .eu-log-level { margin-left: auto; font-size: .8125rem; }
+#easytier-config .eu-log-level[data-level="warn"], #easytier-config .eu-log-level[data-level="error"] { color: var(--eu-error); font-weight: 500; }
+#easytier-config .eu-log-message { display: block; color: var(--eu-text); margin-top: 6px; overflow-wrap: anywhere; }
+#easytier-config .eu-log-body { padding: 0 0 14px; overflow-wrap: anywhere; }
+#easytier-config .eu-log-body p { margin: 6px 0; }
+#easytier-config .eu-log-fields { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 7px 10px; font-size: .8125rem; }
+#easytier-config .eu-log-fields dt { color: var(--eu-muted); }
+#easytier-config .eu-log-fields dd { margin: 0; }
+#easytier-config .eu-log-copy { display: block; width: 100%; margin-top: 10px; }
+#easytier-config .eu-log-settings { margin-top: 24px; border-top: 1px solid var(--eu-line); }
+#easytier-config .eu-log-settings > summary { display: flex; gap: 8px; align-items: center; min-height: 56px; list-style: none; }
+#easytier-config .eu-log-settings > summary::-webkit-details-marker { display: none; }
+#easytier-config .eu-log-settings-body { padding: 0 0 12px; }
+#easytier-config .eu-log-settings-body .eu-field { margin: 14px 0; }
+#easytier-config .eu-monitor-traffic { min-width: 0; }
+#easytier-config .eu-monitor-traffic > .eu-subtle { margin: 4px 0 12px; }
+#easytier-config .eu-traffic-values { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 16px 0 4px; }
+#easytier-config .eu-traffic-value { min-width: 0; }
+#easytier-config .eu-traffic-value > .eu-subtle { display: flex; align-items: center; gap: 6px; }
+#easytier-config .eu-traffic-number { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px; font-size: 1.6rem; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--eu-text); }
+#easytier-config .eu-traffic-unit { font-size: .8125rem; font-weight: 400; color: var(--eu-muted); }
+#easytier-config .eu-chart-swatch { display: inline-block; width: 18px; height: 0; border-top: 2px solid var(--eu-chart-rx); }
+#easytier-config .eu-chart-swatch-tx { border-top-style: dashed; border-top-color: var(--eu-chart-tx); }
+#easytier-config .eu-chart-box { width: 100%; min-width: 0; }
+#easytier-config .eu-traffic-chart { display: block; width: 100%; overflow: visible; pointer-events: none; }
+#easytier-config .eu-traffic-chart text { fill: var(--eu-muted); font-size: 13px; font-family: inherit; font-weight: 400; font-variant-numeric: tabular-nums; }
+#easytier-config .eu-chart-grid { stroke: var(--eu-line); stroke-width: 1; }
+#easytier-config .eu-chart-frame { stroke: var(--eu-line); stroke-width: 1; }
+#easytier-config .eu-chart-line { stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+#easytier-config .eu-chart-line-rx { stroke: var(--eu-chart-rx); }
+#easytier-config .eu-chart-line-tx { stroke: var(--eu-chart-tx); stroke-dasharray: 5 4; }
+#easytier-config .eu-traffic-status { margin: 4px 0 0; }
+@media (max-width: 370px) {
+  #easytier-config .eu-log-filters { grid-template-columns: minmax(0, 1fr); }
+  #easytier-config .eu-log-reading-bar { align-items: flex-start; }
+  #easytier-config .eu-traffic-values { gap: 10px; }
+}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script>
+(() => {
+  'use strict';
+  const root = document.getElementById('easytier-config');
+  if (!root) return;
+  const app = root.querySelector('.eu-app');
+  const host = root.querySelector('#eu-view-host');
+  const catalogue = {"meta":{"scope":"以 easytier.cn/assistant 实际部署组件的可见输入与动态 flags 表为范围，映射到当前核心 TOML；Android 自有选项单独分组。","capturedAtUtc":"2026-10-10T21:57:46.170012+00:00","deployed":{"url":"https://easytier.cn/assistant/","entrySha256":"2ff541efed99e1e873f68ad5640cf12d93b1af7276ef19e171849a51b4a13eae","bundleUrl":"https://easytier.cn/assistant/assets/index-CU7Lyann.js","bundleSha256":"6f8b57a22e2a348d9d1e6b078d04ddf80d1895adcccc2a91c3a45f188ccd41d5","framework":"Vue","commit":null,"basis":"Config component actual model bindings plus its 26-item dynamic boolean table; protobuf-only fields are not a visible-form source.","sourceFields":["acl","bind_device","dev_name","dhcp","disable_encryption","disable_ipv6","disable_kcp_input","disable_p2p","disable_quic_input","disable_sym_hole_punching","disable_tcp_hole_punching","disable_udp_hole_punching","disable_upnp","enable_exit_node","enable_kcp_proxy","enable_magic_dns","enable_manual_routes","enable_private_mode","enable_quic_proxy","enable_relay_network_whitelist","enable_socks5","enable_udp_broadcast_relay","enable_vpn_portal","exit_nodes","hostname","instance_recv_bps_limit","ipv6_public_addr_auto","latency_first","lazy_p2p","listener_urls","mapped_listeners","mtu","multi_thread","need_p2p","network_length","network_name","network_secret","no_tun","p2p_only","peer_urls","port_forwards","proxy_cidrs","proxy_forward_by_system","relay_all_peer_rpc","relay_network_whitelist","routes","socks5_port","use_smoltcp","virtual_ipv4","vpn_portal_client_network_addr","vpn_portal_client_network_len","vpn_portal_listen_port"],"dynamicFlags":["latency_first","use_smoltcp","disable_ipv6","ipv6_public_addr_auto","enable_kcp_proxy","disable_kcp_input","enable_quic_proxy","disable_quic_input","disable_p2p","p2p_only","lazy_p2p","bind_device","no_tun","enable_exit_node","relay_all_peer_rpc","need_p2p","multi_thread","proxy_forward_by_system","disable_encryption","disable_tcp_hole_punching","disable_udp_hole_punching","enable_udp_broadcast_relay","disable_upnp","disable_sym_hole_punching","enable_magic_dns","enable_private_mode"]},"comparisonSources":[{"url":"https://github.com/EasyTier/assistant/blob/f809b2e1f175ed744fa66a3e73c196edbffa13ce/src/types/config.ts","match":false,"note":"React Wizard/Expert reference differs from deployed Vue UI; not used to expand scope."},{"url":"https://github.com/EasyTier/EasyTier/blob/83baead0599110bee0d47f4c70b63b23753252a7/easytier-web/frontend-lib/src/components/Config.vue","match":false,"note":"Current official shared component has newer controls; deployed bundle remains authoritative for UI scope."}],"coreSemanticsRevision":"83baead0599110bee0d47f4c70b63b23753252a7","simpleKeys":["network_identity.network_name","network_identity.network_secret","peer"],"simpleAddressSummary":"DHCP 默认为自动；已有静态地址如实显示。简单和全部复用同一组表单节点与 draft/raw/errors/saved。","visibleCoreCount":37,"visibleAndroidCount":7,"visibleFieldCount":44,"hiddenAssistantFields":[{"key":"flags.bind_device","assistantFields":["bind_device"],"reason":"当前 Android native host 设置 allow_interface_bind=false，物理网卡绑定由平台适配管理。","ui":"hidden","search":"hidden"},{"key":"flags.dev_name","assistantFields":["dev_name"],"reason":"本客户端采用免 Root VpnService；TUN 由 Android 创建，接口名称由平台管理。","ui":"hidden","search":"hidden"},{"key":"flags.enable_udp_broadcast_relay","assistantFields":["enable_udp_broadcast_relay"],"reason":"此实现捕获物理网卡 UDP 广播的路径限定 Windows + tun；当前 Android 客户端不提供。","ui":"hidden","search":"hidden"},{"key":"ipv6_public_addr_auto","assistantFields":["ipv6_public_addr_auto"],"reason":"当前客户端尚未提供公网 IPv6 自动分配与 TUN 路由同步适配；保留来源映射但不展示为可操作选项。","ui":"hidden","search":"hidden"},{"key":"flags.multi_thread","assistantFields":["multi_thread"],"reason":"JNI 共享运行时由应用初始化，不作为单网络的可编辑开关。","ui":"hidden","search":"hidden"},{"key":"flags.no_tun","assistantFields":["no_tun"],"reason":"本客户端运行模式固定为免 Root VPN；不提供改变数据路径的 NO_TUN 模式开关。","ui":"hidden","search":"hidden"},{"key":"flags.proxy_forward_by_system","assistantFields":["proxy_forward_by_system"],"reason":"免 Root VpnService 不提供 Linux 内核转发管理；本客户端采用用户态代理。","ui":"hidden","search":"hidden"},{"key":"flags.use_smoltcp","assistantFields":["use_smoltcp"],"reason":"当前 Android native host 要求用户态协议栈，属于宿主接管选项。","ui":"hidden","search":"hidden"}],"excludedLegacyFields":[{"key":"instance_name","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"ipv6","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"stun_servers","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"tcp_stun_servers","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"stun_servers_v6","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"secure_mode.enabled","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"secure_mode.local_private_key","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"secure_mode.local_public_key","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"credential_file","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"managed_credentials","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"tcp_whitelist","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"udp_whitelist","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"ipv6_public_addr_auto","reason":"当前客户端尚未提供公网 IPv6 自动分配与 TUN 路由同步适配；保留来源映射但不展示为可操作选项。"},{"key":"ipv6_public_addr_provider","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"ipv6_public_addr_prefix","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"instance_id","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"source.source","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"netns","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.default_protocol","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.dev_name","reason":"本客户端采用免 Root VpnService；TUN 由 Android 创建，接口名称由平台管理。"},{"key":"flags.no_tun","reason":"本客户端运行模式固定为免 Root VPN；不提供改变数据路径的 NO_TUN 模式开关。"},{"key":"flags.use_smoltcp","reason":"当前 Android native host 要求用户态协议栈，属于宿主接管选项。"},{"key":"flags.multi_thread","reason":"JNI 共享运行时由应用初始化，不作为单网络的可编辑开关。"},{"key":"flags.data_compress_algo","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.bind_device","reason":"当前 Android native host 设置 allow_interface_bind=false，物理网卡绑定由平台适配管理。"},{"key":"flags.disable_relay_kcp","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.proxy_forward_by_system","reason":"免 Root VpnService 不提供 Linux 内核转发管理；本客户端采用用户态代理。"},{"key":"flags.disable_relay_quic","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.quic_listen_port","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.foreign_relay_bps_limit","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.multi_thread_count","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.enable_relay_foreign_network_kcp","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.enable_relay_foreign_network_quic","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.encryption_algorithm","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.tld_dns_zone","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.disable_relay_data","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.enable_udp_broadcast_relay","reason":"此实现捕获物理网卡 UDP 广播的路径限定 Windows + tun；当前 Android 客户端不提供。"},{"key":"flags.socket_mark","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"flags.prefer_peer_relay","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"android.runtimeMode","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"android.configServerUrl","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"android.machineId","reason":"不在此次线上配置助手实际表单范围内，或不属于本客户端提供的应用设置。"},{"key":"process.easytierLogLevel","reason":"进程级日志在日志页管理。"},{"key":"app.logLevel","reason":"进程级日志在日志页管理。"},{"key":"app.logRetention","reason":"进程级日志在日志页管理。"}],"scopeWarnings":["部署 commit 未从 bundle 公开；以实际下载文件 SHA256 固定证据，不把仓库主干当作已部署版本。","Portal 的旧 UI 子网/监听模型与当前核心结构有差异；配置保存采用当前核心对象结构，未声称可直接发送旧管理投影。","页面数量表示编辑单元，不等于全部嵌套叶子字段。","隐藏配置仍可保留在已有保存数据中；隐藏不代表从原配置删除。"]},"groups":[{"id":"identity","label":"网络与地址"},{"id":"connection","label":"节点与直连"},{"id":"routing","label":"路由与服务"},{"id":"security","label":"安全与访问"},{"id":"performance","label":"中继与性能"},{"id":"android","label":"Android 应用设置"}],"fields":[{"key":"network_identity.network_name","label":"网络名称","group":"identity","type":"text","default":null,"help":"所有加入同一网络的设备使用相同名称。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","sample":"home-mesh","uiDefault":null,"origin":"deployed-official-assistant","assistantFields":["network_name"]},{"key":"network_identity.network_secret","label":"网络密码","group":"identity","type":"secret","default":null,"help":"共享密钥模式下使用；凭据节点省略此键，不等同于将密码设为空字符串。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","sample":"••••••••","secret":true,"dependencies":["凭据模式：不写入本字段；保留 missing 与 empty 的差异"],"uiDefault":null,"origin":"deployed-official-assistant","assistantFields":["network_secret"]},{"key":"hostname","label":"本设备名称","group":"identity","type":"text","default":null,"help":"对端看到的主机名称。核心会去除控制字符并限制为 32 个字符。","scope":"core","availability":"available","apply":"core-hot","source":"deployed-assistant","sample":"我的手机","maxLength":32,"uiDefault":null,"origin":"deployed-official-assistant","assistantFields":["hostname"]},{"key":"dhcp","label":"自动分配 IPv4","group":"identity","type":"boolean","default":false,"help":"核心缺省为 false；本客户端建议新建配置默认开启自动分配。静态地址模式关闭此项。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","recommendedDefault":true,"sample":true,"dependencies":["关闭后显示 ipv4"],"capability":"dhcp-ipv4","uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["dhcp"]},{"key":"ipv4","label":"虚拟 IPv4 地址","group":"identity","type":"cidr","default":null,"help":"使用地址与前缀长度；仅静态模式可编辑，避免和其他设备冲突。","scope":"core","availability":"available","apply":"core-hot-and-rebuild-vpn","source":"deployed-assistant","sample":"10.144.0.6/24","dependencies":["dhcp=false"],"note":"PatchConfig 在 dhcp=true 时不会应用 IPv4 修改","uiDefault":null,"origin":"deployed-official-assistant","assistantFields":["network_length","virtual_ipv4"]},{"key":"flags.enable_ipv6","label":"允许底层 IPv6 连接","group":"identity","type":"boolean","default":true,"help":"控制核心使用 IPv6 连接节点，不代表非组网 IPv6 已进入 VPN。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","uiDefault":true,"origin":"deployed-official-assistant","assistantFields":["disable_ipv6"]},{"key":"flags.accept_dns","label":"MagicDNS 组网域名","group":"identity","type":"boolean","default":false,"help":"允许通过设备名访问组网设备；Android DNS 转发和域名范围需配合实现。","scope":"core","availability":"available","apply":"restart-core-and-rebuild-vpn","source":"deployed-assistant","capability":"magic-dns","uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["enable_magic_dns"]},{"key":"peer","label":"连接节点","group":"connection","type":"list","default":[],"help":"填写完整连接 URI，可添加多个节点。保存协议、路径、查询参数和 IPv6 字面量。","scope":"core","availability":"available","apply":"connector-hot-or-restart","source":"deployed-assistant","sample":[{"uri":"tcp://example.net:11010"}],"note":"URI connector 可热增删；绑定 peer_public_key 的变化应重新校验并重连，不能只热加 URI。","children":[{"key":"uri","label":"节点地址","type":"url"},{"key":"peer_public_key","label":"固定对端公钥","type":"text"}],"uiDefault":[],"origin":"deployed-official-assistant","assistantFields":["peer_urls"]},{"key":"listeners","label":"监听地址","group":"connection","type":"list","default":null,"help":"允许其他节点连入的本地监听 URI；协议和端口按实际核心构建校验。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","sample":["tcp://0.0.0.0:11010","udp://0.0.0.0:11010"],"uiDefault":null,"origin":"deployed-official-assistant","assistantFields":["listener_urls"]},{"key":"mapped_listeners","label":"公布的外部地址","group":"connection","type":"list","default":null,"help":"手动告知对端可连接本机的外部地址；适用于已配置的端口映射。","scope":"core","availability":"available","apply":"core-hot","source":"deployed-assistant","uiDefault":null,"origin":"deployed-official-assistant","assistantFields":["mapped_listeners"]},{"key":"flags.disable_p2p","label":"普通自动 P2P","group":"connection","type":"boolean","default":false,"help":"关闭普通自动 P2P；标记为 need_p2p 的节点仍有特殊建链行为，不等于绝不直连。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","invert":true,"uiDefault":true,"origin":"deployed-official-assistant","assistantFields":["disable_p2p"]},{"key":"flags.p2p_only","label":"仅与已直连节点通信","group":"connection","type":"boolean","default":false,"help":"没有可用 P2P 的目标会不可达，不能把它理解为优先直连。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["p2p_only"]},{"key":"flags.lazy_p2p","label":"有流量时再建立 P2P","group":"connection","type":"boolean","default":false,"help":"按需建链；need_p2p 节点仍可能主动建立连接。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["lazy_p2p"]},{"key":"flags.need_p2p","label":"要求对端主动建立 P2P","group":"connection","type":"boolean","default":false,"help":"向其他节点声明应主动与本机建链，即使其启用 lazy_p2p。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["need_p2p"]},{"key":"flags.disable_udp_hole_punching","label":"UDP 打洞","group":"connection","type":"boolean","default":false,"help":"允许通过 UDP 打洞尝试建立直连。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","invert":true,"uiDefault":true,"origin":"deployed-official-assistant","assistantFields":["disable_udp_hole_punching"]},{"key":"flags.disable_tcp_hole_punching","label":"TCP 打洞","group":"connection","type":"boolean","default":false,"help":"启用编译支持的 TCP 打洞机制。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","invert":true,"capability":"tcp-hole-punch","uiDefault":true,"origin":"deployed-official-assistant","assistantFields":["disable_tcp_hole_punching"]},{"key":"flags.disable_sym_hole_punching","label":"对称 NAT 打洞","group":"connection","type":"boolean","default":false,"help":"控制对称 NAT 的额外 UDP 打洞尝试；依赖 UDP 打洞。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","invert":true,"dependencies":["disable_udp_hole_punching=false"],"uiDefault":true,"origin":"deployed-official-assistant","assistantFields":["disable_sym_hole_punching"]},{"key":"flags.disable_upnp","label":"自动端口映射","group":"connection","type":"boolean","default":false,"help":"对符合条件的监听器尝试 UPnP/NAT-PMP，需要路由器支持。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","invert":true,"capability":"upnp","uiDefault":true,"origin":"deployed-official-assistant","assistantFields":["disable_upnp"]},{"key":"routes","label":"路由接收方式","group":"routing","type":"optional-list","default":null,"help":"未设置为自动接收；显式列表表示手动路由，替代动态传播的子网/Portal 路由。空列表与未设置不同。","scope":"core","availability":"available","apply":"core-hot-and-rebuild-vpn","source":"deployed-assistant","options":["自动接收路由","仅使用手动网段"],"preserveAbsence":true,"uiDefault":null,"origin":"deployed-official-assistant","assistantFields":["enable_manual_routes","routes"]},{"key":"exit_nodes","label":"互联网出口节点","group":"routing","type":"list","default":[],"help":"按优先级排列的出口节点虚拟 IP。Android 默认路由、DNS 和 IPv6 出口策略需一起应用。","scope":"core","availability":"available","apply":"core-hot-and-rebuild-vpn","source":"deployed-assistant","uiDefault":[],"origin":"deployed-official-assistant","assistantFields":["exit_nodes"]},{"key":"proxy_network","label":"分享本地子网","group":"routing","type":"list","default":[],"help":"使用 Android 用户态代理访问本地子网，不启用系统内核转发。","scope":"core","availability":"available","apply":"core-hot-with-platform-reconcile","source":"deployed-assistant","children":[{"key":"cidr","label":"本地网段","type":"cidr"},{"key":"mapped_cidr","label":"映射网段","type":"cidr"},{"key":"allow","label":"旧协议限制（兼容保留）","type":"list","readOnly":true}],"note":"ProxyNetworkPatch 只含 cidr/mapped_cidr，不含 allow；当前核心规范化未将 allow 投影到代理路由模型，保留字段不能保证限制已生效，应使用 ACL。","uiDefault":[],"origin":"deployed-official-assistant","assistantFields":["proxy_cidrs"],"implementationCondition":"使用 Android 用户态代理访问本地子网，不启用系统内核转发。"},{"key":"socks5_proxy","label":"SOCKS5 监听","group":"routing","type":"url","default":null,"help":"向使用 SOCKS5 的应用提供组网访问；默认建议只绑定本机回环地址。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","sample":"socks5://127.0.0.1:1080","capability":"proxy-smoltcp-stack + native socks5","uiDefault":null,"origin":"deployed-official-assistant","assistantFields":["enable_socks5","socks5_port"]},{"key":"port_forward","label":"端口转发","group":"routing","type":"list","default":[],"help":"将本地端口转到组网内目标，支持 TCP 或 UDP。","scope":"core","availability":"available","apply":"core-hot","source":"deployed-assistant","capability":"proxy-smoltcp-stack","children":[{"key":"bind_addr","label":"本地监听地址","type":"text"},{"key":"dst_addr","label":"目标地址","type":"text"},{"key":"proto","label":"协议","type":"select","options":["tcp","udp"]}],"uiDefault":[],"origin":"deployed-official-assistant","assistantFields":["port_forwards"]},{"key":"vpn_portal_config","label":"WireGuard Portal","group":"routing","type":"object","default":null,"help":"保留 WireGuard Portal；目标构建需启用对应核心能力。监听及客户端按当前核心结构保存。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","children":[{"key":"enabled","label":"启用门户","type":"boolean"},{"key":"wireguard_listen","label":"监听 IP 与端口","type":"text"},{"key":"wireguard_private_key","label":"服务端私钥","type":"secret"},{"key":"clients","label":"具名客户端与虚拟 IP/组","type":"list"}],"note":"仅 clients 增删有热补丁；修改监听、私钥、enabled 按重启。TOML 与 NetworkConfig 的 wireguard_listen 都解析为 SocketAddr，不能直接写 CLI Portal URL。","uiDefault":null,"origin":"deployed-official-assistant","assistantFields":["enable_vpn_portal","vpn_portal_client_network_addr","vpn_portal_client_network_len","vpn_portal_listen_port"],"implementationCondition":"保留 WireGuard Portal；目标构建需启用对应核心能力。监听及客户端按当前核心结构保存。"},{"key":"flags.enable_exit_node","label":"允许本机作为出口","group":"routing","type":"boolean","default":false,"help":"通过当前客户端的用户态协议栈转发出口流量。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["enable_exit_node"],"implementationCondition":"通过当前客户端的用户态协议栈转发出口流量。"},{"key":"flags.enable_encryption","label":"通信加密","group":"security","type":"boolean","default":true,"help":"新配置保持开启；关闭时需对端兼容。安全算法与身份模式分别配置。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","uiDefault":true,"origin":"deployed-official-assistant","assistantFields":["disable_encryption"]},{"key":"flags.private_mode","label":"限制外部网络接入","group":"security","type":"boolean","default":false,"help":"按相同网络密钥或已受信任凭据限制 foreign network 接入，不等同于设备隐身。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["enable_private_mode"]},{"key":"acl","label":"访问控制 ACL","group":"security","type":"object","default":null,"help":"按入站/出站/转发组织规则，显示优先级、默认动作与命中情况；优先级数字越大越先匹配。","scope":"core","availability":"available","apply":"core-hot","source":"deployed-assistant","children":[{"key":"acl_v1.chains","label":"规则链","type":"list"},{"key":"acl_v1.chains[].rules","label":"有序规则","type":"list"},{"key":"acl_v1.group","label":"身份组","type":"object"}],"expertEditor":true,"note":"Rule 包含名称/描述/启用、协议、端口、源目标 IP、源端口、源目标组、动作、限速/突发、stateful。TimeWindow 虽在 proto 定义，但未挂到 Rule，不应宣传为已支持的时间规则。","uiDefault":null,"origin":"deployed-official-assistant","assistantFields":["acl"]},{"key":"flags.latency_first","label":"优先低延迟路径","group":"performance","type":"boolean","default":false,"help":"默认采用较短路径；开启后优先选择低延迟路径，可能经中继。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["latency_first"]},{"key":"flags.mtu","label":"隧道 MTU","group":"performance","type":"number","default":1380,"help":"隧道数据包的大小上限，范围为 400～1380。","scope":"core","availability":"available","apply":"restart-core-and-rebuild-vpn","source":"deployed-assistant","unit":"bytes","uiDefault":1380,"origin":"deployed-official-assistant","assistantFields":["mtu"],"min":400,"max":1380},{"key":"flags.instance_recv_bps_limit","label":"本网络接收限速","group":"performance","type":"number","default":"18446744073709551615","help":"限制当前实例整体接收速率，单位为字节每秒，默认不限速。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","unit":"B/s","displayDefault":"不限速","storageType":"decimal-string","unlimitedSentinel":"18446744073709551615","uiDefault":"18446744073709551615","origin":"deployed-official-assistant","assistantFields":["instance_recv_bps_limit"]},{"key":"flags.relay_network_whitelist","label":"允许中继的网络","group":"performance","type":"text","default":"*","help":"支持 * 和网络名模式；空值禁用转发。部分本地网络回退行为以核心为准。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","uiDefault":"*","origin":"deployed-official-assistant","assistantFields":["enable_relay_network_whitelist","relay_network_whitelist"]},{"key":"flags.relay_all_peer_rpc","label":"帮助其他网络交换建链信息","group":"performance","type":"boolean","default":false,"help":"转发不在中继白名单中的对端 RPC，可帮助这些网络建立 P2P。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["relay_all_peer_rpc"]},{"key":"flags.enable_kcp_proxy","label":"KCP 代理 TCP 流","group":"performance","type":"boolean","default":false,"help":"对 TCP 流使用 KCP 代理；结合对端输入能力与真实链路测试，不保证更快。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","capability":"kcp","dependencies":["与 QUIC 代理同时启用的有效策略必须由当前核心校验/回读，UI 不隐式改另一项"],"uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["enable_kcp_proxy"]},{"key":"flags.disable_kcp_input","label":"允许 KCP 代理接入","group":"performance","type":"boolean","default":false,"help":"控制对端是否可使用 KCP 代理 TCP 流到本节点。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","invert":true,"capability":"kcp","uiDefault":true,"origin":"deployed-official-assistant","assistantFields":["disable_kcp_input"]},{"key":"flags.enable_quic_proxy","label":"QUIC 代理 TCP 流","group":"performance","type":"boolean","default":false,"help":"对 TCP 流使用 QUIC 代理，依赖实际构建和对端支持。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","capability":"quic","uiDefault":false,"origin":"deployed-official-assistant","assistantFields":["enable_quic_proxy"]},{"key":"flags.disable_quic_input","label":"允许 QUIC 代理接入","group":"performance","type":"boolean","default":false,"help":"控制对端是否可使用 QUIC 代理 TCP 流到本节点。","scope":"core","availability":"available","apply":"restart-core","source":"deployed-assistant","invert":true,"capability":"quic","uiDefault":true,"origin":"deployed-official-assistant","assistantFields":["disable_quic_input"]},{"key":"android.appRoutingMode","label":"应用范围","group":"android","type":"select","default":"all","help":"全部应用、仅选中的应用、排除选中的应用；后两者互斥。","scope":"android","availability":"available","apply":"rebuild-vpn","source":"app-design","options":["all","allowlist","denylist"],"uiDefault":"all","origin":"android-client"},{"key":"android.appPackages","label":"选中的应用","group":"android","type":"application-list","default":[],"help":"支持搜索与多选，处理卸载；只有应用范围不是 all 时显示。","scope":"android","availability":"available","apply":"rebuild-vpn","source":"app-design","dependencies":["android.appRoutingMode != all"],"uiDefault":[],"origin":"android-client"},{"key":"android.internetRouting","label":"互联网流量范围","group":"android","type":"select","default":"overlay-only","help":"仅组网或通过指定出口；选择出口时同时校验 IPv4、IPv6 和 DNS。","scope":"android","availability":"available","apply":"rebuild-vpn","source":"app-design","options":["overlay-only","exit-node"],"uiDefault":"overlay-only","origin":"android-client"},{"key":"android.ipv6Policy","label":"非组网 IPv6 策略","group":"android","type":"select","default":"bypass","help":"绕过、通过组网、阻断要明确；全流量出口不得静默绕过 IPv6。","scope":"android","availability":"available","apply":"rebuild-vpn","source":"app-design","options":["bypass","tunnel","block"],"uiDefault":"bypass","origin":"android-client"},{"key":"android.dnsMode","label":"DNS 策略","group":"android","type":"select","default":"system","help":"系统 DNS、自定义 DNS 与组网域名解析分别建模，不默认硬编码公共 DNS。","scope":"android","availability":"available","apply":"rebuild-vpn","source":"app-design","options":["system","custom"],"uiDefault":"system","origin":"android-client"},{"key":"android.dnsServers","label":"自定义 DNS 地址","group":"android","type":"list","default":[],"help":"仅自定义 DNS 模式显示；与 MagicDNS 转发策略共同校验。","scope":"android","availability":"available","apply":"rebuild-vpn","source":"app-design","dependencies":["android.dnsMode=custom"],"uiDefault":[],"origin":"android-client"},{"key":"android.autoReconnect","label":"网络恢复后自动重连","group":"android","type":"boolean","default":true,"help":"只恢复仍有连接意图的会话，用户主动断开优先。","scope":"android","availability":"available","apply":"app-immediate","source":"app-design","uiDefault":true,"origin":"android-client"}],"runtimeDefaults":{"instance_name":"default","network_identity.network_name":null,"network_identity.network_secret":null,"hostname":null,"dhcp":false,"ipv4":null,"ipv6":null,"peer":[],"listeners":null,"mapped_listeners":null,"stun_servers":null,"tcp_stun_servers":null,"stun_servers_v6":null,"routes":null,"exit_nodes":[],"proxy_network":[],"socks5_proxy":null,"port_forward":[],"vpn_portal_config":null,"secure_mode.enabled":false,"secure_mode.local_private_key":null,"secure_mode.local_public_key":null,"credential_file":null,"managed_credentials":[],"tcp_whitelist":[],"udp_whitelist":[],"acl":null,"ipv6_public_addr_auto":false,"ipv6_public_addr_provider":false,"ipv6_public_addr_prefix":null,"instance_id":null,"source.source":"user","netns":null,"flags.default_protocol":"tcp","flags.dev_name":"","flags.enable_encryption":true,"flags.enable_ipv6":true,"flags.mtu":1380,"flags.latency_first":false,"flags.enable_exit_node":false,"flags.no_tun":false,"flags.use_smoltcp":false,"flags.relay_network_whitelist":"*","flags.disable_p2p":false,"flags.relay_all_peer_rpc":false,"flags.disable_udp_hole_punching":false,"flags.multi_thread":true,"flags.data_compress_algo":"None","flags.bind_device":true,"flags.enable_kcp_proxy":false,"flags.disable_kcp_input":false,"flags.disable_relay_kcp":false,"flags.proxy_forward_by_system":false,"flags.accept_dns":false,"flags.private_mode":false,"flags.enable_quic_proxy":false,"flags.disable_quic_input":false,"flags.disable_relay_quic":false,"flags.quic_listen_port":4294967295,"flags.foreign_relay_bps_limit":"18446744073709551615","flags.multi_thread_count":2,"flags.enable_relay_foreign_network_kcp":false,"flags.enable_relay_foreign_network_quic":false,"flags.encryption_algorithm":"aes-gcm","flags.disable_sym_hole_punching":false,"flags.tld_dns_zone":"et.net.","flags.p2p_only":false,"flags.disable_tcp_hole_punching":false,"flags.lazy_p2p":false,"flags.need_p2p":false,"flags.instance_recv_bps_limit":"18446744073709551615","flags.disable_upnp":false,"flags.disable_relay_data":false,"flags.enable_udp_broadcast_relay":false,"flags.socket_mark":null,"flags.prefer_peer_relay":false,"android.appRoutingMode":"all","android.appPackages":[],"android.dnsMode":"system","android.dnsServers":[],"android.ipv6Policy":"bypass","android.internetRouting":"overlay-only","android.runtimeMode":"vpn","android.autoReconnect":true,"android.configServerUrl":null,"android.machineId":null,"process.easytierLogLevel":"info","app.logLevel":"info","app.logRetention":"bounded"}};
+  const fieldMap = new Map(catalogue.fields.map(field => [field.key,field]));
+  let unique = 0;
+  let actionOrigin = null;
+  let toastTimer = null;
+  let snackbarTimer = null;
+  let renameSession = null;
+  const clone = value => value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+  const uid = (prefix='control') => 'eu-'+prefix+'-'+(++unique);
+  function el(tag,className='',value='') { const node=document.createElement(tag);if(className)node.className=className;if(value!==''&&value!==undefined&&value!==null)node.textContent=String(value);return node; }
+  function icon(name) { const node=el('i');node.setAttribute('data-lucide',name);node.setAttribute('aria-hidden','true');return node; }
+  function button(label,action,className='eu-button') { const node=el('button',className+' cursor-interaction',label);node.type='button';node.id=uid('action');node.addEventListener('click',event=>{actionOrigin=node;action(event);actionOrigin=null;});return node; }
+  const byId=id=>root.querySelector('#'+id);
+  const text=(node,value)=>{if(node&&node.textContent!==String(value))node.textContent=String(value);};
+  const state = { selectedId:'home', tab:'config', histories:new Map(), profiles:[], operations:new Map(), views:new Map(), diagnoses:new Map(), serial:1, generation:1, runtime:null, theme:'system', dynamic:true, seed:'iris', nextApplyFailure:false };
+  function makeProfile(id,label,saved) { return {id,label,saved:clone(saved),draft:clone(saved),revision:1,raw:{},errors:{},lastApplied:null}; }
+  state.profiles=[
+    makeProfile('home','家庭网络',{instance_name:'家庭网络','network_identity.network_name':'home-mesh','network_identity.network_secret':'demo-network-secret',hostname:'我的手机',dhcp:true,peer:[{uri:'udp://bootstrap.example.net:11010'}],'flags.mtu':1380,'android.appRoutingMode':'all','android.internetRouting':'overlay-only'}),
+    makeProfile('work','工作室',{instance_name:'工作室','network_identity.network_name':'studio-mesh','network_identity.network_secret':'demo-studio-secret',hostname:'我的手机',dhcp:true,peer:[{uri:'tcp://studio.example.net:11010'}],'android.appRoutingMode':'all','android.internetRouting':'overlay-only'})
+  ];
+  function profile(id) { return state.profiles.find(item=>item.id===id); }
+  function value(id,key,kind='draft') { const p=profile(id),data=p&&p[kind];if(data&&Object.prototype.hasOwnProperty.call(data,key))return data[key];return fieldMap.has(key)?fieldMap.get(key).default:catalogue.runtimeDefaults?.[key]; }
+  function diff(a,b) { return [...new Set([...Object.keys(a||{}),...Object.keys(b||{})])].filter(key=>JSON.stringify(a?.[key])!==JSON.stringify(b?.[key])); }
+  function changed(id) { const p=profile(id);return p?diff(p.draft,p.saved):[]; }
+  function isRunning(id) { return state.runtime?.networkId===id&&state.runtime.phase==='connected'; }
+  function appliedSnapshot(id) { return state.runtime?.networkId===id&&state.runtime.applied?{config:state.runtime.applied,revision:state.runtime.revision}:profile(id)?.lastApplied; }
+  function pending(id) { const p=profile(id),last=appliedSnapshot(id);return p&&last?diff(p.saved,last.config):[]; }
+  function operation(id) { return state.operations.get(id)||{phase:'idle',message:''}; }
+  function setOperation(id,phase,message) {
+    state.operations.set(id,{phase,message});
+    refresh();
+    if (message && ['saved','success'].includes(phase) && currentRoute().networkId === id) showSnackbar(message,id);
+  }
+  function networkLabel(id) { return profile(id)?.label||'网络'; }
+  const initial=profile('home');
+  initial.lastApplied={config:clone(initial.saved),revision:1};
+  state.runtime={networkId:'home',sessionId:'session-1',phase:'connected',revision:1,applied:clone(initial.saved),startedAt:Date.now(),generation:1};
+  let configModule=null, monitorModule=null;
+  const cleanup=new Map();
+  function historyKey() { return state.selectedId+':'+state.tab; }
+  function getStack() { const key=historyKey();if(!state.histories.has(key))state.histories.set(key,[{kind:state.tab,networkId:state.selectedId,key:uid('route')}]);return state.histories.get(key); }
+  function currentRoute() { const stack=getStack();return stack[stack.length-1]; }
+  function currentView() { return state.views.get(currentRoute().key); }
+  function rememberView() { const entry=currentView();if(!entry)return;const active=actionOrigin&&entry.node.contains(actionOrigin)?actionOrigin:document.activeElement;if(active&&entry.node.contains(active))entry.focusId=active.id||null;entry.scrollY=typeof window!=='undefined'?window.scrollY||0:0; }
+  function restoreView(entry) { if(!entry)return;const target=entry.focusId&&byId(entry.focusId);if(target&&typeof target.focus==='function')target.focus({preventScroll:true});if(typeof window!=='undefined'&&typeof window.scrollTo==='function'&&entry.scrollY!==undefined)try{window.scrollTo({top:entry.scrollY,behavior:'instant'});}catch(_){} }
+  function go(route) { rememberView();const current=currentRoute();const next={...route,networkId:route.networkId||current.networkId,key:uid('route')};getStack().push(next);showCurrent(false); }
+  function back() { const stack=getStack();if(stack.length<2)return;rememberView();stack.pop();showCurrent(true); }
+  function tab(name) { if(!['overview','devices','config','logs'].includes(name))return;rememberView();state.tab=name;showCurrent(true); }
+  function selectNetwork(id) { if(!profile(id))return;rememberView();const source=getStack();if(source[source.length-1]?.kind==='network-picker')source.pop();state.selectedId=id;const target=getStack();if(target[target.length-1]?.kind==='network-picker')target.pop();showCurrent(true); }
+  function notify(message) { const node=byId('eu-feedback');text(node,message);node.hidden=!message; }
+  function showToast(message) { if(toastTimer!==null)clearTimeout(toastTimer);const node=byId('eu-toast');text(node,message);node.hidden=false;toastTimer=setTimeout(()=>{node.hidden=true;toastTimer=null;},2400); }
+  function dismissSnackbar() { if(snackbarTimer!==null)clearTimeout(snackbarTimer);snackbarTimer=null;byId('eu-snackbar').hidden=true; }
+  function showSnackbar(message,networkId=currentRoute().networkId) {
+    dismissSnackbar();
+    const node=byId('eu-snackbar');text(node,message);node.dataset.networkId=networkId;node.hidden=!message;
+    if(message)snackbarTimer=setTimeout(()=>{node.hidden=true;snackbarTimer=null;},3600);
+  }
+  function openRename(id,origin=document.activeElement) {
+    const p=profile(id),dialog=byId('eu-rename-dialog');if(!p||dialog.open)return;
+    renameSession={id,origin,routeKey:currentRoute().key};
+    const input=byId('eu-rename-input');input.value=p.label;input.setAttribute('aria-invalid','false');byId('eu-rename-error').hidden=true;
+    const scrollY=typeof window!=='undefined'?window.scrollY||0:0;
+    const top=Math.max(app.getBoundingClientRect().top+scrollY+40,scrollY+40);
+    dialog.style.top=top+'px';
+    dialog.showModal();input.focus({preventScroll:true});input.select();
+  }
+  function finishRename() {
+    if(byId('eu-rename-dialog').open)return;
+    const session=renameSession;renameSession=null;
+    if(session&&currentRoute().key===session.routeKey&&session.origin?.isConnected)session.origin.focus({preventScroll:true});
+  }
+  function closeRename() { const dialog=byId('eu-rename-dialog');if(dialog.open)dialog.close();finishRename(); }
+  function submitRename(event) {
+    event.preventDefault();
+    if(!renameSession)return;
+    const p=profile(renameSession.id),input=byId('eu-rename-input'),label=input.value.trim();if(!p){closeRename();return;}
+    if(!label){text(byId('eu-rename-error'),'请输入配置名称。');byId('eu-rename-error').hidden=false;input.setAttribute('aria-invalid','true');input.focus();return;}
+    const renamed=label!==p.label,id=p.id;
+    // 本地名称不进入核心配置快照，也不改变运行版本或连接会话。
+    if(renamed){p.label=label;addLog('app','info','Configuration','配置名称已更新',{profile:label},id);}
+    closeRename();refresh();
+    if(renamed)showSnackbar('配置名称已更新',id);
+  }
+  function icons() { if(typeof lucide!=='undefined')lucide.createIcons({attrs:{width:20,height:20}}); }
+  function networkPhase(id) { return state.runtime?.networkId===id?state.runtime.phase:'idle'; }
+  function phaseLabel(id) { return ({idle:'未连接',connected:'已连接',connecting:'正在连接',reconnecting:'正在重新连接',stopping:'正在断开',error:'连接失败'})[networkPhase(id)]||'未连接'; }
+  function routeTitle(route) { const fixed={'overview':'总览','devices':'设备','config':'配置','logs':'运行日志','peer':peer(route.networkId,route.peerId)?.name||'设备详情','settings':'设置','network-picker':'查看网络','new-network':'添加配置','config-search':'配置'};if(route.kind==='config-group')return '配置';return fixed[route.kind]||'Chuanmen'; }
+  function updateChrome() {
+    const route=currentRoute(),deep=getStack().length>1;
+    byId('eu-back').hidden=!deep;byId('eu-network').hidden=deep;byId('eu-route-heading').hidden=!deep;
+    text(byId('eu-network-name'),networkLabel(state.selectedId));text(byId('eu-network-state'),phaseLabel(state.selectedId));
+    text(byId('eu-route-title'),routeTitle(route));text(byId('eu-route-network'),networkLabel(route.networkId));
+    byId('eu-settings').hidden=route.kind==='settings';
+    root.querySelectorAll('[data-tab]').forEach(node=>{if(node.dataset.tab===state.tab)node.setAttribute('aria-current','page');else node.removeAttribute('aria-current');});
+    const rt=state.runtime,other=rt&&rt.networkId!==route.networkId&&['connected','connecting','reconnecting','stopping'].includes(rt.phase);
+    byId('eu-runtime-banner').hidden=!other;if(other)text(byId('eu-runtime-text'),networkLabel(rt.networkId)+' · '+phaseLabel(rt.networkId));
+    const op=operation(route.networkId),notice=byId('eu-operation'),configRoute=['config','config-group','config-search'].includes(route.kind);
+    const show=op.message&&!configRoute&&['applying','error','pending'].includes(op.phase)&&!(route.kind==='overview'&&op.phase==='pending');notice.hidden=!show;notice.dataset.phase=op.phase;text(notice,show?op.message:'');
+    if(!configRoute){byId('eu-config-dock').hidden=true;byId('eu-config-dock').querySelectorAll('.eu-config-status').forEach(node=>node.hidden=true);}
+    const snackbar=byId('eu-snackbar');if(!snackbar.hidden&&snackbar.dataset.networkId!==route.networkId)dismissSnackbar();
+    app.dataset.theme=state.theme;app.dataset.seed=state.dynamic?'iris':state.seed;
+  }
+  function showCurrent(restore=false) {
+    const route=currentRoute();if(renameSession&&renameSession.routeKey!==route.key)closeRename();let entry=state.views.get(route.key);
+    state.views.forEach(view=>{view.node.hidden=true;});
+    if(!entry){const node=el('section','eu-screen');node.id=uid('screen');node.dataset.routeKey=route.key;node.dataset.kind=route.kind;node.dataset.networkId=route.networkId;host.append(node);entry={node,route,focusId:null,scrollY:undefined};state.views.set(route.key,entry);mountRoute(route,node);}
+    entry.node.hidden=false;updateChrome();refreshEntry(entry);icons();
+    if(restore)restoreView(entry);else if(getStack().length>1)byId('eu-back').focus({preventScroll:true});
+    notify('');
+  }
+  function refreshEntry(entry) { if(!entry)return;const route=entry.route;if(['config','config-group','config-search'].includes(route.kind)){configModule?.refresh(route,entry.node);return;}if(route.kind==='logs'){monitorModule?.refresh(route,entry.node);return;}if(route.kind==='overview')refreshOverview(entry);if(route.kind==='devices')refreshDevices(entry);if(route.kind==='peer')refreshPeer(entry);if(route.kind==='settings')refreshSettings(entry);if(route.kind==='network-picker')refreshNetworkPicker(entry); }
+  function refresh() { updateChrome();refreshEntry(currentView()); }
+  function touch(id) { updateChrome();if(currentRoute().networkId===id)configModule?.refresh(currentRoute(),currentView()?.node); }
+  function addLog(source,level,module,message,details={},networkId=null,peerId=null) { monitorModule?.addLog(source,level,module,message,details,networkId,peerId); }
+  const ctx={root,state,el,button,icon,uid,clone,profile,profiles:()=>state.profiles,value,go,back,tab,selectNetwork,currentRoute,isRouteVisible:key=>currentRoute().key===key,isRunning,runtime:()=>state.runtime,commit,restoreApplied,operation,changed,pending,touch,refresh,notify,toast:showToast,snackbar:showSnackbar,openRename,configActionHost:byId('eu-config-dock'),copyText,addLog,networkLabel,peer,onCleanup:(key,fn)=>{if(!cleanup.has(key))cleanup.set(key,[]);cleanup.get(key).push(fn);}};
+
+  function failureFor(config) { return (config.peer||[]).some(item=>String(typeof item==='string'?item:item.uri||'').includes('unreachable.example')); }
+  function reconnectRequired(keys) { return keys.some(key=>{const apply=fieldMap.get(key)?.apply;return apply!=='core-hot'&&apply!=='app-immediate';}); }
+  function connect(id) {
+    const p=profile(id);if(!p)return;
+    const previous=state.runtime;if(previous&&['connecting','reconnecting','stopping'].includes(previous.phase)){notify('当前连接操作尚未结束，请先取消或等待完成。');return;}
+    if(previous?.networkId===id&&previous.phase==='connected')return;
+    if(previous){monitorModule?.stopSession(previous.networkId);addLog('app','info','Connection','结束连接：'+networkLabel(previous.networkId),{sessionId:previous.sessionId},previous.networkId);}
+    const generation=++state.generation,saved=clone(p.saved),revision=p.revision,sessionId='session-'+(++state.serial);
+    state.runtime={networkId:id,sessionId,phase:'connecting',revision:null,applied:null,startedAt:Date.now(),generation};
+    setOperation(id,'applying','正在连接'+networkLabel(id)+'…');
+    addLog('app','info','VpnService','开始连接',{sessionId,profile:networkLabel(id)},id);
+    setTimeout(()=>{
+      if(state.generation!==generation)return;
+      if(failureFor(saved)){state.runtime.phase='error';setOperation(id,'error','无法连接到引导节点。请检查节点地址后重试。');addLog('core','error','Connector','引导节点暂不可达',{sessionId},id);return;}
+      state.runtime.phase='connected';state.runtime.applied=saved;state.runtime.revision=revision;p.lastApplied={config:clone(saved),revision};monitorModule?.newSession(state.runtime);
+      setOperation(id,'success','已连接'+networkLabel(id)+(pending(id).length?' · 另有已保存更改待应用':''));addLog('app','info','Connection','连接已就绪',{sessionId},id);
+    },1100);
+  }
+  function cancelOrDisconnect(id) {
+    const rt=state.runtime;if(!rt||rt.networkId!==id)return;
+    const wasConnecting=['connecting','reconnecting'].includes(rt.phase);++state.generation;monitorModule?.stopSession(id);
+    if(wasConnecting){rt.phase='error';setOperation(id,'saved','已取消连接。已保存配置仍可用于下次连接。');state.runtime=null;refresh();addLog('app','info','Connection','用户取消连接',{},id);return;}
+    if(rt.phase==='error'){state.runtime=null;setOperation(id,'idle','');return;}
+    const generation=state.generation;rt.phase='stopping';refresh();
+    setTimeout(()=>{if(generation!==state.generation)return;state.runtime=null;setOperation(id,'saved','已断开'+networkLabel(id));addLog('app','info','VpnService','用户断开连接',{sessionId:rt.sessionId},id);},350);
+  }
+  function commit(id,mode='save') {
+    const p=profile(id);if(!p)return false;
+    if(operation(id).phase==='applying'){notify('正在应用更改，请稍候。');return false;}
+    const errors=configModule?.validate(id)||p.errors;if(Object.keys(errors).length){notify('请先修正标出的配置项。');return false;}
+    const dirty=changed(id);if(dirty.length){p.saved=clone(p.draft);p.revision++;addLog('app','info','Configuration','配置已保存',{changedFields:dirty},id);}
+    if(mode==='apply'&&state.runtime?.networkId===id&&state.runtime.phase==='error'){connect(id);return true;}
+    if(mode==='save'||!isRunning(id)){const running=isRunning(id),hasPending=pending(id).length>0;setOperation(id,running&&hasPending?'pending':'saved',running?(hasPending?'已保存，当前连接尚未应用这些更改。':'当前连接已使用这份配置。'):'已保存，下次连接使用。');refresh();return true;}
+    const changedRunning=pending(id);if(!changedRunning.length){setOperation(id,'success','当前连接已使用这份配置。');return true;}
+    const rt=state.runtime,old=clone(rt.applied),oldRevision=rt.revision,saved=clone(p.saved),revision=p.revision,reconnect=reconnectRequired(changedRunning),generation=++state.generation;
+    rt.generation=generation;rt.phase=reconnect?'reconnecting':'connected';
+    if(reconnect)monitorModule?.stopSession(id);
+    setOperation(id,'applying',reconnect?'正在应用更改并重新连接…':'正在应用更改…');
+    addLog('app','info','Configuration','开始应用配置',{changedFields:changedRunning,reconnect},id);
+    const simulateFailure=state.nextApplyFailure||failureFor(saved);state.nextApplyFailure=false;
+    setTimeout(()=>{
+      if(state.generation!==generation||state.runtime!==rt)return;
+      if(simulateFailure){rt.applied=old;rt.revision=oldRevision;rt.phase=reconnect?'error':'connected';setOperation(id,'error',reconnect?'配置已保存，但重新连接失败。请检查节点后重试，或恢复上次运行配置。':'配置已保存，但应用失败。当前连接仍使用上次运行配置。');addLog('core','error','Configuration','配置应用未完成',{reconnect},id);return;}
+      rt.applied=saved;rt.revision=revision;rt.phase='connected';if(reconnect){rt.sessionId='session-'+(++state.serial);rt.startedAt=Date.now();monitorModule?.newSession(rt);}p.lastApplied={config:clone(saved),revision};
+      setOperation(id,'success',pending(id).length?'本次更改已生效，另有更新待应用。':reconnect?'更改已生效，连接已恢复。':'更改已在当前连接生效。');addLog('app','info','Configuration','配置已确认生效',{revision,reconnect},id);
+    },reconnect?1250:650);
+    return true;
+  }
+  function restoreApplied(id) { const p=profile(id),last=p?.lastApplied;if(!last){notify('这个网络还没有可恢复的运行配置。');return;}if(operation(id).phase==='applying'){notify('请等待当前操作完成。');return;}p.saved=clone(last.config);p.draft=clone(last.config);p.raw={};p.errors={};p.revision++;configModule?.reset(id);setOperation(id,'saved',isRunning(id)?'已恢复上次运行配置。':'已恢复上次运行配置，可重新连接。');addLog('app','info','Configuration','恢复上次运行配置',{},id); }
+  function actionLabel(id) { const rt=state.runtime,phase=networkPhase(id),dirty=changed(id).length||Object.keys(profile(id).errors).length;if(phase==='connected')return '断开连接';if(['connecting','reconnecting'].includes(phase))return '取消连接';if(phase==='stopping')return '正在断开';if(rt&&rt.networkId!==id&&['connected','connecting','reconnecting'].includes(rt.phase))return '切换并连接'+networkLabel(id)+(dirty?'（已保存配置）':'');return dirty?'连接已保存配置':phase==='error'?'重试连接':'连接网络'; }
+  function connectionAction(id) { const phase=networkPhase(id);if(['connected','connecting','reconnecting','stopping'].includes(phase))cancelOrDisconnect(id);else connect(id); }
+  function row(label,description,name,action) { const node=button('',action,'eu-row');const mark=icon(name);mark.classList.add('eu-row-icon');const copy=el('span','eu-row-copy');copy.append(el('span','eu-row-title',label),el('span','eu-subtle',description));node.append(mark,copy,icon('chevron-right'));return node; }
+  function title(container,label,extra) { const head=el('div','eu-title-row');head.append(el('h1','',label));if(extra)head.append(extra);container.append(head); }
+  function empty(container,heading,message,actionLabel,action) { const box=el('div','eu-empty');box.append(icon('network'),el('h2','',heading),el('p','eu-subtle',message));if(action)box.append(button(actionLabel,action,'eu-button eu-tonal'));container.append(box);return box; }
+  function mountRoute(route,node) {
+    if(['config','config-group','config-search'].includes(route.kind)){configModule.mount(route,node);return;}
+    if(route.kind==='logs'){monitorModule.mount(route,node);return;}
+    if(route.kind==='overview')mountOverview(route,node);
+    else if(route.kind==='devices')mountDevices(route,node);
+    else if(route.kind==='peer')mountPeer(route,node);
+    else if(route.kind==='settings')mountSettings(route,node);
+    else if(route.kind==='network-picker')mountNetworkPicker(route,node);
+    else if(route.kind==='new-network')mountNewNetwork(route,node);
+  }
+  function ipAddressRow(readAddress,label) {
+    const address=el('div','eu-address');address.append(el('code','',readAddress()));
+    const copy=button('',()=>copyText(readAddress()),'eu-icon-button eu-copy-ip');copy.setAttribute('aria-label',label);copy.dataset.copyIp='';copy.append(icon('copy'));address.append(copy);return address;
+  }
+  function mountOverview(route,node) {
+    const card=el('section','eu-connection');card.dataset.connectionCard='';
+    const head=el('div','eu-connection-heading'),copy=el('div');copy.append(el('span','eu-subtle','虚拟网络'),el('h1','',''),el('p','eu-subtle',''));const symbol=el('span','eu-connection-symbol');symbol.append(icon('network'));head.append(copy,symbol);card.append(head);
+    card.append(ipAddressRow(()=>localIp(route.networkId),'复制本机虚拟 IP'));
+    const devices=button('',()=>tab('devices'),'eu-network-devices');devices.dataset.deviceSummary='';const deviceCopy=el('span','eu-row-copy');deviceCopy.append(el('span','eu-row-title'),el('span','eu-subtle'));devices.append(icon('monitor-smartphone'),deviceCopy,icon('chevron-right'));card.append(devices);
+    const action=button('',()=>connectionAction(route.networkId),'eu-button eu-primary eu-connection-action');action.dataset.connect=route.networkId;card.append(action);node.append(card);
+    const draft=el('div','eu-notice');draft.dataset.draftNotice='';const draftText=el('p');draft.append(draftText,button('查看修改',()=>go({kind:'config-search',networkId:route.networkId,filter:'changed'}),'eu-text-button'));node.append(draft);
+    const pendingBox=el('div','eu-notice');pendingBox.dataset.pendingNotice='';pendingBox.append(el('p','','有已保存的更改尚未应用。'),button('应用更改',()=>commit(route.networkId,'apply'),'eu-button eu-tonal'));node.append(pendingBox);
+    const failureBox=el('div','eu-notice');failureBox.dataset.failureActions='';failureBox.append(button('检查连接节点',()=>go({kind:'config-group',networkId:route.networkId,groupId:'connection',focusKey:'peer'}),'eu-text-button'),button('恢复上次运行配置',()=>restoreApplied(route.networkId),'eu-text-button'));node.append(failureBox);
+    const chart=el('section','eu-overview-traffic');node.append(chart);monitorModule.mountOverview(chart,route.networkId);
+  }
+  function localIp(id) { const config=state.runtime?.networkId===id&&state.runtime.applied?state.runtime.applied:profile(id)?.saved;if(config&&!config.dhcp&&config.ipv4)return String(config.ipv4).split('/')[0];return id==='home'?'10.144.0.6':id==='work'?'10.144.1.6':'10.144.2.6'; }
+  function scopeDescription(config) { const apps=config['android.appRoutingMode']==='allowlist'?'仅 '+(config['android.appPackages']||[]).length+' 个应用':config['android.appRoutingMode']==='denylist'?'排除 '+(config['android.appPackages']||[]).length+' 个应用':'全部应用';return (config['android.internetRouting']==='exit-node'?'通过出口节点':'仅组网流量')+' · '+apps; }
+  function refreshOverview(entry) {
+    const {node,route}=entry,id=route.networkId,phase=networkPhase(id),connected=isRunning(id),rt=state.runtime,card=node.querySelector('[data-connection-card]');
+    card.dataset.phase=phase;text(card.querySelector('h1'),phaseLabel(id));
+    const paragraphs=card.querySelectorAll('p');let description=connected?'组网接口已就绪':phase==='error'?'请检查连接节点后重试':phase==='connecting'?'正在建立虚拟网络':phase==='reconnecting'?'正在应用配置并恢复连接':phase==='stopping'?'正在结束当前连接':'使用已保存配置建立连接';
+    if(phase==='idle'&&rt&&rt.networkId!==id&&rt.phase==='connected')description='连接后将结束'+networkLabel(rt.networkId)+'的连接';text(paragraphs[0],description);
+    const address=card.querySelector('.eu-address');address.hidden=!connected;text(address.querySelector('code'),connected?localIp(id):'');
+    const action=card.querySelector('[data-connect]');text(action,actionLabel(id));action.disabled=phase==='stopping'||(rt?.networkId!==id&&['connecting','reconnecting','stopping'].includes(rt?.phase));
+    const dirty=changed(id),errorCount=Object.keys(profile(id).errors).length,draft=node.querySelector('[data-draft-notice]');draft.hidden=!dirty.length&&!errorCount;text(draft.querySelector('p'),(errorCount?errorCount+' 项输入需要修正':dirty.length+' 项修改尚未保存')+'。连接操作使用已保存配置。');
+    const pendingBox=node.querySelector('[data-pending-notice]');pendingBox.hidden=!pending(id).length||!connected||operation(id).phase==='applying';
+    node.querySelector('[data-failure-actions]').hidden=phase!=='error'&&operation(id).phase!=='error';
+    const ps=connected?peersFor(id):[],direct=ps.filter(p=>p.path==='direct').length;const deviceSummary=node.querySelector('[data-device-summary]');deviceSummary.hidden=!connected;text(deviceSummary.querySelector('.eu-row-title'),ps.length+' 台设备在线');text(deviceSummary.querySelector('.eu-subtle'),ps.length?(direct+' 台直连'+(ps.length>direct?' · '+(ps.length-direct)+' 台经中继':'')):'等待其他设备加入');deviceSummary.setAttribute('aria-label','查看当前网络中的 '+ps.length+' 台在线设备，不含本机');
+  }
+  function peersFor(id) {
+    if(id==='home')return [
+      {id:'nas',name:'家里的 NAS',ip:'10.144.0.2',path:'direct',latency:8,natUdp:'FullCone',natTcp:'NoPAT',version:'2.6.4',protocol:'UDP',loss:1,rxBytes:148438221,txBytes:13224908,rxPackets:110521,txPackets:39821,endpoint:'192.0.2.18:11010'},
+      {id:'desktop',name:'书房电脑',ip:'10.144.0.3',path:'direct',latency:12,natUdp:'PortRestricted',natTcp:null,version:'2.6.4',protocol:'UDP',loss:0,rxBytes:29022114,txBytes:5762311,rxPackets:23012,txPackets:15386,endpoint:'198.51.100.32:31892'},
+      {id:'laptop',name:'随身笔记本',ip:'10.144.0.4',path:'relay',latency:null,natUdp:'Symmetric',natTcp:null,version:'2.6.4',protocol:'经中继',loss:null,rxBytes:null,txBytes:null,rxPackets:null,txPackets:null,endpoint:null}
+    ];
+    if(id==='work')return [
+      {id:'nas',name:'工作室 NAS',ip:'10.144.1.2',path:'direct',latency:17,natUdp:'FullCone',natTcp:'NoPAT',version:'2.6.4',protocol:'TCP',loss:0,rxBytes:19385321,txBytes:8541051,rxPackets:19891,txPackets:10032,endpoint:'203.0.113.15:11010'},
+      {id:'desktop',name:'工作站',ip:'10.144.1.3',path:'direct',latency:21,natUdp:'Restricted',natTcp:null,version:'2.6.4',protocol:'UDP',loss:1,rxBytes:9170349,txBytes:3782992,rxPackets:10451,txPackets:3792,endpoint:'203.0.113.25:11010'}
+    ];return [];
+  }
+  function peer(id,peerId) { return peersFor(id).find(p=>p.id===peerId)||null; }
+  function bytes(number) { if(number===null||number===undefined)return '暂无独立统计';if(number<1024)return number+' B';if(number<1048576)return (number/1024).toFixed(1)+' KiB';return (number/1048576).toFixed(1)+' MiB'; }
+  function rates(id,p) { const snap=monitorModule?.snapshot(id);if(!snap||p.path!=='direct'||!Number.isFinite(snap.rxRate)||!Number.isFinite(snap.txRate))return null;const ratio=p.id==='nas'?.67:.23;return {rx:snap.rxRate*ratio,tx:snap.txRate*ratio}; }
+  function peerRatesText(id,p) { const rate=rates(id,p);return rate?'↓ '+Number(rate.rx||0).toFixed(1)+' · ↑ '+Number(rate.tx||0).toFixed(1)+' KiB/s':'暂无独立流量统计'; }
+  function addMetric(container,label,content) { const wrap=el('div','eu-metric');wrap.append(el('dt','',label),el('dd','',content));container.append(wrap);return wrap.querySelector('dd'); }
+  function mountDevices(route,node) { title(node,'设备',el('span','eu-count'));const intro=el('p','eu-subtle','当前网络 · 收发以本机为视角');intro.style.marginBottom='14px';node.append(intro);const list=el('div');list.dataset.peers='';node.append(list);const emptyBox=el('div');emptyBox.dataset.peersEmpty='';empty(nodeEmpty(emptyBox),'连接后查看设备','这里展示'+networkLabel(route.networkId)+'中的设备。','返回总览',()=>tab('overview'));node.append(emptyBox);state.views.get(route.key).peerRenderKey=''; }
+  function nodeEmpty(node){return node;}
+  function refreshDevices(entry) {
+    const {node,route}=entry,connected=isRunning(route.networkId),peers=connected?peersFor(route.networkId):[],key=connected?state.runtime.sessionId:'offline';
+    text(node.querySelector('.eu-count'),peers.length);node.querySelector('[data-peers-empty]').hidden=connected&&peers.length>0;
+    const list=node.querySelector('[data-peers]');list.hidden=!connected||!peers.length;
+    if(entry.peerRenderKey===key){updatePeerRates(node,route.networkId);return;}entry.peerRenderKey=key;
+    const opened=new Set([...list.querySelectorAll('details')].filter(d=>d.open).map(d=>d.dataset.peer));list.replaceChildren();
+    peers.forEach(p=>{
+      const details=el('details','eu-peer');details.dataset.peer=p.id;details.open=opened.has(p.id);const summary=el('summary','cursor-interaction');summary.id=uid('peer-summary');const copy=el('span','eu-row-copy');copy.append(el('span','eu-row-title',p.name),el('span','eu-subtle',p.ip+' · '+(p.path==='direct'?'直连 · '+p.latency+' ms':'经中继')));const rate=el('span','eu-peer-rates',peerRatesText(route.networkId,p));rate.dataset.peerRate=p.id;copy.append(rate);summary.append(icon(p.id==='nas'?'hard-drive':p.id==='desktop'?'monitor':'laptop'),copy,icon('chevron-down'));details.append(summary);
+      const body=el('div','eu-peer-brief'),data=el('dl');const items=[['UDP NAT',p.natUdp||'未知'],['TCP NAT',p.natTcp||'未知'],['EasyTier',p.version],['探测丢包',p.loss===null?'暂无报告':p.loss+'%']];items.forEach(([label,value])=>{const pair=el('div');pair.append(el('dt','',label),el('dd','',value));data.append(pair);});body.append(data);const actions=el('div','eu-actions');actions.append(button('查看详情',()=>go({kind:'peer',networkId:route.networkId,peerId:p.id}),'eu-button eu-tonal'));body.append(actions);details.append(body);list.append(details);
+    });icons();
+  }
+  function updatePeerRates(node,id) { node.querySelectorAll('[data-peer-rate]').forEach(item=>{const p=peer(id,item.dataset.peerRate);if(p)text(item,peerRatesText(id,p));}); }
+  function definition(container,label,content) { const row=el('div','eu-definition-row');row.append(el('span','',label),el('span','',content));container.append(row);return row; }
+  function mountPeer(route,node) {
+    const p=peer(route.networkId,route.peerId);if(!p){empty(node,'设备不存在','返回列表选择其他设备。','返回',back);return;}
+    const head=el('div','eu-peer-title');head.append(icon(p.id==='nas'?'hard-drive':p.id==='desktop'?'monitor':'laptop'));const copy=el('div');copy.append(el('h1','',p.name),el('p','eu-subtle',p.path==='direct'?'直连':'经中继'),ipAddressRow(()=>p.ip,'复制 '+p.name+' 的虚拟 IP'));head.append(copy);node.append(head);
+    const inactive=el('div','eu-notice','此网络当前未连接，以下为上次查看的设备信息。');inactive.dataset.peerInactive='';node.append(inactive);
+    const grid=el('dl','eu-data-grid');addMetric(grid,'UDP NAT',p.natUdp||'未知');addMetric(grid,'TCP NAT',p.natTcp||'未知');addMetric(grid,'EasyTier 版本',p.version);addMetric(grid,'探测丢包率',p.loss===null?'暂无端到端报告':p.loss+'%');node.append(grid);
+    const data=el('div','eu-section');const h=el('div','eu-title-row');h.append(el('h2','','发送与接收'),el('span','eu-subtle','本机视角'));data.append(h);definition(data,'当前速率',peerRatesText(route.networkId,p)).lastChild.dataset.peerRate=p.id;definition(data,'接收累计',bytes(p.rxBytes));definition(data,'发送累计',bytes(p.txBytes));definition(data,'接收 / 发送包数',p.rxPackets===null?'暂无独立统计':p.rxPackets.toLocaleString()+' / '+p.txPackets.toLocaleString());node.append(data);
+    const conn=el('div','eu-section');conn.append(el('h2','','连接'));definition(conn,'协议',p.protocol);definition(conn,'连接延迟',p.latency===null?'暂无端到端探测':p.latency+' ms');definition(conn,'远端地址',p.endpoint||'通过中继设备到达');node.append(conn);
+    const actions=el('div','eu-actions');const diagnose=button('检查连接',()=>runDiagnosis(route),'eu-button eu-tonal');diagnose.dataset.diagnose='';actions.append(diagnose);node.append(actions);
+    const result=el('div','eu-diagnosis');result.dataset.diagnosis='';result.setAttribute('role','status');result.hidden=true;node.append(result);
+    const help=el('details','eu-help');help.append(el('summary','cursor-interaction','数据口径'),el('p','','探测丢包率来自最近至多 100 次保活探测。收发字节与包数为核心连接计数；未取得独立统计的中继设备显示暂无数据。本页设备与统计为模拟数据。'));node.append(help);
+  }
+  function diagnosisKey(route){return route.networkId+':'+route.peerId;}
+  function runDiagnosis(route) {
+    if(!isRunning(route.networkId)){notify('请先连接'+networkLabel(route.networkId));return;}
+    const sessionId=state.runtime.sessionId,key=diagnosisKey(route),p=peer(route.networkId,route.peerId);state.diagnoses.set(key,{phase:'checking',message:'正在检查组网路由与连接状态…'});refresh();addLog('app','info','Diagnostics','开始检查 '+p.name,{ip:p.ip,sessionId},route.networkId,p.id);
+    setTimeout(()=>{if(!isRunning(route.networkId)||state.runtime.sessionId!==sessionId){state.diagnoses.set(key,{phase:'stale',message:'连接已变化，请重新检查。'});refresh();return;}const result=p.path==='direct'?{phase:'success',message:'组网路由和直连通道可用。保活探测 '+p.latency+' ms。'}:{phase:'attention',message:'已发现中继路径，暂无端到端探测结果。可以检查直连设置。'};state.diagnoses.set(key,result);addLog('app',p.path==='direct'?'info':'warn','Diagnostics',result.message,{ip:p.ip,sessionId},route.networkId,p.id);refresh();},700);
+  }
+  function refreshPeer(entry) {
+    const {route,node}=entry;if(!peer(route.networkId,route.peerId))return;node.querySelector('[data-peer-inactive]').hidden=isRunning(route.networkId);updatePeerRates(node,route.networkId);
+    const result=state.diagnoses.get(diagnosisKey(route)),buttonNode=node.querySelector('[data-diagnose]');buttonNode.disabled=!isRunning(route.networkId)||result?.phase==='checking';text(buttonNode,result?.phase==='checking'?'正在检查':'检查连接');const panel=node.querySelector('[data-diagnosis]');panel.hidden=!result;if(!result)return;
+    if(panel.dataset.phase===result.phase&&panel.dataset.message===result.message)return;panel.dataset.phase=result.phase;panel.dataset.message=result.message;panel.replaceChildren(el('h3','',result.phase==='success'?'连接检查完成':result.phase==='checking'?'正在检查':'检查结果'),el('p','',result.message));
+    if(result.phase!=='checking'){const actions=el('div','eu-actions');actions.append(button('检查连接设置',()=>go({kind:'config-group',networkId:route.networkId,groupId:'connection',focusKey:'flags.disable_udp_hole_punching'}),'eu-text-button'),button('再次检查',()=>runDiagnosis(route),'eu-text-button'));panel.append(actions);}
+  }
+  function mountNetworkPicker(route,node) { title(node,'查看网络',button('添加',()=>go({kind:'new-network',networkId:route.networkId}),'eu-text-button'));const list=el('div');list.dataset.networkList='';node.append(list);refreshNetworkPicker(state.views.get(route.key)); }
+  function refreshNetworkPicker(entry) {const {node}=entry,list=node.querySelector('[data-network-list]');if(!list)return;const signature=state.profiles.map(p=>p.id+p.label+phaseLabel(p.id)).join('|');if(entry.signature===signature)return;entry.signature=signature;list.replaceChildren();state.profiles.forEach(p=>{const row=button('',()=>selectNetwork(p.id),'eu-network-row');row.style.width='100%';row.style.textAlign='left';row.setAttribute('aria-pressed',String(p.id===state.selectedId));row.dataset.networkChoice=p.id;const copy=el('span','eu-row-copy');copy.append(el('span','eu-row-title',p.label),el('span','eu-subtle',phaseLabel(p.id)+(changed(p.id).length?' · 有未保存修改':'')));row.append(icon('network'),copy,icon(p.id===state.selectedId?'check':'chevron-right'));list.append(row);});icons();}
+  function mountNewNetwork(route,node) {
+    title(node,'添加配置');
+    const form=el('form'),controls={};
+    const localName=el('div','eu-new-label'),localLabel=el('label','eu-field'),localInput=el('input','eu-input');
+    localInput.id=uid('new-label');localInput.name='label';localInput.type='text';localInput.placeholder='例如：家庭网络';localInput.autocomplete='off';
+    localLabel.htmlFor=localInput.id;localLabel.append(el('span','','配置名称（可选）'),localInput);
+    const localHint=el('p','eu-subtle','仅用于本机区分配置；留空时使用网络名称。');localHint.id=uid('new-label-hint');localInput.setAttribute('aria-describedby',localHint.id);
+    localName.append(localLabel,localHint);form.append(localName);controls.label=localInput;
+    const fields=[['name','网络名称','由网络创建者提供','text'],['secret','网络密码','与其他设备一致','password'],['node','连接节点','例如：udp://node.example.net:11010','text']];
+    fields.forEach(([key,labelText,placeholder,type])=>{const wrapper=el('label','eu-field'),input=el('input','eu-input');input.id=uid('new-'+key);input.name=key;input.type=type;input.placeholder=placeholder;input.required=key!=='secret';input.autocomplete='off';wrapper.htmlFor=input.id;wrapper.append(el('span','',labelText),input);controls[key]=input;form.append(wrapper);});
+    form.append(el('p','eu-subtle','虚拟地址自动分配'));
+    const error=el('p','eu-error');error.setAttribute('role','alert');error.hidden=true;form.append(error);
+    const actions=el('div','eu-actions'),connectButton=button('保存并连接',()=>submit(true),'eu-button eu-primary'),saveButton=button('仅保存',()=>submit(false),'eu-text-button');
+    actions.append(connectButton,saveButton);form.append(actions);form.addEventListener('submit',event=>{event.preventDefault();submit(true);});node.append(form);
+    function submit(shouldConnect){
+      const name=controls.name.value.trim(),label=controls.label.value.trim()||name,secret=controls.secret.value,uri=controls.node.value.trim();
+      let message='';if(!name||!uri)message='请填写网络名称与连接节点。';else if(!/^[a-z][a-z0-9+.-]*:\/\//i.test(uri))message='请输入包含协议的完整节点地址。';
+      if(message){text(error,message);error.hidden=false;return;}
+      const id='network-'+(++state.serial),p=makeProfile(id,label,{'network_identity.network_name':name,'network_identity.network_secret':secret,hostname:'我的手机',dhcp:true,peer:[{uri}],'android.appRoutingMode':'all','android.internetRouting':'overlay-only'});
+      state.profiles.push(p);
+      const source=getStack();while(source.length>1&&['new-network','network-picker'].includes(source[source.length-1].kind)){const finished=source.pop();(cleanup.get(finished.key)||[]).forEach(dispose=>dispose());cleanup.delete(finished.key);state.views.get(finished.key)?.node.remove();state.views.delete(finished.key);}
+      state.selectedId=id;state.tab='overview';showCurrent(false);byId('eu-network').focus({preventScroll:true});
+      if(shouldConnect)connect(id);else setOperation(id,'saved','配置已保存，可在准备好时连接。');addLog('app','info','Configuration','添加配置',{profile:label},id);
+    }
+  }
+  function mountSettings(route,node) {
+    const settingsName=el('span','eu-subtle',networkLabel(route.networkId));settingsName.dataset.settingsNetworkName='';title(node,'网络设置',settingsName);const network=el('div','eu-list');const scope=row('流量范围','','route',()=>go({kind:'config-group',networkId:route.networkId,groupId:'routing',focusKey:'android.appRoutingMode'}));scope.dataset.scopeSetting='';network.append(scope);node.append(network);
+    const appearance=el('div','eu-title-row eu-section');appearance.append(el('h2','','应用外观'));node.append(appearance);const mode=el('div','eu-settings-row'),label=el('label','','主题'),select=el('select','eu-select');select.id=uid('theme');select.dataset.appTheme='';label.htmlFor=select.id;[['system','跟随系统'],['light','浅色'],['dark','深色']].forEach(([value,label])=>{const option=el('option','',label);option.value=value;select.append(option);});select.value=state.theme;select.addEventListener('change',()=>{state.theme=select.value;refresh();});mode.append(label,select);node.append(mode);
+    const dynamic=el('div','eu-settings-row'),checkLabel=el('label','eu-check-row cursor-interaction'),check=el('input');check.type='checkbox';check.checked=state.dynamic;check.id=uid('dynamic');check.dataset.appDynamic='';checkLabel.htmlFor=check.id;checkLabel.append(check,el('span','','动态配色'));dynamic.append(checkLabel);node.append(dynamic);
+    const colors=el('div','eu-chips');colors.dataset.appSeeds='';[['iris','鸢尾'],['teal','松石'],['amber','琥珀']].forEach(([value,label])=>{const choice=button(label,()=>{state.seed=value;refresh();},'eu-chip');choice.dataset.seed=value;choice.setAttribute('aria-pressed',String(state.seed===value));colors.append(choice);});colors.hidden=state.dynamic;node.append(colors);check.addEventListener('change',()=>{state.dynamic=check.checked;refresh();});
+    const hint=el('p','eu-subtle','此预览用示例色板展示主题变化；Android 客户端将读取系统动态色。');hint.style.marginTop='12px';node.append(hint);
+    const list=el('div','eu-list eu-section');list.append(row('运行日志','EasyTier 与 App','logs',()=>tab('logs')));node.append(list);
+  }
+  function refreshSettings(entry) { const {node,route}=entry,p=profile(route.networkId);if(!p)return;const suffix=Object.keys(p.errors).length?' · 有待修正输入':changed(p.id).length?' · 未保存':pending(p.id).length?' · 待应用':'';text(node.querySelector('[data-settings-network-name]'),networkLabel(route.networkId));text(node.querySelector('[data-scope-setting] .eu-subtle'),scopeDescription(p.draft)+suffix);node.querySelector('[data-app-theme]').value=state.theme;node.querySelector('[data-app-dynamic]').checked=state.dynamic;node.querySelector('[data-app-seeds]').hidden=state.dynamic;node.querySelectorAll('[data-seed]').forEach(item=>item.setAttribute('aria-pressed',String(item.dataset.seed===state.seed))); }
+  async function copyText(value,successMessage='IP 已复制') {
+    let copied=false;
+    try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(String(value));copied=true;}}catch(_){}
+    if(!copied&&typeof document.execCommand==='function'){const previous=document.activeElement,input=el('textarea','eu-sr-only');input.value=String(value);input.setAttribute('aria-hidden','true');app.append(input);try{input.focus({preventScroll:true});input.select();copied=document.execCommand('copy');}catch(_){}finally{input.remove();previous?.focus?.({preventScroll:true});}}
+    showToast(copied?successMessage:'复制失败，请长按 IP 手动复制');return copied;
+  }
+
+  function createConfigModule(ctx, catalogue) {
+  const fields = catalogue.fields.filter(field => field.group !== 'logs');
+  const fieldByKey = new Map(fields.map(field => [field.key, field]));
+  const groups = catalogue.groups.filter(group => group.id !== 'logs');
+  const groupById = new Map(groups.map(group => [group.id, group]));
+  const views = new Map();
+  const listModes = new Map();
+  const peerMemory = new Map();
+  const simpleKeys = new Set(catalogue.meta?.simpleKeys || ['network_identity.network_name', 'network_identity.network_secret', 'peer']);
+  const own = (object, key) => Object.prototype.hasOwnProperty.call(object, key);
+  const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+  const make = ctx.el;
+  const sampleApps = [
+    ['com.android.chrome', 'Chrome', '浏览器'],
+    ['org.mozilla.firefox', 'Firefox', '浏览器'],
+    ['com.termux', 'Termux', '终端'],
+    ['com.plexapp.android', 'Plex', '影音'],
+    ['org.videolan.vlc', 'VLC', '播放器'],
+    ['com.synology.DSfile', 'DS file', '文件管理'],
+    ['com.google.android.apps.docs', 'Google Drive', '云端文件'],
+    ['com.microsoft.rdc.androidx', 'Windows App', '远程桌面']
+  ];
+  const relationPairs = [
+    ['dhcp', 'ipv4'],
+    ['android.appRoutingMode', 'android.appPackages'],
+    ['android.internetRouting', 'exit_nodes'],
+    ['android.dnsMode', 'android.dnsServers'],
+    ['flags.accept_dns', 'flags.tld_dns_zone'],
+    ['secure_mode.enabled', 'secure_mode.local_private_key'],
+    ['secure_mode.enabled', 'secure_mode.local_public_key'],
+    ['flags.enable_encryption', 'flags.encryption_algorithm'],
+    ['flags.disable_udp_hole_punching', 'flags.disable_sym_hole_punching']
+  ];
+  const optionLabels = {
+    all: '全部应用', allowlist: '仅选中的应用', denylist: '排除选中的应用',
+    system: '跟随系统', custom: '自定义', bypass: '不经过组网', tunnel: '通过组网', block: '阻断',
+    vpn: 'VPN 模式', 'no-tun': '仅代理（NO_TUN）', 'root-tun': 'Root TUN（暂不可用）',
+    'overlay-only': '仅组网流量', 'exit-node': '通过互联网出口', None: '不压缩', Zstd: 'Zstd',
+    user: '本地配置', web: '受管配置'
+  };
+  const helpOverrides = {
+    instance_name: '此名称仅用于区分本机保存的配置。',
+    hostname: '其他设备看到的名称，最多 32 个字符。',
+    'network_identity.network_name': '同一网络的设备使用相同名称。',
+    'network_identity.network_secret': '同一网络使用相同密码。留空与使用默认值分别保存。',
+    dhcp: '关闭后，为本设备设置固定的组网地址。',
+    'android.appRoutingMode': '选择哪些应用使用这个网络的 VPN 路由。',
+    'android.internetRouting': '组网内流量始终按路由通信。互联网流量可以使用指定出口。',
+    'android.dnsMode': '自定义时填写可访问的 DNS 服务器地址。',
+    'android.ipv6Policy': '通过互联网出口时，请同时处理非组网 IPv6 流量。',
+    'android.autoReconnect': '网络恢复后重试连接；主动断开后不自动重连。',
+    peer: '每行一个完整地址，例如 udp://node.example.net:11010。',
+    listeners: '允许其他节点连接此设备；每行填写一个监听地址。',
+    vpn_portal_config: '允许 WireGuard 客户端经此设备访问虚拟网络。',
+    'flags.enable_quic_proxy': '使用 QUIC 转发 TCP 流量，需要对端支持。',
+    'flags.instance_recv_bps_limit': '单位为 B/s，可选择不限速。',
+    'flags.foreign_relay_bps_limit': '单位为 B/s，可选择不限速。'
+  };
+
+  function profile(id) {
+    const value = ctx.profile(id);
+    value.raw = value.raw || {};
+    value.errors = value.errors || {};
+    return value;
+  }
+  function val(id, key, kind = 'draft') { return ctx.value(id, key, kind); }
+  function text(node, content) {
+    const next = String(content == null ? '' : content);
+    if (node.textContent !== next) node.textContent = next;
+  }
+  function icon(name) { return ctx.icon(name); }
+  function markChanged(id) {
+    return [...new Set([...ctx.changed(id), ...Object.keys(profile(id).errors)])];
+  }
+  function optionLabel(value) { return optionLabels[String(value)] || String(value); }
+  function defaultLabel(field) {
+    if (field.displayDefault) return field.displayDefault;
+    const value = field.uiDefault;
+    if (value === null || value === undefined) return '未设置';
+    if (typeof value === 'boolean') return value ? '开启' : '关闭';
+    if (Array.isArray(value)) return value.length ? value.length + ' 个条目' : '空列表';
+    return optionLabel(value);
+  }
+  function availability(field) {
+    if (['unsupported', 'managed', 'deprecated', 'conditional'].includes(field.availability)) {
+      return field.reason || '当前模式下不可编辑。';
+    }
+    return '';
+  }
+  function dependency(id, key) {
+    if (key === 'ipv4' && val(id, 'dhcp') === true) return '关闭自动分配 IPv4 后可编辑。';
+    if (key === 'android.appPackages' && val(id, 'android.appRoutingMode') === 'all') return '先选择需要包含或排除的应用范围。';
+    if (key === 'android.dnsServers' && val(id, 'android.dnsMode') !== 'custom') return '将 DNS 策略设为自定义后可编辑。';
+    if (key.startsWith('secure_mode.local_') && val(id, 'secure_mode.enabled') !== true) return '开启安全身份模式后可编辑。';
+    if (key === 'flags.encryption_algorithm' && val(id, 'flags.enable_encryption') === false) return '开启通信加密后可编辑。';
+    if (key === 'flags.tld_dns_zone' && val(id, 'flags.accept_dns') !== true) return '开启 MagicDNS 后可编辑。';
+    if (key === 'flags.disable_sym_hole_punching' && val(id, 'flags.disable_udp_hole_punching') === true) return '开启 UDP 打洞后可编辑。';
+    return '';
+  }
+  function disabledReason(id, field) { return availability(field) || dependency(id, field.key); }
+  function modeFor(id, field) {
+    const token = id + ':' + field.key;
+    if (listModes.has(token)) return listModes.get(token);
+    const p = profile(id);
+    if (!own(p.draft, field.key)) return 'inherit';
+    return Array.isArray(p.draft[field.key]) && p.draft[field.key].length ? 'custom' : 'empty';
+  }
+  function structured(field) {
+    return field.type === 'object' || (!!field.children && field.key !== 'peer');
+  }
+  function containsSecret(field) {
+    return (field.children || []).some(child => child.type === 'secret' || /secret|private_key|password|token/i.test(child.key));
+  }
+  function formatValue(field, value) {
+    if (value === undefined || value === null) return '';
+    if (structured(field)) return JSON.stringify(value, null, 2);
+    if (Array.isArray(value)) {
+      return field.key === 'peer' ? value.map(item => typeof item === 'string' ? item : item.uri || '').join('\n') : value.join('\n');
+    }
+    return String(value);
+  }
+  function rawValue(id, field) {
+    const p = profile(id);
+    if (own(p.raw, field.key)) return p.raw[field.key];
+    return own(p.draft, field.key) ? formatValue(field, p.draft[field.key]) : '';
+  }
+  function validStructure(value) {
+    if (value === null) return false;
+    if (Array.isArray(value)) return value.every(validStructure);
+    if (typeof value === 'object') return Object.values(value).every(validStructure);
+    if (typeof value === 'number') return Number.isFinite(value) && (!Number.isInteger(value) || Number.isSafeInteger(value));
+    return typeof value === 'string' || typeof value === 'boolean';
+  }
+  function validIPv4(value) {
+    return /^\d{1,3}(\.\d{1,3}){3}$/.test(value) && value.split('.').every(part => Number(part) <= 255);
+  }
+  function validIPv6(value) {
+    if (!value.includes(':') || /[\s/]/.test(value)) return false;
+    try { return new URL('http://[' + value + ']/').hostname.length > 2; } catch (_) { return false; }
+  }
+  function validIP(value) { return validIPv4(value) || validIPv6(value); }
+  function validCIDR(value, version) {
+    const parts = value.split('/');
+    if (parts.length !== 2 || !/^\d+$/.test(parts[1])) return false;
+    const v4 = validIPv4(parts[0]);
+    return (version === 4 ? v4 : version === 6 ? validIPv6(parts[0]) : validIP(parts[0])) && Number(parts[1]) <= (v4 ? 32 : 128);
+  }
+  function validURI(value) {
+    if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(value) || /\s/.test(value)) return false;
+    try { const result = new URL(value); return !!result.hostname || result.protocol === 'ring:'; } catch (_) { return false; }
+  }
+  function rememberPeers(id) {
+    let records = peerMemory.get(id);
+    if (!records) { records = new Map(); peerMemory.set(id, records); }
+    const p = profile(id);
+    [p.saved.peer, p.draft.peer].forEach(list => (list || []).forEach(item => {
+      if (item && typeof item === 'object' && item.uri) records.set(item.uri, ctx.clone(item));
+    }));
+    return records;
+  }
+  function parse(field, raw, id) {
+    const value = String(raw);
+    if (field.type === 'number') {
+      if (!/^\d+$/.test(value)) return { error: '请输入非负整数。' };
+      if (field.storageType === 'decimal-string') {
+        try {
+          if (BigInt(value) > BigInt(field.unlimitedSentinel || '18446744073709551615')) return { error: '数值超出允许范围。' };
+          return { value: value.replace(/^0+(?=\d)/, '') };
+        } catch (_) { return { error: '请输入有效的整数。' }; }
+      }
+      const number = Number(value);
+      if (!Number.isSafeInteger(number)) return { error: '整数超出可编辑范围。' };
+      if (field.min !== undefined && number < field.min || field.max !== undefined && number > field.max) return { error: field.label + '应在 ' + (field.min ?? 0) + '～' + (field.max ?? '允许上限') + ' 之间。' };
+      return { value: number };
+    }
+    if (structured(field)) {
+      if (!value.trim() && field.type === 'object') return { remove: true };
+      try {
+        const parsed = JSON.parse(value);
+        const correctType = field.type === 'object' ? !!parsed && typeof parsed === 'object' && !Array.isArray(parsed) : Array.isArray(parsed);
+        if (!correctType || !validStructure(parsed)) return { error: '请输入有效的 JSON ' + (field.type === 'object' ? '对象' : '数组') + '；不接受 null 或超出安全范围的数字。' };
+        return { value: parsed };
+      } catch (_) { return { error: 'JSON 格式尚未完整，请检查括号、引号和逗号。' }; }
+    }
+    if (['list', 'optional-list', 'application-list'].includes(field.type)) {
+      const rows = value.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+      if (field.key === 'peer') {
+        if (rows.some(row => !validURI(row))) return { error: '节点地址需要完整协议和主机，例如 udp://node.example.net:11010。' };
+        const records = rememberPeers(id);
+        return { value: rows.map(uri => ({ ...(records.get(uri) || {}), uri })) };
+      }
+      if (['listeners', 'mapped_listeners'].includes(field.key) && rows.some(row => !validURI(row))) return { error: '每行填写一个完整的监听 URI。' };
+      if (field.key === 'routes' && rows.some(row => !validCIDR(row))) return { error: '每行填写一个网段，例如 192.168.1.0/24。' };
+      if (field.key === 'exit_nodes' && rows.some(row => !validIPv4(row))) return { error: '每行填写一个出口节点的组网 IPv4 地址。' };
+      if (field.key === 'android.dnsServers' && rows.some(row => !validIP(row))) return { error: '每行填写一个 DNS 服务器的 IPv4 或 IPv6 地址。' };
+      return { value: rows };
+    }
+    if (field.type === 'cidr' && value && !validCIDR(value, field.key === 'ipv4' ? 4 : field.key === 'ipv6' ? 6 : undefined)) return { error: '请输入完整地址和前缀长度，例如 ' + (field.key.includes('ipv6') ? 'fd00::6/64。' : '10.144.0.6/24。') };
+    if (field.type === 'url' && value && !validURI(value)) return { error: '请输入包含协议的完整地址。' };
+    if (field.maxLength && [...value].length > field.maxLength) return { error: '最多填写 ' + field.maxLength + ' 个字符。' };
+    return { value };
+  }
+
+  function validate(id) {
+    const p = profile(id);
+    const errors = {};
+    fields.forEach(field => {
+      if (disabledReason(id, field)) return;
+      if (own(p.raw, field.key)) {
+        const result = parse(field, p.raw[field.key], id);
+        if (result.error) errors[field.key] = result.error;
+      } else if (own(p.draft, field.key) && !['boolean', 'select', 'application-list'].includes(field.type)) {
+        const result = parse(field, formatValue(field, p.draft[field.key]), id);
+        if (result.error) errors[field.key] = result.error;
+      }
+    });
+    if (!String(val(id, 'network_identity.network_name') || '').trim()) errors['network_identity.network_name'] = '填写要加入的网络名称。';
+    if (val(id, 'dhcp') === false && !val(id, 'ipv4')) errors.ipv4 = errors.ipv4 || '设置静态 IPv4 地址，或开启自动分配。';
+    if (val(id, 'android.appRoutingMode') === 'allowlist' && !(val(id, 'android.appPackages') || []).length) errors['android.appPackages'] = '至少选择一个使用 VPN 路由的应用。';
+    if (val(id, 'android.dnsMode') === 'custom' && !(val(id, 'android.dnsServers') || []).length) errors['android.dnsServers'] = errors['android.dnsServers'] || '至少填写一个 DNS 服务器地址。';
+    if (val(id, 'android.internetRouting') === 'exit-node') {
+      if (!(val(id, 'exit_nodes') || []).length) errors.exit_nodes = errors.exit_nodes || '选择通过互联网出口后，至少填写一个出口节点。';
+      if (val(id, 'android.ipv6Policy') === 'bypass') errors['android.ipv6Policy'] = '通过出口时，请选择“通过组网”或“阻断”非组网 IPv6。';
+    }
+    p.errors = errors;
+    return errors;
+  }
+
+  function write(id, field, value, remove = false, raw) {
+    const p = profile(id);
+    if (remove) delete p.draft[field.key];
+    else p.draft[field.key] = ctx.clone(value);
+    if (raw === undefined) delete p.raw[field.key];
+    else p.raw[field.key] = raw;
+    validate(id);
+    ctx.touch(id);
+    refreshNetwork(id);
+  }
+  function writeRaw(id, field, raw) {
+    const p = profile(id);
+    p.raw[field.key] = raw;
+    const parsed = parse(field, raw, id);
+    if (!parsed.error) {
+      if (parsed.remove) delete p.draft[field.key];
+      else p.draft[field.key] = ctx.clone(parsed.value);
+    }
+    validate(id);
+    ctx.touch(id);
+    refreshNetwork(id);
+  }
+  function changedDefault(id, field) {
+    const p = profile(id);
+    delete p.raw[field.key];
+    listModes.delete(id + ':' + field.key);
+    write(id, field, null, true);
+  }
+  function describe(id, key, kind = 'saved') {
+    const field = fieldByKey.get(key);
+    if (!field) return '未设置';
+    const value = val(id, key, kind);
+    if (field.secret || /secret|private_key|password|token/i.test(key)) return value === undefined || value === null ? '未设置' : value === '' ? '空密码' : '已设置';
+    if (value === null || value === undefined) return '未设置';
+    if (typeof value === 'boolean') return (field.invert ? !value : value) ? '开启' : '关闭';
+    if (field.unlimitedSentinel && String(value) === field.unlimitedSentinel) return '不限速';
+    if (key === 'android.appRoutingMode') {
+      const count = (val(id, 'android.appPackages', kind) || []).length;
+      return value === 'all' ? '全部应用' : (value === 'allowlist' ? '仅 ' : '排除 ') + count + ' 个应用';
+    }
+    if (Array.isArray(value)) {
+      if (!value.length) return key === 'peer' ? '未配置节点' : '空列表';
+      if (key === 'peer') return value.length + ' 个节点';
+      if (key === 'exit_nodes') return value.join('、');
+      if (key === 'android.appPackages') return '已选 ' + value.length + ' 个应用';
+      return value.length + ' 个条目';
+    }
+    if (typeof value === 'object') {
+      if (key === 'acl') {
+        const chains = value.acl_v1 && value.acl_v1.chains;
+        const rules = Array.isArray(chains) ? chains.reduce((count, chain) => count + (chain.rules || []).length, 0) : null;
+        return rules === null ? '已配置' : rules + ' 条规则';
+      }
+      return '已配置';
+    }
+    const safeValue = typeof value === 'string' ? mask(value, key) : value;
+    return optionLabel(safeValue) + (field.unit && !field.unlimitedSentinel ? ' ' + field.unit : '');
+  }
+
+  function goField(id, field) {
+    const view = [...views.values()].find(item => item.id === id && ctx.isRouteVisible(item.route.key));
+    if (view) focusField(view, field.key);
+    else ctx.go({ kind: 'config-group', networkId: id, groupId: field.group, focusKey: field.key });
+  }
+  function applyChanges(view, mode) {
+    const errors = validate(view.id);
+    refreshNetwork(view.id);
+    if (Object.keys(errors).length) { locateError(view); return; }
+    ctx.commit(view.id, mode);
+    refreshNetwork(view.id);
+  }
+  function locateError(view) {
+    const key = Object.keys(profile(view.id).errors)[0];
+    if (!key) return;
+    const entry = view.rows && view.rows.get(key);
+    if (entry) {
+      if (view.mode === 'simple' && !simpleKeys.has(key)) setMode(view, 'all');
+      if (view.mode === 'all') { view.query = ''; view.search.value = ''; view.onlyChanged = false; updateFormLayout(view); }
+      let parent = entry.wrap.parentElement;
+      while (parent && parent !== view.container) { if (parent.tagName === 'DETAILS') parent.open = true; parent = parent.parentElement; }
+      entry.wrap.hidden = false;
+      entry.wrap.scrollIntoView({ block: 'center', behavior: 'auto' });
+      const control = entry.controls.find(item => !item.disabled);
+      if (control) control.focus({ preventScroll: true });
+    } else if (fieldByKey.has(key)) goField(view.id, fieldByKey.get(key));
+  }
+  function discard(id) {
+    const p = profile(id);
+    p.draft = ctx.clone(p.saved);
+    reset(id);
+    ctx.touch(id);
+    ctx.snackbar('已撤销未保存的修改');
+    refreshNetwork(id);
+  }
+  function syncStatusHost() {
+    let visible = false;
+    views.forEach(view => {
+      if (!view.status) return;
+      const active = ctx.isRouteVisible(view.route.key) && view.status.needsAttention;
+      view.status.bar.hidden = !active;
+      visible = visible || active;
+    });
+    ctx.configActionHost.hidden = !visible;
+  }
+  function mountStatus(view) {
+    const bar = make('section', 'eu-config-status');
+    bar.setAttribute('aria-label', '配置操作');
+    bar.dataset.configStatusFor = view.route.key;
+    bar.hidden = true;
+    const message = make('p', 'eu-config-status-message');
+    message.setAttribute('role', 'status');
+    message.setAttribute('aria-live', 'polite');
+    const actions = make('div', 'eu-actions eu-config-status-actions');
+    const primary = ctx.button('保存', () => {
+      const runtime = ctx.runtime();
+      const retryConnection = runtime?.networkId === view.id && runtime.phase === 'error';
+      applyChanges(view, ctx.isRunning(view.id) || retryConnection ? 'apply' : 'save');
+    }, 'eu-button eu-primary');
+    primary.dataset.configAction = 'apply';
+    const save = ctx.button('仅保存', () => applyChanges(view, 'save'), 'eu-button eu-tonal');
+    save.dataset.configAction = 'save';
+    const revert = ctx.button('撤销', () => discard(view.id), 'eu-button eu-text-button');
+    revert.dataset.configAction = 'revert';
+    revert.setAttribute('aria-label', '撤销未保存的修改');
+    const locate = ctx.button('定位错误', () => locateError(view), 'eu-button eu-text-button');
+    locate.dataset.configAction = 'locate';
+    const restore = ctx.button('恢复上次配置', () => { ctx.restoreApplied(view.id); reset(view.id); refreshNetwork(view.id); }, 'eu-button eu-text-button');
+    restore.dataset.configAction = 'restore';
+    restore.setAttribute('aria-label', '恢复上次运行配置');
+    actions.append(primary, save, revert, locate, restore);
+    bar.append(message, actions);
+    view.status = { bar, message, primary, save, revert, locate, restore, needsAttention: false };
+    ctx.configActionHost.append(bar);
+  }
+  function updateStatus(view) {
+    if (!view.status) return;
+    const p = profile(view.id), changed = ctx.changed(view.id), errors = Object.keys(p.errors);
+    const op = ctx.operation(view.id) || { phase: 'idle', message: '' };
+    const pending = ctx.pending(view.id), running = ctx.isRunning(view.id);
+    const runtime = ctx.runtime();
+    const failedCurrent = runtime?.networkId === view.id && runtime.phase === 'error';
+    const busy = op.phase === 'applying';
+    const retryable = failedCurrent || (running && op.phase === 'error');
+    const actionable = changed.length > 0 || (running && pending.length > 0) || retryable;
+    const changedCount = new Set([...changed, ...errors]).size;
+    let message = errors.length ? errors.length + ' 项需要修正 · 输入已保留' : changed.length ? changed.length + ' 项未保存' : pending.length && running ? '更改已保存 · 待应用' : '';
+    if (busy) message = runtime?.phase === 'connecting' ? '正在连接…' : runtime?.phase === 'reconnecting' ? '正在应用并重新连接…' : '正在应用更改…';
+    else if (retryable && !errors.length) message = op.phase === 'error' ? op.message || '应用失败，请重试' : '连接尚未恢复 · 请重试连接';
+    text(view.status.message, message);
+    view.status.message.classList.toggle('eu-sr-only', busy);
+    view.status.bar.classList.toggle('eu-config-has-error', !!errors.length || retryable);
+    view.status.bar.classList.toggle('eu-config-has-changes', changedCount > 0 || pending.length > 0);
+    const changedOrPending = [...new Set([...changed, ...pending])];
+    const reconnect = changedOrPending.some(key => { const field = fieldByKey.get(key); return field && !['app-immediate', 'core-hot'].includes(field.apply); });
+    text(view.status.primary, busy ? runtime?.phase === 'connecting' ? '正在连接…' : '正在应用…' : failedCurrent ? '重试连接' : running && op.phase === 'error' ? '重试应用' : running ? reconnect ? '应用并重连' : '应用更改' : '保存');
+    view.status.primary.disabled = busy || !!errors.length || !actionable;
+    view.status.primary.hidden = !actionable && !errors.length && !busy;
+    view.status.save.hidden = !running || !changed.length;
+    view.status.save.disabled = busy || !!errors.length;
+    view.status.revert.hidden = !changedCount;
+    view.status.revert.disabled = busy;
+    view.status.locate.hidden = !errors.length;
+    view.status.locate.disabled = busy;
+    view.status.restore.hidden = !retryable || op.phase !== 'error' || !p.lastApplied;
+    view.status.restore.disabled = busy;
+    view.status.needsAttention = !!(changedCount || busy || (running && pending.length) || retryable);
+    syncStatusHost();
+  }
+
+  function inputId(field) { return ctx.uid('config-' + field.key.replace(/[^a-z0-9_-]/gi, '-')); }
+  function fieldHint(field) { return helpOverrides[field.key] || field.help || ''; }
+  function appendOption(select, value, label, disabled) {
+    const option = make('option', '', label);
+    option.value = value;
+    option.disabled = !!disabled;
+    select.append(option);
+  }
+  function makeField(view, field, showTechnical) {
+    const id = inputId(field), wrap = make('section', 'eu-config-field');
+    wrap.dataset.configKey = field.key;
+    const heading = make('div', 'eu-config-field-heading');
+    const label = make('label', 'eu-label', field.label);
+    label.htmlFor = id;
+    const badge = make('span', 'eu-config-draft-mark');
+    heading.append(label, badge);
+    wrap.append(heading);
+    const keyNode = make('code', 'eu-config-key', field.key);
+    keyNode.hidden = !showTechnical; wrap.append(keyNode);
+    const body = make('div', 'eu-config-input-area');
+    const controls = [], syncers = [];
+    const entry = { field, wrap, label, badge, controls, syncers, showTechnical, keyNode };
+    view.rows.set(field.key, entry);
+    const reason = make('p', 'eu-subtle eu-config-help');
+    const error = make('p', 'eu-config-field-error');
+    error.id = ctx.uid('config-error');
+    error.setAttribute('role', 'alert');
+    entry.error = error;
+    entry.reason = reason;
+    function register(control, controlId) {
+      control.id = controlId || (controls.length ? ctx.uid('config-input') : id);
+      control.dataset.configControl = field.key;
+      control.setAttribute('aria-describedby', error.id);
+      controls.push(control);
+      return control;
+    }
+    function select(options) {
+      const result = register(make('select', 'eu-select cursor-interaction'));
+      options.forEach(([value, labelText, off]) => appendOption(result, value, labelText, off));
+      return result;
+    }
+    if (field.type === 'boolean') {
+      const row = make('div', 'eu-config-toggle-row');
+      const stateLabel = make('label', 'eu-config-toggle-label cursor-interaction');
+      stateLabel.htmlFor = id;
+      const toggle = register(make('input', 'eu-config-toggle cursor-interaction'));
+      toggle.type = 'checkbox';
+      toggle.setAttribute('role', 'switch');
+      const stateText = make('span');
+      stateLabel.append(toggle, stateText);
+      toggle.addEventListener('change', () => write(view.id, field, field.invert ? !toggle.checked : toggle.checked));
+      row.append(stateLabel);
+      body.append(row);
+      syncers.push(() => { const current = val(view.id, field.key); toggle.checked = field.invert ? !current : !!current; text(stateText, toggle.checked ? '开启' : '关闭'); });
+    } else if (field.type === 'select') {
+      const control = select([['inherit', '使用默认 · ' + defaultLabel(field)], ...(field.options || []).map(value => [String(value), optionLabel(value), field.key === 'android.runtimeMode' && value === 'root-tun'])]);
+      control.addEventListener('change', () => write(view.id, field, control.value, control.value === 'inherit'));
+      body.append(control);
+      syncers.push(() => { const p = profile(view.id); control.value = own(p.draft, field.key) ? String(p.draft[field.key]) : 'inherit'; });
+    } else if (field.type === 'application-list') {
+      const appSummary = make('p', 'eu-config-app-count');
+      const search = register(make('input', 'eu-input'), id);
+      search.type = 'search'; search.placeholder = '搜索应用名称或包名'; search.setAttribute('aria-label', '搜索应用');
+      const list = make('div', 'eu-config-app-list');
+      const rows = new Map();
+      let appQuery = '';
+      function updateApps() {
+        const selected = new Set(val(view.id, field.key) || []);
+        const available = new Map(sampleApps.map(app => [app[0], app]));
+        selected.forEach(packageName => { if (!available.has(packageName)) available.set(packageName, [packageName, packageName, '不在演示应用列表中']); });
+        available.forEach(([packageName, name, category]) => {
+          if (!rows.has(packageName)) {
+            const appRow = make('label', 'eu-config-app-row cursor-interaction');
+            const input = make('input', 'eu-config-app-check cursor-interaction');
+            input.type = 'checkbox'; input.id = ctx.uid('app'); input.value = packageName;
+            appRow.htmlFor = input.id;
+            input.setAttribute('aria-label', name);
+            const copy = make('span', 'eu-config-app-copy');
+            copy.append(make('span', '', name), make('span', 'eu-subtle', category + ' · ' + packageName));
+            appRow.append(input, copy);
+            input.addEventListener('change', () => {
+              const packages = new Set(val(view.id, field.key) || []);
+              if (input.checked) packages.add(packageName); else packages.delete(packageName);
+              write(view.id, field, [...packages]);
+            });
+            list.append(appRow);
+            rows.set(packageName, { appRow, input, haystack: (name + ' ' + packageName).toLowerCase() });
+          }
+          const row = rows.get(packageName);
+          row.input.checked = selected.has(packageName);
+          row.input.disabled = !!disabledReason(view.id, field);
+          row.appRow.hidden = !!appQuery && !row.haystack.includes(appQuery);
+        });
+        rows.forEach((row, packageName) => {
+          if (!available.has(packageName)) { row.appRow.hidden = true; row.input.checked = false; }
+        });
+        text(appSummary, '已选择 ' + selected.size + ' 个应用 · 演示应用列表');
+      }
+      search.addEventListener('input', () => { appQuery = search.value.trim().toLowerCase(); updateApps(); });
+      body.append(appSummary, search, list);
+      syncers.push(updateApps);
+    } else if (['list', 'optional-list'].includes(field.type)) {
+      const emptyLabel = field.key.includes('stun_servers') ? '关闭探测 · 空列表' : field.key === 'routes' ? '手动路由 · 空列表' : '明确设为空列表';
+      const mode = select([['inherit', field.key === 'routes' ? '自动接收路由' : '使用默认 · ' + defaultLabel(field)], ['custom', structured(field) ? '自定义条目' : '自定义列表'], ['empty', emptyLabel]]);
+      mode.dataset.configListMode = field.key;
+      const input = register(make('textarea', 'eu-input eu-config-textarea'), ctx.uid('config-list'));
+      const sensitive = structured(field) && containsSecret(field);
+      let revealed = !sensitive;
+      input.readOnly = !revealed;
+      input.rows = structured(field) ? 6 : 3;
+      input.spellcheck = false;
+      input.setAttribute('aria-label', field.label + '内容');
+      input.placeholder = structured(field) ? '[]' : field.key === 'peer' ? 'udp://node.example.net:11010' : '每行一个条目';
+      if (structured(field)) body.append(make('p', 'eu-subtle eu-config-expert', 'JSON 数组 · 检查结构格式'));
+      input.addEventListener('input', () => { if (!revealed) return; listModes.set(view.id + ':' + field.key, 'custom'); writeRaw(view.id, field, input.value); });
+      mode.addEventListener('change', () => {
+        const nextMode = mode.value;
+        listModes.set(view.id + ':' + field.key, nextMode);
+        if (nextMode === 'inherit') write(view.id, field, null, true);
+        else if (nextMode === 'empty') write(view.id, field, []);
+        else {
+          const current = val(view.id, field.key);
+          const initial = Array.isArray(current) && current.length ? current : [];
+          write(view.id, field, initial, false, formatValue(field, initial));
+          input.focus();
+        }
+      });
+      body.append(mode, input);
+      if (sensitive) {
+        const reveal = ctx.button('显示并编辑敏感内容', () => {
+          revealed = !revealed; input.readOnly = !revealed;
+          text(reveal, revealed ? '隐藏敏感内容' : '显示并编辑敏感内容');
+          reveal.setAttribute('aria-pressed', String(revealed));
+          refreshNetwork(view.id);
+          if (revealed) input.focus();
+        }, 'eu-button eu-text-button');
+        reveal.setAttribute('aria-pressed', 'false'); body.append(reveal);
+        syncers.push(() => { reveal.hidden = modeFor(view.id, field) !== 'custom'; reveal.disabled = !!disabledReason(view.id, field); });
+      }
+      syncers.push(() => {
+        mode.value = modeFor(view.id, field);
+        const simple = view.mode === 'simple' && simpleKeys.has(field.key);
+        mode.hidden = simple;
+        input.hidden = !simple && mode.value !== 'custom';
+        const next = revealed ? rawValue(view.id, field) : JSON.stringify(mask(val(view.id, field.key) || [], field.key), null, 2);
+        if (input.value !== next) input.value = next;
+      });
+      if (field.key === 'peer') {
+        const keys = make('details', 'eu-config-peer-keys');
+        const summary = make('summary', 'cursor-interaction', '固定对端公钥');
+        const keyList = make('div');
+        const peerRows = new Map();
+        keys.append(summary, keyList);
+        body.append(keys);
+        syncers.push(() => {
+          const list = val(view.id, 'peer') || [];
+          const active = new Set();
+          list.forEach(item => {
+            if (!item || typeof item !== 'object' || !item.uri) return;
+            active.add(item.uri);
+            if (!peerRows.has(item.uri)) {
+              const row = make('div', 'eu-config-peer-key');
+              const keyLabel = make('label', 'eu-subtle', mask(item.uri));
+              const keyInput = make('input', 'eu-input');
+              keyInput.type = 'text'; keyInput.id = ctx.uid('peer-key'); keyInput.autocomplete = 'off';
+              keyLabel.htmlFor = keyInput.id; keyInput.placeholder = '不固定公钥';
+              keyInput.addEventListener('input', () => {
+                const next = ctx.clone(val(view.id, 'peer') || []).map(peer => peer.uri === item.uri ? { ...peer, peer_public_key: keyInput.value } : peer);
+                write(view.id, field, next, false, rawValue(view.id, field));
+              });
+              row.append(keyLabel, keyInput); keyList.append(row);
+              peerRows.set(item.uri, { row, keyInput });
+            }
+            const row = peerRows.get(item.uri);
+            row.row.hidden = false;
+            const next = item.peer_public_key || ''; if (row.keyInput.value !== next) row.keyInput.value = next;
+          });
+          peerRows.forEach((row, uri) => { row.row.hidden = !active.has(uri); });
+          keys.hidden = !list.length || view.mode === 'simple';
+        });
+      }
+    } else {
+      const isObject = field.type === 'object';
+      const input = register(make(isObject ? 'textarea' : 'input', 'eu-input' + (isObject ? ' eu-config-textarea' : '')));
+      const sensitive = isObject && containsSecret(field);
+      let revealed = !sensitive;
+      if (sensitive) input.readOnly = true;
+      if (isObject) {
+        input.rows = 7; input.spellcheck = false; input.placeholder = '未设置';
+        body.append(make('p', 'eu-subtle eu-config-expert', 'JSON 对象 · 检查结构格式'));
+      } else {
+        input.type = field.type === 'secret' ? 'password' : 'text';
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        input.placeholder = '默认 · ' + defaultLabel(field);
+        if (field.type === 'number') input.inputMode = 'numeric';
+      }
+      input.addEventListener('input', () => { if (revealed) writeRaw(view.id, field, input.value); });
+      body.append(input);
+      if (sensitive) {
+        const reveal = ctx.button('显示并编辑敏感内容', () => {
+          revealed = !revealed; input.readOnly = !revealed;
+          text(reveal, revealed ? '隐藏敏感内容' : '显示并编辑敏感内容');
+          reveal.setAttribute('aria-pressed', String(revealed)); refreshNetwork(view.id);
+          if (revealed) input.focus();
+        }, 'eu-button eu-text-button');
+        reveal.setAttribute('aria-pressed', 'false'); body.append(reveal);
+        syncers.push(() => { reveal.disabled = !!disabledReason(view.id, field); });
+      }
+      syncers.push(() => {
+        const next = revealed ? rawValue(view.id, field) : val(view.id, field.key) ? JSON.stringify(mask(val(view.id, field.key), field.key), null, 2) : '';
+        if (input.value !== next) input.value = next;
+      });
+      if (field.unlimitedSentinel) {
+        const unlimited = ctx.button('不限速', () => {
+          const p = profile(view.id);
+          if (String(val(view.id, field.key)) === field.unlimitedSentinel && !own(p.raw, field.key)) {
+            p.raw[field.key] = field.unlimitedSentinel;
+            refreshNetwork(view.id);
+            input.focus();
+          } else write(view.id, field, field.unlimitedSentinel);
+        }, 'eu-button eu-text-button');
+        body.append(unlimited);
+        syncers.push(() => {
+          const active = String(val(view.id, field.key)) === field.unlimitedSentinel;
+          unlimited.setAttribute('aria-pressed', String(active));
+          input.hidden = active && !own(profile(view.id).raw, field.key);
+          text(unlimited, active && !own(profile(view.id).raw, field.key) ? '不限速 · 设置上限' : '设为不限速');
+        });
+      }
+      if (field.type === 'secret') {
+        const reveal = ctx.button('显示密码', () => {
+          input.type = input.type === 'password' ? 'text' : 'password';
+          text(reveal, input.type === 'password' ? '显示密码' : '隐藏密码');
+          reveal.setAttribute('aria-pressed', String(input.type === 'text'));
+        }, 'eu-button eu-text-button');
+        reveal.setAttribute('aria-pressed', 'false'); body.append(reveal);
+        syncers.push(() => { reveal.disabled = !!disabledReason(view.id, field); });
+      }
+    }
+    const resetButton = ctx.button('使用默认', () => changedDefault(view.id, field), 'eu-button eu-text-button eu-config-default');
+    entry.resetButton = resetButton;
+    body.append(resetButton);
+    wrap.append(body, reason, error);
+    updateField(view, entry);
+    return wrap;
+  }
+
+  function updateField(view, entry) {
+    const p = profile(view.id), field = entry.field;
+    const reason = disabledReason(view.id, field);
+    const changed = markChanged(view.id).includes(field.key);
+    text(entry.badge, changed ? '未保存' : '');
+    entry.badge.hidden = !changed;
+    entry.wrap.classList.toggle('eu-config-field-disabled', !!reason);
+    const dependent = dependency(view.id, field.key);
+    entry.wrap.hidden = !!dependent && view.route.focusKey !== field.key;
+    entry.controls.forEach(control => { control.disabled = !!reason; control.setAttribute('aria-invalid', String(!!p.errors[field.key])); });
+    text(entry.reason, reason || fieldHint(field));
+    entry.reason.hidden = !entry.reason.textContent;
+    text(entry.error, p.errors[field.key] || '');
+    entry.error.hidden = !p.errors[field.key];
+    entry.resetButton.hidden = view.mode === 'simple' || !!reason || !own(p.draft, field.key) || (!changed && !entry.showTechnical);
+    entry.resetButton.disabled = !!reason;
+    entry.syncers.forEach(sync => sync());
+  }
+  function matches(field, query) {
+    return [field.label, field.key, field.help, ...(field.assistantFields || []), ...(field.children || []).flatMap(child => [child.label, child.key])].filter(Boolean).join(' ').toLowerCase().includes(query);
+  }
+  function layoutGroup(view, field) {
+    if (field.key === 'exit_nodes' && val(view.id, 'android.internetRouting') === 'exit-node') return 'android';
+    return field.group;
+  }
+  function placeRows(view) {
+    const signature = view.mode + ':' + (val(view.id, 'android.internetRouting') === 'exit-node');
+    if (view.locationSignature === signature) return;
+    view.locationSignature = signature;
+    if (view.mode === 'simple') {
+      simpleKeys.forEach(key => { const entry = view.rows.get(key); if (entry) view.simpleBody.append(entry.wrap); });
+    } else {
+      groups.forEach(group => {
+        let ordered = fields.filter(field => layoutGroup(view, field) === group.id);
+        if (group.id === 'android') {
+          const exit = ordered.find(field => field.key === 'exit_nodes');
+          if (exit) {
+            ordered = ordered.filter(field => field !== exit);
+            const position = ordered.findIndex(field => field.key === 'android.internetRouting');
+            ordered.splice(position + 1, 0, exit);
+          }
+        }
+        ordered.forEach(field => view.groupNodes.get(group.id).body.append(view.rows.get(field.key).wrap));
+      });
+    }
+  }
+  function setMode(view, mode) {
+    view.mode = mode;
+    view.modeButtons.forEach((button, value) => button.setAttribute('aria-selected', String(value === mode)));
+    view.simplePanel.hidden = mode !== 'simple';
+    view.allPanel.hidden = mode !== 'all';
+    view.container.dataset.configMode = mode;
+    placeRows(view);
+    view.rows.forEach(entry => updateField(view, entry));
+    updateFormLayout(view);
+  }
+  function focusField(view, key) {
+    const entry = view.rows.get(key);
+    if (!entry) return;
+    view.query = '';
+    view.onlyChanged = false;
+    view.focusKey = key;
+    view.search.value = '';
+    setMode(view, 'all');
+    const group = view.groupNodes.get(layoutGroup(view, entry.field));
+    if (group) { group.node.open = true; view.openGroups.add(group.id); }
+    entry.wrap.hidden = false;
+    entry.wrap.scrollIntoView({ block: 'center', behavior: 'auto' });
+    const control = entry.controls.find(item => !item.disabled && !item.hidden);
+    if (control) control.focus({ preventScroll: true });
+  }
+  function updateFormLayout(view) {
+    if (!view.modeButtons) return;
+    placeRows(view);
+    const query = view.query.trim().toLowerCase();
+    const dirty = new Set(markChanged(view.id));
+    const direct = new Set(fields.filter(field => query ? matches(field, query) : !view.onlyChanged || dirty.has(field.key)).map(field => field.key));
+    const visible = new Set(direct);
+    if (query || view.onlyChanged) {
+      relationPairs.forEach(([parent, child]) => {
+        if (visible.has(child) && fieldByKey.has(parent)) visible.add(parent);
+        if (visible.has(parent) && fieldByKey.has(child) && !dependency(view.id, child)) visible.add(child);
+      });
+      if (visible.has('android.internetRouting') && val(view.id, 'android.internetRouting') === 'exit-node') {
+        ['exit_nodes', 'android.ipv6Policy', 'android.dnsMode', 'android.dnsServers'].forEach(key => { if (fieldByKey.has(key) && !dependency(view.id, key)) visible.add(key); });
+      }
+    }
+    let shown = 0;
+    view.rows.forEach(entry => {
+      const field = entry.field;
+      const dependencyHidden = !!dependency(view.id, field.key) && !(query && direct.has(field.key)) && view.focusKey !== field.key;
+      const display = view.mode === 'simple' ? simpleKeys.has(field.key) : visible.has(field.key) && !dependencyHidden;
+      entry.wrap.hidden = !display;
+      entry.keyNode.hidden = !(view.mode === 'all' && query && (field.key.toLowerCase().includes(query) || (field.assistantFields || []).some(key => key.includes(query))));
+      if (display) shown += 1;
+    });
+    view.groupNodes.forEach(group => {
+      const count = fields.filter(field => layoutGroup(view, field) === group.id && !view.rows.get(field.key).wrap.hidden).length;
+      group.node.hidden = count === 0;
+      text(group.count, count + ' 项');
+      if (query || view.onlyChanged) group.node.open = count > 0;
+      else group.node.open = view.openGroups.has(group.id);
+    });
+    view.searchCount.hidden = !query && !view.onlyChanged;
+    text(view.searchCount, query ? '找到 ' + direct.size + ' 项设置' : dirty.size + ' 项未保存的修改');
+    view.clearChanged.hidden = !view.onlyChanged;
+    view.empty.hidden = shown !== 0 || view.mode !== 'all';
+    const p = profile(view.id);
+    const address = val(view.id, 'dhcp') ? '自动分配 IPv4（DHCP）' : p.errors.ipv4 ? '固定 IPv4 · 需要修正' : '固定 IPv4 · ' + describe(view.id, 'ipv4', 'draft');
+    text(view.addressLabel, address);
+    view.addressRow.dataset.addressMode = val(view.id, 'dhcp') ? 'automatic' : 'static';
+  }
+  function mountConfigPage(view) {
+    view.mode = view.route.kind === 'config' && !view.route.focusKey ? 'simple' : 'all';
+    view.query = view.route.query || '';
+    view.onlyChanged = view.route.filter === 'changed';
+    view.focusKey = view.route.focusKey || null;
+    view.openGroups = new Set(['identity']);
+    view.groupNodes = new Map();
+    view.modeButtons = new Map();
+    const heading = make('div', 'eu-config-heading');
+    const rename = ctx.button('', () => ctx.openRename(view.id, rename), 'eu-text-button');
+    rename.dataset.renameConfig = '';
+    rename.append(icon('pencil'), make('span', '', '重命名'));
+    heading.append(make('h2', 'eu-page-title', '配置'), rename);
+    view.container.append(heading);
+    const tabs = make('div', 'eu-config-tabs');
+    tabs.setAttribute('role', 'tablist');
+    tabs.setAttribute('aria-label', '配置范围');
+    view.simplePanel = make('div', 'eu-config-simple-panel');
+    view.allPanel = make('div', 'eu-config-all-panel');
+    [['simple', '基础配置', view.simplePanel], ['all', '完整配置', view.allPanel]].forEach(([value, label, panel]) => {
+      panel.id = ctx.uid('config-panel');
+      panel.setAttribute('role', 'tabpanel');
+      const button = ctx.button(label, () => setMode(view, value), 'eu-config-tab');
+      button.setAttribute('role', 'tab');
+      button.setAttribute('aria-controls', panel.id);
+      button.dataset.configTab = value;
+      panel.setAttribute('aria-labelledby', button.id);
+      button.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const next = event.key === 'Home' ? 'simple' : event.key === 'End' ? 'all' : value === 'simple' ? 'all' : 'simple';
+        setMode(view, next); view.modeButtons.get(next).focus();
+      });
+      tabs.append(button); view.modeButtons.set(value, button);
+    });
+    view.container.append(tabs, view.simplePanel, view.allPanel);
+    mountStatus(view);
+    view.simpleBody = make('div', 'eu-config-simple-body');
+    view.addressRow = ctx.button('', () => focusField(view, 'dhcp'), 'eu-config-address-summary');
+    view.addressLabel = make('span');
+    view.addressRow.append(icon('network'), view.addressLabel, icon('chevron-right'));
+    view.simplePanel.append(view.simpleBody, view.addressRow);
+    const searchLabel = make('label', 'eu-label', '搜索全部设置');
+    view.search = make('input', 'eu-input');
+    view.search.type = 'search'; view.search.id = ctx.uid('config-search');
+    view.search.dataset.configSearch = 'true'; view.search.placeholder = '名称、用途或参数键，如 MTU';
+    view.search.value = view.query; searchLabel.htmlFor = view.search.id;
+    view.search.addEventListener('input', () => { view.query = view.search.value; view.focusKey = null; updateFormLayout(view); });
+    const searchArea = make('div', 'eu-config-all-search'); searchArea.append(searchLabel, view.search);
+    view.searchCount = make('p', 'eu-subtle'); view.searchCount.setAttribute('role', 'status');
+    view.clearChanged = ctx.button('显示全部设置', () => { view.onlyChanged = false; updateFormLayout(view); }, 'eu-button eu-text-button');
+    view.allPanel.append(searchArea, view.searchCount, view.clearChanged);
+    groups.forEach(group => {
+      const node = make('details', 'eu-config-inline-group');
+      node.dataset.configGroup = group.id;
+      const summary = make('summary', 'cursor-interaction');
+      const name = make('span', 'eu-config-group-label', group.label);
+      const count = make('span', 'eu-subtle');
+      summary.append(name, count, icon('chevron-down'));
+      const body = make('div', 'eu-config-form');
+      fields.filter(field => field.group === group.id).forEach(field => body.append(makeField(view, field, false)));
+      node.append(summary, body);
+      node.open = view.openGroups.has(group.id);
+      node.addEventListener('toggle', () => {
+        if (view.query || view.onlyChanged) return;
+        if (node.open) view.openGroups.add(group.id); else view.openGroups.delete(group.id);
+      });
+      const groupView = { id: group.id, node, body, count };
+      view.groupNodes.set(group.id, groupView); view.allPanel.append(node);
+    });
+    view.empty = make('p', 'eu-empty', '没有匹配的设置，试试名称或用途。');
+    view.allPanel.append(view.empty);
+    const preview = make('details', 'eu-config-more');
+    preview.append(make('summary', 'cursor-interaction', '查看脱敏配置'));
+    const note = make('p', 'eu-subtle', '只读预览；凭据已隐藏，Android 设置单独保存。');
+    const previewInput = make('textarea', 'eu-input eu-config-preview');
+    previewInput.rows = 10; previewInput.readOnly = true; previewInput.spellcheck = false;
+    previewInput.setAttribute('aria-label', '脱敏 TOML 预览');
+    const copy = ctx.button('复制脱敏内容', async () => {
+      try { await navigator.clipboard.writeText(previewInput.value); (ctx.toast || ctx.notify)('已复制脱敏配置'); }
+      catch (_) { previewInput.focus(); previewInput.select(); (ctx.toast || ctx.notify)('请复制已选中的内容'); }
+    }, 'eu-button eu-text-button');
+    preview.append(note, previewInput, copy); view.preview = previewInput; view.allPanel.append(preview);
+    if (view.focusKey && fieldByKey.has(view.focusKey)) view.openGroups.add(layoutGroup(view, fieldByKey.get(view.focusKey)));
+    else if (view.route.groupId && view.groupNodes.has(view.route.groupId)) view.openGroups.add(view.route.groupId);
+    setMode(view, view.mode);
+    if (view.focusKey && fieldByKey.has(view.focusKey)) setTimeout(() => {
+      if (ctx.isRouteVisible(view.route.key)) focusField(view, view.focusKey);
+    }, 0);
+  }
+  function mask(value, key = '') {
+    if (/secret|private_key|password|token|configServerUrl/i.test(key)) return '<已隐藏>';
+    if (typeof value === 'string' && /^[a-z][a-z0-9+.-]*:\/\//i.test(value)) {
+      try {
+        const url = new URL(value);
+        if (url.username || url.password || url.search || url.hash || (url.pathname && url.pathname !== '/')) return '<含凭据或路径的地址已隐藏>';
+      } catch (_) { return '<地址已隐藏>'; }
+    }
+    if (Array.isArray(value)) return value.map(item => mask(item));
+    if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([childKey, child]) => [childKey, mask(child, childKey)]));
+    return value;
+  }
+  function tomlValue(value) {
+    if (Array.isArray(value)) return '[' + value.map(tomlValue).join(', ') + ']';
+    if (value && typeof value === 'object') return '{ ' + Object.entries(value).filter(([, child]) => child !== null && child !== undefined).map(([key, child]) => JSON.stringify(key) + ' = ' + tomlValue(child)).join(', ') + ' }';
+    return JSON.stringify(value);
+  }
+  function tomlPreview(id) {
+    const p = profile(id), lines = ['# 只读脱敏预览'];
+    if (Object.keys(p.errors).length) lines.push('# 尚有待修正输入，以下保留最近有效值');
+    fields.filter(field => field.scope === 'core' && own(p.draft, field.key)).forEach(field => {
+      const value = mask(p.draft[field.key], field.key);
+      if (value !== undefined && value !== null) lines.push(field.key + ' = ' + (field.storageType === 'decimal-string' ? String(value) : tomlValue(value)));
+    });
+    const appFields = fields.filter(field => field.scope !== 'core' && own(p.draft, field.key));
+    if (appFields.length) {
+      lines.push('', '# Android 与宿主参数单独保存');
+      appFields.forEach(field => lines.push('# ' + field.key + ' = ' + tomlValue(mask(p.draft[field.key], field.key))));
+    }
+    return lines.join('\n');
+  }
+  function refreshView(view) {
+    updateStatus(view);
+    view.summaries.forEach(update => update());
+    if (view.rows) view.rows.forEach(entry => updateField(view, entry));
+    if (view.modeButtons) updateFormLayout(view);
+    if (view.preview) {
+      const next = tomlPreview(view.id);
+      if (view.preview.value !== next) view.preview.value = next;
+    }
+  }
+  function refreshNetwork(id) {
+    views.forEach(view => { if (view.id === id) refreshView(view); });
+  }
+  function mount(route, container) {
+    const view = { route, id: route.networkId, container, rows: new Map(), summaries: [] };
+    const key = route.key || ctx.uid('config-route');
+    views.set(key, view); container.dataset.configView = key;
+    mountConfigPage(view);
+    refreshView(view);
+    ctx.onCleanup(key, () => {
+      view.status?.bar.remove();
+      views.delete(key);
+      syncStatusHost();
+    });
+  }
+  function refresh(route, container) {
+    const view = views.get(route.key) || views.get(container.dataset.configView);
+    if (view) refreshView(view);
+  }
+  function reset(id) {
+    const p = profile(id); p.raw = {}; p.errors = {};
+    [...listModes.keys()].filter(key => key.startsWith(id + ':')).forEach(key => listModes.delete(key));
+    peerMemory.delete(id);
+    refreshNetwork(id);
+  }
+  return { mount, refresh, validate, describe, reset };
+}
+
+  function createMonitorModule(ctx) {
+  const logViews = new Map();
+  const chartViews = new Set();
+  const trafficByNetwork = new Map();
+  const sessionsByNetwork = new Map();
+  const logs = [];
+  const capture = { core: 'info', app: 'info', capacity: 400 };
+  const priorities = { trace: 0, debug: 1, info: 2, warn: 3, error: 4 };
+  const number = new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 1 });
+  let logSequence = 0;
+  let discarded = 0;
+  let tickNumber = 0;
+  let disposed = false;
+  let lastScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
+  const el = ctx.el;
+  const setText = (node, value) => { if (node && node.textContent !== String(value)) node.textContent = String(value); };
+  const monoNow = () => performance.now();
+  const wallNow = () => Date.now();
+  const timeLabel = value => new Date(value).toLocaleTimeString('zh-CN', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const visible = node => !!node && !document.hidden && !node.closest('[hidden]');
+  const label = (id, text) => { const node = el('label', 'eu-label', text); node.htmlFor = id; return node; };
+  function choice(value, text) { const node = el('option', '', text); node.value = value; return node; }
+  function makeSelect(title, values, current, onChange) {
+    const wrap = el('div', 'eu-field');
+    const select = el('select', 'eu-select cursor-interaction'); select.id = ctx.uid('monitor-select');
+    values.forEach(([value, text]) => select.append(choice(value, text))); select.value = current;
+    select.addEventListener('change', () => onChange(select.value));
+    wrap.append(label(select.id, title), select); return { wrap, select };
+  }
+  function redact(value, key = '') {
+    if (/secret|password|private.?key|token|credential|authorization/i.test(key)) return '[已隐藏]';
+    if (Array.isArray(value)) return value.map(item => redact(item));
+    if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([name, item]) => [name, redact(item, name)]));
+    if (typeof value !== 'string') return value;
+    return value.replace(/-----BEGIN[\s\S]*?-----END[^-]*-----/g, '[已隐藏密钥]')
+      .replace(/(authorization\s*[=:]\s*)(?:bearer|basic)\s+[^\s,;]+/gi, '$1[已隐藏]')
+      .replace(/\bBearer\s+[A-Za-z0-9._~+\/-]+=*/gi, 'Bearer [已隐藏]')
+      .replace(/\b(?:https?|tcp|udp|ws|wss|quic):\/\/[^\s"'<>]+/gi, raw => {
+        try { const uri = new URL(raw); return uri.username || uri.password || uri.search || uri.hash || uri.pathname && uri.pathname !== '/' ? uri.protocol + '//[已隐藏敏感地址]' : raw; }
+        catch (_) { return '[已隐藏地址]'; }
+      })
+      .replace(/((?:secret|password|private[_-]?key|token|authorization)\s*[=:]\s*)(?:"[^"]*"|'[^']*'|[^\s,;]+)/gi, '$1[已隐藏]');
+  }
+  function latestSession(id) { const sessions = sessionsByNetwork.get(id) || []; return sessions[sessions.length - 1] || null; }
+  function networkSession(id) {
+    const runtime = ctx.runtime();
+    if (runtime && runtime.networkId === id && runtime.sessionId) return runtime.sessionId;
+    return latestSession(id)?.id || null;
+  }
+  function addLog(source, level, module, message, details = {}, networkId = null, peerId = null) {
+    if (disposed) return;
+    source = source === 'core' ? 'core' : 'app';
+    level = Object.hasOwn(priorities, level) ? level : 'info';
+    if (priorities[level] < priorities[capture[source]]) return;
+    const safe = redact(details || {});
+    const sessionId = networkId === null ? null : details?.sessionId || details?.session_id || networkSession(networkId);
+    const entry = { id: ++logSequence, time: wallNow(), source, level, module: redact(module), message: redact(message), details: safe, networkId, peerId, sessionId };
+    logs.push(entry);
+    while (logs.length > capture.capacity) { logs.shift(); discarded++; }
+    for (const view of logViews.values()) {
+      if (!visible(view.container)) continue;
+      if (view.mode === 'live') syncLogs(view); else updateLogStatus(view);
+    }
+  }
+  function matchesLog(view, entry) {
+    if (view.route.kind === 'scoped-logs') {
+      if (entry.networkId !== view.route.networkId || entry.peerId !== view.route.peerId) return false;
+      if (view.fixedSession && entry.sessionId !== view.fixedSession) return false;
+    } else if (view.scope === 'global') {
+      if (entry.networkId !== null) return false;
+    } else {
+      if (entry.networkId !== view.route.networkId) return false;
+      if (view.scope === 'current' && entry.sessionId !== (view.mode === 'reading' ? view.readingSession : networkSession(view.route.networkId))) return false;
+    }
+    if (view.source !== 'all' && entry.source !== view.source) return false;
+    if (view.level !== 'all' && priorities[entry.level] < priorities[view.level]) return false;
+    const text = [entry.message, entry.module, entry.source === 'core' ? 'EasyTier' : 'App', JSON.stringify(entry.details)].join(' ').toLowerCase();
+    return !view.query || text.includes(view.query.toLowerCase());
+  }
+  function scopeText(view) {
+    if (view.route.kind === 'scoped-logs') {
+      const peer = ctx.peer(view.route.networkId, view.route.peerId);
+      const runtime = ctx.runtime();
+      const current = runtime?.networkId === view.route.networkId && runtime.sessionId === view.fixedSession && runtime.phase === 'connected';
+      return ctx.networkLabel(view.route.networkId) + ' · ' + (peer?.name || view.route.peerId) + ' · ' + (view.fixedSession ? current ? '本次连接' : '所选连接已结束' : '尚无连接');
+    }
+    if (view.scope === 'global') return '全局 · 不属于某个网络的进程记录';
+    if (view.scope === 'history') return ctx.networkLabel(view.route.networkId) + ' · 全部连接';
+    if (view.mode === 'reading' && view.readingSession !== networkSession(view.route.networkId)) return ctx.networkLabel(view.route.networkId) + ' · 上一次连接 · 回看中';
+    const runtime = ctx.runtime();
+    return ctx.networkLabel(view.route.networkId) + ' · ' + (runtime?.networkId === view.route.networkId && runtime.phase === 'connected' ? '本次连接' : latestSession(view.route.networkId) ? '最近连接' : '尚无连接');
+  }
+  function setReading(view) {
+    if (view.mode === 'reading') return;
+    view.mode = 'reading'; view.boundary = logSequence; view.readingSession = networkSession(view.route.networkId);
+    view.list.style.overflowAnchor = 'auto';
+    view.container.dataset.monitorMode = 'reading'; updateLogStatus(view);
+  }
+  function resumeLogs(view) {
+    view.mode = 'live'; view.boundary = logSequence; view.limit = 16;
+    view.readingSession = null; view.list.style.overflowAnchor = 'none';
+    view.container.dataset.monitorMode = 'live';
+    syncLogs(view, true);
+    view.anchor.scrollIntoView({ block: 'start', behavior: 'auto' });
+  }
+  function updateLogStatus(view) {
+    const pending = logs.reduce((count, entry) => count + (entry.id > view.boundary && matchesLog(view, entry) ? 1 : 0), 0);
+    const newerSession = view.route.kind === 'logs' && view.scope === 'current' && view.mode === 'reading' && view.readingSession !== networkSession(view.route.networkId);
+    setText(view.scopeLabel, scopeText(view));
+    setText(view.stateLabel, view.mode === 'live' ? '最新在前 · 实时更新' : '正在阅读 · 采集继续');
+    setText(view.pause, view.mode === 'live' ? '暂停跟随' : '回到最新');
+    view.pause.setAttribute('aria-pressed', String(view.mode === 'reading'));
+    view.pending.hidden = view.mode !== 'reading' || !newerSession && pending === 0;
+    setText(view.pending, newerSession ? '新连接已开始 · 查看本次日志' : pending + ' 条新日志 · 回到最新');
+    setText(view.retention, '最多保留 ' + capture.capacity + ' 条' + (discarded ? ' · 已滚动移除 ' + discarded + ' 条较早记录' : '') + ' · 记录已脱敏');
+    for (const [key, control] of Object.entries(view.captureControls || {})) if (control.value !== capture[key]) control.value = capture[key];
+    if (view.scopeControl) {
+      const option = view.scopeControl.querySelector('option[value="current"]');
+      if (option) setText(option, ctx.isRunning(view.route.networkId) ? '本次连接' : latestSession(view.route.networkId) ? '最近连接' : '尚无连接');
+    }
+  }
+  async function copyLog(entry, button) {
+    const payload = [timeLabel(entry.time), entry.source === 'core' ? 'EasyTier' : 'App', entry.level.toUpperCase(), entry.module, entry.message, JSON.stringify(entry.details, null, 2)].join('\n');
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error('clipboard unavailable');
+      await navigator.clipboard.writeText(payload); ctx.notify('已复制这条日志');
+    } catch (_) {
+      let area = button.parentElement.querySelector('textarea');
+      if (!area) { area = el('textarea', 'eu-input eu-log-copy'); area.readOnly = true; area.rows = 6; area.id = ctx.uid('log-copy'); area.setAttribute('aria-label', '可复制的脱敏日志'); button.parentElement.append(area); }
+      area.value = payload; area.focus(); area.select(); ctx.notify('已选中日志，可使用系统复制');
+    }
+  }
+  function logRow(entry, view) {
+    const row = el('details', 'eu-log-entry'); row.dataset.logId = entry.id; row.id = ctx.uid('log-entry');
+    const summary = el('summary', 'cursor-interaction');
+    const meta = el('div', 'eu-log-meta');
+    const time = el('time', 'eu-log-time', timeLabel(entry.time)); time.dateTime = new Date(entry.time).toISOString();
+    const level = el('span', 'eu-log-level', entry.level.toUpperCase()); level.dataset.level = entry.level;
+    meta.append(time, el('span', 'eu-log-source', entry.source === 'core' ? 'EasyTier' : 'App'), level);
+    summary.append(meta, el('span', 'eu-log-message', entry.message));
+    const content = el('div', 'eu-log-body');
+    content.append(el('p', 'eu-subtle', entry.module), el('p', 'eu-subtle', (entry.networkId === null ? '全局' : ctx.networkLabel(entry.networkId)) + (entry.sessionId ? ' · 连接 ' + entry.sessionId : '') + ' · #' + entry.id));
+    if (Object.keys(entry.details).length) {
+      const fields = el('dl', 'eu-log-fields');
+      Object.entries(entry.details).forEach(([key, value]) => { fields.append(el('dt', '', key), el('dd', '', typeof value === 'object' ? JSON.stringify(value) : String(value))); });
+      content.append(fields);
+    }
+    const copy = ctx.button('复制这条日志', () => copyLog(entry, copy), 'eu-button eu-text-button'); copy.prepend(ctx.icon('copy')); content.append(copy);
+    row.append(summary, content);
+    summary.addEventListener('click', () => setReading(view));
+    row.addEventListener('toggle', () => { if (row.open) { view.open.add(entry.id); setReading(view); } else view.open.delete(entry.id); });
+    row.addEventListener('focusin', () => setReading(view));
+    return row;
+  }
+  function syncLogs(view, filterChanged = false) {
+    if (!visible(view.container)) return;
+    updateLogStatus(view);
+    if (view.mode === 'live') view.boundary = logSequence;
+    if (view.mode === 'reading' && !filterChanged && view.renderedOnce) return;
+    const chosen = logs.filter(entry => entry.id <= view.boundary && matchesLog(view, entry)).slice(-view.limit).reverse();
+    const keep = new Set(chosen.map(entry => entry.id));
+    const focused = document.activeElement?.closest?.('[data-log-id]');
+    const focusId = focused ? Number(focused.dataset.logId) : null;
+    for (const [id, node] of view.nodes) {
+      if (!keep.has(id) && (!node.open && id !== focusId || filterChanged)) { node.remove(); view.nodes.delete(id); }
+    }
+    let cursor = view.list.firstElementChild;
+    chosen.forEach(entry => {
+      let node = view.nodes.get(entry.id);
+      if (!node) { node = logRow(entry, view); view.nodes.set(entry.id, node); }
+      if (node !== cursor) view.list.insertBefore(node, cursor); else cursor = cursor.nextElementSibling;
+      node.open = view.open.has(entry.id);
+    });
+    view.empty.hidden = chosen.length > 0;
+    const matches = logs.filter(entry => entry.id <= view.boundary && matchesLog(view, entry));
+    view.older.hidden = matches.length <= view.limit;
+    view.renderedOnce = true;
+    updateLogStatus(view);
+  }
+  function mountLogs(route, container) {
+    const view = { route, container, source: 'all', level: 'all', query: '', scope: 'current', mode: 'live', boundary: logSequence, limit: 16, fixedSession: route.kind === 'scoped-logs' ? route.sessionId || networkSession(route.networkId) : null, nodes: new Map(), open: new Set(), renderedOnce: false };
+    container.classList.add('eu-monitor-logs'); container.dataset.monitorMode = 'live';
+    const header = el('div', 'eu-title-row'); header.append(el('h2', '', route.kind === 'scoped-logs' ? '相关日志' : '运行日志')); container.append(header);
+    view.scopeLabel = el('p', 'eu-subtle eu-log-scope'); container.append(view.scopeLabel);
+    if (route.kind !== 'scoped-logs') {
+      const scope = makeSelect('记录范围', [['current', '本次连接'], ['history', '此网络全部连接'], ['global', '全局']], view.scope, value => { view.scope = value; view.limit = 16; view.boundary = logSequence; view.readingSession = networkSession(view.route.networkId); syncLogs(view, true); });
+      view.scopeControl = scope.select; scope.select.dataset.logScope = ''; container.append(scope.wrap);
+    }
+    const sources = el('div', 'eu-chips eu-log-sources'); sources.setAttribute('aria-label', '日志来源');
+    [['all', '全部'], ['core', 'EasyTier'], ['app', 'App']].forEach(([value, text]) => {
+      const button = ctx.button(text, () => { view.source = value; view.limit = 16; for (const other of sources.children) other.setAttribute('aria-pressed', String(other === button)); syncLogs(view, true); }, 'eu-button eu-chip');
+      button.setAttribute('aria-pressed', String(value === 'all')); button.dataset.logSource = value; sources.append(button);
+    }); container.append(sources);
+    const filters = el('div', 'eu-log-filters');
+    const searchWrap = el('div', 'eu-field'); const search = el('input', 'eu-input'); search.id = ctx.uid('log-search'); search.type = 'search'; search.placeholder = '消息、模块或 IP'; search.dataset.logSearch = ''; search.autocomplete = 'off';
+    searchWrap.append(label(search.id, '搜索日志'), search); filters.append(searchWrap);
+    search.addEventListener('input', () => { view.query = search.value.trim(); view.limit = 16; syncLogs(view, true); });
+    const level = makeSelect('显示级别', [['all', '全部级别'], ['info', '信息及以上'], ['warn', '警告及以上'], ['error', '仅错误']], 'all', value => { view.level = value; view.limit = 16; syncLogs(view, true); }); level.select.dataset.logLevel = ''; filters.append(level.wrap); container.append(filters);
+    view.anchor = el('div', 'eu-log-reading-bar');
+    view.stateLabel = el('span', 'eu-subtle');
+    view.pause = ctx.button('暂停跟随', () => view.mode === 'live' ? setReading(view) : resumeLogs(view), 'eu-button eu-text-button'); view.pause.dataset.logFollow = ''; view.pause.setAttribute('aria-pressed', 'false');
+    view.anchor.append(view.stateLabel, view.pause); container.append(view.anchor);
+    view.pending = ctx.button('', () => resumeLogs(view), 'eu-button eu-tonal eu-log-pending'); view.pending.dataset.logPending = ''; view.pending.hidden = true; view.pending.setAttribute('aria-live', 'polite'); container.append(view.pending);
+    view.list = el('div', 'eu-log-list'); view.list.dataset.logList = ''; view.list.style.overflowAnchor = 'none'; container.append(view.list);
+    view.empty = el('div', 'eu-empty', '当前范围没有匹配的日志'); view.empty.dataset.logEmpty = ''; container.append(view.empty);
+    view.older = ctx.button('查看更早日志', () => { setReading(view); view.limit += 16; syncLogs(view, true); }, 'eu-button eu-text-button'); view.older.dataset.logOlder = ''; container.append(view.older);
+    const settings = el('details', 'eu-log-settings'); const summary = el('summary', 'cursor-interaction', '日志采集设置'); summary.prepend(ctx.icon('sliders-horizontal')); settings.append(summary);
+    const controls = el('div', 'eu-log-settings-body'); controls.append(el('p', 'eu-subtle', '全局设置，仅影响后续记录。上方筛选不改变采集。'));
+    view.captureControls = {};
+    for (const [key, title] of [['core', 'EasyTier 采集级别'], ['app', 'App 采集级别']]) {
+      const config = makeSelect(title, [['error', 'Error'], ['warn', 'Warn'], ['info', 'Info'], ['debug', 'Debug'], ...(key === 'core' ? [['trace', 'Trace']] : [])], capture[key], value => {
+        capture[key] = value; setText(view.settingsFeedback, (key === 'core' ? 'EasyTier' : 'App') + ' 已改为 ' + value.toUpperCase() + '，已有记录保留。');
+        for (const other of logViews.values()) updateLogStatus(other);
+      }); config.select.dataset.captureLevel = key; view.captureControls[key] = config.select; controls.append(config.wrap);
+    }
+    view.retention = el('p', 'eu-subtle'); controls.append(view.retention);
+    view.settingsFeedback = el('p', 'eu-subtle'); view.settingsFeedback.setAttribute('role', 'status'); controls.append(view.settingsFeedback); settings.append(controls); container.append(settings);
+    logViews.set(route.key, view); syncLogs(view, true);
+    ctx.onCleanup(route.key, () => logViews.delete(route.key));
+  }
+
+  function simulatedRates(elapsed, id) {
+    const phase = [...String(id)].reduce((sum, char) => sum + char.charCodeAt(0), 0) % 11;
+    const x = elapsed / 1000 + phase;
+    const cycle = ((x % 90) + 90) % 90;
+    const multiplier = id === 'home' ? 1 : .42;
+    // 示意业务下载、上传与闲置阶段；不把底层保活计入 VPN 业务流量。
+    if (cycle >= 13 && cycle < 36) {
+      const envelope = Math.sin(Math.PI * (cycle - 13) / 23);
+      return { rx: multiplier * envelope * (620 + 85 * Math.sin(x * .8)), tx: multiplier * envelope * (38 + 12 * Math.sin(x * .6)) };
+    }
+    if (cycle >= 39 && cycle < 49) {
+      const envelope = Math.sin(Math.PI * (cycle - 39) / 10);
+      return { rx: multiplier * envelope * 115, tx: multiplier * envelope * 72 };
+    }
+    if (cycle >= 64 && cycle < 78) {
+      const envelope = Math.sin(Math.PI * (cycle - 64) / 14);
+      return { rx: multiplier * envelope * 47, tx: multiplier * envelope * (360 + 55 * Math.sin(x * .7)) };
+    }
+    return { rx: 0, tx: 0 };
+  }
+  function appendSample(data, mono, wall, nextRx, nextTx, forceGap = false) {
+    const previous = data.previous;
+    const dt = previous ? (mono - previous.mono) / 1000 : 0;
+    const valid = !forceGap && previous && dt > 0 && dt <= 3 && nextRx >= previous.rx && nextTx >= previous.tx;
+    const sample = { mono, wall, rx: valid ? (nextRx - previous.rx) / dt / 1024 : null, tx: valid ? (nextTx - previous.tx) / dt / 1024 : null };
+    data.samples.push(sample);
+    data.samples = data.samples.filter(item => item.mono >= mono - 65000);
+    data.rxBytes = nextRx; data.txBytes = nextTx;
+    data.previous = { mono, rx: nextRx, tx: nextTx }; data.lastMono = mono; data.lastWall = wall;
+  }
+  function newSession(runtime) {
+    if (!runtime?.networkId || !runtime.sessionId) return;
+    const old = trafficByNetwork.get(runtime.networkId);
+    const key = runtime.sessionId + ':' + runtime.generation;
+    if (old?.key === key) return;
+    const mono = monoNow(), wall = wallNow();
+    const historySeconds = !old && runtime.phase === 'connected' ? Math.max(0, Math.min(60, Math.floor((wall - Number(runtime.startedAt || wall)) / 1000))) : 0;
+    const data = { networkId: runtime.networkId, sessionId: runtime.sessionId, key, generation: runtime.generation, active: true, samples: [], rxBytes: 0, txBytes: 0, previous: null, lastMono: mono, lastWall: wall, startedMono: mono - historySeconds * 1000 };
+    for (let seconds = historySeconds; seconds >= 0; seconds--) {
+      const at = mono - seconds * 1000, rates = simulatedRates(at - data.startedMono, data.networkId);
+      appendSample(data, at, wall - seconds * 1000, data.rxBytes + Math.round(rates.rx * 1024), data.txBytes + Math.round(rates.tx * 1024));
+    }
+    if (!historySeconds) { data.rxBytes = 0; data.txBytes = 0; data.previous = { mono, rx: 0, tx: 0 }; data.samples = [{ mono, wall, rx: null, tx: null }]; }
+    trafficByNetwork.set(runtime.networkId, data);
+    const sessions = sessionsByNetwork.get(runtime.networkId) || [];
+    if (!sessions.some(session => session.id === runtime.sessionId)) sessions.push({ id: runtime.sessionId, startedAt: wall, endedAt: null });
+    sessionsByNetwork.set(runtime.networkId, sessions.slice(-8));
+    addLog('core', 'info', 'easytier::instance', '网络实例已进入运行状态', { sessionId: runtime.sessionId }, runtime.networkId);
+    addLog('app', 'info', 'VpnService', '虚拟网卡与路由已就绪', { sessionId: runtime.sessionId }, runtime.networkId);
+    const nas = ctx.peer(runtime.networkId, 'nas');
+    if (nas) addLog('core', 'info', 'easytier::peer', '已连接 ' + nas.name, { address: nas.ip, sessionId: runtime.sessionId }, runtime.networkId, 'nas');
+    addLog('core', 'info', 'easytier::route', '组网路由已同步', { sessionId: runtime.sessionId }, runtime.networkId);
+    for (const view of chartViews) { if (view.networkId === runtime.networkId) drawChart(view); }
+  }
+  function stopSession(networkId) {
+    const data = trafficByNetwork.get(networkId);
+    if (data && data.active) {
+      appendSample(data, monoNow(), wallNow(), data.rxBytes, data.txBytes, true); data.active = false; data.previous = null;
+      const session = latestSession(networkId); if (session) session.endedAt = wallNow();
+    }
+    for (const view of chartViews) if (view.networkId === networkId) drawChart(view);
+  }
+  function snapshot(networkId) {
+    const data = trafficByNetwork.get(networkId);
+    if (!data?.active || !ctx.isRunning(networkId) || ctx.runtime()?.sessionId !== data.sessionId) return null;
+    const latest = data.samples[data.samples.length - 1];
+    const sample = latest && monoNow() - latest.mono <= 3000 ? latest : null;
+    return { rxRate: sample?.rx ?? null, txRate: sample?.tx ?? null, rxBytes: data.rxBytes, txBytes: data.txBytes };
+  }
+  function svgNode(tag, attrs = {}, content) {
+    const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, String(value));
+    if (content !== undefined) node.textContent = String(content); return node;
+  }
+  function scale(domain, range) {
+    if (typeof d3 !== 'undefined') return d3.scaleLinear().domain(domain).range(range);
+    return value => range[0] + (value - domain[0]) / (domain[1] - domain[0]) * (range[1] - range[0]);
+  }
+  function chartSource(view) {
+    const data = trafficByNetwork.get(view.networkId);
+    const runtime = ctx.runtime();
+    if (!data?.active || !ctx.isRunning(view.networkId) || runtime?.sessionId !== data.sessionId) return null;
+    return { samples: data.samples, end: monoNow(), key: data.key };
+  }
+  function drawChart(view) {
+    if (!visible(view.container)) return;
+    const source = chartSource(view);
+    view.empty.hidden = !!source; view.chartBox.hidden = !source; view.metrics.hidden = !source;
+    view.status.hidden = true;
+    if (!source) { setText(view.rx, '—'); setText(view.tx, '—'); view.container.dataset.trafficState = 'disconnected'; return; }
+    const end = source.end, start = end - 60000;
+    const samples = source.samples.filter(sample => sample.mono >= start && sample.mono <= end);
+    const width = Math.max(220, Math.round(view.chartBox.getBoundingClientRect().width || 340));
+    const height = 250, left = 64, right = width - 12, top = 20, bottom = 220;
+    const values = samples.flatMap(sample => [sample.rx, sample.tx]).filter(value => Number.isFinite(value));
+    const peak = values.length ? Math.max(...values) : 0, maximum = peak > 0 ? Math.ceil(peak * 1.12 / 10) * 10 : 1;
+    const x = scale([start, end], [left, right]), y = scale([0, maximum], [bottom, top]);
+    view.svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height); view.svg.style.height = height + 'px';
+    for (const rect of [view.frame, view.clipRect]) for (const [key, value] of Object.entries({ x: left, y: top, width: right - left, height: bottom - top })) rect.setAttribute(key, value);
+    [0, maximum / 2, maximum].forEach((value, index) => {
+      const grid = view.grids[index]; grid.setAttribute('x1', left); grid.setAttribute('x2', right); grid.setAttribute('y1', y(value)); grid.setAttribute('y2', y(value));
+      const tick = view.yTicks[index]; tick.setAttribute('x', left - 8); tick.setAttribute('y', y(value) + 4); setText(tick, number.format(value));
+    });
+    const marks = [[start, '60 秒前'], [(start + end) / 2, '30 秒前'], [end, '现在']];
+    marks.forEach(([at, text], index) => { const tick = view.xTicks[index]; tick.setAttribute('x', x(at)); tick.setAttribute('y', bottom + 23); tick.setAttribute('visibility', index === 1 && width < 310 ? 'hidden' : 'visible'); setText(tick, text); });
+    for (const key of ['rx', 'tx']) {
+      let path = '';
+      if (typeof d3 !== 'undefined') path = d3.line().defined(sample => Number.isFinite(sample[key])).x(sample => x(sample.mono)).y(sample => y(sample[key]))(samples) || '';
+      else { let started = false; for (const sample of samples) { if (!Number.isFinite(sample[key])) { started = false; continue; } path += (started ? 'L' : 'M') + x(sample.mono).toFixed(2) + ',' + y(sample[key]).toFixed(2); started = true; } }
+      view.paths[key].setAttribute('d', path);
+    }
+    const latest = samples[samples.length - 1];
+    const fresh = latest && end - latest.mono <= 3000 && Number.isFinite(latest.rx) && Number.isFinite(latest.tx);
+    setText(view.rx, fresh ? number.format(latest.rx) : '—');
+    setText(view.tx, fresh ? number.format(latest.tx) : '—');
+    view.status.hidden = !!fresh;
+    if (!fresh) setText(view.status, values.length ? '暂无新采样' : '正在等待流量数据');
+    view.container.dataset.trafficState = fresh ? 'ready' : 'waiting';
+  }
+  function makeChart(container, networkId, routeKey) {
+    const view = { container, networkId, routeKey, resize: null };
+    container.classList.add('eu-monitor-traffic'); container.dataset.trafficNetwork = networkId;
+    const head = el('div', 'eu-title-row'); head.append(el('h2', '', '实时流量')); container.append(head);
+    container.append(el('p', 'eu-subtle', '本机 VPN 流量 · 最近 60 秒'));
+    view.empty = el('div', 'eu-empty', '连接此网络后显示实时流量'); container.append(view.empty);
+    view.metrics = el('div', 'eu-traffic-values');
+    for (const key of ['rx', 'tx']) {
+      const metric = el('div', 'eu-traffic-value'); const name = el('span', 'eu-subtle'); const swatch = el('span', 'eu-chart-swatch eu-chart-swatch-' + key); name.append(swatch, document.createTextNode(key === 'rx' ? '下行' : '上行'));
+      const data = el('div', 'eu-traffic-number'); view[key] = el('span', '', '—'); view[key].dataset.trafficRate = key; data.append(view[key], el('span', 'eu-traffic-unit', 'KiB/s')); metric.append(name, data); view.metrics.append(metric);
+    } container.append(view.metrics);
+    view.chartBox = el('div', 'eu-chart-box');
+    view.svg = svgNode('svg', { class: 'eu-traffic-chart', role: 'img', 'aria-label': '本机 VPN 最近 60 秒上下行流量趋势，实线下行，虚线上行' });
+    view.svg.append(svgNode('title', {}, '本机 VPN 流量'), svgNode('desc', {}, '最近 60 秒，单位 KiB/s。实线下行，虚线上行。缺少采样时显示断点。'));
+    const clipId = ctx.uid('traffic-clip'); const defs = svgNode('defs'); const clip = svgNode('clipPath', { id: clipId }); view.clipRect = svgNode('rect'); clip.append(view.clipRect); defs.append(clip); view.svg.append(defs);
+    view.frame = svgNode('rect', { fill: 'none', class: 'eu-chart-frame', 'data-chart-frame': '' }); view.svg.append(view.frame);
+    view.grids = []; view.yTicks = []; view.xTicks = [];
+    for (let index = 0; index < 3; index++) {
+      const grid = svgNode('line', { class: 'eu-chart-grid' }), tick = svgNode('text', { 'text-anchor': 'end', class: 'eu-chart-tick' }); view.grids.push(grid); view.yTicks.push(tick); view.svg.append(grid, tick);
+    }
+    view.svg.append(svgNode('text', { x: 0, y: 12, 'data-axis': 'y', class: 'eu-chart-axis' }, 'KiB/s'));
+    for (let index = 0; index < 3; index++) { const tick = svgNode('text', { 'text-anchor': index === 0 ? 'start' : index === 2 ? 'end' : 'middle', class: 'eu-chart-tick', ...(index === 1 ? { 'data-axis': 'x' } : {}) }); view.xTicks.push(tick); view.svg.append(tick); }
+    const lines = svgNode('g', { 'clip-path': 'url(#' + clipId + ')' }); view.paths = {};
+    for (const key of ['rx', 'tx']) { view.paths[key] = svgNode('path', { class: 'eu-chart-line eu-chart-line-' + key, fill: 'none' }); lines.append(view.paths[key]); } view.svg.append(lines);
+    view.chartBox.append(view.svg); container.append(view.chartBox);
+    view.status = el('p', 'eu-subtle eu-traffic-status'); view.status.hidden = true; container.append(view.status);
+    chartViews.add(view);
+    if (typeof ResizeObserver !== 'undefined') { view.resize = new ResizeObserver(() => drawChart(view)); view.resize.observe(view.chartBox); }
+    if (routeKey) ctx.onCleanup(routeKey, () => { view.resize?.disconnect(); chartViews.delete(view); });
+    drawChart(view); return view;
+  }
+  function mountOverview(container, networkId) { return makeChart(container, networkId, ctx.currentRoute()?.key); }
+  function mount(route, container) {
+    if (route.kind === 'logs' || route.kind === 'scoped-logs') mountLogs(route, container);
+  }
+  function refresh(route, container) {
+    if (route.kind === 'logs' || route.kind === 'scoped-logs') { const view = logViews.get(route.key); if (view) syncLogs(view); }
+    for (const chart of chartViews) if (chart.container === container || chart.routeKey === route.key) drawChart(chart);
+  }
+  function tick() {
+    if (disposed) return;
+    const runtime = ctx.runtime(); const mono = monoNow(), wall = wallNow(); tickNumber++;
+    if (runtime?.phase === 'connected') {
+      const data = trafficByNetwork.get(runtime.networkId);
+      if (data?.active && data.sessionId === runtime.sessionId) {
+        const dt = (mono - data.lastMono) / 1000;
+        if (document.hidden) { data.previous = null; data.lastMono = mono; }
+        else if (dt > 0) {
+          const rates = simulatedRates(mono - data.startedMono, data.networkId);
+          appendSample(data, mono, wall, data.rxBytes + Math.round(rates.rx * 1024 * dt), data.txBytes + Math.round(rates.tx * 1024 * dt), dt > 3);
+        }
+        if (tickNumber % 7 === 0) addLog('core', 'info', 'easytier::peer_manager', '设备连接状态已更新', { sessionId: runtime.sessionId }, runtime.networkId);
+        if (tickNumber % 11 === 0) addLog('app', 'info', 'NetworkMonitor', '底层网络保持可用', { transport: 'Wi-Fi', sessionId: runtime.sessionId }, runtime.networkId);
+        if (tickNumber % 3 === 0) addLog('app', 'debug', 'TrafficSampler', '已更新本机 VPN 流量采样', { sessionId: runtime.sessionId }, runtime.networkId);
+      }
+    }
+    if (document.hidden) return;
+    for (const chart of chartViews) if (visible(chart.container)) drawChart(chart);
+    for (const view of logViews.values()) if (visible(view.container)) { if (view.mode === 'live') syncLogs(view); else updateLogStatus(view); }
+  }
+  function onScroll() {
+    const next = window.scrollY;
+    if (next > lastScrollY + 2) for (const view of logViews.values()) {
+      if (view.mode === 'live' && visible(view.container) && view.list.getBoundingClientRect().top < -48) setReading(view);
+    }
+    lastScrollY = next;
+  }
+  if (typeof window !== 'undefined') window.addEventListener('scroll', onScroll, { passive: true });
+  function dispose() { disposed = true; if (typeof window !== 'undefined') window.removeEventListener('scroll', onScroll); for (const view of chartViews) view.resize?.disconnect(); chartViews.clear(); logViews.clear(); }
+  addLog('app', 'info', 'AppLifecycle', '应用已就绪', { component: 'Android 客户端' });
+  return { mount, mountOverview, refresh, tick, addLog, newSession, stopSession, snapshot, dispose };
+}
+
+
+  configModule=createConfigModule(ctx,catalogue);
+  monitorModule=createMonitorModule(ctx);
+  byId('eu-rename-form').addEventListener('submit',submitRename);
+  byId('eu-rename-cancel').addEventListener('click',closeRename);
+  byId('eu-rename-dialog').addEventListener('cancel',event=>{event.preventDefault();closeRename();});
+  byId('eu-rename-dialog').addEventListener('close',finishRename);
+  byId('eu-rename-input').addEventListener('input',()=>{byId('eu-rename-error').hidden=true;byId('eu-rename-input').setAttribute('aria-invalid','false');});
+  byId('eu-back').addEventListener('click',back);
+  byId('eu-network').addEventListener('click',()=>go({kind:'network-picker',networkId:state.selectedId}));
+  byId('eu-settings').addEventListener('click',()=>go({kind:'settings',networkId:currentRoute().networkId}));
+  byId('eu-runtime-return').addEventListener('click',()=>{if(state.runtime)selectNetwork(state.runtime.networkId);});
+  root.querySelectorAll('[data-tab]').forEach(node=>node.addEventListener('click',()=>tab(node.dataset.tab)));
+  root.addEventListener('keydown',event=>{if(event.key==='Escape'&&getStack().length>1){event.preventDefault();back();}});
+  monitorModule.newSession(state.runtime);
+  showCurrent(false);
+  const timer=setInterval(()=>{monitorModule.tick();if(typeof document!=='undefined'&&document.hidden)return;const entry=currentView();if(entry&&['devices','peer'].includes(entry.route.kind))updatePeerRates(entry.node,entry.route.networkId);},1000);
+  if(typeof window!=='undefined')window.addEventListener('pagehide',()=>{clearInterval(timer);if(toastTimer!==null)clearTimeout(toastTimer);if(snackbarTimer!==null)clearTimeout(snackbarTimer);renameSession=null;monitorModule.dispose();},{once:true});
+})();
+</script>

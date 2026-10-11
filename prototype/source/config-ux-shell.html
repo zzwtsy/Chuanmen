@@ -1,0 +1,509 @@
+<div id="easytier-unified" class="viz-dotted-background">
+  <div class="eu-preview-note">Chuanmen 交互原型 · 设备、流量与日志均为模拟数据</div>
+  <section class="eu-app" data-theme="system" data-seed="iris" aria-label="Chuanmen 安卓客户端">
+    <header class="eu-appbar">
+      <button type="button" id="eu-back" class="eu-icon-button cursor-interaction" aria-label="返回上一步" hidden><i data-lucide="arrow-left" aria-hidden="true"></i></button>
+      <button type="button" id="eu-network" class="eu-network-button cursor-interaction" aria-label="选择查看的网络"><span class="eu-network-symbol"><i data-lucide="network" aria-hidden="true"></i></span><span class="eu-network-copy"><span id="eu-network-name">家庭网络</span><span id="eu-network-state" class="eu-subtle">已连接</span></span><i data-lucide="chevron-down" aria-hidden="true"></i></button>
+      <div id="eu-route-heading" class="eu-route-heading" hidden><span id="eu-route-title"></span><span id="eu-route-network" class="eu-subtle"></span></div>
+      <button type="button" id="eu-settings" class="eu-icon-button cursor-interaction" aria-label="设置"><i data-lucide="settings-2" aria-hidden="true"></i></button>
+    </header>
+    <div id="eu-runtime-banner" class="eu-runtime-banner" hidden><span id="eu-runtime-text"></span><button type="button" id="eu-runtime-return" class="eu-text-button cursor-interaction">查看</button></div>
+    <div id="eu-operation" class="eu-operation" role="status" hidden></div>
+    <main id="eu-view-host" class="eu-view-host"></main>
+    <footer class="eu-bottom-chrome">
+      <div class="eu-snackbar-layer"><p id="eu-snackbar" class="eu-snackbar" role="status" aria-live="polite" hidden></p></div>
+      <div id="eu-config-dock" class="eu-config-dock" hidden></div>
+      <nav class="eu-nav" aria-label="主导航">
+      <button type="button" id="eu-tab-overview" class="eu-nav-item cursor-interaction" data-tab="overview" aria-current="page"><span><i data-lucide="layout-dashboard" aria-hidden="true"></i></span>总览</button>
+      <button type="button" id="eu-tab-devices" class="eu-nav-item cursor-interaction" data-tab="devices"><span><i data-lucide="monitor-smartphone" aria-hidden="true"></i></span>设备</button>
+      <button type="button" id="eu-tab-config" class="eu-nav-item cursor-interaction" data-tab="config"><span><i data-lucide="sliders-horizontal" aria-hidden="true"></i></span>配置</button>
+      <button type="button" id="eu-tab-logs" class="eu-nav-item cursor-interaction" data-tab="logs"><span><i data-lucide="logs" aria-hidden="true"></i></span>日志</button>
+      </nav>
+    </footer>
+    <div class="eu-toast-layer"><p id="eu-toast" class="eu-toast" role="status" aria-live="polite" hidden></p></div>
+    <p id="eu-feedback" class="eu-feedback" role="status" hidden></p>
+    <dialog id="eu-rename-dialog" class="eu-rename-dialog" aria-labelledby="eu-rename-title" aria-describedby="eu-rename-hint">
+      <form id="eu-rename-form">
+        <h2 id="eu-rename-title">重命名配置</h2>
+        <p id="eu-rename-hint" class="eu-subtle">仅修改本机显示名称，不影响网络连接。</p>
+        <label class="eu-field" for="eu-rename-input"><span>配置名称</span><input id="eu-rename-input" class="eu-input" name="profileLabel" type="text" autocomplete="off" required aria-describedby="eu-rename-error"></label>
+        <p id="eu-rename-error" class="eu-error" role="alert" hidden></p>
+        <div class="eu-rename-actions">
+          <button id="eu-rename-cancel" class="eu-text-button cursor-interaction" type="button" data-rename-action="cancel">取消</button>
+          <button class="eu-button eu-primary cursor-interaction" type="submit" data-rename-action="save">保存名称</button>
+        </div>
+      </form>
+    </dialog>
+  </section>
+</div>
+<style>
+#easytier-unified { padding: 16px 10px 24px; }
+#easytier-unified .eu-preview-note { text-align:center; font:400 12px/1.5 system-ui,sans-serif; margin:0 auto 10px; color:light-dark(#68616e,#c8bfce); }
+#easytier-unified .eu-app {
+  --eu-bg:light-dark(#fbf8ff,#17141d); --eu-surface:light-dark(#f0ecf6,#25212c); --eu-raised:light-dark(#e9e2f0,#302a39); --eu-text:light-dark(#27232d,#eee7f4); --eu-muted:light-dark(#625b6c,#c6bdce); --eu-primary:light-dark(#67508e,#d3bdf5); --eu-on-primary:light-dark(#ffffff,#38234f); --eu-tonal:light-dark(#ebddff,#4a365f); --eu-on-tonal:light-dark(#38214f,#efddff); --eu-line:light-dark(#d9d1e1,#4c4256); --eu-error:light-dark(#a72b32,#ffb3b6); --eu-error-bg:light-dark(#ffe8e8,#482127); --eu-success:light-dark(#31674c,#a5d4b7); --eu-chart-rx:light-dark(#67508e,#d3bdf5); --eu-chart-tx:light-dark(#346d62,#a0d6c8); --eu-shadow:light-dark(#35213e13,#00000033); --eu-sticky-offset:0px;
+  width:100%; max-width:30rem; margin:0 auto; border-radius:28px; background:var(--eu-bg); color:var(--eu-text); box-shadow:0 12px 36px var(--eu-shadow); font:400 16px/1.5 "Roboto","Noto Sans SC",system-ui,sans-serif; color-scheme:inherit; overflow:clip;
+}
+#easytier-unified .eu-app[data-theme="light"] { color-scheme:light; }
+#easytier-unified .eu-app[data-theme="dark"] { color-scheme:dark; }
+#easytier-unified .eu-app[data-seed="teal"] { --eu-bg:light-dark(#f7fbf7,#111a16); --eu-surface:light-dark(#eaf1eb,#202c25); --eu-raised:light-dark(#ddeae0,#2d3a31); --eu-text:light-dark(#1e2b23,#e0efe4); --eu-muted:light-dark(#526458,#bdcec2); --eu-primary:light-dark(#356b51,#a3d5b4); --eu-on-primary:light-dark(#fff,#093823); --eu-tonal:light-dark(#c9eed5,#2a523b); --eu-on-tonal:light-dark(#173d27,#cbedda); --eu-line:light-dark(#ccdace,#425448); --eu-chart-rx:light-dark(#356b51,#a3d5b4); --eu-chart-tx:light-dark(#71577d,#dcbbe8); }
+#easytier-unified .eu-app[data-seed="amber"] { --eu-bg:light-dark(#fff9f1,#1c170f); --eu-surface:light-dark(#f5ecdd,#2b241a); --eu-raised:light-dark(#eddfc9,#3b3122); --eu-text:light-dark(#34291b,#f5e7d5); --eu-muted:light-dark(#6c5d46,#d1c3ac); --eu-primary:light-dark(#805b21,#ecc47e); --eu-on-primary:light-dark(#fff,#442c00); --eu-tonal:light-dark(#ffdfac,#5d441b); --eu-on-tonal:light-dark(#4a330d,#ffe3b5); --eu-line:light-dark(#dfd2bd,#564936); --eu-chart-rx:light-dark(#805b21,#ecc47e); --eu-chart-tx:light-dark(#4a6787,#b5cde8); }
+#easytier-unified .eu-app *, #easytier-unified .eu-app *::before, #easytier-unified .eu-app *::after { box-sizing:border-box; }
+#easytier-unified .eu-app [hidden] { display:none !important; }
+#easytier-unified .eu-app :is(h1,h2,h3,p,dl,dd) { margin:0; }
+#easytier-unified .eu-app :where(button,input,select,textarea) { font:inherit; color:inherit; }
+#easytier-unified .eu-app :is(button,p,span,label,summary,h1,h2,h3,dd,dt) { min-width:0; overflow-wrap:anywhere; }
+#easytier-unified .eu-app button { border:0; }
+#easytier-unified .eu-app button:disabled { opacity:.48; }
+#easytier-unified .eu-app :is(i[data-lucide],svg[data-lucide]) { width:20px; height:20px; flex-shrink:0; vertical-align:middle; }
+#easytier-unified .eu-appbar { display:flex; align-items:center; gap:4px; padding:12px 12px 10px; background:var(--eu-bg); }
+#easytier-unified .eu-icon-button { min-width:48px; min-height:48px; display:inline-flex; align-items:center; justify-content:center; border-radius:24px; background:transparent; flex-shrink:0; }
+#easytier-unified .eu-icon-button:active { background:var(--eu-raised); }
+#easytier-unified .eu-network-button { display:flex; flex:1; align-items:center; gap:10px; text-align:left; padding:4px 8px; border-radius:18px; min-height:52px; background:transparent; }
+#easytier-unified .eu-network-copy, #easytier-unified .eu-route-heading { display:flex; flex:1; flex-direction:column; min-width:0; }
+#easytier-unified .eu-network-copy > :first-child, #easytier-unified .eu-route-heading > :first-child { font-weight:500; }
+#easytier-unified .eu-network-symbol { display:flex; padding:10px; border-radius:15px; color:var(--eu-on-tonal); background:var(--eu-tonal); }
+#easytier-unified .eu-subtle, #easytier-unified .eu-label { color:var(--eu-muted); font-size:13px; }
+#easytier-unified .eu-label { font-weight:500; }
+#easytier-unified .eu-view-host { padding:0 18px 20px; }
+#easytier-unified .eu-screen { min-width:0; }
+#easytier-unified .eu-title-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:8px 0 16px; }
+#easytier-unified .eu-title-row h1 { font-size:24px; font-weight:500; line-height:1.3; }
+#easytier-unified .eu-title-row h2, #easytier-unified h2 { font-size:18px; font-weight:500; line-height:1.35; }
+#easytier-unified h3 { font-size:16px; font-weight:500; }
+#easytier-unified .eu-section { margin-top:24px; }
+#easytier-unified .eu-list { display:flex; flex-direction:column; gap:2px; border-radius:20px; overflow:clip; }
+#easytier-unified .eu-row { display:flex; align-items:center; gap:12px; width:100%; min-height:70px; padding:12px 14px; text-align:left; background:var(--eu-surface); }
+#easytier-unified button.eu-row:active { background:var(--eu-raised); }
+#easytier-unified .eu-row-copy { flex:1; display:flex; flex-direction:column; gap:3px; min-width:0; }
+#easytier-unified .eu-row-title { font-weight:500; }
+#easytier-unified .eu-row-icon { color:var(--eu-primary); flex-shrink:0; }
+#easytier-unified .eu-button { min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:11px 19px; border-radius:24px; background:var(--eu-surface); text-align:center; line-height:1.4; font-weight:500; }
+#easytier-unified .eu-primary { color:var(--eu-on-primary); background:var(--eu-primary); }
+#easytier-unified .eu-tonal { color:var(--eu-on-tonal); background:var(--eu-tonal); }
+#easytier-unified .eu-text-button { min-height:48px; display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:8px 10px; border-radius:16px; background:transparent; color:var(--eu-primary); font-size:14px; font-weight:500; line-height:1.4; }
+#easytier-unified .eu-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:14px; }
+#easytier-unified .eu-actions .eu-primary { flex-grow:1; }
+#easytier-unified .eu-chip { display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:48px; padding:8px 12px; border-radius:14px; background:var(--eu-surface); color:var(--eu-text); font-size:14px; }
+#easytier-unified .eu-chip[aria-pressed="true"] { background:var(--eu-tonal); color:var(--eu-on-tonal); }
+#easytier-unified .eu-chips { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
+#easytier-unified .eu-field { display:flex; flex-direction:column; gap:7px; margin:16px 0; }
+#easytier-unified .eu-input, #easytier-unified .eu-select, #easytier-unified .eu-app textarea { width:100%; min-width:0; max-width:100%; min-height:52px; border:1px solid var(--eu-line); border-radius:13px; padding:12px; background:var(--eu-bg); color:var(--eu-text); font-size:16px; line-height:1.5; }
+#easytier-unified .eu-app textarea { resize:vertical; }
+#easytier-unified .eu-select { padding-right:25px; }
+#easytier-unified .eu-notice { display:flex; flex-direction:column; gap:6px; border-radius:16px; padding:12px 14px; background:var(--eu-surface); font-size:14px; margin:12px 0; }
+#easytier-unified .eu-error { color:var(--eu-error); }
+#easytier-unified .eu-empty { text-align:center; padding:32px 12px; color:var(--eu-muted); }
+#easytier-unified .eu-empty h2 { color:var(--eu-text); margin:12px 0 8px; }
+#easytier-unified .eu-empty > i, #easytier-unified .eu-empty > svg { width:36px; height:36px; }
+#easytier-unified .eu-bottom-chrome { position:sticky; bottom:0; z-index:5; background:var(--eu-surface); }
+#easytier-unified .eu-config-dock { min-width:0; background:var(--eu-surface); }
+#easytier-unified .eu-nav { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px; padding:8px 8px 12px; background:var(--eu-surface); }
+#easytier-unified .eu-nav-item { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-height:64px; padding:2px; background:transparent; font-size:13px; }
+#easytier-unified .eu-nav-item > span { width:58px; min-height:30px; display:flex; justify-content:center; align-items:center; border-radius:20px; }
+#easytier-unified .eu-nav-item[aria-current="page"] { font-weight:500; }
+#easytier-unified .eu-nav-item[aria-current="page"] > span { background:var(--eu-tonal); color:var(--eu-on-tonal); }
+#easytier-unified .eu-runtime-banner { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:2px 14px 2px 20px; font-size:13px; background:var(--eu-surface); }
+#easytier-unified .eu-operation { margin:0 18px 10px; padding:10px 12px; border-radius:13px; background:var(--eu-tonal); color:var(--eu-on-tonal); font-size:13px; }
+#easytier-unified .eu-operation[data-phase="error"] { background:var(--eu-error-bg); color:var(--eu-error); }
+#easytier-unified .eu-feedback { margin:0; padding:12px 18px; font-size:13px; background:var(--eu-raised); }
+#easytier-unified .eu-toast-layer { position:sticky; bottom:98px; height:0; z-index:20; display:flex; justify-content:center; pointer-events:none; }
+#easytier-unified .eu-toast { position:absolute; bottom:0; max-width:calc(100% - 36px); border-radius:24px; padding:12px 20px; background:var(--eu-text); color:var(--eu-bg); font-size:14px; line-height:1.5; text-align:center; box-shadow:0 3px 14px var(--eu-shadow); }
+#easytier-unified .eu-snackbar-layer { position:relative; height:0; z-index:20; pointer-events:none; }
+#easytier-unified .eu-snackbar { position:absolute; inset-inline:12px; bottom:12px; border-radius:14px; padding:14px 16px; background:var(--eu-text); color:var(--eu-bg); font-size:14px; line-height:1.5; box-shadow:0 3px 14px var(--eu-shadow); overflow-wrap:anywhere; }
+#easytier-unified .eu-rename-dialog { position:absolute; inset:auto; left:50%; transform:translateX(-50%); width:400px; max-width:calc(100% - 40px); margin:0; padding:24px; border:0; border-radius:28px; background:var(--eu-raised); color:var(--eu-text); font:inherit; overflow:visible; box-shadow:0 12px 36px var(--eu-shadow); }
+#easytier-unified .eu-rename-dialog::backdrop { background:light-dark(#17141d66,#00000088); }
+#easytier-unified .eu-rename-dialog h2 { margin-bottom:8px; font-size:22px; }
+#easytier-unified .eu-rename-dialog .eu-subtle { font-size:14px; }
+#easytier-unified .eu-rename-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; margin-top:20px; }
+#easytier-unified .eu-new-label { margin-bottom:24px; }
+#easytier-unified .eu-new-label .eu-subtle { font-size:13px; }
+#easytier-unified .eu-connection { background:var(--eu-tonal); color:var(--eu-on-tonal); border-radius:25px; padding:20px; }
+#easytier-unified .eu-connection[data-phase="idle"] { background:var(--eu-surface); color:var(--eu-text); }
+#easytier-unified .eu-connection[data-phase="error"] { background:var(--eu-error-bg); color:var(--eu-error); }
+#easytier-unified .eu-connection-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+#easytier-unified .eu-connection h1 { font-size:30px; line-height:1.2; font-weight:500; letter-spacing:-.03em; margin:4px 0 7px; }
+#easytier-unified .eu-connection-symbol { width:46px; height:46px; display:flex; align-items:center; justify-content:center; border-radius:18px; background:var(--eu-bg); color:var(--eu-primary); }
+#easytier-unified .eu-connection .eu-subtle { color:inherit; }
+#easytier-unified .eu-address { display:flex; align-items:center; gap:4px; margin-top:10px; }
+#easytier-unified .eu-address code { font-family:ui-monospace,monospace; font-size:18px; }
+#easytier-unified .eu-copy-ip { color:inherit; }
+#easytier-unified .eu-connection-action { margin-top:12px; width:100%; }
+#easytier-unified .eu-network-devices { display:flex; align-items:center; gap:10px; width:100%; min-height:56px; margin-top:7px; padding:9px 2px; border-radius:12px; background:transparent; color:inherit; text-align:left; }
+#easytier-unified .eu-network-devices .eu-row-title { font-size:15px; }
+#easytier-unified .eu-network-devices .eu-subtle { font-size:13px; }
+#easytier-unified .eu-network-devices > :last-child { width:18px; }
+#easytier-unified .eu-overview-traffic { margin-top:24px; }
+#easytier-unified .eu-count { font-size:13px; color:var(--eu-muted); background:var(--eu-surface); border-radius:20px; padding:3px 9px; }
+#easytier-unified .eu-peer { margin-bottom:8px; border-radius:19px; background:var(--eu-surface); overflow:clip; }
+#easytier-unified .eu-peer summary { display:flex; align-items:center; gap:12px; min-height:78px; padding:13px; list-style:none; }
+#easytier-unified .eu-peer summary::-webkit-details-marker { display:none; }
+#easytier-unified .eu-peer-brief { padding:0 14px 14px; }
+#easytier-unified .eu-peer-brief dl { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+#easytier-unified .eu-peer-brief dt, #easytier-unified .eu-metric dt { font-size:13px; color:var(--eu-muted); }
+#easytier-unified .eu-peer-brief dd { margin-top:3px; font-size:14px; }
+#easytier-unified .eu-peer-rates { font-size:13px; color:var(--eu-muted); font-variant-numeric:tabular-nums; margin-top:3px; }
+#easytier-unified .eu-peer-title { display:flex; align-items:flex-start; gap:12px; margin:5px 0 18px; }
+#easytier-unified .eu-peer-title > :first-child { margin-top:9px; }
+#easytier-unified .eu-peer-title .eu-address { margin-top:4px; }
+#easytier-unified .eu-peer-title .eu-address code { font-size:18px; }
+#easytier-unified .eu-peer-title h1 { font-size:25px; font-weight:500; }
+#easytier-unified .eu-data-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; border-radius:19px; overflow:clip; }
+#easytier-unified .eu-metric { padding:13px; background:var(--eu-surface); }
+#easytier-unified .eu-metric dd { margin-top:5px; font-size:15px; font-variant-numeric:tabular-nums; }
+#easytier-unified .eu-definition-row { display:flex; align-items:start; justify-content:space-between; gap:14px; padding:12px 0; border-bottom:1px solid var(--eu-line); font-size:14px; }
+#easytier-unified .eu-definition-row > :first-child { color:var(--eu-muted); }
+#easytier-unified .eu-definition-row > :last-child { text-align:right; }
+#easytier-unified .eu-help { margin-top:16px; font-size:13px; color:var(--eu-muted); }
+#easytier-unified .eu-help summary { min-height:48px; display:flex; align-items:center; }
+#easytier-unified .eu-help p { padding-bottom:12px; }
+#easytier-unified .eu-diagnosis { margin-top:14px; padding:14px; background:var(--eu-surface); border-radius:18px; }
+#easytier-unified .eu-diagnosis p { font-size:14px; margin-top:6px; }
+#easytier-unified .eu-network-row { display:flex; align-items:center; gap:10px; padding:15px; border-radius:18px; background:var(--eu-surface); margin:8px 0; }
+#easytier-unified .eu-network-row[aria-pressed="true"] { background:var(--eu-tonal); color:var(--eu-on-tonal); }
+#easytier-unified .eu-settings-row { padding:15px; background:var(--eu-surface); border-radius:17px; margin-bottom:3px; }
+#easytier-unified .eu-settings-row label { display:block; margin-bottom:9px; }
+#easytier-unified .eu-settings-row .eu-check-row { display:flex; margin-bottom:0; }
+#easytier-unified .eu-check-row { display:flex; align-items:center; gap:12px; min-height:48px; }
+#easytier-unified .eu-check-row input { width:21px; height:21px; accent-color:var(--eu-primary); flex-shrink:0; }
+#easytier-unified .eu-sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media (max-width:360px) { #easytier-unified {padding:10px 2px;} #easytier-unified .eu-view-host {padding:0 13px 16px;} #easytier-unified .eu-connection {padding:17px;} #easytier-unified .eu-button {padding:10px 14px;} }
+@media (prefers-reduced-motion:no-preference) { #easytier-unified .eu-app button { transition:background-color 120ms ease,color 120ms ease; } #easytier-unified .eu-peer[open] .eu-peer-brief {animation:eu-reveal 160ms ease-out;} @keyframes eu-reveal {from{opacity:.4;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}} }
+/* CONFIG_STYLES */
+/* MONITOR_STYLES */
+</style>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script>
+(() => {
+  'use strict';
+  const root = document.getElementById('easytier-unified');
+  if (!root) return;
+  const app = root.querySelector('.eu-app');
+  const host = root.querySelector('#eu-view-host');
+  const catalogue = /* CATALOGUE_DATA */;
+  const fieldMap = new Map(catalogue.fields.map(field => [field.key,field]));
+  let unique = 0;
+  let actionOrigin = null;
+  let toastTimer = null;
+  let snackbarTimer = null;
+  let renameSession = null;
+  const clone = value => value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+  const uid = (prefix='control') => 'eu-'+prefix+'-'+(++unique);
+  function el(tag,className='',value='') { const node=document.createElement(tag);if(className)node.className=className;if(value!==''&&value!==undefined&&value!==null)node.textContent=String(value);return node; }
+  function icon(name) { const node=el('i');node.setAttribute('data-lucide',name);node.setAttribute('aria-hidden','true');return node; }
+  function button(label,action,className='eu-button') { const node=el('button',className+' cursor-interaction',label);node.type='button';node.id=uid('action');node.addEventListener('click',event=>{actionOrigin=node;action(event);actionOrigin=null;});return node; }
+  const byId=id=>root.querySelector('#'+id);
+  const text=(node,value)=>{if(node&&node.textContent!==String(value))node.textContent=String(value);};
+  const state = { selectedId:'home', tab:'config', histories:new Map(), profiles:[], operations:new Map(), views:new Map(), diagnoses:new Map(), serial:1, generation:1, runtime:null, theme:'system', dynamic:true, seed:'iris', nextApplyFailure:false };
+  function makeProfile(id,label,saved) { return {id,label,saved:clone(saved),draft:clone(saved),revision:1,raw:{},errors:{},lastApplied:null}; }
+  state.profiles=[
+    makeProfile('home','家庭网络',{instance_name:'家庭网络','network_identity.network_name':'home-mesh','network_identity.network_secret':'demo-network-secret',hostname:'我的手机',dhcp:true,peer:[{uri:'udp://bootstrap.example.net:11010'}],'flags.mtu':1380,'android.appRoutingMode':'all','android.internetRouting':'overlay-only'}),
+    makeProfile('work','工作室',{instance_name:'工作室','network_identity.network_name':'studio-mesh','network_identity.network_secret':'demo-studio-secret',hostname:'我的手机',dhcp:true,peer:[{uri:'tcp://studio.example.net:11010'}],'android.appRoutingMode':'all','android.internetRouting':'overlay-only'})
+  ];
+  function profile(id) { return state.profiles.find(item=>item.id===id); }
+  function value(id,key,kind='draft') { const p=profile(id),data=p&&p[kind];if(data&&Object.prototype.hasOwnProperty.call(data,key))return data[key];return fieldMap.has(key)?fieldMap.get(key).default:catalogue.runtimeDefaults?.[key]; }
+  function diff(a,b) { return [...new Set([...Object.keys(a||{}),...Object.keys(b||{})])].filter(key=>JSON.stringify(a?.[key])!==JSON.stringify(b?.[key])); }
+  function changed(id) { const p=profile(id);return p?diff(p.draft,p.saved):[]; }
+  function isRunning(id) { return state.runtime?.networkId===id&&state.runtime.phase==='connected'; }
+  function appliedSnapshot(id) { return state.runtime?.networkId===id&&state.runtime.applied?{config:state.runtime.applied,revision:state.runtime.revision}:profile(id)?.lastApplied; }
+  function pending(id) { const p=profile(id),last=appliedSnapshot(id);return p&&last?diff(p.saved,last.config):[]; }
+  function operation(id) { return state.operations.get(id)||{phase:'idle',message:''}; }
+  function setOperation(id,phase,message) {
+    state.operations.set(id,{phase,message});
+    refresh();
+    if (message && ['saved','success'].includes(phase) && currentRoute().networkId === id) showSnackbar(message,id);
+  }
+  function networkLabel(id) { return profile(id)?.label||'网络'; }
+  const initial=profile('home');
+  initial.lastApplied={config:clone(initial.saved),revision:1};
+  state.runtime={networkId:'home',sessionId:'session-1',phase:'connected',revision:1,applied:clone(initial.saved),startedAt:Date.now(),generation:1};
+  let configModule=null, monitorModule=null;
+  const cleanup=new Map();
+  function historyKey() { return state.selectedId+':'+state.tab; }
+  function getStack() { const key=historyKey();if(!state.histories.has(key))state.histories.set(key,[{kind:state.tab,networkId:state.selectedId,key:uid('route')}]);return state.histories.get(key); }
+  function currentRoute() { const stack=getStack();return stack[stack.length-1]; }
+  function currentView() { return state.views.get(currentRoute().key); }
+  function rememberView() { const entry=currentView();if(!entry)return;const active=actionOrigin&&entry.node.contains(actionOrigin)?actionOrigin:document.activeElement;if(active&&entry.node.contains(active))entry.focusId=active.id||null;entry.scrollY=typeof window!=='undefined'?window.scrollY||0:0; }
+  function restoreView(entry) { if(!entry)return;const target=entry.focusId&&byId(entry.focusId);if(target&&typeof target.focus==='function')target.focus({preventScroll:true});if(typeof window!=='undefined'&&typeof window.scrollTo==='function'&&entry.scrollY!==undefined)try{window.scrollTo({top:entry.scrollY,behavior:'instant'});}catch(_){} }
+  function go(route) { rememberView();const current=currentRoute();const next={...route,networkId:route.networkId||current.networkId,key:uid('route')};getStack().push(next);showCurrent(false); }
+  function back() { const stack=getStack();if(stack.length<2)return;rememberView();stack.pop();showCurrent(true); }
+  function tab(name) { if(!['overview','devices','config','logs'].includes(name))return;rememberView();state.tab=name;showCurrent(true); }
+  function selectNetwork(id) { if(!profile(id))return;rememberView();const source=getStack();if(source[source.length-1]?.kind==='network-picker')source.pop();state.selectedId=id;const target=getStack();if(target[target.length-1]?.kind==='network-picker')target.pop();showCurrent(true); }
+  function notify(message) { const node=byId('eu-feedback');text(node,message);node.hidden=!message; }
+  function showToast(message) { if(toastTimer!==null)clearTimeout(toastTimer);const node=byId('eu-toast');text(node,message);node.hidden=false;toastTimer=setTimeout(()=>{node.hidden=true;toastTimer=null;},2400); }
+  function dismissSnackbar() { if(snackbarTimer!==null)clearTimeout(snackbarTimer);snackbarTimer=null;byId('eu-snackbar').hidden=true; }
+  function showSnackbar(message,networkId=currentRoute().networkId) {
+    dismissSnackbar();
+    const node=byId('eu-snackbar');text(node,message);node.dataset.networkId=networkId;node.hidden=!message;
+    if(message)snackbarTimer=setTimeout(()=>{node.hidden=true;snackbarTimer=null;},3600);
+  }
+  function openRename(id,origin=document.activeElement) {
+    const p=profile(id),dialog=byId('eu-rename-dialog');if(!p||dialog.open)return;
+    renameSession={id,origin,routeKey:currentRoute().key};
+    const input=byId('eu-rename-input');input.value=p.label;input.setAttribute('aria-invalid','false');byId('eu-rename-error').hidden=true;
+    const scrollY=typeof window!=='undefined'?window.scrollY||0:0;
+    const top=Math.max(app.getBoundingClientRect().top+scrollY+40,scrollY+40);
+    dialog.style.top=top+'px';
+    dialog.showModal();input.focus({preventScroll:true});input.select();
+  }
+  function finishRename() {
+    if(byId('eu-rename-dialog').open)return;
+    const session=renameSession;renameSession=null;
+    if(session&&currentRoute().key===session.routeKey&&session.origin?.isConnected)session.origin.focus({preventScroll:true});
+  }
+  function closeRename() { const dialog=byId('eu-rename-dialog');if(dialog.open)dialog.close();finishRename(); }
+  function submitRename(event) {
+    event.preventDefault();
+    if(!renameSession)return;
+    const p=profile(renameSession.id),input=byId('eu-rename-input'),label=input.value.trim();if(!p){closeRename();return;}
+    if(!label){text(byId('eu-rename-error'),'请输入配置名称。');byId('eu-rename-error').hidden=false;input.setAttribute('aria-invalid','true');input.focus();return;}
+    const renamed=label!==p.label,id=p.id;
+    // 本地名称不进入核心配置快照，也不改变运行版本或连接会话。
+    if(renamed){p.label=label;addLog('app','info','Configuration','配置名称已更新',{profile:label},id);}
+    closeRename();refresh();
+    if(renamed)showSnackbar('配置名称已更新',id);
+  }
+  function icons() { if(typeof lucide!=='undefined')lucide.createIcons({attrs:{width:20,height:20}}); }
+  function networkPhase(id) { return state.runtime?.networkId===id?state.runtime.phase:'idle'; }
+  function phaseLabel(id) { return ({idle:'未连接',connected:'已连接',connecting:'正在连接',reconnecting:'正在重新连接',stopping:'正在断开',error:'连接失败'})[networkPhase(id)]||'未连接'; }
+  function routeTitle(route) { const fixed={'overview':'总览','devices':'设备','config':'配置','logs':'运行日志','peer':peer(route.networkId,route.peerId)?.name||'设备详情','settings':'设置','network-picker':'查看网络','new-network':'添加配置','config-search':'配置'};if(route.kind==='config-group')return '配置';return fixed[route.kind]||'Chuanmen'; }
+  function updateChrome() {
+    const route=currentRoute(),deep=getStack().length>1;
+    byId('eu-back').hidden=!deep;byId('eu-network').hidden=deep;byId('eu-route-heading').hidden=!deep;
+    text(byId('eu-network-name'),networkLabel(state.selectedId));text(byId('eu-network-state'),phaseLabel(state.selectedId));
+    text(byId('eu-route-title'),routeTitle(route));text(byId('eu-route-network'),networkLabel(route.networkId));
+    byId('eu-settings').hidden=route.kind==='settings';
+    root.querySelectorAll('[data-tab]').forEach(node=>{if(node.dataset.tab===state.tab)node.setAttribute('aria-current','page');else node.removeAttribute('aria-current');});
+    const rt=state.runtime,other=rt&&rt.networkId!==route.networkId&&['connected','connecting','reconnecting','stopping'].includes(rt.phase);
+    byId('eu-runtime-banner').hidden=!other;if(other)text(byId('eu-runtime-text'),networkLabel(rt.networkId)+' · '+phaseLabel(rt.networkId));
+    const op=operation(route.networkId),notice=byId('eu-operation'),configRoute=['config','config-group','config-search'].includes(route.kind);
+    const show=op.message&&!configRoute&&['applying','error','pending'].includes(op.phase)&&!(route.kind==='overview'&&op.phase==='pending');notice.hidden=!show;notice.dataset.phase=op.phase;text(notice,show?op.message:'');
+    if(!configRoute){byId('eu-config-dock').hidden=true;byId('eu-config-dock').querySelectorAll('.eu-config-status').forEach(node=>node.hidden=true);}
+    const snackbar=byId('eu-snackbar');if(!snackbar.hidden&&snackbar.dataset.networkId!==route.networkId)dismissSnackbar();
+    app.dataset.theme=state.theme;app.dataset.seed=state.dynamic?'iris':state.seed;
+  }
+  function showCurrent(restore=false) {
+    const route=currentRoute();if(renameSession&&renameSession.routeKey!==route.key)closeRename();let entry=state.views.get(route.key);
+    state.views.forEach(view=>{view.node.hidden=true;});
+    if(!entry){const node=el('section','eu-screen');node.id=uid('screen');node.dataset.routeKey=route.key;node.dataset.kind=route.kind;node.dataset.networkId=route.networkId;host.append(node);entry={node,route,focusId:null,scrollY:undefined};state.views.set(route.key,entry);mountRoute(route,node);}
+    entry.node.hidden=false;updateChrome();refreshEntry(entry);icons();
+    if(restore)restoreView(entry);else if(getStack().length>1)byId('eu-back').focus({preventScroll:true});
+    notify('');
+  }
+  function refreshEntry(entry) { if(!entry)return;const route=entry.route;if(['config','config-group','config-search'].includes(route.kind)){configModule?.refresh(route,entry.node);return;}if(route.kind==='logs'){monitorModule?.refresh(route,entry.node);return;}if(route.kind==='overview')refreshOverview(entry);if(route.kind==='devices')refreshDevices(entry);if(route.kind==='peer')refreshPeer(entry);if(route.kind==='settings')refreshSettings(entry);if(route.kind==='network-picker')refreshNetworkPicker(entry); }
+  function refresh() { updateChrome();refreshEntry(currentView()); }
+  function touch(id) { updateChrome();if(currentRoute().networkId===id)configModule?.refresh(currentRoute(),currentView()?.node); }
+  function addLog(source,level,module,message,details={},networkId=null,peerId=null) { monitorModule?.addLog(source,level,module,message,details,networkId,peerId); }
+  const ctx={root,state,el,button,icon,uid,clone,profile,profiles:()=>state.profiles,value,go,back,tab,selectNetwork,currentRoute,isRouteVisible:key=>currentRoute().key===key,isRunning,runtime:()=>state.runtime,commit,restoreApplied,operation,changed,pending,touch,refresh,notify,toast:showToast,snackbar:showSnackbar,openRename,configActionHost:byId('eu-config-dock'),copyText,addLog,networkLabel,peer,onCleanup:(key,fn)=>{if(!cleanup.has(key))cleanup.set(key,[]);cleanup.get(key).push(fn);}};
+
+  function failureFor(config) { return (config.peer||[]).some(item=>String(typeof item==='string'?item:item.uri||'').includes('unreachable.example')); }
+  function reconnectRequired(keys) { return keys.some(key=>{const apply=fieldMap.get(key)?.apply;return apply!=='core-hot'&&apply!=='app-immediate';}); }
+  function connect(id) {
+    const p=profile(id);if(!p)return;
+    const previous=state.runtime;if(previous&&['connecting','reconnecting','stopping'].includes(previous.phase)){notify('当前连接操作尚未结束，请先取消或等待完成。');return;}
+    if(previous?.networkId===id&&previous.phase==='connected')return;
+    if(previous){monitorModule?.stopSession(previous.networkId);addLog('app','info','Connection','结束连接：'+networkLabel(previous.networkId),{sessionId:previous.sessionId},previous.networkId);}
+    const generation=++state.generation,saved=clone(p.saved),revision=p.revision,sessionId='session-'+(++state.serial);
+    state.runtime={networkId:id,sessionId,phase:'connecting',revision:null,applied:null,startedAt:Date.now(),generation};
+    setOperation(id,'applying','正在连接'+networkLabel(id)+'…');
+    addLog('app','info','VpnService','开始连接',{sessionId,profile:networkLabel(id)},id);
+    setTimeout(()=>{
+      if(state.generation!==generation)return;
+      if(failureFor(saved)){state.runtime.phase='error';setOperation(id,'error','无法连接到引导节点。请检查节点地址后重试。');addLog('core','error','Connector','引导节点暂不可达',{sessionId},id);return;}
+      state.runtime.phase='connected';state.runtime.applied=saved;state.runtime.revision=revision;p.lastApplied={config:clone(saved),revision};monitorModule?.newSession(state.runtime);
+      setOperation(id,'success','已连接'+networkLabel(id)+(pending(id).length?' · 另有已保存更改待应用':''));addLog('app','info','Connection','连接已就绪',{sessionId},id);
+    },1100);
+  }
+  function cancelOrDisconnect(id) {
+    const rt=state.runtime;if(!rt||rt.networkId!==id)return;
+    const wasConnecting=['connecting','reconnecting'].includes(rt.phase);++state.generation;monitorModule?.stopSession(id);
+    if(wasConnecting){rt.phase='error';setOperation(id,'saved','已取消连接。已保存配置仍可用于下次连接。');state.runtime=null;refresh();addLog('app','info','Connection','用户取消连接',{},id);return;}
+    if(rt.phase==='error'){state.runtime=null;setOperation(id,'idle','');return;}
+    const generation=state.generation;rt.phase='stopping';refresh();
+    setTimeout(()=>{if(generation!==state.generation)return;state.runtime=null;setOperation(id,'saved','已断开'+networkLabel(id));addLog('app','info','VpnService','用户断开连接',{sessionId:rt.sessionId},id);},350);
+  }
+  function commit(id,mode='save') {
+    const p=profile(id);if(!p)return false;
+    if(operation(id).phase==='applying'){notify('正在应用更改，请稍候。');return false;}
+    const errors=configModule?.validate(id)||p.errors;if(Object.keys(errors).length){notify('请先修正标出的配置项。');return false;}
+    const dirty=changed(id);if(dirty.length){p.saved=clone(p.draft);p.revision++;addLog('app','info','Configuration','配置已保存',{changedFields:dirty},id);}
+    if(mode==='apply'&&state.runtime?.networkId===id&&state.runtime.phase==='error'){connect(id);return true;}
+    if(mode==='save'||!isRunning(id)){const running=isRunning(id),hasPending=pending(id).length>0;setOperation(id,running&&hasPending?'pending':'saved',running?(hasPending?'已保存，当前连接尚未应用这些更改。':'当前连接已使用这份配置。'):'已保存，下次连接使用。');refresh();return true;}
+    const changedRunning=pending(id);if(!changedRunning.length){setOperation(id,'success','当前连接已使用这份配置。');return true;}
+    const rt=state.runtime,old=clone(rt.applied),oldRevision=rt.revision,saved=clone(p.saved),revision=p.revision,reconnect=reconnectRequired(changedRunning),generation=++state.generation;
+    rt.generation=generation;rt.phase=reconnect?'reconnecting':'connected';
+    if(reconnect)monitorModule?.stopSession(id);
+    setOperation(id,'applying',reconnect?'正在应用更改并重新连接…':'正在应用更改…');
+    addLog('app','info','Configuration','开始应用配置',{changedFields:changedRunning,reconnect},id);
+    const simulateFailure=state.nextApplyFailure||failureFor(saved);state.nextApplyFailure=false;
+    setTimeout(()=>{
+      if(state.generation!==generation||state.runtime!==rt)return;
+      if(simulateFailure){rt.applied=old;rt.revision=oldRevision;rt.phase=reconnect?'error':'connected';setOperation(id,'error',reconnect?'配置已保存，但重新连接失败。请检查节点后重试，或恢复上次运行配置。':'配置已保存，但应用失败。当前连接仍使用上次运行配置。');addLog('core','error','Configuration','配置应用未完成',{reconnect},id);return;}
+      rt.applied=saved;rt.revision=revision;rt.phase='connected';if(reconnect){rt.sessionId='session-'+(++state.serial);rt.startedAt=Date.now();monitorModule?.newSession(rt);}p.lastApplied={config:clone(saved),revision};
+      setOperation(id,'success',pending(id).length?'本次更改已生效，另有更新待应用。':reconnect?'更改已生效，连接已恢复。':'更改已在当前连接生效。');addLog('app','info','Configuration','配置已确认生效',{revision,reconnect},id);
+    },reconnect?1250:650);
+    return true;
+  }
+  function restoreApplied(id) { const p=profile(id),last=p?.lastApplied;if(!last){notify('这个网络还没有可恢复的运行配置。');return;}if(operation(id).phase==='applying'){notify('请等待当前操作完成。');return;}p.saved=clone(last.config);p.draft=clone(last.config);p.raw={};p.errors={};p.revision++;configModule?.reset(id);setOperation(id,'saved',isRunning(id)?'已恢复上次运行配置。':'已恢复上次运行配置，可重新连接。');addLog('app','info','Configuration','恢复上次运行配置',{},id); }
+  function actionLabel(id) { const rt=state.runtime,phase=networkPhase(id),dirty=changed(id).length||Object.keys(profile(id).errors).length;if(phase==='connected')return '断开连接';if(['connecting','reconnecting'].includes(phase))return '取消连接';if(phase==='stopping')return '正在断开';if(rt&&rt.networkId!==id&&['connected','connecting','reconnecting'].includes(rt.phase))return '切换并连接'+networkLabel(id)+(dirty?'（已保存配置）':'');return dirty?'连接已保存配置':phase==='error'?'重试连接':'连接网络'; }
+  function connectionAction(id) { const phase=networkPhase(id);if(['connected','connecting','reconnecting','stopping'].includes(phase))cancelOrDisconnect(id);else connect(id); }
+  function row(label,description,name,action) { const node=button('',action,'eu-row');const mark=icon(name);mark.classList.add('eu-row-icon');const copy=el('span','eu-row-copy');copy.append(el('span','eu-row-title',label),el('span','eu-subtle',description));node.append(mark,copy,icon('chevron-right'));return node; }
+  function title(container,label,extra) { const head=el('div','eu-title-row');head.append(el('h1','',label));if(extra)head.append(extra);container.append(head); }
+  function empty(container,heading,message,actionLabel,action) { const box=el('div','eu-empty');box.append(icon('network'),el('h2','',heading),el('p','eu-subtle',message));if(action)box.append(button(actionLabel,action,'eu-button eu-tonal'));container.append(box);return box; }
+  function mountRoute(route,node) {
+    if(['config','config-group','config-search'].includes(route.kind)){configModule.mount(route,node);return;}
+    if(route.kind==='logs'){monitorModule.mount(route,node);return;}
+    if(route.kind==='overview')mountOverview(route,node);
+    else if(route.kind==='devices')mountDevices(route,node);
+    else if(route.kind==='peer')mountPeer(route,node);
+    else if(route.kind==='settings')mountSettings(route,node);
+    else if(route.kind==='network-picker')mountNetworkPicker(route,node);
+    else if(route.kind==='new-network')mountNewNetwork(route,node);
+  }
+  function ipAddressRow(readAddress,label) {
+    const address=el('div','eu-address');address.append(el('code','',readAddress()));
+    const copy=button('',()=>copyText(readAddress()),'eu-icon-button eu-copy-ip');copy.setAttribute('aria-label',label);copy.dataset.copyIp='';copy.append(icon('copy'));address.append(copy);return address;
+  }
+  function mountOverview(route,node) {
+    const card=el('section','eu-connection');card.dataset.connectionCard='';
+    const head=el('div','eu-connection-heading'),copy=el('div');copy.append(el('span','eu-subtle','虚拟网络'),el('h1','',''),el('p','eu-subtle',''));const symbol=el('span','eu-connection-symbol');symbol.append(icon('network'));head.append(copy,symbol);card.append(head);
+    card.append(ipAddressRow(()=>localIp(route.networkId),'复制本机虚拟 IP'));
+    const devices=button('',()=>tab('devices'),'eu-network-devices');devices.dataset.deviceSummary='';const deviceCopy=el('span','eu-row-copy');deviceCopy.append(el('span','eu-row-title'),el('span','eu-subtle'));devices.append(icon('monitor-smartphone'),deviceCopy,icon('chevron-right'));card.append(devices);
+    const action=button('',()=>connectionAction(route.networkId),'eu-button eu-primary eu-connection-action');action.dataset.connect=route.networkId;card.append(action);node.append(card);
+    const draft=el('div','eu-notice');draft.dataset.draftNotice='';const draftText=el('p');draft.append(draftText,button('查看修改',()=>go({kind:'config-search',networkId:route.networkId,filter:'changed'}),'eu-text-button'));node.append(draft);
+    const pendingBox=el('div','eu-notice');pendingBox.dataset.pendingNotice='';pendingBox.append(el('p','','有已保存的更改尚未应用。'),button('应用更改',()=>commit(route.networkId,'apply'),'eu-button eu-tonal'));node.append(pendingBox);
+    const failureBox=el('div','eu-notice');failureBox.dataset.failureActions='';failureBox.append(button('检查连接节点',()=>go({kind:'config-group',networkId:route.networkId,groupId:'connection',focusKey:'peer'}),'eu-text-button'),button('恢复上次运行配置',()=>restoreApplied(route.networkId),'eu-text-button'));node.append(failureBox);
+    const chart=el('section','eu-overview-traffic');node.append(chart);monitorModule.mountOverview(chart,route.networkId);
+  }
+  function localIp(id) { const config=state.runtime?.networkId===id&&state.runtime.applied?state.runtime.applied:profile(id)?.saved;if(config&&!config.dhcp&&config.ipv4)return String(config.ipv4).split('/')[0];return id==='home'?'10.144.0.6':id==='work'?'10.144.1.6':'10.144.2.6'; }
+  function scopeDescription(config) { const apps=config['android.appRoutingMode']==='allowlist'?'仅 '+(config['android.appPackages']||[]).length+' 个应用':config['android.appRoutingMode']==='denylist'?'排除 '+(config['android.appPackages']||[]).length+' 个应用':'全部应用';return (config['android.internetRouting']==='exit-node'?'通过出口节点':'仅组网流量')+' · '+apps; }
+  function refreshOverview(entry) {
+    const {node,route}=entry,id=route.networkId,phase=networkPhase(id),connected=isRunning(id),rt=state.runtime,card=node.querySelector('[data-connection-card]');
+    card.dataset.phase=phase;text(card.querySelector('h1'),phaseLabel(id));
+    const paragraphs=card.querySelectorAll('p');let description=connected?'组网接口已就绪':phase==='error'?'请检查连接节点后重试':phase==='connecting'?'正在建立虚拟网络':phase==='reconnecting'?'正在应用配置并恢复连接':phase==='stopping'?'正在结束当前连接':'使用已保存配置建立连接';
+    if(phase==='idle'&&rt&&rt.networkId!==id&&rt.phase==='connected')description='连接后将结束'+networkLabel(rt.networkId)+'的连接';text(paragraphs[0],description);
+    const address=card.querySelector('.eu-address');address.hidden=!connected;text(address.querySelector('code'),connected?localIp(id):'');
+    const action=card.querySelector('[data-connect]');text(action,actionLabel(id));action.disabled=phase==='stopping'||(rt?.networkId!==id&&['connecting','reconnecting','stopping'].includes(rt?.phase));
+    const dirty=changed(id),errorCount=Object.keys(profile(id).errors).length,draft=node.querySelector('[data-draft-notice]');draft.hidden=!dirty.length&&!errorCount;text(draft.querySelector('p'),(errorCount?errorCount+' 项输入需要修正':dirty.length+' 项修改尚未保存')+'。连接操作使用已保存配置。');
+    const pendingBox=node.querySelector('[data-pending-notice]');pendingBox.hidden=!pending(id).length||!connected||operation(id).phase==='applying';
+    node.querySelector('[data-failure-actions]').hidden=phase!=='error'&&operation(id).phase!=='error';
+    const ps=connected?peersFor(id):[],direct=ps.filter(p=>p.path==='direct').length;const deviceSummary=node.querySelector('[data-device-summary]');deviceSummary.hidden=!connected;text(deviceSummary.querySelector('.eu-row-title'),ps.length+' 台设备在线');text(deviceSummary.querySelector('.eu-subtle'),ps.length?(direct+' 台直连'+(ps.length>direct?' · '+(ps.length-direct)+' 台经中继':'')):'等待其他设备加入');deviceSummary.setAttribute('aria-label','查看当前网络中的 '+ps.length+' 台在线设备，不含本机');
+  }
+  function peersFor(id) {
+    if(id==='home')return [
+      {id:'nas',name:'家里的 NAS',ip:'10.144.0.2',path:'direct',latency:8,natUdp:'FullCone',natTcp:'NoPAT',version:'2.6.4',protocol:'UDP',loss:1,rxBytes:148438221,txBytes:13224908,rxPackets:110521,txPackets:39821,endpoint:'192.0.2.18:11010'},
+      {id:'desktop',name:'书房电脑',ip:'10.144.0.3',path:'direct',latency:12,natUdp:'PortRestricted',natTcp:null,version:'2.6.4',protocol:'UDP',loss:0,rxBytes:29022114,txBytes:5762311,rxPackets:23012,txPackets:15386,endpoint:'198.51.100.32:31892'},
+      {id:'laptop',name:'随身笔记本',ip:'10.144.0.4',path:'relay',latency:null,natUdp:'Symmetric',natTcp:null,version:'2.6.4',protocol:'经中继',loss:null,rxBytes:null,txBytes:null,rxPackets:null,txPackets:null,endpoint:null}
+    ];
+    if(id==='work')return [
+      {id:'nas',name:'工作室 NAS',ip:'10.144.1.2',path:'direct',latency:17,natUdp:'FullCone',natTcp:'NoPAT',version:'2.6.4',protocol:'TCP',loss:0,rxBytes:19385321,txBytes:8541051,rxPackets:19891,txPackets:10032,endpoint:'203.0.113.15:11010'},
+      {id:'desktop',name:'工作站',ip:'10.144.1.3',path:'direct',latency:21,natUdp:'Restricted',natTcp:null,version:'2.6.4',protocol:'UDP',loss:1,rxBytes:9170349,txBytes:3782992,rxPackets:10451,txPackets:3792,endpoint:'203.0.113.25:11010'}
+    ];return [];
+  }
+  function peer(id,peerId) { return peersFor(id).find(p=>p.id===peerId)||null; }
+  function bytes(number) { if(number===null||number===undefined)return '暂无独立统计';if(number<1024)return number+' B';if(number<1048576)return (number/1024).toFixed(1)+' KiB';return (number/1048576).toFixed(1)+' MiB'; }
+  function rates(id,p) { const snap=monitorModule?.snapshot(id);if(!snap||p.path!=='direct'||!Number.isFinite(snap.rxRate)||!Number.isFinite(snap.txRate))return null;const ratio=p.id==='nas'?.67:.23;return {rx:snap.rxRate*ratio,tx:snap.txRate*ratio}; }
+  function peerRatesText(id,p) { const rate=rates(id,p);return rate?'↓ '+Number(rate.rx||0).toFixed(1)+' · ↑ '+Number(rate.tx||0).toFixed(1)+' KiB/s':'暂无独立流量统计'; }
+  function addMetric(container,label,content) { const wrap=el('div','eu-metric');wrap.append(el('dt','',label),el('dd','',content));container.append(wrap);return wrap.querySelector('dd'); }
+  function mountDevices(route,node) { title(node,'设备',el('span','eu-count'));const intro=el('p','eu-subtle','当前网络 · 收发以本机为视角');intro.style.marginBottom='14px';node.append(intro);const list=el('div');list.dataset.peers='';node.append(list);const emptyBox=el('div');emptyBox.dataset.peersEmpty='';empty(nodeEmpty(emptyBox),'连接后查看设备','这里展示'+networkLabel(route.networkId)+'中的设备。','返回总览',()=>tab('overview'));node.append(emptyBox);state.views.get(route.key).peerRenderKey=''; }
+  function nodeEmpty(node){return node;}
+  function refreshDevices(entry) {
+    const {node,route}=entry,connected=isRunning(route.networkId),peers=connected?peersFor(route.networkId):[],key=connected?state.runtime.sessionId:'offline';
+    text(node.querySelector('.eu-count'),peers.length);node.querySelector('[data-peers-empty]').hidden=connected&&peers.length>0;
+    const list=node.querySelector('[data-peers]');list.hidden=!connected||!peers.length;
+    if(entry.peerRenderKey===key){updatePeerRates(node,route.networkId);return;}entry.peerRenderKey=key;
+    const opened=new Set([...list.querySelectorAll('details')].filter(d=>d.open).map(d=>d.dataset.peer));list.replaceChildren();
+    peers.forEach(p=>{
+      const details=el('details','eu-peer');details.dataset.peer=p.id;details.open=opened.has(p.id);const summary=el('summary','cursor-interaction');summary.id=uid('peer-summary');const copy=el('span','eu-row-copy');copy.append(el('span','eu-row-title',p.name),el('span','eu-subtle',p.ip+' · '+(p.path==='direct'?'直连 · '+p.latency+' ms':'经中继')));const rate=el('span','eu-peer-rates',peerRatesText(route.networkId,p));rate.dataset.peerRate=p.id;copy.append(rate);summary.append(icon(p.id==='nas'?'hard-drive':p.id==='desktop'?'monitor':'laptop'),copy,icon('chevron-down'));details.append(summary);
+      const body=el('div','eu-peer-brief'),data=el('dl');const items=[['UDP NAT',p.natUdp||'未知'],['TCP NAT',p.natTcp||'未知'],['EasyTier',p.version],['探测丢包',p.loss===null?'暂无报告':p.loss+'%']];items.forEach(([label,value])=>{const pair=el('div');pair.append(el('dt','',label),el('dd','',value));data.append(pair);});body.append(data);const actions=el('div','eu-actions');actions.append(button('查看详情',()=>go({kind:'peer',networkId:route.networkId,peerId:p.id}),'eu-button eu-tonal'));body.append(actions);details.append(body);list.append(details);
+    });icons();
+  }
+  function updatePeerRates(node,id) { node.querySelectorAll('[data-peer-rate]').forEach(item=>{const p=peer(id,item.dataset.peerRate);if(p)text(item,peerRatesText(id,p));}); }
+  function definition(container,label,content) { const row=el('div','eu-definition-row');row.append(el('span','',label),el('span','',content));container.append(row);return row; }
+  function mountPeer(route,node) {
+    const p=peer(route.networkId,route.peerId);if(!p){empty(node,'设备不存在','返回列表选择其他设备。','返回',back);return;}
+    const head=el('div','eu-peer-title');head.append(icon(p.id==='nas'?'hard-drive':p.id==='desktop'?'monitor':'laptop'));const copy=el('div');copy.append(el('h1','',p.name),el('p','eu-subtle',p.path==='direct'?'直连':'经中继'),ipAddressRow(()=>p.ip,'复制 '+p.name+' 的虚拟 IP'));head.append(copy);node.append(head);
+    const inactive=el('div','eu-notice','此网络当前未连接，以下为上次查看的设备信息。');inactive.dataset.peerInactive='';node.append(inactive);
+    const grid=el('dl','eu-data-grid');addMetric(grid,'UDP NAT',p.natUdp||'未知');addMetric(grid,'TCP NAT',p.natTcp||'未知');addMetric(grid,'EasyTier 版本',p.version);addMetric(grid,'探测丢包率',p.loss===null?'暂无端到端报告':p.loss+'%');node.append(grid);
+    const data=el('div','eu-section');const h=el('div','eu-title-row');h.append(el('h2','','发送与接收'),el('span','eu-subtle','本机视角'));data.append(h);definition(data,'当前速率',peerRatesText(route.networkId,p)).lastChild.dataset.peerRate=p.id;definition(data,'接收累计',bytes(p.rxBytes));definition(data,'发送累计',bytes(p.txBytes));definition(data,'接收 / 发送包数',p.rxPackets===null?'暂无独立统计':p.rxPackets.toLocaleString()+' / '+p.txPackets.toLocaleString());node.append(data);
+    const conn=el('div','eu-section');conn.append(el('h2','','连接'));definition(conn,'协议',p.protocol);definition(conn,'连接延迟',p.latency===null?'暂无端到端探测':p.latency+' ms');definition(conn,'远端地址',p.endpoint||'通过中继设备到达');node.append(conn);
+    const actions=el('div','eu-actions');const diagnose=button('检查连接',()=>runDiagnosis(route),'eu-button eu-tonal');diagnose.dataset.diagnose='';actions.append(diagnose);node.append(actions);
+    const result=el('div','eu-diagnosis');result.dataset.diagnosis='';result.setAttribute('role','status');result.hidden=true;node.append(result);
+    const help=el('details','eu-help');help.append(el('summary','cursor-interaction','数据口径'),el('p','','探测丢包率来自最近至多 100 次保活探测。收发字节与包数为核心连接计数；未取得独立统计的中继设备显示暂无数据。本页设备与统计为模拟数据。'));node.append(help);
+  }
+  function diagnosisKey(route){return route.networkId+':'+route.peerId;}
+  function runDiagnosis(route) {
+    if(!isRunning(route.networkId)){notify('请先连接'+networkLabel(route.networkId));return;}
+    const sessionId=state.runtime.sessionId,key=diagnosisKey(route),p=peer(route.networkId,route.peerId);state.diagnoses.set(key,{phase:'checking',message:'正在检查组网路由与连接状态…'});refresh();addLog('app','info','Diagnostics','开始检查 '+p.name,{ip:p.ip,sessionId},route.networkId,p.id);
+    setTimeout(()=>{if(!isRunning(route.networkId)||state.runtime.sessionId!==sessionId){state.diagnoses.set(key,{phase:'stale',message:'连接已变化，请重新检查。'});refresh();return;}const result=p.path==='direct'?{phase:'success',message:'组网路由和直连通道可用。保活探测 '+p.latency+' ms。'}:{phase:'attention',message:'已发现中继路径，暂无端到端探测结果。可以检查直连设置。'};state.diagnoses.set(key,result);addLog('app',p.path==='direct'?'info':'warn','Diagnostics',result.message,{ip:p.ip,sessionId},route.networkId,p.id);refresh();},700);
+  }
+  function refreshPeer(entry) {
+    const {route,node}=entry;if(!peer(route.networkId,route.peerId))return;node.querySelector('[data-peer-inactive]').hidden=isRunning(route.networkId);updatePeerRates(node,route.networkId);
+    const result=state.diagnoses.get(diagnosisKey(route)),buttonNode=node.querySelector('[data-diagnose]');buttonNode.disabled=!isRunning(route.networkId)||result?.phase==='checking';text(buttonNode,result?.phase==='checking'?'正在检查':'检查连接');const panel=node.querySelector('[data-diagnosis]');panel.hidden=!result;if(!result)return;
+    if(panel.dataset.phase===result.phase&&panel.dataset.message===result.message)return;panel.dataset.phase=result.phase;panel.dataset.message=result.message;panel.replaceChildren(el('h3','',result.phase==='success'?'连接检查完成':result.phase==='checking'?'正在检查':'检查结果'),el('p','',result.message));
+    if(result.phase!=='checking'){const actions=el('div','eu-actions');actions.append(button('检查连接设置',()=>go({kind:'config-group',networkId:route.networkId,groupId:'connection',focusKey:'flags.disable_udp_hole_punching'}),'eu-text-button'),button('再次检查',()=>runDiagnosis(route),'eu-text-button'));panel.append(actions);}
+  }
+  function mountNetworkPicker(route,node) { title(node,'查看网络',button('添加',()=>go({kind:'new-network',networkId:route.networkId}),'eu-text-button'));const list=el('div');list.dataset.networkList='';node.append(list);refreshNetworkPicker(state.views.get(route.key)); }
+  function refreshNetworkPicker(entry) {const {node}=entry,list=node.querySelector('[data-network-list]');if(!list)return;const signature=state.profiles.map(p=>p.id+p.label+phaseLabel(p.id)).join('|');if(entry.signature===signature)return;entry.signature=signature;list.replaceChildren();state.profiles.forEach(p=>{const row=button('',()=>selectNetwork(p.id),'eu-network-row');row.style.width='100%';row.style.textAlign='left';row.setAttribute('aria-pressed',String(p.id===state.selectedId));row.dataset.networkChoice=p.id;const copy=el('span','eu-row-copy');copy.append(el('span','eu-row-title',p.label),el('span','eu-subtle',phaseLabel(p.id)+(changed(p.id).length?' · 有未保存修改':'')));row.append(icon('network'),copy,icon(p.id===state.selectedId?'check':'chevron-right'));list.append(row);});icons();}
+  function mountNewNetwork(route,node) {
+    title(node,'添加配置');
+    const form=el('form'),controls={};
+    const localName=el('div','eu-new-label'),localLabel=el('label','eu-field'),localInput=el('input','eu-input');
+    localInput.id=uid('new-label');localInput.name='label';localInput.type='text';localInput.placeholder='例如：家庭网络';localInput.autocomplete='off';
+    localLabel.htmlFor=localInput.id;localLabel.append(el('span','','配置名称（可选）'),localInput);
+    const localHint=el('p','eu-subtle','仅用于本机区分配置；留空时使用网络名称。');localHint.id=uid('new-label-hint');localInput.setAttribute('aria-describedby',localHint.id);
+    localName.append(localLabel,localHint);form.append(localName);controls.label=localInput;
+    const fields=[['name','网络名称','由网络创建者提供','text'],['secret','网络密码','与其他设备一致','password'],['node','连接节点','例如：udp://node.example.net:11010','text']];
+    fields.forEach(([key,labelText,placeholder,type])=>{const wrapper=el('label','eu-field'),input=el('input','eu-input');input.id=uid('new-'+key);input.name=key;input.type=type;input.placeholder=placeholder;input.required=key!=='secret';input.autocomplete='off';wrapper.htmlFor=input.id;wrapper.append(el('span','',labelText),input);controls[key]=input;form.append(wrapper);});
+    form.append(el('p','eu-subtle','虚拟地址自动分配'));
+    const error=el('p','eu-error');error.setAttribute('role','alert');error.hidden=true;form.append(error);
+    const actions=el('div','eu-actions'),connectButton=button('保存并连接',()=>submit(true),'eu-button eu-primary'),saveButton=button('仅保存',()=>submit(false),'eu-text-button');
+    actions.append(connectButton,saveButton);form.append(actions);form.addEventListener('submit',event=>{event.preventDefault();submit(true);});node.append(form);
+    function submit(shouldConnect){
+      const name=controls.name.value.trim(),label=controls.label.value.trim()||name,secret=controls.secret.value,uri=controls.node.value.trim();
+      let message='';if(!name||!uri)message='请填写网络名称与连接节点。';else if(!/^[a-z][a-z0-9+.-]*:\/\//i.test(uri))message='请输入包含协议的完整节点地址。';
+      if(message){text(error,message);error.hidden=false;return;}
+      const id='network-'+(++state.serial),p=makeProfile(id,label,{'network_identity.network_name':name,'network_identity.network_secret':secret,hostname:'我的手机',dhcp:true,peer:[{uri}],'android.appRoutingMode':'all','android.internetRouting':'overlay-only'});
+      state.profiles.push(p);
+      const source=getStack();while(source.length>1&&['new-network','network-picker'].includes(source[source.length-1].kind)){const finished=source.pop();(cleanup.get(finished.key)||[]).forEach(dispose=>dispose());cleanup.delete(finished.key);state.views.get(finished.key)?.node.remove();state.views.delete(finished.key);}
+      state.selectedId=id;state.tab='overview';showCurrent(false);byId('eu-network').focus({preventScroll:true});
+      if(shouldConnect)connect(id);else setOperation(id,'saved','配置已保存，可在准备好时连接。');addLog('app','info','Configuration','添加配置',{profile:label},id);
+    }
+  }
+  function mountSettings(route,node) {
+    const settingsName=el('span','eu-subtle',networkLabel(route.networkId));settingsName.dataset.settingsNetworkName='';title(node,'网络设置',settingsName);const network=el('div','eu-list');const scope=row('流量范围','','route',()=>go({kind:'config-group',networkId:route.networkId,groupId:'routing',focusKey:'android.appRoutingMode'}));scope.dataset.scopeSetting='';network.append(scope);node.append(network);
+    const appearance=el('div','eu-title-row eu-section');appearance.append(el('h2','','应用外观'));node.append(appearance);const mode=el('div','eu-settings-row'),label=el('label','','主题'),select=el('select','eu-select');select.id=uid('theme');select.dataset.appTheme='';label.htmlFor=select.id;[['system','跟随系统'],['light','浅色'],['dark','深色']].forEach(([value,label])=>{const option=el('option','',label);option.value=value;select.append(option);});select.value=state.theme;select.addEventListener('change',()=>{state.theme=select.value;refresh();});mode.append(label,select);node.append(mode);
+    const dynamic=el('div','eu-settings-row'),checkLabel=el('label','eu-check-row cursor-interaction'),check=el('input');check.type='checkbox';check.checked=state.dynamic;check.id=uid('dynamic');check.dataset.appDynamic='';checkLabel.htmlFor=check.id;checkLabel.append(check,el('span','','动态配色'));dynamic.append(checkLabel);node.append(dynamic);
+    const colors=el('div','eu-chips');colors.dataset.appSeeds='';[['iris','鸢尾'],['teal','松石'],['amber','琥珀']].forEach(([value,label])=>{const choice=button(label,()=>{state.seed=value;refresh();},'eu-chip');choice.dataset.seed=value;choice.setAttribute('aria-pressed',String(state.seed===value));colors.append(choice);});colors.hidden=state.dynamic;node.append(colors);check.addEventListener('change',()=>{state.dynamic=check.checked;refresh();});
+    const hint=el('p','eu-subtle','此预览用示例色板展示主题变化；Android 客户端将读取系统动态色。');hint.style.marginTop='12px';node.append(hint);
+    const list=el('div','eu-list eu-section');list.append(row('运行日志','EasyTier 与 App','logs',()=>tab('logs')));node.append(list);
+  }
+  function refreshSettings(entry) { const {node,route}=entry,p=profile(route.networkId);if(!p)return;const suffix=Object.keys(p.errors).length?' · 有待修正输入':changed(p.id).length?' · 未保存':pending(p.id).length?' · 待应用':'';text(node.querySelector('[data-settings-network-name]'),networkLabel(route.networkId));text(node.querySelector('[data-scope-setting] .eu-subtle'),scopeDescription(p.draft)+suffix);node.querySelector('[data-app-theme]').value=state.theme;node.querySelector('[data-app-dynamic]').checked=state.dynamic;node.querySelector('[data-app-seeds]').hidden=state.dynamic;node.querySelectorAll('[data-seed]').forEach(item=>item.setAttribute('aria-pressed',String(item.dataset.seed===state.seed))); }
+  async function copyText(value,successMessage='IP 已复制') {
+    let copied=false;
+    try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(String(value));copied=true;}}catch(_){}
+    if(!copied&&typeof document.execCommand==='function'){const previous=document.activeElement,input=el('textarea','eu-sr-only');input.value=String(value);input.setAttribute('aria-hidden','true');app.append(input);try{input.focus({preventScroll:true});input.select();copied=document.execCommand('copy');}catch(_){}finally{input.remove();previous?.focus?.({preventScroll:true});}}
+    showToast(copied?successMessage:'复制失败，请长按 IP 手动复制');return copied;
+  }
+
+  /* CONFIG_MODULE */
+  /* MONITOR_MODULE */
+
+  configModule=createConfigModule(ctx,catalogue);
+  monitorModule=createMonitorModule(ctx);
+  byId('eu-rename-form').addEventListener('submit',submitRename);
+  byId('eu-rename-cancel').addEventListener('click',closeRename);
+  byId('eu-rename-dialog').addEventListener('cancel',event=>{event.preventDefault();closeRename();});
+  byId('eu-rename-dialog').addEventListener('close',finishRename);
+  byId('eu-rename-input').addEventListener('input',()=>{byId('eu-rename-error').hidden=true;byId('eu-rename-input').setAttribute('aria-invalid','false');});
+  byId('eu-back').addEventListener('click',back);
+  byId('eu-network').addEventListener('click',()=>go({kind:'network-picker',networkId:state.selectedId}));
+  byId('eu-settings').addEventListener('click',()=>go({kind:'settings',networkId:currentRoute().networkId}));
+  byId('eu-runtime-return').addEventListener('click',()=>{if(state.runtime)selectNetwork(state.runtime.networkId);});
+  root.querySelectorAll('[data-tab]').forEach(node=>node.addEventListener('click',()=>tab(node.dataset.tab)));
+  root.addEventListener('keydown',event=>{if(event.key==='Escape'&&getStack().length>1){event.preventDefault();back();}});
+  monitorModule.newSession(state.runtime);
+  showCurrent(false);
+  const timer=setInterval(()=>{monitorModule.tick();if(typeof document!=='undefined'&&document.hidden)return;const entry=currentView();if(entry&&['devices','peer'].includes(entry.route.kind))updatePeerRates(entry.node,entry.route.networkId);},1000);
+  if(typeof window!=='undefined')window.addEventListener('pagehide',()=>{clearInterval(timer);if(toastTimer!==null)clearTimeout(toastTimer);if(snackbarTimer!==null)clearTimeout(snackbarTimer);renameSession=null;monitorModule.dispose();},{once:true});
+})();
+</script>

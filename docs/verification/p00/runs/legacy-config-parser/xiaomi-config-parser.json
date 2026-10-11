@@ -1,0 +1,722 @@
+{
+  "schema_version": 1,
+  "layer": "android_native_config_parser",
+  "status": "passed",
+  "recorded_at_utc": "2026-10-11T14:39:59.343566+00:00",
+  "environment_kind": "physical_device",
+  "device_id": "device-01",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "apk_sha256": "d198fac92d7f332a5813f7eba84b45759e56edce851b9a276484a2d060f7f7cf",
+  "build_report_sha256": "50511a510d8fc9841b85b78d1ba4939e5577b00af8ba4ece539035acf6cea9c6",
+  "network_started": false,
+  "vpn_acceptance": "unverified",
+  "commands": [
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "get-state"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "c98373c1abef78070f6beef6b4ae4fbf3de348dac280195c7f93441920584af9",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "1bfaa17007aea1b639eb5c54d1c55d079f30f56b64ed20dfc02faf499d567a48",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.version.sdk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a4b2c5db15348c29451e18b8307e5ef81625ea638e807935f39ceaa8d9ac7758",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.cpu.abi"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "7f10c3cd4593d1d6ded27d658e7c05216011c955c200aac551caad0c979d4d90",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.manufacturer"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "b257d787c7da7056d0400b2829dce276da3bcb93aab6b3a903dd7f70df0e0555",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.model"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "8a1f2faeb360d564e712171d8daf644b072e0c46bc9ca8038e314868ac1ba507",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "pm",
+        "path",
+        "com.github.zzwtsy.chuanmen.p00nativeprobe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "087a6e0ebd16026a4c766f48e86b737133a1c85f39149d3d6400ddb4a65919d7",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "sha256sum",
+        "/data/app/~~PSgpu-iLwc3jLljlUS-WHw==/com.github.zzwtsy.chuanmen.p00nativeprobe-2b7uSDN0FSY_4CrV5PPKxQ==/base.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e41ba03cf2226d9224144f083236c7cfe47c32509465b272ffe258ff450fb93e",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "instrument",
+        "-w",
+        "-r",
+        "com.github.zzwtsy.chuanmen.p00nativeprobe/.MappingInstrumentation"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "537431e57df5a36d5619db20ce140119513d5b77a8b0744e3347d72394ae7bf8",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    }
+  ],
+  "device": {
+    "ro.build.fingerprint": "Xiaomi/popsicle/popsicle:16/BP2A.250605.031.A3/OS3.0.319.0.WPBCNXM:user/release-keys",
+    "ro.build.version.sdk": "36",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.kernel.qemu": "",
+    "ro.product.manufacturer": "Xiaomi",
+    "ro.product.model": "2509FPN0BC"
+  },
+  "native_library_sha256": "f41e0397b7be1fb10d7b68982d5b8d4c5f976279925c7f77d4d80d74099815ee",
+  "installed_apk_sha256": "d198fac92d7f332a5813f7eba84b45759e56edce851b9a276484a2d060f7f7cf",
+  "observations": {
+    "layer": "android_native_config_parser",
+    "status": "passed",
+    "network_started": false,
+    "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "fixture_sha256": "bbcbde8659ed6d4f478612c5b61ecb17bfaf395d72e06f055587cf793a9ab691",
+    "page_size": 4096,
+    "cases": [
+      {
+        "name": "missing_fields",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "network_identity.network_name_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "network_identity.network_name_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "network_identity.network_secret_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "network_identity.network_secret_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "hostname_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "hostname_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "dhcp_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "dhcp_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "ipv4_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "ipv4_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_ipv6_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_ipv6_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.accept_dns_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.accept_dns_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "peer_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "peer_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "listeners_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "listeners_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "mapped_listeners_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "mapped_listeners_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_p2p_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_p2p_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.p2p_only_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.p2p_only_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.lazy_p2p_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.lazy_p2p_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.need_p2p_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.need_p2p_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_udp_hole_punching_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_udp_hole_punching_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_tcp_hole_punching_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_tcp_hole_punching_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_sym_hole_punching_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_sym_hole_punching_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_upnp_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_upnp_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "routes_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "routes_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "exit_nodes_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "exit_nodes_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "proxy_network_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "proxy_network_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "socks5_proxy_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "socks5_proxy_empty",
+        "exception": "java.lang.RuntimeException",
+        "error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:2:14 ]\n   |\n 2 | socks5_proxy=\"\"\n   |              ^|  \n   |               `-- relative URL without a base: \"\"\n---'\n\n\nCaused by:\n    TOML parse error at line 2, column 14\n      |\n    2 | socks5_proxy=\"\"\n      |              ^^\n    relative URL without a base: \"\"\n    ",
+        "accepted": false,
+        "status": "passed"
+      },
+      {
+        "name": "port_forward_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "port_forward_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "vpn_portal_config_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "vpn_portal_config_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_exit_node_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_exit_node_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_encryption_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_encryption_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.private_mode_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.private_mode_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "acl_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "acl_empty",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.latency_first_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.latency_first_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.mtu_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.mtu_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.instance_recv_bps_limit_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.instance_recv_bps_limit_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.relay_network_whitelist_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.relay_network_whitelist_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.relay_all_peer_rpc_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.relay_all_peer_rpc_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_kcp_proxy_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_kcp_proxy_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_kcp_input_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_kcp_input_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_quic_proxy_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_quic_proxy_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_quic_input_0",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.disable_quic_input_1",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.bind_device_hidden_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.dev_name_hidden_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.enable_udp_broadcast_relay_hidden_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "ipv6_public_addr_auto_hidden_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.multi_thread_hidden_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.no_tun_hidden_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.proxy_forward_by_system_hidden_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "flags.use_smoltcp_hidden_explicit",
+        "return_code": 0,
+        "accepted": true,
+        "status": "passed"
+      },
+      {
+        "name": "legacy_disable_encryption",
+        "exception": "java.lang.RuntimeException",
+        "error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:3:1 ]\n   |\n 3 | disable_encryption=true\n   | ^^^^^^^^^|^^^^^^^^  \n   |          `---------- unknown field `disable_encryption`, expected one of `default_protocol`, `defaultProtocol`, `dev_name`, `devName`, `enable_encryption`, `enableEncryption`, `enable_ipv6`, `enableIpv6`, `mtu`, `latency_first`, `latencyFirst`, `enable_exit_node`, `enableExitNode`, `no_tun`, `noTun`, `use_smoltcp`, `useSmoltcp`, `relay_network_whitelist`, `relayNetworkWhitelist`, `disable_p2p`, `disableP2p`, `relay_all_peer_rpc`, `relayAllPeerRpc`, `disable_udp_hole_punching`, `disableUdpHolePunching`, `multi_thread`, `multiThread`, `data_compress_algo`, `dataCompressAlgo`, `bind_device`, `bindDevice`, `enable_kcp_proxy`, `enableKcpProxy`, `disable_kcp_input`, `disableKcpInput`, `disable_relay_kcp`, `disableRelayKcp`, `proxy_forward_by_system`, `proxyForwardBySystem`, `accept_dns`, `acceptDns`, `private_mode`, `privateMode`, `enable_quic_proxy`, `enableQuicProxy`, `disable_quic_input`, `disableQuicInput`, `disable_relay_quic`, `disableRelayQuic`, `quic_listen_port`, `quicListenPort`, `foreign_relay_bps_limit`, `foreignRelayBpsLimit`, `multi_thread_count`, `multiThreadCount`, `enable_relay_foreign_network_kcp`, `enableRelayForeignNetworkKcp`, `enable_relay_foreign_network_quic`, `enableRelayForeignNetworkQuic`, `encryption_algorithm`, `encryptionAlgorithm`, `disable_sym_hole_punching`, `disableSymHolePunching`, `tld_dns_zone`, `tldDnsZone`, `p2p_only`, `p2pOnly`, `disable_tcp_hole_punching`, `disableTcpHolePunching`, `lazy_p2p`, `lazyP2p`, `need_p2p`, `needP2p`, `instance_recv_bps_limit`, `instanceRecvBpsLimit`, `disable_upnp`, `disableUpnp`, `disable_relay_data`, `disableRelayData`, `enable_udp_broadcast_relay`, `enableUdpBroadcastRelay`, `socket_mark`, `socketMark`, `prefer_peer_relay`, `preferPeerRelay`\n---'\n\n\nCaused by:\n    TOML parse error at line 3, column 1\n      |\n    3 | disable_encryption=true\n      | ^^^^^^^^^^^^^^^^^^\n    unknown field `disable_encryption`, expected one of `default_protocol`, `defaultProtocol`, `dev_name`, `devName`, `enable_encryption`, `enableEncryption`, `enable_ipv6`, `enableIpv6`, `mtu`, `latency_first`, `latencyFirst`, `enable_exit_node`, `enableExitNode`, `no_tun`, `noTun`, `use_smoltcp`, `useSmoltcp`, `relay_network_whitelist`, `relayNetworkWhitelist`, `disable_p2p`, `disableP2p`, `relay_all_peer_rpc`, `relayAllPeerRpc`, `disable_udp_hole_punching`, `disableUdpHolePunching`, `multi_thread`, `multiThread`, `data_compress_algo`, `dataCompressAlgo`, `bind_device`, `bindDevice`, `enable_kcp_proxy`, `enableKcpProxy`, `disable_kcp_input`, `disableKcpInput`, `disable_relay_kcp`, `disableRelayKcp`, `proxy_forward_by_system`, `proxyForwardBySystem`, `accept_dns`, `acceptDns`, `private_mode`, `privateMode`, `enable_quic_proxy`, `enableQuicProxy`, `disable_quic_input`, `disableQuicInput`, `disable_relay_quic`, `disableRelayQuic`, `quic_listen_port`, `quicListenPort`, `foreign_relay_bps_limit`, `foreignRelayBpsLimit`, `multi_thread_count`, `multiThreadCount`, `enable_relay_foreign_network_kcp`, `enableRelayForeignNetworkKcp`, `enable_relay_foreign_network_quic`, `enableRelayForeignNetworkQuic`, `encryption_algorithm`, `encryptionAlgorithm`, `disable_sym_hole_punching`, `disableSymHolePunching`, `tld_dns_zone`, `tldDnsZone`, `p2p_only`, `p2pOnly`, `disable_tcp_hole_punching`, `disableTcpHolePunching`, `lazy_p2p`, `lazyP2p`, `need_p2p`, `needP2p`, `instance_recv_bps_limit`, `instanceRecvBpsLimit`, `disable_upnp`, `disableUpnp`, `disable_relay_data`, `disableRelayData`, `enable_udp_broadcast_relay`, `enableUdpBroadcastRelay`, `socket_mark`, `socketMark`, `prefer_peer_relay`, `preferPeerRelay`\n    ",
+        "accepted": false,
+        "status": "passed"
+      },
+      {
+        "name": "legacy_disable_ipv6",
+        "exception": "java.lang.RuntimeException",
+        "error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:3:1 ]\n   |\n 3 | disable_ipv6=true\n   | ^^^^^^|^^^^^  \n   |       `------- unknown field `disable_ipv6`, expected one of `default_protocol`, `defaultProtocol`, `dev_name`, `devName`, `enable_encryption`, `enableEncryption`, `enable_ipv6`, `enableIpv6`, `mtu`, `latency_first`, `latencyFirst`, `enable_exit_node`, `enableExitNode`, `no_tun`, `noTun`, `use_smoltcp`, `useSmoltcp`, `relay_network_whitelist`, `relayNetworkWhitelist`, `disable_p2p`, `disableP2p`, `relay_all_peer_rpc`, `relayAllPeerRpc`, `disable_udp_hole_punching`, `disableUdpHolePunching`, `multi_thread`, `multiThread`, `data_compress_algo`, `dataCompressAlgo`, `bind_device`, `bindDevice`, `enable_kcp_proxy`, `enableKcpProxy`, `disable_kcp_input`, `disableKcpInput`, `disable_relay_kcp`, `disableRelayKcp`, `proxy_forward_by_system`, `proxyForwardBySystem`, `accept_dns`, `acceptDns`, `private_mode`, `privateMode`, `enable_quic_proxy`, `enableQuicProxy`, `disable_quic_input`, `disableQuicInput`, `disable_relay_quic`, `disableRelayQuic`, `quic_listen_port`, `quicListenPort`, `foreign_relay_bps_limit`, `foreignRelayBpsLimit`, `multi_thread_count`, `multiThreadCount`, `enable_relay_foreign_network_kcp`, `enableRelayForeignNetworkKcp`, `enable_relay_foreign_network_quic`, `enableRelayForeignNetworkQuic`, `encryption_algorithm`, `encryptionAlgorithm`, `disable_sym_hole_punching`, `disableSymHolePunching`, `tld_dns_zone`, `tldDnsZone`, `p2p_only`, `p2pOnly`, `disable_tcp_hole_punching`, `disableTcpHolePunching`, `lazy_p2p`, `lazyP2p`, `need_p2p`, `needP2p`, `instance_recv_bps_limit`, `instanceRecvBpsLimit`, `disable_upnp`, `disableUpnp`, `disable_relay_data`, `disableRelayData`, `enable_udp_broadcast_relay`, `enableUdpBroadcastRelay`, `socket_mark`, `socketMark`, `prefer_peer_relay`, `preferPeerRelay`\n---'\n\n\nCaused by:\n    TOML parse error at line 3, column 1\n      |\n    3 | disable_ipv6=true\n      | ^^^^^^^^^^^^\n    unknown field `disable_ipv6`, expected one of `default_protocol`, `defaultProtocol`, `dev_name`, `devName`, `enable_encryption`, `enableEncryption`, `enable_ipv6`, `enableIpv6`, `mtu`, `latency_first`, `latencyFirst`, `enable_exit_node`, `enableExitNode`, `no_tun`, `noTun`, `use_smoltcp`, `useSmoltcp`, `relay_network_whitelist`, `relayNetworkWhitelist`, `disable_p2p`, `disableP2p`, `relay_all_peer_rpc`, `relayAllPeerRpc`, `disable_udp_hole_punching`, `disableUdpHolePunching`, `multi_thread`, `multiThread`, `data_compress_algo`, `dataCompressAlgo`, `bind_device`, `bindDevice`, `enable_kcp_proxy`, `enableKcpProxy`, `disable_kcp_input`, `disableKcpInput`, `disable_relay_kcp`, `disableRelayKcp`, `proxy_forward_by_system`, `proxyForwardBySystem`, `accept_dns`, `acceptDns`, `private_mode`, `privateMode`, `enable_quic_proxy`, `enableQuicProxy`, `disable_quic_input`, `disableQuicInput`, `disable_relay_quic`, `disableRelayQuic`, `quic_listen_port`, `quicListenPort`, `foreign_relay_bps_limit`, `foreignRelayBpsLimit`, `multi_thread_count`, `multiThreadCount`, `enable_relay_foreign_network_kcp`, `enableRelayForeignNetworkKcp`, `enable_relay_foreign_network_quic`, `enableRelayForeignNetworkQuic`, `encryption_algorithm`, `encryptionAlgorithm`, `disable_sym_hole_punching`, `disableSymHolePunching`, `tld_dns_zone`, `tldDnsZone`, `p2p_only`, `p2pOnly`, `disable_tcp_hole_punching`, `disableTcpHolePunching`, `lazy_p2p`, `lazyP2p`, `need_p2p`, `needP2p`, `instance_recv_bps_limit`, `instanceRecvBpsLimit`, `disable_upnp`, `disableUpnp`, `disable_relay_data`, `disableRelayData`, `enable_udp_broadcast_relay`, `enableUdpBroadcastRelay`, `socket_mark`, `socketMark`, `prefer_peer_relay`, `preferPeerRelay`\n    ",
+        "accepted": false,
+        "status": "passed"
+      },
+      {
+        "name": "legacy_portal_client_cidr",
+        "exception": "java.lang.RuntimeException",
+        "error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:4:1 ]\n   |\n 4 | client_cidr=\"10.222.0.0/24\"\n   | ^^^^^|^^^^^  \n   |      `------- unknown field `client_cidr`, expected one of `enabled`, `wireguard_listen`, `wireguard_private_key`, `clients`\n---'\n\n\nCaused by:\n    TOML parse error at line 4, column 1\n      |\n    4 | client_cidr=\"10.222.0.0/24\"\n      | ^^^^^^^^^^^\n    unknown field `client_cidr`, expected one of `enabled`, `wireguard_listen`, `wireguard_private_key`, `clients`\n    ",
+        "accepted": false,
+        "status": "passed"
+      },
+      {
+        "name": "wrong_hostname_type",
+        "exception": "java.lang.RuntimeException",
+        "error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:2:10 ]\n   |\n 2 | hostname=42\n   |          ^|  \n   |           `-- invalid type: integer `42`, expected a string\n---'\n\n\nCaused by:\n    TOML parse error at line 2, column 10\n      |\n    2 | hostname=42\n      |          ^^\n    invalid type: integer `42`, expected a string\n    ",
+        "accepted": false,
+        "status": "passed"
+      },
+      {
+        "name": "wrong_mtu_type",
+        "exception": "java.lang.RuntimeException",
+        "error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:3:5 ]\n   |\n 3 | mtu=\"large\"\n   |     ^^^|^^^  \n   |        `----- invalid digit found in string\n---'\n\n\nCaused by:\n    TOML parse error at line 3, column 5\n      |\n    3 | mtu=\"large\"\n      |     ^^^^^^^\n    invalid digit found in string\n    ",
+        "accepted": false,
+        "status": "passed"
+      }
+    ],
+    "instances_before": {},
+    "instances_after": {}
+  },
+  "fixture_sha256": "bbcbde8659ed6d4f478612c5b61ecb17bfaf395d72e06f055587cf793a9ab691",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-config-parser.json",
+        "sha256": "f4e789a3b2e0015e32cc756fa418f12ba2c354927bbc1697e24c179f2693b1d4"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false,
+    "build_ref": "docs/verification/p00/builds/config-parser-apk-build.json"
+  }
+}

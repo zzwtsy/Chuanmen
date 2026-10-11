@@ -1,0 +1,711 @@
+{
+  "schema_version": 2,
+  "scope": "历史输入身份/缺失状态；当前维护探针不冒充历史源码版本",
+  "historical_build_inputs": [
+    {
+      "evidence_path": "docs/verification/p00/builds/address-apk-build.json",
+      "historical_path": "docs/verification/p00/builds/address-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 10,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "b4cff64e1670fb5394f5dd4029e44b4b00a004acd954cddf14faf17458c73e1a",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "8714cd61edf621b2701dcbe86b115c7203df4398611a20e1750bf1b6dc6f4862",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/evidence/builds/native/advanced-apk-build-initial.json",
+      "historical_path": "docs/verification/p00/advanced-apk-build-initial.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 11,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/AdvancedInstrumentation.java",
+          "expected_sha256": "8413099ed9def5a8320420fafe7682bbfc575cc2a17dc3cfc817b532e22f3725",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/AdvancedLoopback.java",
+          "expected_sha256": "3b28935f4515d1746b1bb2d314a80ec254b3eddbaca449b0fe19c46a61afa40f",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "8714cd61edf621b2701dcbe86b115c7203df4398611a20e1750bf1b6dc6f4862",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/advanced-apk-build.json",
+      "historical_path": "docs/verification/p00/builds/advanced-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 13,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "8714cd61edf621b2701dcbe86b115c7203df4398611a20e1750bf1b6dc6f4862",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/advanced-apk-diagnostics-build.json",
+      "historical_path": "docs/verification/p00/builds/advanced-apk-diagnostics-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 12,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/AdvancedInstrumentation.java",
+          "expected_sha256": "17096160a56908ff3d1e89fbf30c7397720904c34496b6658c451fb1bc9f15d3",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "8714cd61edf621b2701dcbe86b115c7203df4398611a20e1750bf1b6dc6f4862",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/failures.json",
+      "historical_path": "docs/verification/p00/failures.json",
+      "build_status": "failed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 12,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/AdvancedInstrumentation.java",
+          "expected_sha256": "17096160a56908ff3d1e89fbf30c7397720904c34496b6658c451fb1bc9f15d3",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "8714cd61edf621b2701dcbe86b115c7203df4398611a20e1750bf1b6dc6f4862",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/config-parser-apk-build.json",
+      "historical_path": "docs/verification/p00/builds/config-parser-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "complete",
+      "resolved_source_count": 6,
+      "missing_versions": []
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/datapath-apk-build-v3-routing.json",
+      "historical_path": "docs/verification/p00/builds/datapath-apk-build-v3-routing.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 4,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "3326c9c2104b01aaf35cb38d2d12dbeec38a1619a1a102d283355cf441533f21",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "67deb14c2ec427ab42912c12a90bd3c27d8911a2795978fe7fa2294c1f94c2e8",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "aab237a2a72c8531abb87c31b85e4f2d22af8aabaf49d8ea35b278578e2bb37c",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.java",
+          "expected_sha256": "11fa444e1c4b75d8383eef66f0b54eb79f5fdc8a6e59bb5722fa11112fe1beb8",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/evidence/builds/native/datapath-apk-build-v3.json",
+      "historical_path": "docs/verification/p00/datapath-apk-build-v3.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 4,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "ebb469f1ce3f02051effe2afc2db9e6919b55d99192c362e5fd893a2183c28e4",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "67deb14c2ec427ab42912c12a90bd3c27d8911a2795978fe7fa2294c1f94c2e8",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "aab237a2a72c8531abb87c31b85e4f2d22af8aabaf49d8ea35b278578e2bb37c",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.java",
+          "expected_sha256": "a0d43654df4d84d06b947d7127684442326197aa936136d2ce6583589ea03e3e",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/evidence/builds/native/datapath-apk-build.json",
+      "historical_path": "docs/verification/p00/datapath-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 4,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "ebb469f1ce3f02051effe2afc2db9e6919b55d99192c362e5fd893a2183c28e4",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "534d29b2e006368fa0d237819ab32b81950cc1025d21b072476853d9b3ee94d0",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "aab237a2a72c8531abb87c31b85e4f2d22af8aabaf49d8ea35b278578e2bb37c",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.java",
+          "expected_sha256": "ec2e7a5a1b667d453ff86b1c496366574f5fc40a8d2b57d7ecec2a2a3b89cc74",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/datapath-diagnostic-apk-build.json",
+      "historical_path": "docs/verification/p00/builds/datapath-diagnostic-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 4,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "ebb469f1ce3f02051effe2afc2db9e6919b55d99192c362e5fd893a2183c28e4",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "534d29b2e006368fa0d237819ab32b81950cc1025d21b072476853d9b3ee94d0",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "aab237a2a72c8531abb87c31b85e4f2d22af8aabaf49d8ea35b278578e2bb37c",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.java",
+          "expected_sha256": "cbba13ee8667f431002eda697220d129d36dd3b086ca9b4f6b1a207ff12ec82d",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/failures.json",
+      "historical_path": "docs/verification/p00/failures.json",
+      "build_status": "failed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 4,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "ebb469f1ce3f02051effe2afc2db9e6919b55d99192c362e5fd893a2183c28e4",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "534d29b2e006368fa0d237819ab32b81950cc1025d21b072476853d9b3ee94d0",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "aab237a2a72c8531abb87c31b85e4f2d22af8aabaf49d8ea35b278578e2bb37c",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.java",
+          "expected_sha256": "68ba6f1e83e6af81ee433e1399a546ef9d8d514e0c2b18a527c2249b3347fd72",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/failures.json",
+      "historical_path": "docs/verification/p00/failures.json",
+      "build_status": "failed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 4,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "ebb469f1ce3f02051effe2afc2db9e6919b55d99192c362e5fd893a2183c28e4",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "dd8033c91c55b0e39c0948a56f6327999a3becd2999586f93caac9303bfd1d53",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "aab237a2a72c8531abb87c31b85e4f2d22af8aabaf49d8ea35b278578e2bb37c",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/DatapathInstrumentation.java",
+          "expected_sha256": "a0d43654df4d84d06b947d7127684442326197aa936136d2ce6583589ea03e3e",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/runs/independent-build-04/parser-apk-build-report.json",
+      "historical_path": "docs/verification/p00/runs/independent-build-04/parser-apk-build-report.json",
+      "build_status": "passed",
+      "source_version_status": "complete",
+      "resolved_source_count": 6,
+      "missing_versions": []
+    },
+    {
+      "evidence_path": "docs/verification/p00/runs/independent-build-04/boundary-apk-build-report.json",
+      "historical_path": "docs/verification/p00/runs/independent-build-04/boundary-apk-build-report.json",
+      "build_status": "passed",
+      "source_version_status": "complete",
+      "resolved_source_count": 16,
+      "missing_versions": []
+    },
+    {
+      "evidence_path": "docs/verification/p00/runs/independent-build-04/parser-apk-build-report.json",
+      "historical_path": "docs/verification/p00/runs/independent-build-04/parser-apk-build-report.json",
+      "build_status": "passed",
+      "source_version_status": "complete",
+      "resolved_source_count": 6,
+      "missing_versions": []
+    },
+    {
+      "evidence_path": "docs/verification/p00/evidence/builds/native/jni-parser-build-initial.json",
+      "historical_path": "docs/verification/p00/jni-parser-build-initial.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 1,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "a575122256de219b7af1f6efa3cf5d5feddcf40dce7c35bacd45f14f8e20d5c6",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-probe/AndroidManifest.xml",
+          "expected_sha256": "7c461197da01e81151032cda927d31c8a94404707ca00f704b83695aaf0e6505",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-probe/src/com/github/zzwtsy/chuanmen/p00nativeprobe/NativeInstrumentation.java",
+          "expected_sha256": "40d8e60a7b219a8582b2ef617a5768006369cb3fe52967c6032e93eb7181198e",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/jni-parser-build.json",
+      "historical_path": "docs/verification/p00/builds/jni-parser-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 2,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "2747b6979db37851bc71a9d3f688ca6623068f6e950c832d32d5df8deb9d1fc1",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-probe/AndroidManifest.xml",
+          "expected_sha256": "7c461197da01e81151032cda927d31c8a94404707ca00f704b83695aaf0e6505",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/native-boundary-apk-build.json",
+      "historical_path": "docs/verification/p00/builds/native-boundary-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 2,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "dca7a091d6d9b05380764d6cf3e2e6b5c164319c27caa42e00e5ba0d866d28c7",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "534d29b2e006368fa0d237819ab32b81950cc1025d21b072476853d9b3ee94d0",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryInstrumentation.java",
+          "expected_sha256": "104ca691eca02b58a0287a41cacbb7bbccd69ef7b7b5f344ab62d03b1c9f468b",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "aab237a2a72c8531abb87c31b85e4f2d22af8aabaf49d8ea35b278578e2bb37c",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/offline-apk-build.json",
+      "historical_path": "docs/verification/p00/builds/offline-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 7,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "1997005223593356620567d56090192805eed8f1686086e0a2f357ce3bbaea0f",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "8714cd61edf621b2701dcbe86b115c7203df4398611a20e1750bf1b6dc6f4862",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "6b7201e80a7e04dd7d749af59a98e4426451a828427023eb83040b18892e7635",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/RevokeInstrumentation.java",
+          "expected_sha256": "7e6388e1b0d70ea9c4eaf091d3eca1a74cf29ff08c06614cbc4a6930bd025bf2",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/performance-apk-build.json",
+      "historical_path": "docs/verification/p00/builds/performance-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "complete",
+      "resolved_source_count": 16,
+      "missing_versions": []
+    },
+    {
+      "evidence_path": "docs/verification/p00/evidence/builds/platform/platform-build-bounded.json",
+      "historical_path": "docs/verification/p00/platform-build-bounded.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 3,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build.py",
+          "expected_sha256": "a84585a0f007ace50a37d24eba09e51f61051e6097d634756b413ef25a266960",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/src/com/github/zzwtsy/chuanmen/p00probe/PlatformInstrumentation.java",
+          "expected_sha256": "2fb1f6e5c9aaa49759e168f3d3029398530772bf9bced887e39997175635cd37",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/failures.json",
+      "historical_path": "docs/verification/p00/failures.json",
+      "build_status": "failed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 1,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/AndroidManifest.xml",
+          "expected_sha256": "ac47ddffb2241e17db6445b9f5ce7217a121f45208ccde4b00c73cad3ce6a9c4",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/build.py",
+          "expected_sha256": "19ea02a9bfb826e8e9a7c04b523f08759da430f095845b0f9db1bb31dadd200a",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/src/com/github/zzwtsy/chuanmen/p00probe/ConsentActivity.java",
+          "expected_sha256": "417678d1a64f4b2b884c54f18d026369d19673b35cf0100d55e352dd177d3dff",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/src/com/github/zzwtsy/chuanmen/p00probe/PlatformInstrumentation.java",
+          "expected_sha256": "723303f85e0589dd6227298b48db1aa1249d0b43edb41cf63285865fca2c7747",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/evidence/builds/platform/platform-build-original.json",
+      "historical_path": "docs/verification/p00/platform-build-original.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 2,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build.py",
+          "expected_sha256": "a84585a0f007ace50a37d24eba09e51f61051e6097d634756b413ef25a266960",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/src/com/github/zzwtsy/chuanmen/p00probe/ConsentActivity.java",
+          "expected_sha256": "71ca7b8e09e8edbc7c4ca5d2628dc98241a91c15cf6d0d23c65645f3c89c3e52",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/src/com/github/zzwtsy/chuanmen/p00probe/PlatformInstrumentation.java",
+          "expected_sha256": "7847659ea37a89583d690ad85dd275895f9c845f86eec50ecf327a0a224dd420",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/evidence/builds/platform/platform-build.json",
+      "historical_path": "docs/verification/p00/platform-build.json",
+      "build_status": "passed",
+      "source_version_status": "complete",
+      "resolved_source_count": 5,
+      "missing_versions": []
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/revoke-notification-apk-build.json",
+      "historical_path": "docs/verification/p00/builds/revoke-notification-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 8,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "1997005223593356620567d56090192805eed8f1686086e0a2f357ce3bbaea0f",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "8714cd61edf621b2701dcbe86b115c7203df4398611a20e1750bf1b6dc6f4862",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "6b7201e80a7e04dd7d749af59a98e4426451a828427023eb83040b18892e7635",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/boundary-apk/build-report.json",
+      "historical_path": "docs/verification/p00/second-host-continuation-03/boundary-apk/build-report.json",
+      "build_status": "passed",
+      "source_version_status": "complete",
+      "resolved_source_count": 16,
+      "missing_versions": []
+    },
+    {
+      "evidence_path": "docs/verification/p00/evidence/reviews/second-host/second-host-continuation-03/parser-apk/build-report.json",
+      "historical_path": "docs/verification/p00/second-host-continuation-03/parser-apk/build-report.json",
+      "build_status": "passed",
+      "source_version_status": "complete",
+      "resolved_source_count": 6,
+      "missing_versions": []
+    },
+    {
+      "evidence_path": "docs/verification/p00/failures.json",
+      "historical_path": "docs/verification/p00/failures.json",
+      "build_status": "failed",
+      "source_version_status": "complete",
+      "resolved_source_count": 6,
+      "missing_versions": []
+    },
+    {
+      "evidence_path": "docs/verification/p00/builds/system-denied-apk-build.json",
+      "historical_path": "docs/verification/p00/builds/system-denied-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 6,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "1997005223593356620567d56090192805eed8f1686086e0a2f357ce3bbaea0f",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "67deb14c2ec427ab42912c12a90bd3c27d8911a2795978fe7fa2294c1f94c2e8",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "6b7201e80a7e04dd7d749af59a98e4426451a828427023eb83040b18892e7635",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/RevokeInstrumentation.java",
+          "expected_sha256": "7e6388e1b0d70ea9c4eaf091d3eca1a74cf29ff08c06614cbc4a6930bd025bf2",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    },
+    {
+      "evidence_path": "docs/verification/p00/evidence/builds/native/system-errors-apk-build.json",
+      "historical_path": "docs/verification/p00/system-errors-apk-build.json",
+      "build_status": "passed",
+      "source_version_status": "partial_version_gaps",
+      "resolved_source_count": 5,
+      "missing_versions": [
+        {
+          "path": "experiments/android-vpn-smoke/build-native-probe.py",
+          "expected_sha256": "4f3a0c8d1b467e21668b67ab8bbe1156ac746c5337b5cfd97f1bee1aea723eed",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/AndroidManifest.xml",
+          "expected_sha256": "f500e0da7f05993fe6274cb63f7565ff3fd2d57e06d47a29f49fc5f0a6c73273",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryActivity.java",
+          "expected_sha256": "67deb14c2ec427ab42912c12a90bd3c27d8911a2795978fe7fa2294c1f94c2e8",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/BoundaryVpnService.java",
+          "expected_sha256": "6b7201e80a7e04dd7d749af59a98e4426451a828427023eb83040b18892e7635",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        },
+        {
+          "path": "experiments/android-vpn-smoke/native-boundary/android/src/com/github/zzwtsy/chuanmen/p00probe/RevokeInstrumentation.java",
+          "expected_sha256": "7e6388e1b0d70ea9c4eaf091d3eca1a74cf29ff08c06614cbc4a6930bd025bf2",
+          "reason": "没有可按此 hash 恢复的版本；不以当前源码替代历史输入"
+        }
+      ]
+    }
+  ],
+  "missing_version_total": 83,
+  "claims": {
+    "current_workflow_sources": "maintained_minimal_probes",
+    "migrated_workflow_execution": "not_run",
+    "historical_apk_byte_reproduction": "not_claimed",
+    "physical_reexecution": "not_run"
+  },
+  "external_inputs": [
+    "完整 commit 的上游 checkout 和固定 Cargo.lock",
+    "精确 SDK/NDK/JDK/Rust/protoc",
+    "固定 registry .crate 与 git 依赖缓存用于离线许可原归档复核"
+  ],
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "reproduction-inputs.json",
+        "sha256": "8aac6557ccbe8d5b751bbc8e9fe7bc147593948e6c3a44e652bb1aa2344f4624"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

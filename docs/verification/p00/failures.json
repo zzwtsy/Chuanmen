@@ -1,0 +1,440 @@
+{
+  "layer": "failure_history_summary",
+  "status": "historical_summary",
+  "scope": "保留负向结论，不将失败改写成成功",
+  "records": [
+    {
+      "record_name": "xiaomi-advanced-start-failure.json",
+      "original_sha256": "c023fe74870060b55cd066590419658af399e917da24f08a1d61ef9caf0f959c",
+      "status": "failed",
+      "category": "device_probe",
+      "reason": "历史工具、环境或采集失败；不支持能力通过",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "xiaomi-platform-bounded-failure.json",
+      "original_sha256": "c66103d15d9a69e4bb4a26da88a6b07f6d1f36d7f23749f3b515fb23f2c7f3f0",
+      "status": "failed",
+      "category": "device_probe",
+      "reason": "历史工具、环境或采集失败；不支持能力通过",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "xiaomi-platform-timeout.json",
+      "original_sha256": "94244780d11bc8638c53dd7397a4f5cc584d1d020aca320b002d3acd759f7aa7",
+      "status": "failed",
+      "category": "device_probe",
+      "reason": "Command '['adb', '-s', '<controlled-serial>', 'shell', 'am', 'instrument', '-w', '-r', 'com.github.zzwtsy.chuanmen.p00probe/.PlatformInstrumentation']' timed out after 90 seconds",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "xiaomi-platform-first-failure.json",
+      "original_sha256": "183b8a041b187cd1500a36dbeb31df8b7b1e5ba380e9e85f817babecf37cc631",
+      "status": "failed",
+      "category": "device_probe",
+      "reason": "设备没有返回有效平台实验报告",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "xiaomi-install-restricted.json",
+      "original_sha256": "7f60d86a3ebc7b2a71622942a506f397457c37c700dbe44f5727d02a73907c0b",
+      "status": "blocked",
+      "category": "device_probe",
+      "reason": "历史工具、环境或采集失败；不支持能力通过",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "xiaomi-datapath-first-failure.json",
+      "original_sha256": "376dc4299626663ffd2f4f56ac6d5a8d2b3fbcb7ea4fe692f20f2f056d1d805d",
+      "status": "failed",
+      "category": "device_probe",
+      "reason": "历史工具、环境或采集失败；不支持能力通过",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "host-peer-aes-feature-failure.json",
+      "original_sha256": "082b5c34988765f2ff6da7db59f4f08158bd8ef25282479e9de7265c1470f41a",
+      "status": "failed",
+      "category": "device_probe",
+      "reason": "独立对端进程提前退出",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "host-peer-restart-port-failure.json",
+      "original_sha256": "05ef140c1a69d782888d8e1f35e5d92ccc42ed9bfb946294f55c8438d754f597",
+      "status": "failed",
+      "category": "device_probe",
+      "reason": "[Errno 98] Address already in use",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "xiaomi-jni-parser-initial-failure.json",
+      "original_sha256": "724d682f36c0e671d0574d7e8a1178ed2a2c1e1c195ce6175f041a8724cb6b2a",
+      "status": "failed",
+      "category": "device_probe",
+      "reason": "历史工具、环境或采集失败；不支持能力通过",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "xiaomi-datapath-after-network-reset-failure.json",
+      "original_sha256": "fad6089ac6fb13b841e9acdde36efa211585aba2efc906316304ae12cb092f3e",
+      "status": "failed",
+      "category": "device_probe",
+      "reason": "历史工具、环境或采集失败；不支持能力通过",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "xiaomi-offline-adb-timeout.json",
+      "original_sha256": "1cc200f2b1dc466435f95440a242bc5f73ca8d370b27c23d76989ce40bdf1c0a",
+      "status": "blocked",
+      "category": "device_probe",
+      "reason": "Command '['adb', '-s', '<controlled-serial>', 'shell', 'run-as', 'com.github.zzwtsy.chuanmen.p00probe', 'cat', 'files/p00-offline.json']' timed out after 10 seconds",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "xiaomi-offline-ready.json",
+      "original_sha256": "328228724a44db74c40120b5caf64e127cf4d5b88e4c0b2d96ecc446c2d4345a",
+      "status": "blocked",
+      "category": "device_probe",
+      "reason": "历史工具、环境或采集失败；不支持能力通过",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "xiaomi-performance-adb-disconnected.json",
+      "original_sha256": "beb811ec4b2cc133ab4a05fed1456198e492b314d73a5ffb80f296108aa867bf",
+      "status": "blocked",
+      "category": "device_probe",
+      "reason": "ADB 命令失败",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "config-build-failure-02.json",
+      "original_sha256": "e6af3efd560db9194231c7d51a10bb1147fd8422448a781ef88ffa5bd7e4fe16",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "构建步骤失败：rustup",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "config-build-failure-03.json",
+      "original_sha256": "a06707a6e1ad4a993a82f43b0015772909b895f926dff962c9c7b9cc5bc8add9",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "构建步骤失败：rustup",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "core-parser-mold-failure.json",
+      "original_sha256": "994f6974f0125e0c14120b9118210602c8a670a91b925295137c0169b363e4f3",
+      "status": "blocked",
+      "category": "environment_or_checker",
+      "reason": "步骤失败：rustup (101)",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "config-build-failure-01.json",
+      "original_sha256": "71ade25d78a0ca3ac426112bf895fe4369a14b15b8ed747baa19c9f58749f507",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "派生 lockfile 引入未冻结依赖：[{'name': 'cc', 'version': '1.4.7', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '54413ede23c2daf518f35156dfde027feb2374004d63bd497f983c8db9c0e313', 'dependencies': ['find-msvc-tools', 'jobserver', 'libc', 'shlex']}, {'name': 'find-msvc-tools', 'version': '0.1.13', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': 'ef25905e51abafe4dcea6c15fec58c57b601cdbd0ee53d22ea1d3016c587d39b'}, {'name': 'icu_collections', 'version': '2.0.0', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '200072f5d0e3614556f94a9930d5dc3e0662a652823904c3a75dc3b0af7fee47', 'dependencies': ['displaydoc', 'potential_utf', 'yoke', 'zerofrom', 'zerovec']}, {'name': 'icu_locale_core', 'version': '2.0.0', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '0cde2700ccaed3872079a65fb1a78f6c0a36c91570f28755dda67bc8f7d9f00a', 'dependencies': ['displaydoc', 'litemap', 'tinystr', 'writeable', 'zerovec']}, {'name': 'icu_normalizer', 'version': '2.0.0', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '436880e8e18df4d7bbc06d58432329d6458cc84531f7ac5f024e93deadb37979', 'dependencies': ['displaydoc', 'icu_collections', 'icu_normalizer_data', 'icu_properties', 'icu_provider', 'smallvec', 'zerovec']}, {'name': 'icu_normalizer_data', 'version': '2.0.0', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '00210d6893afc98edb752b664b8890f0ef174c8adbb8d0be9710fa66fbbf72d3'}, {'name': 'icu_properties', 'version': '2.0.1', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '016c619c1eeb94efb86809b015c58f479963de65bdb6253345c1a1276f22e32b', 'dependencies': ['displaydoc', 'icu_collections', 'icu_locale_core', 'icu_properties_data', 'icu_provider', 'potential_utf', 'zerotrie', 'zerovec']}, {'name': 'icu_properties_data', 'version': '2.0.1', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '298459143998310acd25ffe6810ed544932242d3f07083eee1084d83a71bd632'}, {'name': 'icu_provider', 'version': '2.0.0', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '03c80da27b5f4187909049ee2d72f276f0d9f99a42c306bd0131ecfe04d8e5af', 'dependencies': ['displaydoc', 'icu_locale_core', 'stable_deref_trait', 'tinystr', 'writeable', 'yoke', 'zerofrom', 'zerotrie', 'zerovec']}, {'name': 'idna_adapter', 'version': '1.2.1', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '3acae9609540aa318d1bc588455225fb2085b9ed0c4f6bd0d9d5bcd86f1a0344', 'dependencies': ['icu_normalizer', 'icu_properties']}, {'name': 'js-sys', 'version': '0.3.106', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '7883d941dae510fb2d978fc3fe018c71c9e2892fd38854de3e8b92c2e5ad9cc5', 'dependencies': ['cfg-if', 'futures-util', 'wasm-bindgen']}, {'name': 'potential_utf', 'version': '0.1.2', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': 'e5a7c30837279ca13e7c867e9e40053bc68740f988cb07f7ca6df43cc734b585', 'dependencies': ['zerovec']}, {'name': 'thiserror', 'version': '2.0.21', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '09e52cb86a36cede5cb101bf8908837b3e4c6e5e59fe7fd85c23fb56200d189e', 'dependencies': ['thiserror-impl']}, {'name': 'thiserror-impl', 'version': '2.0.21', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': 'fe5197923287db20a58125f0bc85c062f7f2c892de97b18c356f9efb14b28524', 'dependencies': ['proc-macro2', 'quote', 'syn 3.0.6']}, {'name': 'tinystr', 'version': '0.8.1', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '5d4f6d1145dcb577acf783d4e601bc1d76a13337bb54e6233add580b07344c8b', 'dependencies': ['displaydoc', 'zerovec']}, {'name': 'wasm-bindgen', 'version': '0.2.129', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '9bb54f33acc68fd454578d9820b0bde1a1a3d17aa17bb7b6595806d02886d409', 'dependencies': ['cfg-if', 'once_cell', 'rustversion', 'wasm-bindgen-macro', 'wasm-bindgen-shared']}, {'name': 'wasm-bindgen-futures', 'version': '0.4.79', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '3cbab34de2d982e9b48e18d216d04c4a6f641066ff19ffb699980f591ee3610e', 'dependencies': ['js-sys', 'tokio', 'wasm-bindgen']}, {'name': 'wasm-bindgen-macro', 'version': '0.2.129', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '2e29d0c35b16e224a7eeb5cd2d25e3e1968fbd65604117b44d3b789d00ee8535', 'dependencies': ['quote', 'wasm-bindgen-macro-support']}, {'name': 'wasm-bindgen-macro-support', 'version': '0.2.129', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '6f501a8bc3719dba86ef8ae4728879c08001bea749eb1333ac5b91e040e2a6b7', 'dependencies': ['bumpalo', 'proc-macro2', 'quote', 'syn 3.0.6', 'wasm-bindgen-shared']}, {'name': 'wasm-bindgen-shared', 'version': '0.2.129', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '23f0c9c52aa7cd7d77769a4cfe2a9adb1b331f489a41d912ce14513d5ab995c6', 'dependencies': ['unicode-ident']}, {'name': 'web-sys', 'version': '0.3.106', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '88261b9deccee56594c11a3460c462c41f58d148598fe70ad77070126a68aba4', 'dependencies': ['js-sys', 'wasm-bindgen']}, {'name': 'yoke', 'version': '0.8.0', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '5f41bb01b8226ef4bfd589436a297c53d118f65921786300e427be8d487695cc', 'dependencies': ['serde', 'stable_deref_trait', 'yoke-derive', 'zerofrom']}, {'name': 'yoke-derive', 'version': '0.8.0', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '38da3c9736e16c5d3c8c597a9aaa5d1fa565d0532ae05e27c24aa62fb32c0ab6', 'dependencies': ['proc-macro2', 'quote', 'syn 2.0.119', 'synstructure 0.13.2']}, {'name': 'zerocopy', 'version': '0.8.58', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': 'c17e8fafad82b542ff3717217ecdc736231b59e387768c9630123b4ce4d2db44', 'dependencies': ['zerocopy-derive 0.8.58']}, {'name': 'zerocopy-derive', 'version': '0.8.58', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '595f56e044df4f46a0c9a626f65c3d99eb8488f7e8a8baa12dd76326d9710bf2', 'dependencies': ['proc-macro2', 'quote', 'syn 2.0.119']}, {'name': 'zerotrie', 'version': '0.2.2', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '36f0bbd478583f79edad978b407914f61b2972f5af6fa089686016be8f9af595', 'dependencies': ['displaydoc', 'yoke', 'zerofrom']}, {'name': 'zerovec', 'version': '0.11.4', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': 'e7aa2bd55086f1ab526693ecbe444205da57e25f4489879da80635a46d90e73b', 'dependencies': ['yoke', 'zerofrom', 'zerovec-derive']}, {'name': 'zstd-safe', 'version': '7.2.1', 'source': 'registry+https://github.com/rust-lang/crates.io-index', 'checksum': '54a3ab4db68cea366acc5c897c7b4d4d1b8994a9cd6e6f841f8964566a419059', 'dependencies': ['zstd-sys']}]",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "datapath-diagnostic-build-failure.json",
+      "original_sha256": "4d8301c00f25ef3b62969e82cbe02c781c49f4db08ad1e75b9ee846af108bb1b",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "构建失败：javac",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "host-peer-build-offline-failure.json",
+      "original_sha256": "4e4e24524ae662ee5c4ad5f9a1c49b02c84dcb19cf687c04067caf2c572611cd",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "命令失败：rustup",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "advanced-apk-signing-path-failure.json",
+      "original_sha256": "2c72155adef8a0ac5cae8b43a86c4c7d65989ea8494cbd30cb745b7fe8684105",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "构建失败：<USER_HOME>/Android/Sdk/build-tools/36.0.0/apksigner",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "address-build-quota-failure.json",
+      "original_sha256": "a89dcc7ae46f7fcb019d231ab91de8df6fc04712c5064bd2651dc917eeb4e8fc",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "OSError: [Errno 122] Disk quota exceeded; writing build-report also failed",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "native-boundary-build-lock-failure.json",
+      "original_sha256": "6f33166592b225d7abec6848d044458acbdb8cdbc134fb4ae68c56a2967d2469",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "命令失败，原始日志 /tmp/chuanmen-p00-boundary-native/command-07.txt，退出码 101",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "native-build-initial-failure.json",
+      "original_sha256": "bb296a9104990e20158e6a1a84a99efffec2792d931e235f5b79b24d8fe6bb10",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "命令失败，原始日志 /tmp/chuanmen-p00-native-authorized/command-07.txt，退出码 101",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "datapath-lambda-build-failure.json",
+      "original_sha256": "1ac3d65519f37c8e8641e66fd04da66c0332e15625fa6b6d29375782e2425d96",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "构建失败：javac",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "platform-build-initial-failure.json",
+      "original_sha256": "2d45e5e943a165a0905d30f13d0eaa3da6c1746a48cc78c40faa292478c70198",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "构建步骤失败：/usr/bin/javac，退出码 3",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "final-status-initial-checker-failure.json",
+      "original_sha256": "798c6c00f086f49d3840e02c8f5f45692ed3d64a4a52c83eaed011ed80e1c256",
+      "status": "checker_failed_before_result_write",
+      "category": "environment_or_checker",
+      "reason": "KeyError: 'native_library_sha256'",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "final-status-m1-field-transition-observation.json",
+      "original_sha256": "20c41d4c96d51852561c0e440e8307151f29504d185cb4735bc9d5bef842c022",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "状态同步把 M1 枚举规范为 verified，并以独立 scope 字段明确有限范围；检查器仍期望旧组合枚举。按最新约定核对 verified 与完整 scope，未改原件。",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "final-build-review-initial-checker-failure.json",
+      "original_sha256": "ec9e1319da69cc005b51191b2ff90a70152dfe61d534360945f9963ce884da22",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "独立检查器把 git status 的完整 argv 错写为不带 --untracked-files=all；实际原命令含该参数且日志为空、返回0。修正期望完整命令，未改原记录。",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "launch-04-first-failure-observation.json",
+      "original_sha256": "007758fc5e5e001e9c326a27330e78244259cf197e4027a864d17aefb7f73836",
+      "status": "launch_not_confirmed_no_build_report",
+      "category": "environment_or_checker",
+      "reason": "历史工具、环境或采集失败；不支持能力通过",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "config-mapping-review-initial-checker-failure.json",
+      "original_sha256": "6608b261991b8348c7e15c0f0e3ce7129a074d2d3ac8105f570ac7c57c985d6b",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "历史工具、环境或采集失败；不支持能力通过",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "second-host-build-failure-03.json",
+      "original_sha256": "771d64c353237448be07ecdba838b34f7d0840dbef67ce0242843a14fb306b29",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "步骤失败，保留原件：<RUN_ROOT>/logs/command-26.txt",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "second-host-build-failure-02.json",
+      "original_sha256": "372c6b9ea103e9f6d00c652801098c5a3d6f62f358dbc42454efbc64cdb3ad8b",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "步骤失败，保留原件：<RUN_ROOT>/logs/command-20.txt",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "second-host-build-failure-01.json",
+      "original_sha256": "214ec13b6bf0fc57cc41dbe702c7aae43e0de3ee12b29e376fc6726ed8735be6",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "步骤失败，保留原件：<RUN_ROOT>/logs/command-04.txt",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "build-report.json",
+      "original_sha256": "e77e57ae908d9569269c5a9aaccfb680f5e88c1ba022961a7198c2d91b0fde77",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "构建步骤失败：rustup",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    },
+    {
+      "record_name": "build-report.json",
+      "original_sha256": "baa90d4892359ea9af5db818c7c5d886ada8caaa2d0acb5d8430ba58117a2b87",
+      "status": "failed",
+      "category": "environment_or_checker",
+      "reason": "构建失败：javac",
+      "followup_scope": "独立成功运行或所保留负向实验分别登记"
+    }
+  ],
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-advanced-start-failure.json",
+        "sha256": "c023fe74870060b55cd066590419658af399e917da24f08a1d61ef9caf0f959c"
+      },
+      {
+        "name": "xiaomi-platform-bounded-failure.json",
+        "sha256": "c66103d15d9a69e4bb4a26da88a6b07f6d1f36d7f23749f3b515fb23f2c7f3f0"
+      },
+      {
+        "name": "xiaomi-platform-timeout.json",
+        "sha256": "94244780d11bc8638c53dd7397a4f5cc584d1d020aca320b002d3acd759f7aa7"
+      },
+      {
+        "name": "xiaomi-platform-first-failure.json",
+        "sha256": "183b8a041b187cd1500a36dbeb31df8b7b1e5ba380e9e85f817babecf37cc631"
+      },
+      {
+        "name": "xiaomi-install-restricted.json",
+        "sha256": "7f60d86a3ebc7b2a71622942a506f397457c37c700dbe44f5727d02a73907c0b"
+      },
+      {
+        "name": "xiaomi-datapath-first-failure.json",
+        "sha256": "376dc4299626663ffd2f4f56ac6d5a8d2b3fbcb7ea4fe692f20f2f056d1d805d"
+      },
+      {
+        "name": "host-peer-aes-feature-failure.json",
+        "sha256": "082b5c34988765f2ff6da7db59f4f08158bd8ef25282479e9de7265c1470f41a"
+      },
+      {
+        "name": "host-peer-restart-port-failure.json",
+        "sha256": "05ef140c1a69d782888d8e1f35e5d92ccc42ed9bfb946294f55c8438d754f597"
+      },
+      {
+        "name": "xiaomi-jni-parser-initial-failure.json",
+        "sha256": "724d682f36c0e671d0574d7e8a1178ed2a2c1e1c195ce6175f041a8724cb6b2a"
+      },
+      {
+        "name": "xiaomi-datapath-after-network-reset-failure.json",
+        "sha256": "fad6089ac6fb13b841e9acdde36efa211585aba2efc906316304ae12cb092f3e"
+      },
+      {
+        "name": "xiaomi-offline-adb-timeout.json",
+        "sha256": "1cc200f2b1dc466435f95440a242bc5f73ca8d370b27c23d76989ce40bdf1c0a"
+      },
+      {
+        "name": "xiaomi-offline-ready.json",
+        "sha256": "328228724a44db74c40120b5caf64e127cf4d5b88e4c0b2d96ecc446c2d4345a"
+      },
+      {
+        "name": "xiaomi-performance-adb-disconnected.json",
+        "sha256": "beb811ec4b2cc133ab4a05fed1456198e492b314d73a5ffb80f296108aa867bf"
+      },
+      {
+        "name": "config-build-failure-02.json",
+        "sha256": "e6af3efd560db9194231c7d51a10bb1147fd8422448a781ef88ffa5bd7e4fe16"
+      },
+      {
+        "name": "config-build-failure-03.json",
+        "sha256": "a06707a6e1ad4a993a82f43b0015772909b895f926dff962c9c7b9cc5bc8add9"
+      },
+      {
+        "name": "core-parser-mold-failure.json",
+        "sha256": "994f6974f0125e0c14120b9118210602c8a670a91b925295137c0169b363e4f3"
+      },
+      {
+        "name": "config-build-failure-01.json",
+        "sha256": "71ade25d78a0ca3ac426112bf895fe4369a14b15b8ed747baa19c9f58749f507"
+      },
+      {
+        "name": "datapath-diagnostic-build-failure.json",
+        "sha256": "4d8301c00f25ef3b62969e82cbe02c781c49f4db08ad1e75b9ee846af108bb1b"
+      },
+      {
+        "name": "host-peer-build-offline-failure.json",
+        "sha256": "4e4e24524ae662ee5c4ad5f9a1c49b02c84dcb19cf687c04067caf2c572611cd"
+      },
+      {
+        "name": "advanced-apk-signing-path-failure.json",
+        "sha256": "2c72155adef8a0ac5cae8b43a86c4c7d65989ea8494cbd30cb745b7fe8684105"
+      },
+      {
+        "name": "address-build-quota-failure.json",
+        "sha256": "a89dcc7ae46f7fcb019d231ab91de8df6fc04712c5064bd2651dc917eeb4e8fc"
+      },
+      {
+        "name": "native-boundary-build-lock-failure.json",
+        "sha256": "6f33166592b225d7abec6848d044458acbdb8cdbc134fb4ae68c56a2967d2469"
+      },
+      {
+        "name": "native-build-initial-failure.json",
+        "sha256": "bb296a9104990e20158e6a1a84a99efffec2792d931e235f5b79b24d8fe6bb10"
+      },
+      {
+        "name": "datapath-lambda-build-failure.json",
+        "sha256": "1ac3d65519f37c8e8641e66fd04da66c0332e15625fa6b6d29375782e2425d96"
+      },
+      {
+        "name": "platform-build-initial-failure.json",
+        "sha256": "2d45e5e943a165a0905d30f13d0eaa3da6c1746a48cc78c40faa292478c70198"
+      },
+      {
+        "name": "final-status-initial-checker-failure.json",
+        "sha256": "798c6c00f086f49d3840e02c8f5f45692ed3d64a4a52c83eaed011ed80e1c256"
+      },
+      {
+        "name": "final-status-m1-field-transition-observation.json",
+        "sha256": "20c41d4c96d51852561c0e440e8307151f29504d185cb4735bc9d5bef842c022"
+      },
+      {
+        "name": "final-build-review-initial-checker-failure.json",
+        "sha256": "ec9e1319da69cc005b51191b2ff90a70152dfe61d534360945f9963ce884da22"
+      },
+      {
+        "name": "launch-04-first-failure-observation.json",
+        "sha256": "007758fc5e5e001e9c326a27330e78244259cf197e4027a864d17aefb7f73836"
+      },
+      {
+        "name": "config-mapping-review-initial-checker-failure.json",
+        "sha256": "6608b261991b8348c7e15c0f0e3ce7129a074d2d3ac8105f570ac7c57c985d6b"
+      },
+      {
+        "name": "second-host-build-failure-03.json",
+        "sha256": "771d64c353237448be07ecdba838b34f7d0840dbef67ce0242843a14fb306b29"
+      },
+      {
+        "name": "second-host-build-failure-02.json",
+        "sha256": "372c6b9ea103e9f6d00c652801098c5a3d6f62f358dbc42454efbc64cdb3ad8b"
+      },
+      {
+        "name": "second-host-build-failure-01.json",
+        "sha256": "214ec13b6bf0fc57cc41dbe702c7aae43e0de3ee12b29e376fc6726ed8735be6"
+      },
+      {
+        "name": "build-report.json",
+        "sha256": "e77e57ae908d9569269c5a9aaccfb680f5e88c1ba022961a7198c2d91b0fde77"
+      },
+      {
+        "name": "build-report.json",
+        "sha256": "baa90d4892359ea9af5db818c7c5d886ada8caaa2d0acb5d8430ba58117a2b87"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

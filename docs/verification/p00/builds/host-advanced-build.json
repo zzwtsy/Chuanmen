@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "layer": "host_peer_build",
+  "status": "passed",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "recorded_at_utc": "2026-10-11T14:09:48.013986+00:00",
+  "patches": [],
+  "features": "management,smoltcp,tun,aes-gcm,quic,socks5",
+  "default_features": false,
+  "profile": "release",
+  "runner_sha256": "9f279da14db769e8ae938bc42dfd34da3ff05e64cbde91536d9bcb4b16f20a96",
+  "network_started": false,
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/command-01.txt",
+      "log_sha256": "f7ea3d5a914fb873240646df6870e92b74cfd5bd73985886fa13bfc43c01cbd0"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/command-02.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "stable",
+        "rustc",
+        "-Vv"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/command-03.txt",
+      "log_sha256": "b569b0c98ea3133c7252b4b8ea6b39b7b353813df0dd5f5c412c355691424112"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "-V"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/command-04.txt",
+      "log_sha256": "1f88eaf7fe1aaec83184752cf4c944cd22f00184136ff36a3e4c318cc60ef566"
+    },
+    {
+      "argv": [
+        "ld.bfd",
+        "--version"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/command-05.txt",
+      "log_sha256": "c79150f260dc722910df49e13e4cc8b17fa32d6aec5dfe82a3c26178234b74d0"
+    },
+    {
+      "argv": [
+        "rustup",
+        "run",
+        "stable",
+        "cargo",
+        "build",
+        "--locked",
+        "--offline",
+        "--release",
+        "-p",
+        "easytier",
+        "--bin",
+        "easytier-core",
+        "--no-default-features",
+        "--features",
+        "management,smoltcp,tun,aes-gcm,quic,socks5"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/command-06.txt",
+      "log_sha256": "50538b25dde09ea479ace470bfa97921b0a93973db38383a5af7932389a195c5"
+    },
+    {
+      "argv": [
+        "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/target/release/easytier-core",
+        "--version"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/command-07.txt",
+      "log_sha256": "4e803f5e650de04b74d9d9a13537aa5d1551b32625c158e161d49434e41e5735"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0,
+      "log_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/command-08.txt",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "fetch_locked_dependencies": false,
+  "copied_cache_from": "/tmp/chuanmen-p00-host-proxy/target",
+  "environment_overrides": {
+    "CARGO_TARGET_DIR": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/target",
+    "CARGO_BUILD_JOBS": "2",
+    "CARGO_INCREMENTAL": "0",
+    "RUSTFLAGS": "-C link-arg=-fuse-ld=bfd"
+  },
+  "cargo_lock_sha256": "cd5a7951f897e45f1988b0a4896ab1f336e03e4cb6d70ca1db2a7b9b477d774b",
+  "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0\nLLVM version: 23.1.1\n",
+  "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)\n",
+  "linker": "GNU ld (GNU Binutils) 2.47\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n",
+  "binary_path": "<REPO_ROOT>/experiments/android-vpn-smoke/.local/host-advanced/target/release/easytier-core",
+  "binary_sha256": "ddf02c638412abe6c3a664bfed2f0c0c70dbe1c8291ae9f2f1d45736efc01bc9",
+  "binary_bytes": 17563248,
+  "version": "easytier-core 2.7.0-7592951b\n",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "host-advanced-build.json",
+        "sha256": "3713f1c5abd7426fb95c2142701157c819f9c22bf3807fa061c2bff756452c08"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "actor": "independent_ai_p00_independent_review",
+  "argv": [
+    "/usr/bin/python3",
+    "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/repo-03/docs/verification/p00/second-host-rebuild.py",
+    "--root",
+    "<RUN_ROOT>",
+    "--jdk-package",
+    "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/jdk21-openjdk-21.0.12.1.u1-1-x86_64.pkg.tar.zst",
+    "--jdk-package-sha256",
+    "5460a5ba8b42af4fe3c18eab9cb1b3bf69b3f365b76ca8657bdff1e02c290545"
+  ],
+  "exit_code": 0,
+  "finished_at_utc": "2026-10-11T16:53:47.804977+00:00",
+  "historical_output_sha256": "1af47ee58d764e257ee95b3daee552f156d9e2fadb6aa23c45a56bbc3a0e6d3b",
+  "command_output_retention": "structured_observations_and_exit_code_only",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "independent-ai-process-exit.json",
+        "sha256": "2615f470feacf44f8b15941352420f2fb3ffdc8c41199ba7ffc743c789ebf289"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

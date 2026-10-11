@@ -1,0 +1,3252 @@
+{
+  "schema_version": 1,
+  "task": "P00-03",
+  "status": "verified_mapping_with_runtime_gaps",
+  "candidate_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "catalog_sha256": "eaac5fd840290719d0ad270ff4ed36730274d946166646824e4757bd05148e63",
+  "assistant_deployment": {
+    "url": "https://easytier.cn/assistant/",
+    "entrySha256": "2ff541efed99e1e873f68ad5640cf12d93b1af7276ef19e171849a51b4a13eae",
+    "bundleUrl": "https://easytier.cn/assistant/assets/index-CU7Lyann.js",
+    "bundleSha256": "6f8b57a22e2a348d9d1e6b078d04ddf80d1895adcccc2a91c3a45f188ccd41d5",
+    "framework": "Vue",
+    "commit": null,
+    "basis": "Config component actual model bindings plus its 26-item dynamic boolean table; protobuf-only fields are not a visible-form source.",
+    "sourceFields": [
+      "acl",
+      "bind_device",
+      "dev_name",
+      "dhcp",
+      "disable_encryption",
+      "disable_ipv6",
+      "disable_kcp_input",
+      "disable_p2p",
+      "disable_quic_input",
+      "disable_sym_hole_punching",
+      "disable_tcp_hole_punching",
+      "disable_udp_hole_punching",
+      "disable_upnp",
+      "enable_exit_node",
+      "enable_kcp_proxy",
+      "enable_magic_dns",
+      "enable_manual_routes",
+      "enable_private_mode",
+      "enable_quic_proxy",
+      "enable_relay_network_whitelist",
+      "enable_socks5",
+      "enable_udp_broadcast_relay",
+      "enable_vpn_portal",
+      "exit_nodes",
+      "hostname",
+      "instance_recv_bps_limit",
+      "ipv6_public_addr_auto",
+      "latency_first",
+      "lazy_p2p",
+      "listener_urls",
+      "mapped_listeners",
+      "mtu",
+      "multi_thread",
+      "need_p2p",
+      "network_length",
+      "network_name",
+      "network_secret",
+      "no_tun",
+      "p2p_only",
+      "peer_urls",
+      "port_forwards",
+      "proxy_cidrs",
+      "proxy_forward_by_system",
+      "relay_all_peer_rpc",
+      "relay_network_whitelist",
+      "routes",
+      "socks5_port",
+      "use_smoltcp",
+      "virtual_ipv4",
+      "vpn_portal_client_network_addr",
+      "vpn_portal_client_network_len",
+      "vpn_portal_listen_port"
+    ],
+    "dynamicFlags": [
+      "latency_first",
+      "use_smoltcp",
+      "disable_ipv6",
+      "ipv6_public_addr_auto",
+      "enable_kcp_proxy",
+      "disable_kcp_input",
+      "enable_quic_proxy",
+      "disable_quic_input",
+      "disable_p2p",
+      "p2p_only",
+      "lazy_p2p",
+      "bind_device",
+      "no_tun",
+      "enable_exit_node",
+      "relay_all_peer_rpc",
+      "need_p2p",
+      "multi_thread",
+      "proxy_forward_by_system",
+      "disable_encryption",
+      "disable_tcp_hole_punching",
+      "disable_udp_hole_punching",
+      "enable_udp_broadcast_relay",
+      "disable_upnp",
+      "disable_sym_hole_punching",
+      "enable_magic_dns",
+      "enable_private_mode"
+    ]
+  },
+  "captured_at_utc": "2026-10-10T21:57:46.170012+00:00",
+  "live_refetch_status": "passed",
+  "live_refetch_reason": "2026-10-11 官方入口及实际部署 JS 复抓，两个 SHA-256 均与冻结快照一致",
+  "default_authority": "固定候选真实 Rust ConfigLoader getter 回读；Android JNI 单独验证语法接受/拒绝；运行能力仍按能力台账",
+  "field_count": 44,
+  "core_count": 37,
+  "android_count": 7,
+  "assistant_keys_covered": [
+    "acl",
+    "bind_device",
+    "dev_name",
+    "dhcp",
+    "disable_encryption",
+    "disable_ipv6",
+    "disable_kcp_input",
+    "disable_p2p",
+    "disable_quic_input",
+    "disable_sym_hole_punching",
+    "disable_tcp_hole_punching",
+    "disable_udp_hole_punching",
+    "disable_upnp",
+    "enable_exit_node",
+    "enable_kcp_proxy",
+    "enable_magic_dns",
+    "enable_manual_routes",
+    "enable_private_mode",
+    "enable_quic_proxy",
+    "enable_relay_network_whitelist",
+    "enable_socks5",
+    "enable_udp_broadcast_relay",
+    "enable_vpn_portal",
+    "exit_nodes",
+    "hostname",
+    "instance_recv_bps_limit",
+    "ipv6_public_addr_auto",
+    "latency_first",
+    "lazy_p2p",
+    "listener_urls",
+    "mapped_listeners",
+    "mtu",
+    "multi_thread",
+    "need_p2p",
+    "network_length",
+    "network_name",
+    "network_secret",
+    "no_tun",
+    "p2p_only",
+    "peer_urls",
+    "port_forwards",
+    "proxy_cidrs",
+    "proxy_forward_by_system",
+    "relay_all_peer_rpc",
+    "relay_network_whitelist",
+    "routes",
+    "socks5_port",
+    "use_smoltcp",
+    "virtual_ipv4",
+    "vpn_portal_client_network_addr",
+    "vpn_portal_client_network_len",
+    "vpn_portal_listen_port"
+  ],
+  "fields": [
+    {
+      "editor_key": "network_identity.network_name",
+      "core_key": "network_identity.network_name",
+      "scope": "core",
+      "assistant_keys": [
+        "network_name"
+      ],
+      "historical_snapshot": {
+        "key": "network_identity.network_name",
+        "label": "网络名称",
+        "group": "identity",
+        "type": "text",
+        "default": null,
+        "help": "所有加入同一网络的设备使用相同名称。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "sample": "home-mesh",
+        "uiDefault": null,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "network_name"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": "default",
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "network_identity: Option<NetworkIdentity>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 401,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "network_identity.network_name_explicit",
+        "network_identity.network_name_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "network_identity.network_name_explicit",
+          "accepted": true,
+          "effective_value": "p00-config"
+        },
+        {
+          "name": "network_identity.network_name_empty",
+          "accepted": true,
+          "effective_value": ""
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "network_identity.network_secret",
+      "core_key": "network_identity.network_secret",
+      "scope": "core",
+      "assistant_keys": [
+        "network_secret"
+      ],
+      "historical_snapshot": {
+        "key": "network_identity.network_secret",
+        "label": "网络密码",
+        "group": "identity",
+        "type": "secret",
+        "default": null,
+        "help": "共享密钥模式下使用；凭据节点省略此键，不等同于将密码设为空字符串。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "sample": "••••••••",
+        "secret": true,
+        "dependencies": [
+          "凭据模式：不写入本字段；保留 missing 与 empty 的差异"
+        ],
+        "uiDefault": null,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "network_secret"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [
+        "凭据模式：不写入本字段；保留 missing 与 empty 的差异"
+      ],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": "",
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "network_identity: Option<NetworkIdentity>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 401,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "network_identity.network_secret_explicit",
+        "network_identity.network_secret_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "network_identity.network_secret_explicit",
+          "accepted": true,
+          "effective_value": "p00-synthetic-public-test-only"
+        },
+        {
+          "name": "network_identity.network_secret_empty",
+          "accepted": true,
+          "effective_value": ""
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "hostname",
+      "core_key": "hostname",
+      "scope": "core",
+      "assistant_keys": [
+        "hostname"
+      ],
+      "historical_snapshot": {
+        "key": "hostname",
+        "label": "本设备名称",
+        "group": "identity",
+        "type": "text",
+        "default": null,
+        "help": "对端看到的主机名称。核心会去除控制字符并限制为 32 个字符。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "core-hot",
+        "source": "deployed-assistant",
+        "sample": "我的手机",
+        "maxLength": 32,
+        "uiDefault": null,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "hostname"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": "",
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "hostname: Option<String>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 392,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "上游 host-a 的解析、转储和恢复断言",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "hostname_explicit",
+        "hostname_empty",
+        "wrong_hostname_type"
+      ],
+      "observed_cases": [
+        {
+          "name": "hostname_explicit",
+          "accepted": true,
+          "effective_value": "串门配置实验"
+        },
+        {
+          "name": "hostname_empty",
+          "accepted": true,
+          "effective_value": ""
+        },
+        {
+          "name": "wrong_hostname_type",
+          "accepted": false,
+          "effective_value": null
+        }
+      ]
+    },
+    {
+      "editor_key": "dhcp",
+      "core_key": "dhcp",
+      "scope": "core",
+      "assistant_keys": [
+        "dhcp"
+      ],
+      "historical_snapshot": {
+        "key": "dhcp",
+        "label": "自动分配 IPv4",
+        "group": "identity",
+        "type": "boolean",
+        "default": false,
+        "help": "核心缺省为 false；本客户端建议新建配置默认开启自动分配。静态地址模式关闭此项。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "recommendedDefault": true,
+        "sample": true,
+        "dependencies": [
+          "关闭后显示 ipv4"
+        ],
+        "capability": "dhcp-ipv4",
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "dhcp"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [
+        "关闭后显示 ipv4"
+      ],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "dhcp: Option<bool>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 400,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "dhcp_explicit",
+        "dhcp_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "dhcp_explicit",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "dhcp_empty",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "ipv4",
+      "core_key": "ipv4",
+      "scope": "core",
+      "assistant_keys": [
+        "network_length",
+        "virtual_ipv4"
+      ],
+      "historical_snapshot": {
+        "key": "ipv4",
+        "label": "虚拟 IPv4 地址",
+        "group": "identity",
+        "type": "cidr",
+        "default": null,
+        "help": "使用地址与前缀长度；仅静态模式可编辑，避免和其他设备冲突。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "core-hot-and-rebuild-vpn",
+        "source": "deployed-assistant",
+        "sample": "10.144.0.6/24",
+        "dependencies": [
+          "dhcp=false"
+        ],
+        "note": "PatchConfig 在 dhcp=true 时不会应用 IPv4 修改",
+        "uiDefault": null,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "network_length",
+          "virtual_ipv4"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "virtual_ipv4 与 network_length 组成 CIDR；dhcp 的缺省与显式 false 需解析回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [
+        "dhcp=false"
+      ],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "ipv4: Option<String>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 395,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "完整样例读取 10.144.144.10/24",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "ipv4_explicit",
+        "ipv4_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "ipv4_explicit",
+          "accepted": true,
+          "effective_value": "10.222.0.2/24"
+        },
+        {
+          "name": "ipv4_empty",
+          "accepted": true,
+          "effective_value": null
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.enable_ipv6",
+      "core_key": "flags.enable_ipv6",
+      "scope": "core",
+      "assistant_keys": [
+        "disable_ipv6"
+      ],
+      "historical_snapshot": {
+        "key": "flags.enable_ipv6",
+        "label": "允许底层 IPv6 连接",
+        "group": "identity",
+        "type": "boolean",
+        "default": true,
+        "help": "控制核心使用 IPv6 连接节点，不代表非组网 IPv6 已进入 VPN。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "uiDefault": true,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "disable_ipv6"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "not disable_ipv6；源 schema 明确 negate=true",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": true,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 12,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.enable_ipv6_0",
+        "flags.enable_ipv6_1",
+        "legacy_disable_ipv6"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.enable_ipv6_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.enable_ipv6_1",
+          "accepted": true,
+          "effective_value": false
+        },
+        {
+          "name": "legacy_disable_ipv6",
+          "accepted": false,
+          "effective_value": null
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.accept_dns",
+      "core_key": "flags.accept_dns",
+      "scope": "core",
+      "assistant_keys": [
+        "enable_magic_dns"
+      ],
+      "historical_snapshot": {
+        "key": "flags.accept_dns",
+        "label": "MagicDNS 组网域名",
+        "group": "identity",
+        "type": "boolean",
+        "default": false,
+        "help": "允许通过设备名访问组网设备；Android DNS 转发和域名范围需配合实现。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core-and-rebuild-vpn",
+        "source": "deployed-assistant",
+        "capability": "magic-dns",
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "enable_magic_dns"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "enable_magic_dns 重命名，布尔不取反",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 37,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.accept_dns_0",
+        "flags.accept_dns_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.accept_dns_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.accept_dns_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "peer",
+      "core_key": "peer",
+      "scope": "core",
+      "assistant_keys": [
+        "peer_urls"
+      ],
+      "historical_snapshot": {
+        "key": "peer",
+        "label": "连接节点",
+        "group": "connection",
+        "type": "list",
+        "default": [],
+        "help": "填写完整连接 URI，可添加多个节点。保存协议、路径、查询参数和 IPv6 字面量。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "connector-hot-or-restart",
+        "source": "deployed-assistant",
+        "sample": [
+          {
+            "uri": "tcp://example.net:11010"
+          }
+        ],
+        "note": "URI connector 可热增删；绑定 peer_public_key 的变化应重新校验并重连，不能只热加 URI。",
+        "children": [
+          {
+            "key": "uri",
+            "label": "节点地址",
+            "type": "url"
+          },
+          {
+            "key": "peer_public_key",
+            "label": "固定对端公钥",
+            "type": "text"
+          }
+        ],
+        "uiDefault": [],
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "peer_urls"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "peer_urls 转为 peer 对象列表；保留 uri 与可选 peer_public_key",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": [],
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "peer: Option<Vec<PeerConfig>>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 406,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "完整样例含两条 peer；未实际连接",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "peer_explicit",
+        "peer_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "peer_explicit",
+          "accepted": true,
+          "effective_value": [
+            {
+              "peer_public_key": null,
+              "uri": "tcp://[fd00::1]:31270/p00?q=test"
+            }
+          ]
+        },
+        {
+          "name": "peer_empty",
+          "accepted": true,
+          "effective_value": []
+        }
+      ]
+    },
+    {
+      "editor_key": "listeners",
+      "core_key": "listeners",
+      "scope": "core",
+      "assistant_keys": [
+        "listener_urls"
+      ],
+      "historical_snapshot": {
+        "key": "listeners",
+        "label": "监听地址",
+        "group": "connection",
+        "type": "list",
+        "default": null,
+        "help": "允许其他节点连入的本地监听 URI；协议和端口按实际核心构建校验。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "sample": [
+          "tcp://0.0.0.0:11010",
+          "udp://0.0.0.0:11010"
+        ],
+        "uiDefault": null,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "listener_urls"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "listeners: Option<Vec<url::Url>>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 402,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "上游监听列表往返及完整样例读取",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "listeners_explicit",
+        "listeners_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "listeners_explicit",
+          "accepted": true,
+          "effective_value": [
+            "tcp://127.0.0.1:31375"
+          ]
+        },
+        {
+          "name": "listeners_empty",
+          "accepted": true,
+          "effective_value": []
+        }
+      ]
+    },
+    {
+      "editor_key": "mapped_listeners",
+      "core_key": "mapped_listeners",
+      "scope": "core",
+      "assistant_keys": [
+        "mapped_listeners"
+      ],
+      "historical_snapshot": {
+        "key": "mapped_listeners",
+        "label": "公布的外部地址",
+        "group": "connection",
+        "type": "list",
+        "default": null,
+        "help": "手动告知对端可连接本机的外部地址；适用于已配置的端口映射。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "core-hot",
+        "source": "deployed-assistant",
+        "uiDefault": null,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "mapped_listeners"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": [],
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "mapped_listeners: Option<Vec<url::Url>>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 403,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "mapped_listeners_explicit",
+        "mapped_listeners_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "mapped_listeners_explicit",
+          "accepted": true,
+          "effective_value": [
+            "tcp://127.0.0.1:31375"
+          ]
+        },
+        {
+          "name": "mapped_listeners_empty",
+          "accepted": true,
+          "effective_value": []
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.disable_p2p",
+      "core_key": "flags.disable_p2p",
+      "scope": "core",
+      "assistant_keys": [
+        "disable_p2p"
+      ],
+      "historical_snapshot": {
+        "key": "flags.disable_p2p",
+        "label": "普通自动 P2P",
+        "group": "connection",
+        "type": "boolean",
+        "default": false,
+        "help": "关闭普通自动 P2P；标记为 need_p2p 的节点仍有特殊建链行为，不等于绝不直连。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "invert": true,
+        "uiDefault": true,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "disable_p2p"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 19,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.disable_p2p_0",
+        "flags.disable_p2p_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.disable_p2p_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.disable_p2p_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.p2p_only",
+      "core_key": "flags.p2p_only",
+      "scope": "core",
+      "assistant_keys": [
+        "p2p_only"
+      ],
+      "historical_snapshot": {
+        "key": "flags.p2p_only",
+        "label": "仅与已直连节点通信",
+        "group": "connection",
+        "type": "boolean",
+        "default": false,
+        "help": "没有可用 P2P 的目标会不可达，不能把它理解为优先直连。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "p2p_only"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 71,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.p2p_only_0",
+        "flags.p2p_only_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.p2p_only_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.p2p_only_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.lazy_p2p",
+      "core_key": "flags.lazy_p2p",
+      "scope": "core",
+      "assistant_keys": [
+        "lazy_p2p"
+      ],
+      "historical_snapshot": {
+        "key": "flags.lazy_p2p",
+        "label": "有流量时再建立 P2P",
+        "group": "connection",
+        "type": "boolean",
+        "default": false,
+        "help": "按需建链；need_p2p 节点仍可能主动建立连接。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "lazy_p2p"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 75,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.lazy_p2p_0",
+        "flags.lazy_p2p_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.lazy_p2p_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.lazy_p2p_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.need_p2p",
+      "core_key": "flags.need_p2p",
+      "scope": "core",
+      "assistant_keys": [
+        "need_p2p"
+      ],
+      "historical_snapshot": {
+        "key": "flags.need_p2p",
+        "label": "要求对端主动建立 P2P",
+        "group": "connection",
+        "type": "boolean",
+        "default": false,
+        "help": "向其他节点声明应主动与本机建链，即使其启用 lazy_p2p。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "need_p2p"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 76,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.need_p2p_0",
+        "flags.need_p2p_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.need_p2p_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.need_p2p_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.disable_udp_hole_punching",
+      "core_key": "flags.disable_udp_hole_punching",
+      "scope": "core",
+      "assistant_keys": [
+        "disable_udp_hole_punching"
+      ],
+      "historical_snapshot": {
+        "key": "flags.disable_udp_hole_punching",
+        "label": "UDP 打洞",
+        "group": "connection",
+        "type": "boolean",
+        "default": false,
+        "help": "允许通过 UDP 打洞尝试建立直连。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "invert": true,
+        "uiDefault": true,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "disable_udp_hole_punching"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 21,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.disable_udp_hole_punching_0",
+        "flags.disable_udp_hole_punching_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.disable_udp_hole_punching_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.disable_udp_hole_punching_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.disable_tcp_hole_punching",
+      "core_key": "flags.disable_tcp_hole_punching",
+      "scope": "core",
+      "assistant_keys": [
+        "disable_tcp_hole_punching"
+      ],
+      "historical_snapshot": {
+        "key": "flags.disable_tcp_hole_punching",
+        "label": "TCP 打洞",
+        "group": "connection",
+        "type": "boolean",
+        "default": false,
+        "help": "启用编译支持的 TCP 打洞机制。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "invert": true,
+        "capability": "tcp-hole-punch",
+        "uiDefault": true,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "disable_tcp_hole_punching"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 73,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.disable_tcp_hole_punching_0",
+        "flags.disable_tcp_hole_punching_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.disable_tcp_hole_punching_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.disable_tcp_hole_punching_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.disable_sym_hole_punching",
+      "core_key": "flags.disable_sym_hole_punching",
+      "scope": "core",
+      "assistant_keys": [
+        "disable_sym_hole_punching"
+      ],
+      "historical_snapshot": {
+        "key": "flags.disable_sym_hole_punching",
+        "label": "对称 NAT 打洞",
+        "group": "connection",
+        "type": "boolean",
+        "default": false,
+        "help": "控制对称 NAT 的额外 UDP 打洞尝试；依赖 UDP 打洞。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "invert": true,
+        "dependencies": [
+          "disable_udp_hole_punching=false"
+        ],
+        "uiDefault": true,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "disable_sym_hole_punching"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [
+        "disable_udp_hole_punching=false"
+      ],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 66,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.disable_sym_hole_punching_0",
+        "flags.disable_sym_hole_punching_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.disable_sym_hole_punching_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.disable_sym_hole_punching_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.disable_upnp",
+      "core_key": "flags.disable_upnp",
+      "scope": "core",
+      "assistant_keys": [
+        "disable_upnp"
+      ],
+      "historical_snapshot": {
+        "key": "flags.disable_upnp",
+        "label": "自动端口映射",
+        "group": "connection",
+        "type": "boolean",
+        "default": false,
+        "help": "对符合条件的监听器尝试 UPnP/NAT-PMP，需要路由器支持。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "invert": true,
+        "capability": "upnp",
+        "uiDefault": true,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "disable_upnp"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 78,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.disable_upnp_0",
+        "flags.disable_upnp_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.disable_upnp_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.disable_upnp_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "routes",
+      "core_key": "routes",
+      "scope": "core",
+      "assistant_keys": [
+        "enable_manual_routes",
+        "routes"
+      ],
+      "historical_snapshot": {
+        "key": "routes",
+        "label": "路由接收方式",
+        "group": "routing",
+        "type": "optional-list",
+        "default": null,
+        "help": "未设置为自动接收；显式列表表示手动路由，替代动态传播的子网/Portal 路由。空列表与未设置不同。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "core-hot-and-rebuild-vpn",
+        "source": "deployed-assistant",
+        "options": [
+          "自动接收路由",
+          "仅使用手动网段"
+        ],
+        "preserveAbsence": true,
+        "uiDefault": null,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "enable_manual_routes",
+          "routes"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "enable_manual_routes 决定 missing 或显式列表；不能将 [] 等同 missing",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "routes: Option<Vec<cidr::Ipv4Cidr>>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 411,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "完整样例含路由列表；未验证系统路由",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "routes_explicit",
+        "routes_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "routes_explicit",
+          "accepted": true,
+          "effective_value": [
+            "10.223.0.0/24"
+          ]
+        },
+        {
+          "name": "routes_empty",
+          "accepted": true,
+          "effective_value": []
+        }
+      ]
+    },
+    {
+      "editor_key": "exit_nodes",
+      "core_key": "exit_nodes",
+      "scope": "core",
+      "assistant_keys": [
+        "exit_nodes"
+      ],
+      "historical_snapshot": {
+        "key": "exit_nodes",
+        "label": "互联网出口节点",
+        "group": "routing",
+        "type": "list",
+        "default": [],
+        "help": "按优先级排列的出口节点虚拟 IP。Android 默认路由、DNS 和 IPv6 出口策略需一起应用。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "core-hot-and-rebuild-vpn",
+        "source": "deployed-assistant",
+        "uiDefault": [],
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "exit_nodes"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": [],
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "exit_nodes: Option<Vec<IpAddr>>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 404,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "exit_nodes_explicit",
+        "exit_nodes_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "exit_nodes_explicit",
+          "accepted": true,
+          "effective_value": [
+            "10.222.0.1",
+            "fd00::1"
+          ]
+        },
+        {
+          "name": "exit_nodes_empty",
+          "accepted": true,
+          "effective_value": []
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "proxy_network",
+      "core_key": "proxy_network",
+      "scope": "core",
+      "assistant_keys": [
+        "proxy_cidrs"
+      ],
+      "historical_snapshot": {
+        "key": "proxy_network",
+        "label": "分享本地子网",
+        "group": "routing",
+        "type": "list",
+        "default": [],
+        "help": "使用 Android 用户态代理访问本地子网，不启用系统内核转发。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "core-hot-with-platform-reconcile",
+        "source": "deployed-assistant",
+        "children": [
+          {
+            "key": "cidr",
+            "label": "本地网段",
+            "type": "cidr"
+          },
+          {
+            "key": "mapped_cidr",
+            "label": "映射网段",
+            "type": "cidr"
+          },
+          {
+            "key": "allow",
+            "label": "旧协议限制（兼容保留）",
+            "type": "list",
+            "readOnly": true
+          }
+        ],
+        "note": "ProxyNetworkPatch 只含 cidr/mapped_cidr，不含 allow；当前核心规范化未将 allow 投影到代理路由模型，保留字段不能保证限制已生效，应使用 ACL。",
+        "uiDefault": [],
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "proxy_cidrs"
+        ],
+        "implementationCondition": "使用 Android 用户态代理访问本地子网，不启用系统内核转发。"
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "proxy_cidrs 转为对象列表；保留 cidr / mapped_cidr / allow",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": [],
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "proxy_network: Option<Vec<ProxyNetworkConfig>>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 407,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "完整样例含两个代理 CIDR 与 allow；未互通",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "proxy_network_explicit",
+        "proxy_network_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "proxy_network_explicit",
+          "accepted": true,
+          "effective_value": [
+            {
+              "allow": [
+                "p00-group"
+              ],
+              "cidr": "127.0.0.1",
+              "mapped_cidr": "10.223.0.1"
+            }
+          ]
+        },
+        {
+          "name": "proxy_network_empty",
+          "accepted": true,
+          "effective_value": []
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "socks5_proxy",
+      "core_key": "socks5_proxy",
+      "scope": "core",
+      "assistant_keys": [
+        "enable_socks5",
+        "socks5_port"
+      ],
+      "historical_snapshot": {
+        "key": "socks5_proxy",
+        "label": "SOCKS5 监听",
+        "group": "routing",
+        "type": "url",
+        "default": null,
+        "help": "向使用 SOCKS5 的应用提供组网访问；默认建议只绑定本机回环地址。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "sample": "socks5://127.0.0.1:1080",
+        "capability": "proxy-smoltcp-stack + native socks5",
+        "uiDefault": null,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "enable_socks5",
+          "socks5_port"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "enable_socks5 与 socks5_port 转为 URL；地址绑定与禁用缺省待解析器验证",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "socks5_proxy: Option<url::Url>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 413,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "socks5_proxy_explicit",
+        "socks5_proxy_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "socks5_proxy_explicit",
+          "accepted": true,
+          "effective_value": "socks5://127.0.0.1:31373"
+        },
+        {
+          "name": "socks5_proxy_empty",
+          "accepted": false,
+          "effective_value": null
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "port_forward",
+      "core_key": "port_forward",
+      "scope": "core",
+      "assistant_keys": [
+        "port_forwards"
+      ],
+      "historical_snapshot": {
+        "key": "port_forward",
+        "label": "端口转发",
+        "group": "routing",
+        "type": "list",
+        "default": [],
+        "help": "将本地端口转到组网内目标，支持 TCP 或 UDP。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "core-hot",
+        "source": "deployed-assistant",
+        "capability": "proxy-smoltcp-stack",
+        "children": [
+          {
+            "key": "bind_addr",
+            "label": "本地监听地址",
+            "type": "text"
+          },
+          {
+            "key": "dst_addr",
+            "label": "目标地址",
+            "type": "text"
+          },
+          {
+            "key": "proto",
+            "label": "协议",
+            "type": "select",
+            "options": [
+              "tcp",
+              "udp"
+            ]
+          }
+        ],
+        "uiDefault": [],
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "port_forwards"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "port_forwards 转为 port_forward 对象列表；逐子字段解析尚未执行",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": [],
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "port_forward: Option<Vec<PortForwardConfig>>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 415,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "完整样例核对 TCP 对象子字段；未绑定端口",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "port_forward_explicit",
+        "port_forward_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "port_forward_explicit",
+          "accepted": true,
+          "effective_value": [
+            {
+              "bind_addr": "127.0.0.1:31371",
+              "dst_addr": "10.222.0.1:31271",
+              "proto": "tcp"
+            },
+            {
+              "bind_addr": "127.0.0.1:31372",
+              "dst_addr": "10.222.0.1:31272",
+              "proto": "udp"
+            }
+          ]
+        },
+        {
+          "name": "port_forward_empty",
+          "accepted": true,
+          "effective_value": []
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "vpn_portal_config",
+      "core_key": "vpn_portal_config",
+      "scope": "core",
+      "assistant_keys": [
+        "enable_vpn_portal",
+        "vpn_portal_client_network_addr",
+        "vpn_portal_client_network_len",
+        "vpn_portal_listen_port"
+      ],
+      "historical_snapshot": {
+        "key": "vpn_portal_config",
+        "label": "WireGuard Portal",
+        "group": "routing",
+        "type": "object",
+        "default": null,
+        "help": "保留 WireGuard Portal；目标构建需启用对应核心能力。监听及客户端按当前核心结构保存。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "children": [
+          {
+            "key": "enabled",
+            "label": "启用门户",
+            "type": "boolean"
+          },
+          {
+            "key": "wireguard_listen",
+            "label": "监听 IP 与端口",
+            "type": "text"
+          },
+          {
+            "key": "wireguard_private_key",
+            "label": "服务端私钥",
+            "type": "secret"
+          },
+          {
+            "key": "clients",
+            "label": "具名客户端与虚拟 IP/组",
+            "type": "list"
+          }
+        ],
+        "note": "仅 clients 增删有热补丁；修改监听、私钥、enabled 按重启。TOML 与 NetworkConfig 的 wireguard_listen 都解析为 SocketAddr，不能直接写 CLI Portal URL。",
+        "uiDefault": null,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "enable_vpn_portal",
+          "vpn_portal_client_network_addr",
+          "vpn_portal_client_network_len",
+          "vpn_portal_listen_port"
+        ],
+        "implementationCondition": "保留 WireGuard Portal；目标构建需启用对应核心能力。监听及客户端按当前核心结构保存。"
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "旧客户端子网不能无损决定命名 clients 或专用私钥；要求显式迁移，不自动丢旧数据或生成已支持状态",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "vpn_portal_config: Option<VpnPortalConfig>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 409,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "新 clients 对象往返、脱敏，旧 client_cidr 拒绝；旧助手 CIDR 向新 clients 的产品转换仍未实现",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "vpn_portal_config_explicit",
+        "vpn_portal_config_empty",
+        "legacy_portal_client_cidr"
+      ],
+      "observed_cases": [
+        {
+          "name": "vpn_portal_config_explicit",
+          "accepted": true,
+          "effective_value": {
+            "clients": [
+              {
+                "groups": [],
+                "name": "p00-client",
+                "virtual_ip": "10.222.0.10/24"
+              }
+            ],
+            "enabled": true,
+            "wireguard_listen": "127.0.0.1:31374"
+          }
+        },
+        {
+          "name": "vpn_portal_config_empty",
+          "accepted": true,
+          "effective_value": {
+            "clients": [],
+            "enabled": false,
+            "wireguard_listen": "127.0.0.1:31374"
+          }
+        },
+        {
+          "name": "legacy_portal_client_cidr",
+          "accepted": false,
+          "effective_value": null
+        }
+      ],
+      "runtime_contract": "真实 Portal 启动还要求专用 wireguard_private_key；仅解析时省略该键仍会通过，见 P00-07 的真实失败和绑定探针"
+    },
+    {
+      "editor_key": "flags.enable_exit_node",
+      "core_key": "flags.enable_exit_node",
+      "scope": "core",
+      "assistant_keys": [
+        "enable_exit_node"
+      ],
+      "historical_snapshot": {
+        "key": "flags.enable_exit_node",
+        "label": "允许本机作为出口",
+        "group": "routing",
+        "type": "boolean",
+        "default": false,
+        "help": "通过当前客户端的用户态协议栈转发出口流量。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "enable_exit_node"
+        ],
+        "implementationCondition": "通过当前客户端的用户态协议栈转发出口流量。"
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 15,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.enable_exit_node_0",
+        "flags.enable_exit_node_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.enable_exit_node_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.enable_exit_node_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.enable_encryption",
+      "core_key": "flags.enable_encryption",
+      "scope": "core",
+      "assistant_keys": [
+        "disable_encryption"
+      ],
+      "historical_snapshot": {
+        "key": "flags.enable_encryption",
+        "label": "通信加密",
+        "group": "security",
+        "type": "boolean",
+        "default": true,
+        "help": "新配置保持开启；关闭时需对端兼容。安全算法与身份模式分别配置。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "uiDefault": true,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "disable_encryption"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "not disable_encryption；源 schema 明确 negate=true",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": true,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 11,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.enable_encryption_0",
+        "flags.enable_encryption_1",
+        "legacy_disable_encryption"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.enable_encryption_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.enable_encryption_1",
+          "accepted": true,
+          "effective_value": false
+        },
+        {
+          "name": "legacy_disable_encryption",
+          "accepted": false,
+          "effective_value": null
+        }
+      ]
+    },
+    {
+      "editor_key": "flags.private_mode",
+      "core_key": "flags.private_mode",
+      "scope": "core",
+      "assistant_keys": [
+        "enable_private_mode"
+      ],
+      "historical_snapshot": {
+        "key": "flags.private_mode",
+        "label": "限制外部网络接入",
+        "group": "security",
+        "type": "boolean",
+        "default": false,
+        "help": "按相同网络密钥或已受信任凭据限制 foreign network 接入，不等同于设备隐身。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "enable_private_mode"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "enable_private_mode 重命名，布尔不取反",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 39,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.private_mode_0",
+        "flags.private_mode_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.private_mode_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.private_mode_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "acl",
+      "core_key": "acl",
+      "scope": "core",
+      "assistant_keys": [
+        "acl"
+      ],
+      "historical_snapshot": {
+        "key": "acl",
+        "label": "访问控制 ACL",
+        "group": "security",
+        "type": "object",
+        "default": null,
+        "help": "按入站/出站/转发组织规则，显示优先级、默认动作与命中情况；优先级数字越大越先匹配。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "core-hot",
+        "source": "deployed-assistant",
+        "children": [
+          {
+            "key": "acl_v1.chains",
+            "label": "规则链",
+            "type": "list"
+          },
+          {
+            "key": "acl_v1.chains[].rules",
+            "label": "有序规则",
+            "type": "list"
+          },
+          {
+            "key": "acl_v1.group",
+            "label": "身份组",
+            "type": "object"
+          }
+        ],
+        "expertEditor": true,
+        "note": "Rule 包含名称/描述/启用、协议、端口、源目标 IP、源端口、源目标组、动作、限速/突发、stateful。TimeWindow 虽在 proto 定义，但未挂到 Rule，不应宣传为已支持的时间规则。",
+        "uiDefault": null,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "acl"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "acl: Option<Acl>,",
+      "source": {
+        "path": "easytier-core/src/config/toml.rs",
+        "line": 422,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "单条 rule 的省略字段默认与 group secret 脱敏；非全量 ACL",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "parser_cases": [
+        "missing_fields",
+        "acl_explicit",
+        "acl_empty"
+      ],
+      "observed_cases": [
+        {
+          "name": "acl_explicit",
+          "accepted": true,
+          "effective_value": {
+            "acl_v1": {
+              "chains": [
+                {
+                  "chain_type": "Inbound",
+                  "default_action": "Drop",
+                  "enabled": true,
+                  "name": "p00-inbound",
+                  "rules": [
+                    {
+                      "action": "Allow",
+                      "enabled": true,
+                      "name": "p00-allow-tcp",
+                      "ports": [
+                        "31271"
+                      ],
+                      "protocol": "TCP",
+                      "source_ips": [
+                        "10.222.0.0/24"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "acl_empty",
+          "accepted": true,
+          "effective_value": {
+            "acl_v1": {}
+          }
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.latency_first",
+      "core_key": "flags.latency_first",
+      "scope": "core",
+      "assistant_keys": [
+        "latency_first"
+      ],
+      "historical_snapshot": {
+        "key": "flags.latency_first",
+        "label": "优先低延迟路径",
+        "group": "performance",
+        "type": "boolean",
+        "default": false,
+        "help": "默认采用较短路径；开启后优先选择低延迟路径，可能经中继。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "latency_first"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 14,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "显式 patch false 转储恢复，不证明所有 flags 默认",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证",
+      "parser_cases": [
+        "missing_fields",
+        "flags.latency_first_0",
+        "flags.latency_first_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.latency_first_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.latency_first_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ]
+    },
+    {
+      "editor_key": "flags.mtu",
+      "core_key": "flags.mtu",
+      "scope": "core",
+      "assistant_keys": [
+        "mtu"
+      ],
+      "historical_snapshot": {
+        "key": "flags.mtu",
+        "label": "隧道 MTU",
+        "group": "performance",
+        "type": "number",
+        "default": 1380,
+        "help": "隧道数据包的大小上限，范围为 400～1380。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core-and-rebuild-vpn",
+        "source": "deployed-assistant",
+        "unit": "bytes",
+        "uiDefault": 1380,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "mtu"
+        ],
+        "min": 400,
+        "max": 1380
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": 1380,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "uint32",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 13,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_scope": "显式 1420 往返；省略时 patch.mtu=None，未全量证明缺省 MTU",
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证",
+      "parser_cases": [
+        "missing_fields",
+        "flags.mtu_0",
+        "flags.mtu_1",
+        "wrong_mtu_type"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.mtu_0",
+          "accepted": true,
+          "effective_value": 1280
+        },
+        {
+          "name": "flags.mtu_1",
+          "accepted": true,
+          "effective_value": 1380
+        },
+        {
+          "name": "wrong_mtu_type",
+          "accepted": false,
+          "effective_value": null
+        }
+      ]
+    },
+    {
+      "editor_key": "flags.instance_recv_bps_limit",
+      "core_key": "flags.instance_recv_bps_limit",
+      "scope": "core",
+      "assistant_keys": [
+        "instance_recv_bps_limit"
+      ],
+      "historical_snapshot": {
+        "key": "flags.instance_recv_bps_limit",
+        "label": "本网络接收限速",
+        "group": "performance",
+        "type": "number",
+        "default": "18446744073709551615",
+        "help": "限制当前实例整体接收速率，单位为字节每秒，默认不限速。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "unit": "B/s",
+        "displayDefault": "不限速",
+        "storageType": "decimal-string",
+        "unlimitedSentinel": "18446744073709551615",
+        "uiDefault": "18446744073709551615",
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "instance_recv_bps_limit"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": 18446744073709551615,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "uint64",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 77,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.instance_recv_bps_limit_0",
+        "flags.instance_recv_bps_limit_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.instance_recv_bps_limit_0",
+          "accepted": true,
+          "effective_value": 1000000
+        },
+        {
+          "name": "flags.instance_recv_bps_limit_1",
+          "accepted": true,
+          "effective_value": 18446744073709551615
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.relay_network_whitelist",
+      "core_key": "flags.relay_network_whitelist",
+      "scope": "core",
+      "assistant_keys": [
+        "enable_relay_network_whitelist",
+        "relay_network_whitelist"
+      ],
+      "historical_snapshot": {
+        "key": "flags.relay_network_whitelist",
+        "label": "允许中继的网络",
+        "group": "performance",
+        "type": "text",
+        "default": "*",
+        "help": "支持 * 和网络名模式；空值禁用转发。部分本地网络回退行为以核心为准。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "uiDefault": "*",
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "enable_relay_network_whitelist",
+          "relay_network_whitelist"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "显式启用/禁用与字符串白名单的序列化规则待真实解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": "*",
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "string",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 18,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.relay_network_whitelist_0",
+        "flags.relay_network_whitelist_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.relay_network_whitelist_0",
+          "accepted": true,
+          "effective_value": "p00-group"
+        },
+        {
+          "name": "flags.relay_network_whitelist_1",
+          "accepted": true,
+          "effective_value": ""
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.relay_all_peer_rpc",
+      "core_key": "flags.relay_all_peer_rpc",
+      "scope": "core",
+      "assistant_keys": [
+        "relay_all_peer_rpc"
+      ],
+      "historical_snapshot": {
+        "key": "flags.relay_all_peer_rpc",
+        "label": "帮助其他网络交换建链信息",
+        "group": "performance",
+        "type": "boolean",
+        "default": false,
+        "help": "转发不在中继白名单中的对端 RPC，可帮助这些网络建立 P2P。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "relay_all_peer_rpc"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 20,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.relay_all_peer_rpc_0",
+        "flags.relay_all_peer_rpc_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.relay_all_peer_rpc_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.relay_all_peer_rpc_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.enable_kcp_proxy",
+      "core_key": "flags.enable_kcp_proxy",
+      "scope": "core",
+      "assistant_keys": [
+        "enable_kcp_proxy"
+      ],
+      "historical_snapshot": {
+        "key": "flags.enable_kcp_proxy",
+        "label": "KCP 代理 TCP 流",
+        "group": "performance",
+        "type": "boolean",
+        "default": false,
+        "help": "对 TCP 流使用 KCP 代理；结合对端输入能力与真实链路测试，不保证更快。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "capability": "kcp",
+        "dependencies": [
+          "与 QUIC 代理同时启用的有效策略必须由当前核心校验/回读，UI 不隐式改另一项"
+        ],
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "enable_kcp_proxy"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [
+        "与 QUIC 代理同时启用的有效策略必须由当前核心校验/回读，UI 不隐式改另一项"
+      ],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 29,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.enable_kcp_proxy_0",
+        "flags.enable_kcp_proxy_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.enable_kcp_proxy_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.enable_kcp_proxy_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.disable_kcp_input",
+      "core_key": "flags.disable_kcp_input",
+      "scope": "core",
+      "assistant_keys": [
+        "disable_kcp_input"
+      ],
+      "historical_snapshot": {
+        "key": "flags.disable_kcp_input",
+        "label": "允许 KCP 代理接入",
+        "group": "performance",
+        "type": "boolean",
+        "default": false,
+        "help": "控制对端是否可使用 KCP 代理 TCP 流到本节点。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "invert": true,
+        "capability": "kcp",
+        "uiDefault": true,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "disable_kcp_input"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 31,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.disable_kcp_input_0",
+        "flags.disable_kcp_input_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.disable_kcp_input_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.disable_kcp_input_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.enable_quic_proxy",
+      "core_key": "flags.enable_quic_proxy",
+      "scope": "core",
+      "assistant_keys": [
+        "enable_quic_proxy"
+      ],
+      "historical_snapshot": {
+        "key": "flags.enable_quic_proxy",
+        "label": "QUIC 代理 TCP 流",
+        "group": "performance",
+        "type": "boolean",
+        "default": false,
+        "help": "对 TCP 流使用 QUIC 代理，依赖实际构建和对端支持。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "capability": "quic",
+        "uiDefault": false,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "enable_quic_proxy"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 42,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.enable_quic_proxy_0",
+        "flags.enable_quic_proxy_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.enable_quic_proxy_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.enable_quic_proxy_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "flags.disable_quic_input",
+      "core_key": "flags.disable_quic_input",
+      "scope": "core",
+      "assistant_keys": [
+        "disable_quic_input"
+      ],
+      "historical_snapshot": {
+        "key": "flags.disable_quic_input",
+        "label": "允许 QUIC 代理接入",
+        "group": "performance",
+        "type": "boolean",
+        "default": false,
+        "help": "控制对端是否可使用 QUIC 代理 TCP 流到本节点。",
+        "scope": "core",
+        "availability": "available",
+        "apply": "restart-core",
+        "source": "deployed-assistant",
+        "invert": true,
+        "capability": "quic",
+        "uiDefault": true,
+        "origin": "deployed-official-assistant",
+        "assistantFields": [
+          "disable_quic_input"
+        ]
+      },
+      "assistant_ui": "historical_snapshot",
+      "candidate_schema": "source_present",
+      "candidate_parser": "full_editor_minimal_cases_passed",
+      "android_verified": false,
+      "transform": "同名字段，结构/URI/空值语义仍需候选解析器回读",
+      "absence_empty_policy": "missing、empty、显式值分别保留；实际核心读回见 observed_cases，产品导入不得用空值自动替换缺键",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": false,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7",
+      "candidate_type": "bool",
+      "candidate_default_basis": "固定核心实际 ConfigLoader getter；宿主解析层，不是 Android 运行策略",
+      "source": {
+        "path": "easytier-proto/proto/common.proto",
+        "line": 44,
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_sample": "full_editor_minimal_cases_passed",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "parser_cases": [
+        "missing_fields",
+        "flags.disable_quic_input_0",
+        "flags.disable_quic_input_1"
+      ],
+      "observed_cases": [
+        {
+          "name": "flags.disable_quic_input_0",
+          "accepted": true,
+          "effective_value": true
+        },
+        {
+          "name": "flags.disable_quic_input_1",
+          "accepted": true,
+          "effective_value": false
+        }
+      ],
+      "android_parser_limit": "88 条同一 fixture 的无补丁真机 JNI 解析；不会启动网络，不等于该字段全部运行能力已验证"
+    },
+    {
+      "editor_key": "android.appRoutingMode",
+      "core_key": null,
+      "scope": "android",
+      "assistant_keys": [],
+      "historical_snapshot": {
+        "key": "android.appRoutingMode",
+        "label": "应用范围",
+        "group": "android",
+        "type": "select",
+        "default": "all",
+        "help": "全部应用、仅选中的应用、排除选中的应用；后两者互斥。",
+        "scope": "android",
+        "availability": "available",
+        "apply": "rebuild-vpn",
+        "source": "app-design",
+        "options": [
+          "all",
+          "allowlist",
+          "denylist"
+        ],
+        "uiDefault": "all",
+        "origin": "android-client"
+      },
+      "assistant_ui": "android_own_design",
+      "candidate_schema": "not_exported",
+      "candidate_parser": "not_exported_to_core",
+      "android_verified": false,
+      "transform": "仅由 Android 宿主消费，不导出为核心 TOML",
+      "absence_empty_policy": "按宿主类型保留缺省/显式值；不写入核心 TOML，正式 Android 序列化待 P03",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7"
+    },
+    {
+      "editor_key": "android.appPackages",
+      "core_key": null,
+      "scope": "android",
+      "assistant_keys": [],
+      "historical_snapshot": {
+        "key": "android.appPackages",
+        "label": "选中的应用",
+        "group": "android",
+        "type": "application-list",
+        "default": [],
+        "help": "支持搜索与多选，处理卸载；只有应用范围不是 all 时显示。",
+        "scope": "android",
+        "availability": "available",
+        "apply": "rebuild-vpn",
+        "source": "app-design",
+        "dependencies": [
+          "android.appRoutingMode != all"
+        ],
+        "uiDefault": [],
+        "origin": "android-client"
+      },
+      "assistant_ui": "android_own_design",
+      "candidate_schema": "not_exported",
+      "candidate_parser": "not_exported_to_core",
+      "android_verified": false,
+      "transform": "仅由 Android 宿主消费，不导出为核心 TOML",
+      "absence_empty_policy": "按宿主类型保留缺省/显式值；不写入核心 TOML，正式 Android 序列化待 P03",
+      "enable_conditions_from_snapshot": [
+        "android.appRoutingMode != all"
+      ],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7"
+    },
+    {
+      "editor_key": "android.internetRouting",
+      "core_key": null,
+      "scope": "android",
+      "assistant_keys": [],
+      "historical_snapshot": {
+        "key": "android.internetRouting",
+        "label": "互联网流量范围",
+        "group": "android",
+        "type": "select",
+        "default": "overlay-only",
+        "help": "仅组网或通过指定出口；选择出口时同时校验 IPv4、IPv6 和 DNS。",
+        "scope": "android",
+        "availability": "available",
+        "apply": "rebuild-vpn",
+        "source": "app-design",
+        "options": [
+          "overlay-only",
+          "exit-node"
+        ],
+        "uiDefault": "overlay-only",
+        "origin": "android-client"
+      },
+      "assistant_ui": "android_own_design",
+      "candidate_schema": "not_exported",
+      "candidate_parser": "not_exported_to_core",
+      "android_verified": false,
+      "transform": "仅由 Android 宿主消费，不导出为核心 TOML",
+      "absence_empty_policy": "按宿主类型保留缺省/显式值；不写入核心 TOML，正式 Android 序列化待 P03",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7"
+    },
+    {
+      "editor_key": "android.ipv6Policy",
+      "core_key": null,
+      "scope": "android",
+      "assistant_keys": [],
+      "historical_snapshot": {
+        "key": "android.ipv6Policy",
+        "label": "非组网 IPv6 策略",
+        "group": "android",
+        "type": "select",
+        "default": "bypass",
+        "help": "绕过、通过组网、阻断要明确；全流量出口不得静默绕过 IPv6。",
+        "scope": "android",
+        "availability": "available",
+        "apply": "rebuild-vpn",
+        "source": "app-design",
+        "options": [
+          "bypass",
+          "tunnel",
+          "block"
+        ],
+        "uiDefault": "bypass",
+        "origin": "android-client"
+      },
+      "assistant_ui": "android_own_design",
+      "candidate_schema": "not_exported",
+      "candidate_parser": "not_exported_to_core",
+      "android_verified": false,
+      "transform": "仅由 Android 宿主消费，不导出为核心 TOML",
+      "absence_empty_policy": "按宿主类型保留缺省/显式值；不写入核心 TOML，正式 Android 序列化待 P03",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7"
+    },
+    {
+      "editor_key": "android.dnsMode",
+      "core_key": null,
+      "scope": "android",
+      "assistant_keys": [],
+      "historical_snapshot": {
+        "key": "android.dnsMode",
+        "label": "DNS 策略",
+        "group": "android",
+        "type": "select",
+        "default": "system",
+        "help": "系统 DNS、自定义 DNS 与组网域名解析分别建模，不默认硬编码公共 DNS。",
+        "scope": "android",
+        "availability": "available",
+        "apply": "rebuild-vpn",
+        "source": "app-design",
+        "options": [
+          "system",
+          "custom"
+        ],
+        "uiDefault": "system",
+        "origin": "android-client"
+      },
+      "assistant_ui": "android_own_design",
+      "candidate_schema": "not_exported",
+      "candidate_parser": "not_exported_to_core",
+      "android_verified": false,
+      "transform": "仅由 Android 宿主消费，不导出为核心 TOML",
+      "absence_empty_policy": "按宿主类型保留缺省/显式值；不写入核心 TOML，正式 Android 序列化待 P03",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7"
+    },
+    {
+      "editor_key": "android.dnsServers",
+      "core_key": null,
+      "scope": "android",
+      "assistant_keys": [],
+      "historical_snapshot": {
+        "key": "android.dnsServers",
+        "label": "自定义 DNS 地址",
+        "group": "android",
+        "type": "list",
+        "default": [],
+        "help": "仅自定义 DNS 模式显示；与 MagicDNS 转发策略共同校验。",
+        "scope": "android",
+        "availability": "available",
+        "apply": "rebuild-vpn",
+        "source": "app-design",
+        "dependencies": [
+          "android.dnsMode=custom"
+        ],
+        "uiDefault": [],
+        "origin": "android-client"
+      },
+      "assistant_ui": "android_own_design",
+      "candidate_schema": "not_exported",
+      "candidate_parser": "not_exported_to_core",
+      "android_verified": false,
+      "transform": "仅由 Android 宿主消费，不导出为核心 TOML",
+      "absence_empty_policy": "按宿主类型保留缺省/显式值；不写入核心 TOML，正式 Android 序列化待 P03",
+      "enable_conditions_from_snapshot": [
+        "android.dnsMode=custom"
+      ],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7"
+    },
+    {
+      "editor_key": "android.autoReconnect",
+      "core_key": null,
+      "scope": "android",
+      "assistant_keys": [],
+      "historical_snapshot": {
+        "key": "android.autoReconnect",
+        "label": "网络恢复后自动重连",
+        "group": "android",
+        "type": "boolean",
+        "default": true,
+        "help": "只恢复仍有连接意图的会话，用户主动断开优先。",
+        "scope": "android",
+        "availability": "available",
+        "apply": "app-immediate",
+        "source": "app-design",
+        "uiDefault": true,
+        "origin": "android-client"
+      },
+      "assistant_ui": "android_own_design",
+      "candidate_schema": "not_exported",
+      "candidate_parser": "not_exported_to_core",
+      "android_verified": false,
+      "transform": "仅由 Android 宿主消费，不导出为核心 TOML",
+      "absence_empty_policy": "按宿主类型保留缺省/显式值；不写入核心 TOML，正式 Android 序列化待 P03",
+      "enable_conditions_from_snapshot": [],
+      "apply_policy": "unknown_until_device_evidence",
+      "candidate_default": null,
+      "historical_semantics_commit": "83baead0599110bee0d47f4c70b63b23753252a7"
+    }
+  ],
+  "hidden_review": [
+    {
+      "key": "flags.bind_device",
+      "assistant_keys": [
+        "bind_device"
+      ],
+      "category": "platform_managed_candidate",
+      "review_conclusion": "物理网络绑定由宿主协调；旧快照 allow_interface_bind 理由不能当作本候选真机证据。",
+      "native_status": "unverified",
+      "next_step": "P05 验证 Network.bindSocket、protect 与切网后再决定显隐。",
+      "preserve_saved_data": true,
+      "production_visibility": "pending_evidence_review",
+      "historical_snapshot": {
+        "key": "flags.bind_device",
+        "assistantFields": [
+          "bind_device"
+        ],
+        "reason": "当前 Android native host 设置 allow_interface_bind=false，物理网卡绑定由平台适配管理。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json"
+    },
+    {
+      "key": "flags.dev_name",
+      "assistant_keys": [
+        "dev_name"
+      ],
+      "category": "platform_managed_candidate",
+      "review_conclusion": "免 Root Android TUN 由 VpnService 建立；核心 dev_name 字段仍保留。",
+      "native_status": "unverified",
+      "next_step": "P05 核对 fd 接入时字段被忽略或冲突的实际结果，再确定表单。",
+      "preserve_saved_data": true,
+      "production_visibility": "pending_evidence_review",
+      "historical_snapshot": {
+        "key": "flags.dev_name",
+        "assistantFields": [
+          "dev_name"
+        ],
+        "reason": "本客户端采用免 Root VpnService；TUN 由 Android 创建，接口名称由平台管理。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json"
+    },
+    {
+      "key": "flags.enable_udp_broadcast_relay",
+      "assistant_keys": [
+        "enable_udp_broadcast_relay"
+      ],
+      "category": "implementation_platform_limit",
+      "review_conclusion": "候选 virtual_nic 的现有广播启动路径以 cfg(target_os=\"windows\") 限定；不表示永远不能适配 Android。",
+      "native_status": "unverified",
+      "next_step": "P05 调查 Android 广播收发宿主、用户态转发与真实客户端到达，再恢复适用项。",
+      "preserve_saved_data": true,
+      "production_visibility": "pending_evidence_review",
+      "historical_snapshot": {
+        "key": "flags.enable_udp_broadcast_relay",
+        "assistantFields": [
+          "enable_udp_broadcast_relay"
+        ],
+        "reason": "此实现捕获物理网卡 UDP 广播的路径限定 Windows + tun；当前 Android 客户端不提供。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json"
+    },
+    {
+      "key": "ipv6_public_addr_auto",
+      "assistant_keys": [
+        "ipv6_public_addr_auto"
+      ],
+      "category": "currently_unadapted",
+      "review_conclusion": "候选 ConfigLoader 存在该字段；本客户端缺少公网 IPv6 自动分配与 TUN 路由同步实证，不永久判不适用。",
+      "native_status": "unverified",
+      "next_step": "P05 建立地址通知、TUN 重建、IPv6 对端往返与泄漏实验；通过后更新能力计划及表单/搜索。",
+      "preserve_saved_data": true,
+      "production_visibility": "pending_evidence_review",
+      "historical_snapshot": {
+        "key": "ipv6_public_addr_auto",
+        "assistantFields": [
+          "ipv6_public_addr_auto"
+        ],
+        "reason": "当前客户端尚未提供公网 IPv6 自动分配与 TUN 路由同步适配；保留来源映射但不展示为可操作选项。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json"
+    },
+    {
+      "key": "flags.multi_thread",
+      "assistant_keys": [
+        "multi_thread"
+      ],
+      "category": "requires_product_review",
+      "review_conclusion": "固定非 compact NativeInstanceFactory 按实际 flags.multi_thread/count 创建 executor；真实 getter 缺省 true，不能沿用旧快照共享 JNI 理由。",
+      "native_status": "unverified",
+      "next_step": "P00-02/08 冻结实际构建路径并测线程；P05 根据产品决定恢复编辑或宿主管理。",
+      "preserve_saved_data": true,
+      "production_visibility": "pending_evidence_review",
+      "historical_snapshot": {
+        "key": "flags.multi_thread",
+        "assistantFields": [
+          "multi_thread"
+        ],
+        "reason": "JNI 共享运行时由应用初始化，不作为单网络的可编辑开关。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json"
+    },
+    {
+      "key": "flags.no_tun",
+      "assistant_keys": [
+        "no_tun"
+      ],
+      "category": "product_mode",
+      "review_conclusion": "本项目范围为免 Root 单会话 VPN；不把无 TUN 模式当默认产品功能。",
+      "native_status": "unverified",
+      "next_step": "P05 记录导入保留与冲突提示；扩大产品模式前另作需求决定。",
+      "preserve_saved_data": true,
+      "production_visibility": "pending_evidence_review",
+      "historical_snapshot": {
+        "key": "flags.no_tun",
+        "assistantFields": [
+          "no_tun"
+        ],
+        "reason": "本客户端运行模式固定为免 Root VPN；不提供改变数据路径的 NO_TUN 模式开关。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json"
+    },
+    {
+      "key": "flags.proxy_forward_by_system",
+      "assistant_keys": [
+        "proxy_forward_by_system"
+      ],
+      "category": "platform_managed_candidate",
+      "review_conclusion": "免 Root Android 不提供本项目的内核转发管理；用户态代理路径仍需实证。",
+      "native_status": "unverified",
+      "next_step": "P05 验证用户态子网/出口、原数据保留与冲突处理后明确显隐。",
+      "preserve_saved_data": true,
+      "production_visibility": "pending_evidence_review",
+      "historical_snapshot": {
+        "key": "flags.proxy_forward_by_system",
+        "assistantFields": [
+          "proxy_forward_by_system"
+        ],
+        "reason": "免 Root VpnService 不提供 Linux 内核转发管理；本客户端采用用户态代理。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "runtime_evidence": "docs/verification/p00/runs/p00-b1b1b40d0ad3/xiaomi-native-advanced.json",
+      "runtime_scope": "仅默认 Android 用户态代理成功；不证明两种显式开关值均生效"
+    },
+    {
+      "key": "flags.use_smoltcp",
+      "assistant_keys": [
+        "use_smoltcp"
+      ],
+      "category": "host_policy_candidate",
+      "review_conclusion": "固定 Android host requires_smoltcp=true，真实有限子网/出口探针通过；显式 use_smoltcp 开关仍由宿主策略约束。",
+      "native_status": "unverified",
+      "next_step": "P05 核对 native host 与 smoltcp 构建特性、子网/出口互操作；再决定平台托管或恢复。",
+      "preserve_saved_data": true,
+      "production_visibility": "pending_evidence_review",
+      "historical_snapshot": {
+        "key": "flags.use_smoltcp",
+        "assistantFields": [
+          "use_smoltcp"
+        ],
+        "reason": "当前 Android native host 要求用户态协议栈，属于宿主接管选项。",
+        "ui": "hidden",
+        "search": "hidden"
+      },
+      "parser_evidence": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "android_parser_evidence": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "runtime_evidence": "docs/verification/p00/runs/p00-b1b1b40d0ad3/xiaomi-native-advanced.json",
+      "runtime_scope": "仅默认 Android 用户态代理成功；不证明两种显式开关值均生效"
+    }
+  ],
+  "parser_report": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+  "source_evidence": "docs/verification/p00/inputs/source/config-source-evidence.json",
+  "live_refetch_report": "docs/verification/p00/inputs/assistant/fetch.json",
+  "parser_validation": {
+    "status": "passed",
+    "layer": "host_core_config_roundtrip",
+    "tests": 88,
+    "android_status": "passed_88_native_parser_cases",
+    "scope": "缺省、空列表/空字符串、显式值、false/u64、拒绝旧字段及真实转储恢复；Android 运行支持独立"
+  },
+  "android_parser_report": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+  "android_parser_scope": "88 个合成输入，37 核心编辑单元与 8 隐藏项全覆盖；不是完整运行支持",
+  "fixture_sha256": "bbcbde8659ed6d4f478612c5b61ecb17bfaf395d72e06f055587cf793a9ab691",
+  "mapping_implementation_scope": "本任务仅交付冻结配置映射与实验输入；正式表单/导入器及 Portal 迁移进入 P03/P05",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "config-mapping.json",
+        "sha256": "c1c6ab376f6d16323cf83a1590ff6d361649e327779c5682bc4a3a5b3c87e791"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

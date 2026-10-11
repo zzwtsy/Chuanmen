@@ -1,0 +1,599 @@
+{
+  "task": "P00-02",
+  "layer": "second_host_rebuild",
+  "status": "passed",
+  "started_at_utc": "2026-10-11T16:26:05.285561+00:00",
+  "runner_sha256": "7e1f4d2032bfcfae14af19585d91eeeb8db3397cef8e6181ccbd55f99a8df7e9",
+  "actor": "same_assistant_on_user_provided_second_host",
+  "independent_collaborator_status": "unverified",
+  "android_runtime_status": "unverified",
+  "root": "<RUN_ROOT>",
+  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "cache_reused": false,
+  "commands": [
+    {
+      "argv": [
+        "uname",
+        "-srm"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-01.txt",
+      "started_at_utc": "2026-10-11T16:26:05.286131+00:00",
+      "exit_code": 0,
+      "log_sha256": "4ac490e7ed47cdfcb1451dfd8085cff162dee46d90d87d3fcd026a0780b27e27"
+    },
+    {
+      "argv": [
+        "cc",
+        "--version"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-02.txt",
+      "started_at_utc": "2026-10-11T16:26:05.294190+00:00",
+      "exit_code": 0,
+      "log_sha256": "52fa390d1b33ef5e0b20f39de6624190ade494b52dd543bd8121f350ec88e0e5"
+    },
+    {
+      "argv": [
+        "ld.bfd",
+        "--version"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-03.txt",
+      "started_at_utc": "2026-10-11T16:26:05.295971+00:00",
+      "exit_code": 0,
+      "log_sha256": "c79150f260dc722910df49e13e4cc8b17fa32d6aec5dfe82a3c26178234b74d0"
+    },
+    {
+      "argv": [
+        "<USER_HOME>/.cargo/bin/rustup",
+        "toolchain",
+        "install",
+        "1.99.0",
+        "--no-self-update",
+        "--profile",
+        "minimal",
+        "--target",
+        "aarch64-linux-android,x86_64-linux-android"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-04.txt",
+      "started_at_utc": "2026-10-11T16:26:05.299803+00:00",
+      "exit_code": 0,
+      "log_sha256": "d4c8c720c1ca7699eeb3d53c43984fe058142312d0b48328ff2167ac96e1b4f0"
+    },
+    {
+      "argv": [
+        "<USER_HOME>/.cargo/bin/rustup",
+        "run",
+        "1.99.0",
+        "rustc",
+        "-Vv"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-05.txt",
+      "started_at_utc": "2026-10-11T16:26:40.506991+00:00",
+      "exit_code": 0,
+      "log_sha256": "b569b0c98ea3133c7252b4b8ea6b39b7b353813df0dd5f5c412c355691424112"
+    },
+    {
+      "argv": [
+        "<USER_HOME>/.cargo/bin/rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "install",
+        "cargo-ndk",
+        "--version",
+        "4.1.2",
+        "--locked",
+        "--root",
+        "<RUN_ROOT>/tools"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-06.txt",
+      "started_at_utc": "2026-10-11T16:26:40.523365+00:00",
+      "exit_code": 0,
+      "log_sha256": "c26b2952d2d8053693ab06f6e4b61fc0a76ad57eba15a65bfec3a393e629f6b4"
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--retry",
+        "2",
+        "--max-time",
+        "1800",
+        "--output",
+        "<RUN_ROOT>/downloads/android-ndk-r30-linux.zip",
+        "https://dl.google.com/android/repository/android-ndk-r30-linux.zip"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-07.txt",
+      "started_at_utc": "2026-10-11T16:27:21.078866+00:00",
+      "exit_code": 0,
+      "log_sha256": "cdd049548321ffbab5084a3c58308886ec724a40885fa921bd4339a7ad1a5a9e"
+    },
+    {
+      "argv": [
+        "unzip",
+        "-q",
+        "<RUN_ROOT>/downloads/android-ndk-r30-linux.zip",
+        "-d",
+        "<RUN_ROOT>/downloads/android-ndk-r30-linux.zip-extracted"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-08.txt",
+      "started_at_utc": "2026-10-11T16:27:32.194626+00:00",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--retry",
+        "2",
+        "--max-time",
+        "1800",
+        "--output",
+        "<RUN_ROOT>/downloads/platform-37.0_r02.zip",
+        "https://dl.google.com/android/repository/platform-37.0_r02.zip"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-09.txt",
+      "started_at_utc": "2026-10-11T16:27:44.560748+00:00",
+      "exit_code": 0,
+      "log_sha256": "7ee21d9f3330589b5c9dcf17f75db362b7a563e3e375b3baa08e0f2f97986eb2"
+    },
+    {
+      "argv": [
+        "unzip",
+        "-q",
+        "<RUN_ROOT>/downloads/platform-37.0_r02.zip",
+        "-d",
+        "<RUN_ROOT>/downloads/platform-37.0_r02.zip-extracted"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-10.txt",
+      "started_at_utc": "2026-10-11T16:27:46.223603+00:00",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--retry",
+        "2",
+        "--max-time",
+        "1800",
+        "--output",
+        "<RUN_ROOT>/downloads/build-tools_r36_linux.zip",
+        "https://dl.google.com/android/repository/build-tools_r36_linux.zip"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-11.txt",
+      "started_at_utc": "2026-10-11T16:27:47.868083+00:00",
+      "exit_code": 0,
+      "log_sha256": "6bdab57bc8920e512204e4fbd6979e38a8d3daacbd32851afcf5c505a5e37eff"
+    },
+    {
+      "argv": [
+        "unzip",
+        "-q",
+        "<RUN_ROOT>/downloads/build-tools_r36_linux.zip",
+        "-d",
+        "<RUN_ROOT>/downloads/build-tools_r36_linux.zip-extracted"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-12.txt",
+      "started_at_utc": "2026-10-11T16:27:49.198112+00:00",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "curl",
+        "--fail",
+        "--location",
+        "--retry",
+        "2",
+        "--max-time",
+        "300",
+        "--output",
+        "<RUN_ROOT>/downloads/protoc-36.1-linux-x86_64.zip",
+        "https://github.com/protocolbuffers/protobuf/releases/download/v36.1/protoc-36.1-linux-x86_64.zip"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-13.txt",
+      "started_at_utc": "2026-10-11T16:27:51.747250+00:00",
+      "exit_code": 0,
+      "log_sha256": "a91f1b69d324eca323ba5afa6d358f5c2e52341bf5c69c277e0426b445e093bd"
+    },
+    {
+      "argv": [
+        "unzip",
+        "-q",
+        "<RUN_ROOT>/downloads/protoc-36.1-linux-x86_64.zip",
+        "-d",
+        "<RUN_ROOT>/protoc"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-14.txt",
+      "started_at_utc": "2026-10-11T16:27:56.150867+00:00",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "<RUN_ROOT>/protoc/bin/protoc",
+        "--version"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-15.txt",
+      "started_at_utc": "2026-10-11T16:27:56.759768+00:00",
+      "exit_code": 0,
+      "log_sha256": "6b92896abd4b4f4183e96cfca10b4beee51021e1e9f408863c040b06017d3cac"
+    },
+    {
+      "argv": [
+        "tar",
+        "-xf",
+        "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/jdk21-openjdk-21.0.12.1.u1-1-x86_64.pkg.tar.zst",
+        "-C",
+        "<RUN_ROOT>/jdk",
+        "usr/lib/jvm/java-21-openjdk"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-16.txt",
+      "started_at_utc": "2026-10-11T16:27:57.069223+00:00",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "java",
+        "-version"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-17.txt",
+      "started_at_utc": "2026-10-11T16:27:57.887249+00:00",
+      "exit_code": 0,
+      "log_sha256": "425dca5c07c18893d58f4fa4b2f9d97529a6af7dca417e9458e7045d7eb533ae"
+    },
+    {
+      "argv": [
+        "git",
+        "init",
+        "<RUN_ROOT>/core"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-18.txt",
+      "started_at_utc": "2026-10-11T16:27:57.957691+00:00",
+      "exit_code": 0,
+      "log_sha256": "3f3c66e7cec19fdd5fc3b35f0cb43b58eee5dd2c9b8b93c5568e9505cb2ee0b6"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "credential.helper=",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "fetch",
+        "--depth=1",
+        "https://github.com/EasyTier/EasyTier",
+        "7592951b808c4839cb9d77cc4bc642f124915951"
+      ],
+      "cwd": "<RUN_ROOT>/core",
+      "log_path": "<RUN_ROOT>/logs/command-19.txt",
+      "started_at_utc": "2026-10-11T16:27:58.249365+00:00",
+      "exit_code": 0,
+      "log_sha256": "b6099fb6edcbb104ce021a70c6b1da13eec90ceb94295a11ec523b47c03923fe"
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.hooksPath=/dev/null",
+        "checkout",
+        "--detach",
+        "FETCH_HEAD"
+      ],
+      "cwd": "<RUN_ROOT>/core",
+      "log_path": "<RUN_ROOT>/logs/command-20.txt",
+      "started_at_utc": "2026-10-11T16:28:05.242180+00:00",
+      "exit_code": 0,
+      "log_sha256": "cc475067bc5e228ab0caa2c95f1e83e5f0cc515e158969e99c0e75dedb1f2da4"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "<RUN_ROOT>/core",
+      "log_path": "<RUN_ROOT>/logs/command-21.txt",
+      "started_at_utc": "2026-10-11T16:28:06.415701+00:00",
+      "exit_code": 0,
+      "log_sha256": "f7ea3d5a914fb873240646df6870e92b74cfd5bd73985886fa13bfc43c01cbd0"
+    },
+    {
+      "argv": [
+        "<USER_HOME>/.cargo/bin/rustup",
+        "run",
+        "1.99.0",
+        "cargo",
+        "fetch",
+        "--locked"
+      ],
+      "cwd": "<RUN_ROOT>/core",
+      "log_path": "<RUN_ROOT>/logs/command-22.txt",
+      "started_at_utc": "2026-10-11T16:28:07.201324+00:00",
+      "exit_code": 0,
+      "log_sha256": "dcfb97443253cabbb01643a453b54652f6600e3343196187e6e8eb689a91f1bc"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/repo-03/experiments/android-vpn-smoke/build-config-roundtrip.py",
+        "--rust-toolchain",
+        "1.99.0",
+        "--core-checkout",
+        "<RUN_ROOT>/core",
+        "--out",
+        "<RUN_ROOT>/config-build"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-23.txt",
+      "started_at_utc": "2026-10-11T16:28:47.275690+00:00",
+      "exit_code": 0,
+      "log_sha256": "d21a9622218a5e80d4cd3cdb2ce07b3f0d15aa761d9df505d0366dc2af25cc0e"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/repo-03/experiments/android-vpn-smoke/run-config-roundtrip.py",
+        "--build-report",
+        "<RUN_ROOT>/config-build/build-report.json",
+        "--fixture",
+        "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/repo-03/experiments/android-vpn-smoke/native-probe/assets/config-cases.json",
+        "--output",
+        "<RUN_ROOT>/config-cases.json"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-24.txt",
+      "started_at_utc": "2026-10-11T16:30:39.267641+00:00",
+      "exit_code": 0,
+      "log_sha256": "1559cd3a150e400e66cef2b9a44890dfbb19d436ce6c3692a6ec00d6c3fce367"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/repo-03/docs/verification/p00/run-native-build.py",
+        "--rust-toolchain",
+        "1.99.0",
+        "--checkout",
+        "<RUN_ROOT>/core",
+        "--sdk",
+        "<RUN_ROOT>/sdk",
+        "--abi",
+        "arm64-v8a",
+        "--abi",
+        "x86_64",
+        "--bindgen-api-target",
+        "--out",
+        "<RUN_ROOT>/native-build"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-25.txt",
+      "started_at_utc": "2026-10-11T16:30:39.384804+00:00",
+      "exit_code": 0,
+      "log_sha256": "10481de283eaf40e0c4194940d761e8693035f8bcb1d1fda664a9da3c1ce2095"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/repo-03/experiments/android-vpn-smoke/build-native-probe.py",
+        "--sdk",
+        "<RUN_ROOT>/sdk",
+        "--native-build-report",
+        "<RUN_ROOT>/native-build/native-build-report.json",
+        "--out",
+        "<RUN_ROOT>/parser-apk"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-26.txt",
+      "started_at_utc": "2026-10-11T16:46:02.839791+00:00",
+      "exit_code": 0,
+      "log_sha256": "a78f5f9aedc97b3d2052229732170982eec7093f2a5c0d4953cda6df55af9bbc"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/repo-03/experiments/android-vpn-smoke/prepare-native-boundary.py",
+        "--core-checkout",
+        "<RUN_ROOT>/core",
+        "--out",
+        "<RUN_ROOT>/boundary-core"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-27.txt",
+      "started_at_utc": "2026-10-11T16:46:05.517780+00:00",
+      "exit_code": 0,
+      "log_sha256": "92c208a6dd02e3474c8b5ebb770058c03889f86f5a32395199dfccfcd8cb65e4"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/repo-03/docs/verification/p00/run-native-build.py",
+        "--rust-toolchain",
+        "1.99.0",
+        "--checkout",
+        "<RUN_ROOT>/boundary-core",
+        "--sdk",
+        "<RUN_ROOT>/sdk",
+        "--abi",
+        "arm64-v8a",
+        "--bindgen-api-target",
+        "--experimental-patch-report",
+        "<RUN_ROOT>/boundary-core-patch.json",
+        "--out",
+        "<RUN_ROOT>/boundary-build"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-28.txt",
+      "started_at_utc": "2026-10-11T16:46:06.034790+00:00",
+      "exit_code": 0,
+      "log_sha256": "9f40ee5328bd2a7afc74b92cabdf5d44f6a904d815d4edeb691f025df5221309"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "<USER_HOME>/chuanmen-p00-repro-inputs-20261011/repo-03/experiments/android-vpn-smoke/build-native-probe.py",
+        "--boundary",
+        "--sdk",
+        "<RUN_ROOT>/sdk",
+        "--native-build-report",
+        "<RUN_ROOT>/boundary-build/native-build-report.json",
+        "--out",
+        "<RUN_ROOT>/boundary-apk"
+      ],
+      "cwd": "<RUN_ROOT>",
+      "log_path": "<RUN_ROOT>/logs/command-29.txt",
+      "started_at_utc": "2026-10-11T16:53:44.541321+00:00",
+      "exit_code": 0,
+      "log_sha256": "e33ee3cbdad3612b3621244901fd74dc76f721e9205b8a89acd5544996b896ae"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain",
+        "--untracked-files=all"
+      ],
+      "cwd": "<RUN_ROOT>/core",
+      "log_path": "<RUN_ROOT>/logs/command-30.txt",
+      "started_at_utc": "2026-10-11T16:53:47.776270+00:00",
+      "exit_code": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "downloads": [
+    {
+      "url": "https://dl.google.com/android/repository/android-ndk-r30-linux.zip",
+      "bytes": 738633529,
+      "sha1": "5107f898313790e449e87eee2183d9a20602dee9",
+      "sha256": "753611f410d002cfcd3f3dc2ef49aad532089d3180b436c060a90bf0fcb64df2"
+    },
+    {
+      "url": "https://dl.google.com/android/repository/platform-37.0_r02.zip",
+      "bytes": 67281901,
+      "sha1": "ed8ebf7f8822a4de5686d427f237d2fa30ff7410",
+      "sha256": "840b23e827f96e64aea4c89a1194aac3dc5f6bad37edb231c5c795d890330e8d"
+    },
+    {
+      "url": "https://dl.google.com/android/repository/build-tools_r36_linux.zip",
+      "bytes": 63737259,
+      "sha1": "b0b6376977657e8ad9b969bacf4093601da2c6fb",
+      "sha256": "5d9ac77fb6ff43d9da518a337b4fcf8f9097113df531d99ccefe80ef7ce8250b"
+    },
+    {
+      "url": "https://github.com/protocolbuffers/protobuf/releases/download/v36.1/protoc-36.1-linux-x86_64.zip",
+      "bytes": 3678715,
+      "sha256": "c4bc672d9d49214dc8cafdceadf4df92182d6ca8e3ec65a56b2d7de5602669b4"
+    }
+  ],
+  "stage_reports": {
+    "config_build": {
+      "path": "<RUN_ROOT>/config-build/build-report.json",
+      "sha256": "8a951cdace51b37f54e83c719ad9aa63ce5a5bc37b55810ff195b0a593c5c384",
+      "status": "passed"
+    },
+    "config_cases": {
+      "path": "<RUN_ROOT>/config-cases.json",
+      "sha256": "51323eee4af7a10fad9e39ae09ff93af39c5004ddbc6bc1a5062dceaec5bee8c",
+      "status": "passed"
+    },
+    "native_build": {
+      "path": "<RUN_ROOT>/native-build/native-build-report.json",
+      "sha256": "99f4e9362395475532d8159faa39ef3907722180d96456295ef9a67a80a362bc",
+      "status": "passed"
+    },
+    "parser_apk": {
+      "path": "<RUN_ROOT>/parser-apk/build-report.json",
+      "sha256": "7c29fa938ae7cc5d810e84a0ce8bd0113e14c975517e85aaacf1b354a4f53682",
+      "status": "passed"
+    },
+    "boundary_build": {
+      "path": "<RUN_ROOT>/boundary-build/native-build-report.json",
+      "sha256": "980ed36e034880176de3fb2892b2a7b33d893dd2bcf2de7ce6fe2f72a27a79e4",
+      "status": "passed"
+    },
+    "boundary_apk": {
+      "path": "<RUN_ROOT>/boundary-apk/build-report.json",
+      "sha256": "e44b4bf0aa79d8c2445c2530c6683993866e3d222c266ca5379a084ef49c176c",
+      "status": "passed"
+    }
+  },
+  "environment_overrides": {
+    "CARGO_HOME": "<RUN_ROOT>/cargo",
+    "RUSTUP_HOME": "<RUN_ROOT>/rustup",
+    "TMPDIR": "<RUN_ROOT>/tmp",
+    "JAVA_HOME": "<RUN_ROOT>/jdk/usr/lib/jvm/java-21-openjdk",
+    "PROTOC": "<RUN_ROOT>/protoc/bin/protoc",
+    "PROTOC_INCLUDE": "<RUN_ROOT>/protoc/include",
+    "LIBCLANG_PATH": "<RUN_ROOT>/sdk/ndk/30.0.16248370/toolchains/llvm/prebuilt/linux-x86_64/lib"
+  },
+  "updated_at_utc": "2026-10-11T16:53:47.794164+00:00",
+  "system": {
+    "uname": "Linux <host-01> x86_64",
+    "cc": "cc (GCC) 16.2.1 20260810\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "bfd": "GNU ld (GNU Binutils) 2.47\nCopyright (C) 2026 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n",
+    "python": "3.14.7 (main, Aug 10 2026, 07:46:56) [GCC 16.1.1 20260728]"
+  },
+  "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)\nbinary: rustc\ncommit-hash: b940084d7eb6a299eb4bfeb8e34901bc051e7ac4\ncommit-date: 2026-09-28\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.0\nLLVM version: 23.1.1\n",
+  "protoc": {
+    "version": "libprotoc 36.1\n",
+    "binary_sha256": "65143da2d7a01c7ab24c287fb06de20fb07ef0a346f17d39fc284393f0ca0457"
+  },
+  "libclang": {
+    "path": "<RUN_ROOT>/sdk/ndk/30.0.16248370/toolchains/llvm/prebuilt/linux-x86_64/lib/libclang.so",
+    "sha256": "2c517b06b7651025013ebb2e489e15f5d02076cd3703c592521d187b0dc744dc",
+    "load_status": "passed",
+    "source": "frozen NDK libclang; first-host ambient bindgen libclang was not captured"
+  },
+  "jdk_input": {
+    "package": "jdk21-openjdk-21.0.12.1.u1-1-x86_64.pkg.tar.zst",
+    "sha256": "5460a5ba8b42af4fe3c18eab9cb1b3bf69b3f365b76ca8657bdff1e02c290545",
+    "origin": "user_development_host_Arch_package_cache",
+    "compiled_artifact": false
+  },
+  "jdk": "openjdk version \"21.0.12.1\" 2026-08-18\nOpenJDK Runtime Environment (build 21.0.12.1+1)\nOpenJDK 64-Bit Server VM (build 21.0.12.1+1, mixed mode, sharing)\n",
+  "cargo_lock_sha256": "cd5a7951f897e45f1988b0a4896ab1f336e03e4cb6d70ca1db2a7b9b477d774b",
+  "finished_at_utc": "2026-10-11T16:53:47.794159+00:00",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "report.json",
+        "sha256": "a0f9aada8d70c303a11f470c4a1a8b15cb46f1f672fa036404c081c3093e2703"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations",
+      "uname_host_identifier"
+    ],
+    "experiment_reexecuted": false,
+    "actor_template_is_execution_identity": false,
+    "actual_execution_identity_ref": "docs/verification/p00/reviews/independent-review.json"
+  }
+}

@@ -1,0 +1,839 @@
+{
+  "schema_version": 1,
+  "task": "P00-03",
+  "candidate_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "catalog_sha256": "eaac5fd840290719d0ad270ff4ed36730274d946166646824e4757bd05148e63",
+  "core_editor_count": 37,
+  "hidden_count": 8,
+  "network_started": false,
+  "cases": [
+    {
+      "name": "missing_fields",
+      "editors": [
+        "network_identity.network_name",
+        "network_identity.network_secret",
+        "hostname",
+        "dhcp",
+        "ipv4",
+        "flags.enable_ipv6",
+        "flags.accept_dns",
+        "peer",
+        "listeners",
+        "mapped_listeners",
+        "flags.disable_p2p",
+        "flags.p2p_only",
+        "flags.lazy_p2p",
+        "flags.need_p2p",
+        "flags.disable_udp_hole_punching",
+        "flags.disable_tcp_hole_punching",
+        "flags.disable_sym_hole_punching",
+        "flags.disable_upnp",
+        "routes",
+        "exit_nodes",
+        "proxy_network",
+        "socks5_proxy",
+        "port_forward",
+        "vpn_portal_config",
+        "flags.enable_exit_node",
+        "flags.enable_encryption",
+        "flags.private_mode",
+        "acl",
+        "flags.latency_first",
+        "flags.mtu",
+        "flags.instance_recv_bps_limit",
+        "flags.relay_network_whitelist",
+        "flags.relay_all_peer_rpc",
+        "flags.enable_kcp_proxy",
+        "flags.disable_kcp_input",
+        "flags.enable_quic_proxy",
+        "flags.disable_quic_input"
+      ],
+      "kind": "missing",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "network_identity.network_name_explicit",
+      "editors": [
+        "network_identity.network_name"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[network_identity]\nnetwork_name=\"p00-config\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "network_identity.network_name_empty",
+      "editors": [
+        "network_identity.network_name"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[network_identity]\nnetwork_name=\"\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "network_identity.network_secret_explicit",
+      "editors": [
+        "network_identity.network_secret"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[network_identity]\nnetwork_name=\"p00-config\"\nnetwork_secret=\"p00-synthetic-public-test-only\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "network_identity.network_secret_empty",
+      "editors": [
+        "network_identity.network_secret"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[network_identity]\nnetwork_name=\"p00-config\"\nnetwork_secret=\"\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "hostname_explicit",
+      "editors": [
+        "hostname"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nhostname=\"串门\\n配置实验\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "hostname_empty",
+      "editors": [
+        "hostname"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nhostname=\"\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "dhcp_explicit",
+      "editors": [
+        "dhcp"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\ndhcp=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "dhcp_empty",
+      "editors": [
+        "dhcp"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\ndhcp=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "ipv4_explicit",
+      "editors": [
+        "ipv4"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nipv4=\"10.222.0.2/24\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "ipv4_empty",
+      "editors": [
+        "ipv4"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nipv4=\"\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_ipv6_0",
+      "editors": [
+        "flags.enable_ipv6"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_ipv6=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_ipv6_1",
+      "editors": [
+        "flags.enable_ipv6"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_ipv6=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.accept_dns_0",
+      "editors": [
+        "flags.accept_dns"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\naccept_dns=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.accept_dns_1",
+      "editors": [
+        "flags.accept_dns"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\naccept_dns=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "peer_explicit",
+      "editors": [
+        "peer"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[[peer]]\nuri=\"tcp://[fd00::1]:31270/p00?q=test\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "peer_empty",
+      "editors": [
+        "peer"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\npeer=[]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "listeners_explicit",
+      "editors": [
+        "listeners"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nlisteners=[\"tcp://127.0.0.1:31375\"]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "listeners_empty",
+      "editors": [
+        "listeners"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nlisteners=[]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "mapped_listeners_explicit",
+      "editors": [
+        "mapped_listeners"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nmapped_listeners=[\"tcp://127.0.0.1:31375\"]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "mapped_listeners_empty",
+      "editors": [
+        "mapped_listeners"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nmapped_listeners=[]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_p2p_0",
+      "editors": [
+        "flags.disable_p2p"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_p2p=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_p2p_1",
+      "editors": [
+        "flags.disable_p2p"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_p2p=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.p2p_only_0",
+      "editors": [
+        "flags.p2p_only"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\np2p_only=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.p2p_only_1",
+      "editors": [
+        "flags.p2p_only"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\np2p_only=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.lazy_p2p_0",
+      "editors": [
+        "flags.lazy_p2p"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nlazy_p2p=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.lazy_p2p_1",
+      "editors": [
+        "flags.lazy_p2p"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nlazy_p2p=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.need_p2p_0",
+      "editors": [
+        "flags.need_p2p"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nneed_p2p=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.need_p2p_1",
+      "editors": [
+        "flags.need_p2p"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nneed_p2p=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_udp_hole_punching_0",
+      "editors": [
+        "flags.disable_udp_hole_punching"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_udp_hole_punching=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_udp_hole_punching_1",
+      "editors": [
+        "flags.disable_udp_hole_punching"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_udp_hole_punching=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_tcp_hole_punching_0",
+      "editors": [
+        "flags.disable_tcp_hole_punching"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_tcp_hole_punching=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_tcp_hole_punching_1",
+      "editors": [
+        "flags.disable_tcp_hole_punching"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_tcp_hole_punching=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_sym_hole_punching_0",
+      "editors": [
+        "flags.disable_sym_hole_punching"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_sym_hole_punching=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_sym_hole_punching_1",
+      "editors": [
+        "flags.disable_sym_hole_punching"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_sym_hole_punching=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_upnp_0",
+      "editors": [
+        "flags.disable_upnp"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_upnp=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_upnp_1",
+      "editors": [
+        "flags.disable_upnp"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_upnp=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "routes_explicit",
+      "editors": [
+        "routes"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nroutes=[\"10.223.0.0/24\"]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "routes_empty",
+      "editors": [
+        "routes"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nroutes=[]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "exit_nodes_explicit",
+      "editors": [
+        "exit_nodes"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nexit_nodes=[\"10.222.0.1\",\"fd00::1\"]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "exit_nodes_empty",
+      "editors": [
+        "exit_nodes"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nexit_nodes=[]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "proxy_network_explicit",
+      "editors": [
+        "proxy_network"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[[proxy_network]]\ncidr=\"127.0.0.1/32\"\nmapped_cidr=\"10.223.0.1/32\"\nallow=[\"p00-group\"]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "proxy_network_empty",
+      "editors": [
+        "proxy_network"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nproxy_network=[]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "socks5_proxy_explicit",
+      "editors": [
+        "socks5_proxy"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nsocks5_proxy=\"socks5://127.0.0.1:31373\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "socks5_proxy_empty",
+      "editors": [
+        "socks5_proxy"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nsocks5_proxy=\"\"\n",
+      "expected_acceptance": false
+    },
+    {
+      "name": "port_forward_explicit",
+      "editors": [
+        "port_forward"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[[port_forward]]\nproto=\"tcp\"\nbind_addr=\"127.0.0.1:31371\"\ndst_addr=\"10.222.0.1:31271\"\n[[port_forward]]\nproto=\"udp\"\nbind_addr=\"127.0.0.1:31372\"\ndst_addr=\"10.222.0.1:31272\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "port_forward_empty",
+      "editors": [
+        "port_forward"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nport_forward=[]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "vpn_portal_config_explicit",
+      "editors": [
+        "vpn_portal_config"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[vpn_portal_config]\nenabled=true\nwireguard_listen=\"127.0.0.1:31374\"\n[[vpn_portal_config.clients]]\nname=\"p00-client\"\nvirtual_ip=\"10.222.0.10/24\"\ngroups=[]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "vpn_portal_config_empty",
+      "editors": [
+        "vpn_portal_config"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[vpn_portal_config]\nenabled=false\nwireguard_listen=\"127.0.0.1:31374\"\nclients=[]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_exit_node_0",
+      "editors": [
+        "flags.enable_exit_node"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_exit_node=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_exit_node_1",
+      "editors": [
+        "flags.enable_exit_node"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_exit_node=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_encryption_0",
+      "editors": [
+        "flags.enable_encryption"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_encryption=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_encryption_1",
+      "editors": [
+        "flags.enable_encryption"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_encryption=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.private_mode_0",
+      "editors": [
+        "flags.private_mode"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nprivate_mode=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.private_mode_1",
+      "editors": [
+        "flags.private_mode"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nprivate_mode=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "acl_explicit",
+      "editors": [
+        "acl"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[acl.acl_v1]\n[[acl.acl_v1.chains]]\nname=\"p00-inbound\"\nchain_type=\"Inbound\"\nenabled=true\ndefault_action=\"Drop\"\n[[acl.acl_v1.chains.rules]]\nname=\"p00-allow-tcp\"\nenabled=true\nprotocol=\"TCP\"\nports=[\"31271\"]\nsource_ips=[\"10.222.0.0/24\"]\naction=\"Allow\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "acl_empty",
+      "editors": [
+        "acl"
+      ],
+      "kind": "empty_or_disabled",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[acl.acl_v1]\nchains=[]\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.latency_first_0",
+      "editors": [
+        "flags.latency_first"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nlatency_first=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.latency_first_1",
+      "editors": [
+        "flags.latency_first"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nlatency_first=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.mtu_0",
+      "editors": [
+        "flags.mtu"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nmtu=1280\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.mtu_1",
+      "editors": [
+        "flags.mtu"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nmtu=1380\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.instance_recv_bps_limit_0",
+      "editors": [
+        "flags.instance_recv_bps_limit"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ninstance_recv_bps_limit=1000000\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.instance_recv_bps_limit_1",
+      "editors": [
+        "flags.instance_recv_bps_limit"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ninstance_recv_bps_limit=18446744073709551615\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.relay_network_whitelist_0",
+      "editors": [
+        "flags.relay_network_whitelist"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nrelay_network_whitelist=\"p00-group\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.relay_network_whitelist_1",
+      "editors": [
+        "flags.relay_network_whitelist"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nrelay_network_whitelist=\"\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.relay_all_peer_rpc_0",
+      "editors": [
+        "flags.relay_all_peer_rpc"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nrelay_all_peer_rpc=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.relay_all_peer_rpc_1",
+      "editors": [
+        "flags.relay_all_peer_rpc"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nrelay_all_peer_rpc=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_kcp_proxy_0",
+      "editors": [
+        "flags.enable_kcp_proxy"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_kcp_proxy=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_kcp_proxy_1",
+      "editors": [
+        "flags.enable_kcp_proxy"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_kcp_proxy=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_kcp_input_0",
+      "editors": [
+        "flags.disable_kcp_input"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_kcp_input=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_kcp_input_1",
+      "editors": [
+        "flags.disable_kcp_input"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_kcp_input=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_quic_proxy_0",
+      "editors": [
+        "flags.enable_quic_proxy"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_quic_proxy=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_quic_proxy_1",
+      "editors": [
+        "flags.enable_quic_proxy"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_quic_proxy=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_quic_input_0",
+      "editors": [
+        "flags.disable_quic_input"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_quic_input=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.disable_quic_input_1",
+      "editors": [
+        "flags.disable_quic_input"
+      ],
+      "kind": "explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_quic_input=false\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.bind_device_hidden_explicit",
+      "editors": [
+        "flags.bind_device"
+      ],
+      "kind": "hidden_explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nbind_device=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.dev_name_hidden_explicit",
+      "editors": [
+        "flags.dev_name"
+      ],
+      "kind": "hidden_explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndev_name=\"p00-ignored-tun\"\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.enable_udp_broadcast_relay_hidden_explicit",
+      "editors": [
+        "flags.enable_udp_broadcast_relay"
+      ],
+      "kind": "hidden_explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nenable_udp_broadcast_relay=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "ipv6_public_addr_auto_hidden_explicit",
+      "editors": [
+        "ipv6_public_addr_auto"
+      ],
+      "kind": "hidden_explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nipv6_public_addr_auto=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.multi_thread_hidden_explicit",
+      "editors": [
+        "flags.multi_thread"
+      ],
+      "kind": "hidden_explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nmulti_thread=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.no_tun_hidden_explicit",
+      "editors": [
+        "flags.no_tun"
+      ],
+      "kind": "hidden_explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nno_tun=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.proxy_forward_by_system_hidden_explicit",
+      "editors": [
+        "flags.proxy_forward_by_system"
+      ],
+      "kind": "hidden_explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nproxy_forward_by_system=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "flags.use_smoltcp_hidden_explicit",
+      "editors": [
+        "flags.use_smoltcp"
+      ],
+      "kind": "hidden_explicit",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nuse_smoltcp=true\n",
+      "expected_acceptance": true
+    },
+    {
+      "name": "legacy_disable_encryption",
+      "editors": [
+        "flags.enable_encryption"
+      ],
+      "kind": "invalid",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_encryption=true\n",
+      "expected_acceptance": false
+    },
+    {
+      "name": "legacy_disable_ipv6",
+      "editors": [
+        "flags.enable_ipv6"
+      ],
+      "kind": "invalid",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\ndisable_ipv6=true\n",
+      "expected_acceptance": false
+    },
+    {
+      "name": "legacy_portal_client_cidr",
+      "editors": [
+        "vpn_portal_config"
+      ],
+      "kind": "invalid",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[vpn_portal_config]\nwireguard_listen=\"127.0.0.1:31374\"\nclient_cidr=\"10.222.0.0/24\"\n",
+      "expected_acceptance": false
+    },
+    {
+      "name": "wrong_hostname_type",
+      "editors": [
+        "hostname"
+      ],
+      "kind": "invalid",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\nhostname=42\n",
+      "expected_acceptance": false
+    },
+    {
+      "name": "wrong_mtu_type",
+      "editors": [
+        "flags.mtu"
+      ],
+      "kind": "invalid",
+      "toml": "instance_id = \"00000000-0000-4000-8000-000000000003\"\n[flags]\nmtu=\"large\"\n",
+      "expected_acceptance": false
+    }
+  ]
+}

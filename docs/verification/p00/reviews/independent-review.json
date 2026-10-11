@@ -1,0 +1,260 @@
+{
+  "schema_version": 1,
+  "actor": {
+    "kind": "independent_ai",
+    "task_path": "/root/p00_independent_review",
+    "assignment": "用户明确要求另一个 AI 进行复核",
+    "roles": [
+      "P00 独立技术复核执行者",
+      "P00 许可及分发安排技术复核执行者"
+    ],
+    "human_identity_claimed": false
+  },
+  "recorded_at_utc": "2026-10-11T17:09:49.197189+00:00",
+  "status": "passed_with_bounded_scope",
+  "reviewed_inputs_sha256": {
+    "AGENTS.md": "ebde9658397880e47b751ca2cce03d5473996c2bea2fd5586392e19d4a473fe5",
+    "docs/design/adr/0001-native-host-boundary.md": "b54289fb1d1ee71b9c3b3ecbd2cdf3e8b397c28728703c11a91cb5cf0dc39fdc",
+    "docs/design/adr/0002-vpn-lifecycle.md": "83c399631b631cfad3e9065f775bd5ce945027debc92b6a8432038682cc71349",
+    "docs/design/overall-design.md": "f2fecac3539eb39783b2e37d0fa65d52dccb173bc154a4da84463a9f856f7fe3",
+    "docs/plan/ROADMAP.md": "3222487a483a9e9830c3eba973308a1e2e588f685110ea7802a9b78d134f2956",
+    "docs/plan/p00-feasibility.md": "f29d823a552b07fd6d79ae8d8995178550f13088ae0d2c0fba968b0760087f82",
+    "docs/research/android-core-evidence.md": "bfb139732b6330d30b420a307cd23c12634c5728244779e9247bb73c79c6bfa2",
+    "docs/verification/p00/capability-matrix.md": "1e20977e2b80a4134746cdcb862675a73e13154ec6304b7a8624de20ac2014fc",
+    "docs/verification/p00/exit-review.md": "bb88e4a883e8a72e8003f977e575224ddfe2910910bab8eaaf1f9b54ccbae38a",
+    "docs/verification/p00/native-boundary.md": "10c0bae7eed03a6191113d8355219671f5bef8b44a9a28ea7f198851a5a5b551",
+    "docs/verification/p00/p00-02-versions.md": "dccef6e6864c3d9621ddee160d91e9dfbaba5317f6090cbe2d82812803e3dec7",
+    "docs/verification/p00/p00-03-config.md": "daf84373777d787a8052078139d0a0a2d04fda66f526ca8461e1ac30029ff186",
+    "docs/verification/p00/p00-05-datapath.md": "5ba54be683973ae353aab74187ec78610204bff1bb676e9bb866ccd74fd3ede1",
+    "docs/verification/p00/p00-06-address.md": "ced855c38430c352777835b36039509a28620b836e6cb3216b770aaa5e57f313",
+    "docs/verification/p00/p00-07-advanced.md": "ea91f5d45d83ea142ad8621daaf9bd957f9071a2af56a4a3a0ec25f0e636dc59",
+    "docs/verification/p00/p00-08-measurement.md": "14412a501e5f0339d50016fde038b76031dce46f86290b26c917271a314c1b69",
+    "docs/verification/p00/second-host-rebuild.md": "a0588c4ba4942756e71643f9168d9a9101f44bea8d07b9d2899ca5c9f1172784"
+  },
+  "technical_evidence": {
+    "status": "passed_with_bounded_scope",
+    "report": "independent-ai-rebuild/existing-evidence-cross-review.json",
+    "checks_passed": 31,
+    "reviewer_reran_physical_experiments": false,
+    "scope": "Xiaomi 2509FPN0BC / Android 16 API36 / arm64 / 4096字节页 / 受控IPv4 Wi-Fi TCP外层",
+    "production_bridge_approved": false,
+    "config_cases_comparison": {
+      "report": "independent-ai-rebuild/config-comparison.json",
+      "checks_passed": 17,
+      "case_count": 88,
+      "accepted": 82,
+      "rejected": 6,
+      "binary_bytes_identical": false
+    },
+    "config_mapping_review": {
+      "report": "independent-ai-rebuild/config-mapping-review.json",
+      "checks_passed": 5,
+      "editor_units": 44,
+      "source_keys": 52,
+      "hidden_items": 8
+    }
+  },
+  "source_integrity": {
+    "status": "passed",
+    "report": "independent-ai-rebuild/license-archive-and-notice-review.json",
+    "unique_name_version_pairs": 452,
+    "registry_archive_checksums_verified": 442,
+    "git_commits_verified": 5,
+    "workspace_packages_verified": 5,
+    "hash_mismatches": 0
+  },
+  "independent_rebuild": {
+    "status": "passed",
+    "actual_start": "independent-ai-rebuild/launch-04-retry.json",
+    "failed_wrapper_observation": "independent-ai-rebuild/launch-04-first-failure-observation.json",
+    "root": "<RUN_ROOT>",
+    "fresh_cache": true,
+    "initial_payload_attempt": 3,
+    "external_jdk_repair": "independent-ai-rebuild/jdk-repair.json",
+    "cargo_config_limits": "independent-ai-rebuild/cargo-config-observation.json",
+    "android_runtime_revalidated": false,
+    "runner_actor_field": "原执行器actor为模板硬编码，独立执行身份由另存实际启动/退出和核验记录证明",
+    "actual_process_exit_code": 0,
+    "actual_process_exit_record": "independent-ai-rebuild/raw-build-04/independent-ai-process-exit.json",
+    "finished_at_utc": "2026-10-11T16:53:47.804977+00:00",
+    "parent_report": "independent-ai-rebuild/raw-build-04/report.json",
+    "parent_runner_sha256": "7e1f4d2032bfcfae14af19585d91eeeb8db3397cef8e6181ccbd55f99a8df7e9",
+    "six_stages_verified": 6,
+    "recorded_command_entries_with_zero_exit": 74,
+    "command_log_hashes_verified": 56,
+    "final_artifact_review": "independent-ai-rebuild/final-build-review.json",
+    "final_checks_passed": 199,
+    "final_checks_total": 199,
+    "recovered_record_count": 71,
+    "recovered_file_hashes_verified": 71,
+    "recovery_check": "independent-ai-rebuild/evidence-recovery-check.json",
+    "evidence_archive_sha256": "e60c4588e56dafc4fd4d52331ef74c77393836ea6d7aa710ae7cf116a4bb1b94",
+    "artifacts": {
+      "parser": {
+        "apk_sha256": "5776004e6c293eca7b4776a8febf29631da15ce7884f48fc91fc08b49fcaf352",
+        "apk_bytes": 35832440,
+        "dex_class_definition_count": 3,
+        "zip_member_count": 9,
+        "embedded_native_libraries": [
+          {
+            "abi": "arm64-v8a",
+            "sha256": "749f2ae504b3bfc626b5d0b6106e2a5e71a468d81ae6267f62aa3ce0b22c2f31",
+            "size_bytes": 16852744
+          },
+          {
+            "abi": "x86_64",
+            "sha256": "65fba16622e9bfd4998a374fa003b1f4912f5082f1d0d67030f6b97a0efd4e6b",
+            "size_bytes": 18947688
+          }
+        ],
+        "actual_inspection_exit_code": 0,
+        "build_report_sha256": "7c29fa938ae7cc5d810e84a0ce8bd0113e14c975517e85aaacf1b354a4f53682",
+        "structure_report_sha256": "9fa14756b96d42dce69c08b535a74d0e642e5fe67ead0772804e4af8656ce6fb"
+      },
+      "boundary": {
+        "apk_sha256": "d53aa7ce4baec11154725f53633d12f2614a96274fb4d9052fb52ea8e515e639",
+        "apk_bytes": 16933343,
+        "dex_class_definition_count": 34,
+        "zip_member_count": 7,
+        "embedded_native_libraries": [
+          {
+            "abi": "arm64-v8a",
+            "sha256": "79863463d6ff8ecf49719855d5573d53549bac53bf4d7b4592768e3705e27c98",
+            "size_bytes": 16876936
+          }
+        ],
+        "actual_inspection_exit_code": 0,
+        "build_report_sha256": "e44b4bf0aa79d8c2445c2530c6683993866e3d222c266ca5379a084ef49c176c",
+        "structure_report_sha256": "63e49958f6c6a5d550d935341640a87c7b515f049716c42f7611e7e1a1ab547e"
+      }
+    },
+    "rebuild_claim": "相同固定源码版本、原锁和工具身份的独立实际复建；未宣称产物或临时签名逐字节相同",
+    "physical_device_test_rerun": false
+  },
+  "licenses": {
+    "review_status": "current_p00_source_and_obligations_review_completed",
+    "distribution_approval": "not_granted",
+    "standard_texts_claim": "标准全文与固定原声明组成材料映射，不伪称原crate附带全文",
+    "packages": [
+      {
+        "package": "cesu8 1.1.0",
+        "status": "standard_text_mapping_review_passed",
+        "basis": "源码头明确标准条款与实际版权；标准正文另行归档"
+      },
+      {
+        "package": "seahash 4.1.0",
+        "status": "fixed_publisher_mit_declaration_mapping_review_passed",
+        "basis": "固定原manifest明确MIT，保留authors与全部实际源通知，不杜撰版权"
+      },
+      {
+        "package": "encoding-utils 0.1.0",
+        "status": "fixed_publisher_mit_declaration_mapping_review_passed",
+        "basis": "固定原manifest明确MIT，标准全文另存，不扩大空Android入口为运行实现"
+      },
+      {
+        "package": "rustls-platform-verifier-android 0.1.1",
+        "status": "rust_placeholder_module_mapping_review_passed_current_apk_exclusion_verified",
+        "basis": "固定 Rust 占位源/manifest 与父模块字节相同；本人实际核验两份当前 APK 无嵌入 AAR/JAR、无 verifier JVM 类定义。未来 JVM 源关联和互操作未验证。"
+      }
+    ],
+    "module_coverage_inference": "原根 LGPLv3 候选覆盖 JNI/FFI，无独立冲突声明；vendored 例外分别保留",
+    "vendored_core_license_count": 4,
+    "additional_notice_files": 18,
+    "release_engineering_required": [
+      "实际构建/成员清单与许可通知",
+      "固定完整对应源码、补丁、原lock、构建方法、LGPL/GPL正文与MPL源获取安排",
+      "实测适用的重链接或兼容共享库替换与安装信息",
+      "引入Android verifier AAR前补源码归属和平台TLS互操作",
+      "按实际收件主体、渠道及副本提供方式复核发行"
+    ],
+    "current_apk_static_membership_review": {
+      "parser_apk_dex_class_definitions": 3,
+      "boundary_apk_dex_class_definitions": 34,
+      "embedded_aar_or_jar": [],
+      "verifier_jvm_class_definitions_present": false,
+      "actual_inspection_exit_codes": [
+        0,
+        0
+      ]
+    }
+  },
+  "decision": {
+    "p00_exit_recommendation": "pass_current_bounded_p00_scope",
+    "user_final_exit_approval_claimed": false,
+    "p01_or_p02_started_by_reviewer": false,
+    "m1_close_recommended_for_current_scope": true,
+    "remaining_p00_blockers": [],
+    "basis": "用户已授权持续实施至 P00 完成、选择补齐后退出并指定另一 AI 复核；本 AI 实际全流程复建及最终产物核验通过，既有有限真机证据和许可/分发安排技术复核通过。",
+    "production_approved": false,
+    "distribution_approval": "not_granted",
+    "new_user_signature_required_by_reviewer": false
+  },
+  "known_limitations": [
+    "既有真机复核不等于独立重做真机实验",
+    "额外系统/OEM/ABI数据通路和16KB运行未验证",
+    "完整高级网络与生产协调器后续专项",
+    "首次包装器未产生构建报告，已保存失败观察",
+    "固定JDK在任务内解包和链接重定位已另存真实修复记录",
+    "空缓存仍读取祖先Cargo配置；原配置与凭据未归档",
+    "本轮两份新 APK 未安装或重跑真机，真机部分是原件独立交叉复核",
+    "第一主机历史 bindgen libclang 未单独采集；没有主应用 Gradle 构建",
+    "JDK cacerts 引用宿主公开 truststore；Java TLS 未验证",
+    "74 条构建命令记录含父命令与子报告，不是独立测试数量",
+    "最终检查器首次期望 argv 遗漏 --untracked-files=all；失败原件保留，修正后通过，未改原构建证据"
+  ],
+  "reviewed_inputs_hash_scope": "最后阶段同步后的实际输入 SHA；历史读取 SHA 单列保留。manifest/validation 自身哈希明确排除，避免循环。",
+  "previous_reviewed_inputs_sha256": {
+    "AGENTS.md": "ebde9658397880e47b751ca2cce03d5473996c2bea2fd5586392e19d4a473fe5",
+    "docs/design/overall-design.md": "f2fecac3539eb39783b2e37d0fa65d52dccb173bc154a4da84463a9f856f7fe3",
+    "docs/research/android-core-evidence.md": "bfb139732b6330d30b420a307cd23c12634c5728244779e9247bb73c79c6bfa2",
+    "docs/plan/p00-feasibility.md": "9eb68a4f53ed306c002ad44ed08eaad6e9103f389b6c907a01b10fa5e09f5755",
+    "docs/verification/p00/exit-review.md": "ea73278c732f4e2bf92d61c88b4266dd88f9dd3d45710885a04de976167e1b01",
+    "docs/verification/p00/second-host-rebuild.md": "84e39676e9f7a37beb3f104ea27699c69453328a12ef22c4297a9015bba653a0",
+    "docs/verification/p00/native-boundary.md": "10c0bae7eed03a6191113d8355219671f5bef8b44a9a28ea7f198851a5a5b551",
+    "docs/verification/p00/p00-02-versions.md": "82498304243800a99a6c3b44d7db84d87489fb22e2b5db07c54762dd7622c054",
+    "docs/verification/p00/p00-03-config.md": "daf84373777d787a8052078139d0a0a2d04fda66f526ca8461e1ac30029ff186",
+    "docs/verification/p00/p00-05-datapath.md": "5ba54be683973ae353aab74187ec78610204bff1bb676e9bb866ccd74fd3ede1",
+    "docs/verification/p00/p00-06-address.md": "ced855c38430c352777835b36039509a28620b836e6cb3216b770aaa5e57f313",
+    "docs/verification/p00/p00-07-advanced.md": "ea91f5d45d83ea142ad8621daaf9bd957f9071a2af56a4a3a0ec25f0e636dc59",
+    "docs/verification/p00/p00-08-measurement.md": "0e3814cf23f914bbee1f146a3338b761611f0555409c78d7f75600ec247f9ccd",
+    "docs/design/adr/0001-native-host-boundary.md": "b54289fb1d1ee71b9c3b3ecbd2cdf3e8b397c28728703c11a91cb5cf0dc39fdc",
+    "docs/design/adr/0002-vpn-lifecycle.md": "83c399631b631cfad3e9065f775bd5ce945027debc92b6a8432038682cc71349"
+  },
+  "final_status_consistency": {
+    "status": "passed",
+    "report": "independent-ai-rebuild/final-status-consistency.json",
+    "checks_passed": 49,
+    "checks_total": 49,
+    "documents_reviewed": [
+      "docs/plan/p00-feasibility.md",
+      "docs/plan/ROADMAP.md",
+      "docs/verification/p00/capability-matrix.md",
+      "docs/verification/p00/p00-02-versions.md",
+      "docs/verification/p00/p00-08-measurement.md",
+      "docs/verification/p00/second-host-rebuild.md",
+      "docs/verification/p00/exit-review.md"
+    ],
+    "manifest_and_validation_hashes_omitted": true,
+    "historical_raw_native_status_not_rewritten": true,
+    "p01_or_p02_started": false,
+    "distribution_approved": false,
+    "production_approved": false
+  },
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "independent-ai-review.json",
+        "sha256": "e79289b90d6b3c3d3da34cf82860dca57c6a1002fc70412b2bb95e88e07f3a9f"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

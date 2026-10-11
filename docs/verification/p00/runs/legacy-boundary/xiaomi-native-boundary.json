@@ -1,0 +1,1565 @@
+{
+  "schema_version": 1,
+  "layer": "android_native_boundary",
+  "status": "passed",
+  "environment_kind": "physical_device",
+  "native_status": "unverified",
+  "recorded_at_utc": "2026-10-11T12:27:47.938039+00:00",
+  "device_id": "device-01",
+  "apk_sha256": "9417895094b8369bfe3a8e1cf708390db1933df3a9795c518fd5f8ec7444b907",
+  "build_report_sha256": "9f35f6ef86ca43ec7bed30fe50995b26fb7574fbd580481349cd69665bd6899c",
+  "commands": [
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "get-state"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "c98373c1abef78070f6beef6b4ae4fbf3de348dac280195c7f93441920584af9",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "1bfaa17007aea1b639eb5c54d1c55d079f30f56b64ed20dfc02faf499d567a48",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.version.sdk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a4b2c5db15348c29451e18b8307e5ef81625ea638e807935f39ceaa8d9ac7758",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.cpu.abi"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "7f10c3cd4593d1d6ded27d658e7c05216011c955c200aac551caad0c979d4d90",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.manufacturer"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "b257d787c7da7056d0400b2829dce276da3bcb93aab6b3a903dd7f70df0e0555",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.model"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "8a1f2faeb360d564e712171d8daf644b072e0c46bc9ca8038e314868ac1ba507",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "pm",
+        "path",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "cb67d9107f92b0b0ffc2b5ebdbeaab69df362e636e30f79746a66f99be6410ff",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "sha256sum",
+        "/data/app/~~qrdl58s7RTPQ89kNPp6m8Q==/com.github.zzwtsy.chuanmen.p00probe-4-JV_7SrmKk0u9RVmCYgjw==/base.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "5cce7b3e31ab4a154fb95b7d9469407b6164de43ac9bcf7c7d80ab48ac5b02d9",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.github.zzwtsy.chuanmen.p00probe/.BoundaryActivity"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a606c542f0f9c185b206fe90d43e487d9614c29039af0b2543add74861893abb",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "instrument",
+        "-w",
+        "-r",
+        "-e",
+        "host_launch",
+        "true",
+        "com.github.zzwtsy.chuanmen.p00probe/.BoundaryInstrumentation"
+      ],
+      "exit_code": 0,
+      "original_output_sha256": "c3b365a6b28b23dd7e9591af94815fa82b867dc7785f59321e022c331cd33c3a",
+      "output_omitted": "包含无关物理网卡列表；实际设备报告按字段脱敏保存在 observations"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "dumpsys",
+        "activity",
+        "services",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e9990d2b9ce9e862271712ca1ecd0c280ac8cd7a2fd48fc18fb69623521c33b0",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    }
+  ],
+  "runner_sha256": "dc5e66a33d84a29256d23284dd40e9a31758788c0e9f1ab637dc5b0e6ddc5e46",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "patches": [
+    {
+      "report_path": "/tmp/chuanmen-p00-boundary-core-v2-patch.json",
+      "report_sha256": "b404f33f3e5db41738a38b12761ca28b4245648fa39154c9ace91989d7ae35e0",
+      "files": {
+        "easytier/src/p00_observation.rs": {
+          "original_sha256": null,
+          "patched_sha256": "848636b7c17003c7da94006282f59f52ed97a45100208a1357e712ad6fed30b0"
+        },
+        "easytier-contrib/easytier-android-jni/src/p00_jni.rs": {
+          "original_sha256": null,
+          "patched_sha256": "fbb93cdf651f455e44d87d8989b3c84416811c9e2b4deeea656611f3449dd2c7"
+        },
+        "easytier/src/lib.rs": {
+          "original_sha256": "f1d538cd0e48f0d780dfb5ddf4153a0284fb12d30feae5e71adc97755ee7587c",
+          "patched_sha256": "5bf1aa2e120abd2e94a29936c784affad332ea6b8c130f0a0dfb5c0f8bdf4d00"
+        },
+        "easytier-contrib/easytier-android-jni/src/lib.rs": {
+          "original_sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+          "patched_sha256": "85910308e060af1fef16d91cd08417339696a2cd8a9580d808218cadf2403fcf"
+        },
+        "easytier/src/instance/virtual_nic.rs": {
+          "original_sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+          "patched_sha256": "5c52a176adc3165a93b235e9ed6f28480abbb790b50911188fc1f63a13aa9747"
+        },
+        "easytier/src/instance/runtime_host/tun_common.rs": {
+          "original_sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+          "patched_sha256": "bef34f9d67b89415f7584fd7f6fc780234c40c8719f3ae948119c873abb88b59"
+        }
+      },
+      "production_approved": false
+    }
+  ],
+  "acceptance_scope": "protect_callback_and_tun_borrow_only",
+  "vpn_acceptance": "unverified",
+  "device": {
+    "ro.build.fingerprint": "Xiaomi/popsicle/popsicle:16/BP2A.250605.031.A3/OS3.0.319.0.WPBCNXM:user/release-keys",
+    "ro.build.version.sdk": "36",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.product.manufacturer": "Xiaomi",
+    "ro.product.model": "2509FPN0BC",
+    "ro.kernel.qemu": ""
+  },
+  "native_library_sha256": "18a67dd3cd19433d61be5dde9c25fe2365d64f67674a047f9b93e863e2ded1f0",
+  "installed_apk_sha256": "9417895094b8369bfe3a8e1cf708390db1933df3a9795c518fd5f8ec7444b907",
+  "observations": {
+    "schema_version": 1,
+    "layer": "android_native_boundary",
+    "status": "passed",
+    "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "connectivity": "unverified",
+    "protector_tests": [
+      {
+        "name": "real_platform_ack",
+        "status": "passed",
+        "sockets": {
+          "tcp_created": true,
+          "tcp_error": null,
+          "udp_created": true,
+          "udp_error": null
+        },
+        "observations": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 177,
+              "native_thread": "ThreadId(1)",
+              "success": true
+            },
+            {
+              "before_port": 0,
+              "fd": 178,
+              "native_thread": "ThreadId(1)",
+              "success": true
+            }
+          ],
+          "read_packets": 0,
+          "tun": {},
+          "write_packets": 0
+        }
+      },
+      {
+        "name": "false_blocks_creation",
+        "status": "passed",
+        "sockets": {
+          "tcp_created": false,
+          "tcp_error": "io error: platform protect returned false",
+          "udp_created": false,
+          "udp_error": "io error: platform protect returned false"
+        },
+        "observations": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 177,
+              "native_thread": "ThreadId(1)",
+              "success": false
+            },
+            {
+              "before_port": 0,
+              "fd": 177,
+              "native_thread": "ThreadId(1)",
+              "success": false
+            }
+          ],
+          "read_packets": 0,
+          "tun": {},
+          "write_packets": 0
+        }
+      },
+      {
+        "name": "exception_blocks_creation",
+        "status": "passed",
+        "sockets": {
+          "tcp_created": false,
+          "tcp_error": "io error: platform protect callback threw",
+          "udp_created": false,
+          "udp_error": "io error: platform protect callback threw"
+        },
+        "observations": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 177,
+              "native_thread": "ThreadId(1)",
+              "success": false
+            },
+            {
+              "before_port": 0,
+              "fd": 177,
+              "native_thread": "ThreadId(1)",
+              "success": false
+            }
+          ],
+          "read_packets": 0,
+          "tun": {},
+          "write_packets": 0
+        }
+      }
+    ],
+    "configuration": "instance_name = \"p00-boundary\"\nhostname = \"p00-android\"\nipv4 = \"10.222.0.2/24\"\ndhcp = false\nlisteners = []\npeer = []\nstun_servers = []\ntcp_stun_servers = []\nstun_servers_v6 = []\n[network_identity]\nnetwork_name = \"chuanmen-p00-isolated\"\nnetwork_secret = \"p00-synthetic-public-test-only\"\n[flags]\nenable_ipv6 = false\ndisable_upnp = true\ndisable_udp_hole_punching = true\ndisable_tcp_hole_punching = true\n",
+    "rounds": [
+      {
+        "round": 1,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(15)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "186": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721669",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://580d4d03-85df-4e33-9977-08c0d707b319"
+                  }
+                ],
+                "peer_id": 907054806
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:49.254369964+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_186\"}}",
+                "{\"time\":\"2026-10-11T20:27:49.243387829+08:00\",\"event\":{\"ListenerAdded\":\"ring://580d4d03-85df-4e33-9977-08c0d707b319\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 186,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 43,
+        "status": "passed"
+      },
+      {
+        "round": 2,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(17)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "186": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721669",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://3124ab29-2526-466c-bac3-a67c811cc15b"
+                  }
+                ],
+                "peer_id": 940317555
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:49.644896891+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_186\"}}",
+                "{\"time\":\"2026-10-11T20:27:49.634259964+08:00\",\"event\":{\"ListenerAdded\":\"ring://3124ab29-2526-466c-bac3-a67c811cc15b\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 186,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 43,
+        "status": "passed"
+      },
+      {
+        "round": 3,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(20)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "185": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721670",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://e6365613-f234-44e7-8401-61de38d25d74"
+                  }
+                ],
+                "peer_id": 771816471
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:50.036731005+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_185\"}}",
+                "{\"time\":\"2026-10-11T20:27:50.027778193+08:00\",\"event\":{\"ListenerAdded\":\"ring://e6365613-f234-44e7-8401-61de38d25d74\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 185,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 43,
+        "status": "passed"
+      },
+      {
+        "round": 4,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(24)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "186": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721670",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://d5f5cac1-8639-4a52-af7c-ce7db229e76b"
+                  }
+                ],
+                "peer_id": 1389976078
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:50.420067360+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_186\"}}",
+                "{\"time\":\"2026-10-11T20:27:50.411569651+08:00\",\"event\":{\"ListenerAdded\":\"ring://d5f5cac1-8639-4a52-af7c-ce7db229e76b\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 186,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 43,
+        "status": "passed"
+      },
+      {
+        "round": 5,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(26)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "186": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721670",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://770c339d-25ca-47c2-a28e-d8b89f12bfea"
+                  }
+                ],
+                "peer_id": 3244421628
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:50.796976839+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_186\"}}",
+                "{\"time\":\"2026-10-11T20:27:50.787285328+08:00\",\"event\":{\"ListenerAdded\":\"ring://770c339d-25ca-47c2-a28e-d8b89f12bfea\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 186,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 43,
+        "status": "passed"
+      },
+      {
+        "round": 6,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(30)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "185": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721671",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://0f8e3274-495b-4192-b13e-34d3cb421c7d"
+                  }
+                ],
+                "peer_id": 870160474
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:51.182788505+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_185\"}}",
+                "{\"time\":\"2026-10-11T20:27:51.176111890+08:00\",\"event\":{\"ListenerAdded\":\"ring://0f8e3274-495b-4192-b13e-34d3cb421c7d\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 185,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 43,
+        "status": "passed"
+      },
+      {
+        "round": 7,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(32)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "185": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721671",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://57f44855-82bd-4f06-97bf-69ab1d4ea565"
+                  }
+                ],
+                "peer_id": 2766584817
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:51.557334494+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_185\"}}",
+                "{\"time\":\"2026-10-11T20:27:51.550399911+08:00\",\"event\":{\"ListenerAdded\":\"ring://57f44855-82bd-4f06-97bf-69ab1d4ea565\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 185,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 43,
+        "status": "passed"
+      },
+      {
+        "round": 8,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(36)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "185": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721671",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://32d6ff2a-1792-4aeb-a478-110e0005b4ff"
+                  }
+                ],
+                "peer_id": 1755829272
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:51.949089963+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_185\"}}",
+                "{\"time\":\"2026-10-11T20:27:51.941892359+08:00\",\"event\":{\"ListenerAdded\":\"ring://32d6ff2a-1792-4aeb-a478-110e0005b4ff\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 185,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 43,
+        "status": "passed"
+      },
+      {
+        "round": 9,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(38)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "187": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721672",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://23db373b-2809-4018-addf-cf3d5e30c869"
+                  }
+                ],
+                "peer_id": 1238794889
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:52.321938244+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_187\"}}",
+                "{\"time\":\"2026-10-11T20:27:52.317575588+08:00\",\"event\":{\"ListenerAdded\":\"ring://23db373b-2809-4018-addf-cf3d5e30c869\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 187,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 43,
+        "status": "passed"
+      },
+      {
+        "round": 10,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(42)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "186": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721672",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://e3b2d812-ee4f-4dbf-a672-9f45742dfc61"
+                  }
+                ],
+                "peer_id": 522077140
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:52.690478609+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_186\"}}",
+                "{\"time\":\"2026-10-11T20:27:52.684653348+08:00\",\"event\":{\"ListenerAdded\":\"ring://e3b2d812-ee4f-4dbf-a672-9f45742dfc61\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 186,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      },
+      {
+        "round": 11,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(44)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "186": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721673",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://7433b0ca-cd87-4654-816f-dc6b382951b2"
+                  }
+                ],
+                "peer_id": 3488297753
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:53.058342827+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_186\"}}",
+                "{\"time\":\"2026-10-11T20:27:53.053031161+08:00\",\"event\":{\"ListenerAdded\":\"ring://7433b0ca-cd87-4654-816f-dc6b382951b2\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 186,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      },
+      {
+        "round": 12,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(48)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "185": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721673",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://c6e72647-1be6-4ac5-8425-906dd98e72fc"
+                  }
+                ],
+                "peer_id": 1359467148
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:53.433990119+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_185\"}}",
+                "{\"time\":\"2026-10-11T20:27:53.427596004+08:00\",\"event\":{\"ListenerAdded\":\"ring://c6e72647-1be6-4ac5-8425-906dd98e72fc\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 185,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      },
+      {
+        "round": 13,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(50)",
+              "success": true
+            }
+          ],
+          "read_packets": 4,
+          "tun": {
+            "185": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721673",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://854f53df-4a0d-407d-a323-28c21a851ba8"
+                  }
+                ],
+                "peer_id": 2231999917
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:53.804952514+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_185\"}}",
+                "{\"time\":\"2026-10-11T20:27:53.800629494+08:00\",\"event\":{\"ListenerAdded\":\"ring://854f53df-4a0d-407d-a323-28c21a851ba8\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 185,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      },
+      {
+        "round": 14,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(54)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "185": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721674",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://2680cd32-8c91-4d9c-9a19-474ae7d2dbe9"
+                  }
+                ],
+                "peer_id": 2586909507
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:54.180397358+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_185\"}}",
+                "{\"time\":\"2026-10-11T20:27:54.165499389+08:00\",\"event\":{\"ListenerAdded\":\"ring://2680cd32-8c91-4d9c-9a19-474ae7d2dbe9\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 185,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      },
+      {
+        "round": 15,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(56)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "186": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721674",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://54a3a310-fa6c-45d2-90e3-64208ad12fed"
+                  }
+                ],
+                "peer_id": 2039721216
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:54.551602931+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_186\"}}",
+                "{\"time\":\"2026-10-11T20:27:54.542278660+08:00\",\"event\":{\"ListenerAdded\":\"ring://54a3a310-fa6c-45d2-90e3-64208ad12fed\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 186,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      },
+      {
+        "round": 16,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(59)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "185": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721674",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://771c5e5e-acfe-4f15-b585-88f6270fb71d"
+                  }
+                ],
+                "peer_id": 717831156
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:54.929638295+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_185\"}}",
+                "{\"time\":\"2026-10-11T20:27:54.920689129+08:00\",\"event\":{\"ListenerAdded\":\"ring://771c5e5e-acfe-4f15-b585-88f6270fb71d\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 185,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      },
+      {
+        "round": 17,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(63)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "185": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721675",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://edf7cdd4-a017-4a5b-aa29-e91b6230eaf7"
+                  }
+                ],
+                "peer_id": 1687345549
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:55.308990587+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_185\"}}",
+                "{\"time\":\"2026-10-11T20:27:55.302390899+08:00\",\"event\":{\"ListenerAdded\":\"ring://edf7cdd4-a017-4a5b-aa29-e91b6230eaf7\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 185,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      },
+      {
+        "round": 18,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(66)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "187": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721675",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://a0e19d5a-7bd5-4ee0-bb65-a31f370c1ebd"
+                  }
+                ],
+                "peer_id": 2535437056
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:55.696806316+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_187\"}}",
+                "{\"time\":\"2026-10-11T20:27:55.686403920+08:00\",\"event\":{\"ListenerAdded\":\"ring://a0e19d5a-7bd5-4ee0-bb65-a31f370c1ebd\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 187,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      },
+      {
+        "round": 19,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(68)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "185": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721676",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://9f0a672e-9a25-4549-9bbe-a8c565d9fc9b"
+                  }
+                ],
+                "peer_id": 879699952
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:56.073478607+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_185\"}}",
+                "{\"time\":\"2026-10-11T20:27:56.068423816+08:00\",\"event\":{\"ListenerAdded\":\"ring://9f0a672e-9a25-4549-9bbe-a8c565d9fc9b\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 185,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      },
+      {
+        "round": 20,
+        "running": {
+          "destinations": {},
+          "protections": [
+            {
+              "before_port": 0,
+              "fd": 182,
+              "native_thread": "ThreadId(71)",
+              "success": true
+            }
+          ],
+          "read_packets": 3,
+          "tun": {
+            "186": "installed"
+          },
+          "write_packets": 0
+        },
+        "network_infos": {
+          "map": {
+            "p00-boundary": {
+              "my_node_info": {
+                "virtual_ipv4": {
+                  "address": {
+                    "addr": 182321154
+                  },
+                  "network_length": 24
+                },
+                "hostname": "p00-android",
+                "version": "2.7.0-7592951b~",
+                "stun_info": {
+                  "last_update_time": "1791721676",
+                  "max_port": 65535
+                },
+                "listeners": [
+                  {
+                    "url": "ring://7e2e5f9c-cf59-400e-93e7-0e1e5b3fe55d"
+                  }
+                ],
+                "peer_id": 4033875235
+              },
+              "events": [
+                "{\"time\":\"2026-10-11T20:27:56.439388868+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_186\"}}",
+                "{\"time\":\"2026-10-11T20:27:56.432957357+08:00\",\"event\":{\"ListenerAdded\":\"ring://7e2e5f9c-cf59-400e-93e7-0e1e5b3fe55d\"}}"
+              ],
+              "running": true,
+              "foreign_network_summary": {}
+            }
+          }
+        },
+        "closed": {
+          "fd": 186,
+          "native_state": "released",
+          "valid_before_owner_close": true,
+          "valid_after_owner_close": false
+        },
+        "fd": 181,
+        "threads": 39,
+        "status": "passed"
+      }
+    ],
+    "warmup": {
+      "fd": 186,
+      "native_state": "released",
+      "valid_before_owner_close": true,
+      "valid_after_owner_close": false
+    },
+    "baseline_fd": 181,
+    "baseline_threads": 43,
+    "callback_on_main": false,
+    "service_destroyed": true,
+    "cleanup_error": null
+  },
+  "services_after": "ACTIVITY MANAGER SERVICES (dumpsys activity services)\n  (nothing)\n",
+  "evidence_redaction": {
+    "original_report_path": "/tmp/chuanmen-p00-xiaomi-native-boundary.json",
+    "original_report_sha256": "08d909a9ac4445c2e66c4ff15fbc120c4b0fa33c9fe07558dfaf3a68dc17965f",
+    "removed_fields": [
+      "network_infos.map.*.my_node_info.ips"
+    ],
+    "status_values_changed": false
+  },
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-native-boundary.json",
+        "sha256": "00538725327032c6445ce9a20611f516cbdcea52c05cf1eeba5d96a27ecddafd"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false,
+    "build_ref": "docs/verification/p00/builds/native-boundary-apk-build.json"
+  }
+}

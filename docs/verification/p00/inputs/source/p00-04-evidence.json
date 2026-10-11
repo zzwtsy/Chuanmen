@@ -1,0 +1,1807 @@
+{
+  "schema_version": 1,
+  "task": "P00-04",
+  "scope": "原生桥边界源码核验，聚焦外部 TUN fd 入队、借用与关闭；不实施 P00-05",
+  "status": "blocked",
+  "native_experiment": {
+    "status": "unverified",
+    "device": null,
+    "network_topology": null,
+    "controlled_peer": null,
+    "apk_sha256": null,
+    "native_library_sha256": null,
+    "runs": 0,
+    "passed": 0,
+    "failed": 0,
+    "reason": "本地 socket 创建遭 EPERM；当前 Android 骨架没有 VpnService/JNI 或实验探针，未查询到可用设备/受控对端。"
+  },
+  "audit_revision": {
+    "candidate": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "comparison": "8428a89d2dabc94c97d370ec607c6ca142473626",
+    "comparison_label": "研究资料中对应 v2.6.4，本次按完整 SHA 比较",
+    "production_selection": "pending P00-02; 本次候选只用于静态审计",
+    "patches_applied": []
+  },
+  "recorded_at_utc": "2026-10-11T10:34:36.571489+00:00",
+  "allowed_files": [
+    "docs/verification/p00/p00-04-native-boundary.md",
+    "docs/verification/p00/inputs/source/p00-04-evidence.json",
+    "docs/verification/p00/p00-04-preflight.py"
+  ],
+  "input_files": {
+    "AGENTS.md": "ebde9658397880e47b751ca2cce03d5473996c2bea2fd5586392e19d4a473fe5",
+    "docs/design/overall-design.md": "f2fecac3539eb39783b2e37d0fa65d52dccb173bc154a4da84463a9f856f7fe3",
+    "docs/design/technical-architecture.md": "c0a8a36c779be007389f81b4778151b84354796a6f42a16d8d6ef7a5a82d2b6d",
+    "docs/plan/p00-feasibility.md": "58886e5b6f097e8eacd7e3ca9021e6066559bd04a53e072d953b31ff75ad2855",
+    "docs/research/android-core-evidence.md": "bfb139732b6330d30b420a307cd23c12634c5728244779e9247bb73c79c6bfa2",
+    "docs/research/sources-android.json": "5bd977ecf2f1bf853f14deeb4d66d720ba905b09aa9ff6cc6859dfd1ed523aba",
+    "app/src/main/AndroidManifest.xml": "a06055735c19c86d75e6659e2b02244cf018231f5f20ad5e31210a95df370564",
+    "app/build.gradle.kts": "6c82cf030805a45dadcbafc627aeaa1f83a745d6fada4369f439e0b297bbcfcb",
+    "gradle/libs.versions.toml": "2c40e2dcbf934669c82c58dce857aa5f3bb5867ce48d1a7ca19aed87d5443617",
+    "gradle/wrapper/gradle-wrapper.properties": "cfb229b23509e0613ecc416815d48e9bbc31ba25c59880a9f8f9af636dec960c",
+    "gradle/gradle-daemon-jvm.properties": "6c13aa5ba36690ccfbbb25a8807d01d98c15833e446d7ae82ddc726472cb8ef7"
+  },
+  "sources": [
+    {
+      "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+      "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/8428a89d2dabc94c97d370ec607c6ca142473626/easytier-contrib/easytier-android-jni/src/lib.rs",
+      "git_blob_sha": "a9f3731e8bdedb80913b5cac45df75c509422ecb",
+      "sha256": "7053c52096a8ca7442790df04f2e72a97bd4f652332ccff19a094548a8bf3922",
+      "size_bytes": 9346,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 17,
+          "end_line": 28,
+          "text": "// 声明外部 C 函数\nunsafe extern \"C\" {\n    fn set_tun_fd(inst_name: *const std::ffi::c_char, fd: std::ffi::c_int) -> std::ffi::c_int;\n    fn get_error_msg(out: *mut *const std::ffi::c_char);\n    fn free_string(s: *const std::ffi::c_char);\n    fn parse_config(cfg_str: *const std::ffi::c_char) -> std::ffi::c_int;\n    fn run_network_instance(cfg_str: *const std::ffi::c_char) -> std::ffi::c_int;\n    fn retain_network_instance(\n        inst_names: *const *const std::ffi::c_char,\n        length: usize,\n    ) -> std::ffi::c_int;\n    fn collect_network_infos(infos: *mut KeyValuePair, max_length: usize) -> std::ffi::c_int;"
+        },
+        {
+          "start_line": 34,
+          "end_line": 45,
+          "text": "        android_logger::Config::default()\n            .with_max_level(log::LevelFilter::Debug)\n            .with_tag(\"EasyTier-JNI\"),\n    );\n});\n\n// 辅助函数：从 Java String 转换为 CString\nfn jstring_to_cstring(env: &mut JNIEnv, jstr: &JString) -> Result<CString, String> {\n    let java_str = env\n        .get_string(jstr)\n        .map_err(|e| format!(\"Failed to get string: {:?}\", e))?;\n    let rust_str = java_str.to_str().map_err(|_| \"Invalid UTF-8\".to_string())?;"
+        },
+        {
+          "start_line": 246,
+          "end_line": 257,
+          "text": "/// 收集网络信息\n#[unsafe(no_mangle)]\npub extern \"system\" fn Java_com_easytier_jni_EasyTierJNI_collectNetworkInfos(\n    mut env: JNIEnv,\n    _class: JClass,\n) -> jstring {\n    Lazy::force(&LOGGER_INIT);\n\n    const MAX_INFOS: usize = 100;\n    let mut infos = vec![\n        KeyValuePair {\n            key: ptr::null(),"
+        }
+      ]
+    },
+    {
+      "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+      "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+      "url": "https://github.com/EasyTier/EasyTier/blob/8428a89d2dabc94c97d370ec607c6ca142473626/easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+      "git_blob_sha": "8f1b0efe00c20aee375858be22cd34b98f35d071",
+      "sha256": "50cb5b2510770729fd02992d7398907dfeda289eae83efbe78dfd1a2e46b28a3",
+      "size_bytes": 2617,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 16,
+          "end_line": 27,
+          "text": "     * @throws RuntimeException 当操作失败时抛出异常\n     */\n    @JvmStatic external fun setTunFd(instanceName: String, fd: Int): Int\n\n    /**\n     * 解析配置字符串\n     * @param config TOML 格式的配置字符串\n     * @return 0 表示成功，-1 表示失败\n     * @throws RuntimeException 当配置解析失败时抛出异常\n     */\n    @JvmStatic external fun parseConfig(config: String): Int\n"
+        },
+        {
+          "start_line": 48,
+          "end_line": 59,
+          "text": "     * @throws RuntimeException 当操作失败时抛出异常\n     */\n    @JvmStatic external fun collectNetworkInfos(maxLength: Int): String?\n\n    /**\n     * 获取最后的错误消息\n     * @return 错误消息字符串，如果没有错误则返回 null\n     */\n    @JvmStatic external fun getLastError(): String?\n\n    /**\n     * 便利方法：停止所有网络实例"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/src/lib.rs",
+      "git_blob_sha": "1b9e00976e24ad88c3809c076e17c970a91949ff",
+      "sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+      "size_bytes": 9181,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 134,
+          "end_line": 145,
+          "text": "/// failure this throws `RuntimeException` when an error message is available.\n#[unsafe(no_mangle)]\npub extern \"system\" fn Java_com_easytier_jni_EasyTierJNI_collectNetworkInfos(\n    env: JNIEnv,\n    class: JClass,\n    max_length: jint,\n) -> jstring {\n    logger::init();\n    network_api::collect_network_infos_jni(env, class, max_length)\n}\n\n/// List running network instance names and IDs."
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+      "git_blob_sha": "ccc2410da051cf617e3e158f46e54fc9ff563d4a",
+      "sha256": "52943965a88ab33764cda29928545c3922067819073e9f65ee9f15100440e1e4",
+      "size_bytes": 5580,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 19,
+          "end_line": 30,
+          "text": "     * @throws RuntimeException 当操作失败时抛出异常\n     */\n    @JvmStatic external fun setTunFd(instanceName: String, fd: Int): Int\n\n    /**\n     * 解析配置字符串\n     * @param config TOML 格式的配置字符串\n     * @return 0 表示成功，-1 表示失败\n     * @throws RuntimeException 当配置解析失败时抛出异常\n     */\n    @JvmStatic external fun parseConfig(config: String): Int\n"
+        },
+        {
+          "start_line": 88,
+          "end_line": 99,
+          "text": "     * @throws RuntimeException 当操作失败时抛出异常\n     */\n    @JvmStatic external fun collectNetworkInfos(maxLength: Int): String?\n\n    /**\n     * 列出当前运行的实例名称和实例 ID。\n     * @param maxLength 最大返回条目数\n     * @return JSON 对象，key 为 instance name，value 为 instance id\n     * @throws RuntimeException 当操作失败时抛出异常\n     */\n    @JvmStatic external fun listInstances(maxLength: Int): String?\n"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-contrib/easytier-android-jni/src/network_api.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/src/network_api.rs",
+      "git_blob_sha": "7d11b106cb84b4ad20dbf5dbf160e3dc7df8979d",
+      "sha256": "b7e46dd99686acf089ecaa01996e9697134c1739608d702a99cf4cc21ccd57df",
+      "size_bytes": 8434,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 15,
+          "end_line": 26,
+          "text": "};\n\npub(crate) fn set_tun_fd_jni(\n    mut env: JNIEnv,\n    _class: JClass,\n    inst_name: JString,\n    fd: jint,\n) -> jint {\n    let inst_name_cstr = match jstring_to_cstring(&mut env, &inst_name) {\n        Ok(cstr) => cstr,\n        Err(e) => {\n            throw_exception(&mut env, &format!(\"Invalid instance name: {}\", e));"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-contrib/easytier-ffi/src/instance_api.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-ffi/src/instance_api.rs",
+      "git_blob_sha": "285d0eaa1cfd3a1d2e9fd2ef7a9f24f88c139cb8",
+      "sha256": "6e837c173aeba0f89411d67efffdfd46f77eaa14212e8d804bcb94ec95d5acb7",
+      "size_bytes": 8555,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 12,
+          "end_line": 23,
+          "text": "/// # Safety\n/// Set the tun fd\npub(crate) unsafe fn set_tun_fd(inst_name: *const c_char, fd: c_int) -> c_int {\n    let inst_name = unsafe {\n        assert!(!inst_name.is_null());\n        std::ffi::CStr::from_ptr(inst_name)\n            .to_string_lossy()\n            .into_owned()\n    };\n    let inst_id = match resolve_instance_id_by_name(&inst_name) {\n        Ok(Some(instance_id)) => instance_id,\n        Ok(None) => {"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/instance/runtime_host/tun_mobile.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/runtime_host/tun_mobile.rs",
+      "git_blob_sha": "4f4593261056bd816004cb1d9d8010717f66bf38",
+      "sha256": "bb60244dcb182c5263bf669ba4c9e28a23e68155d167633edcd99e81a4ed0c2b",
+      "size_bytes": 6021,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 102,
+          "end_line": 120,
+          "text": "    }\n\n    pub(super) async fn shutdown(&self) {\n        if let Some(task) = self.task.lock().await.take() {\n            let _ = task.await;\n        }\n        self.nic.stop().await;\n    }\n\n    pub(super) fn attach_fd(&self, fd: i32) -> anyhow::Result<()> {\n        self.tun_fd\n            .try_send(fd)\n            .map_err(|error| anyhow::anyhow!(\"failed to send TUN fd: {error}\"))\n    }\n\n    pub(super) fn dhcp_host(\n        &self,\n        operation: Arc<Mutex<()>>,\n        _packet_plane: Arc<CorePacketPlane>,"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/instance/virtual_nic.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/virtual_nic.rs",
+      "git_blob_sha": "43c97aa690d8c015c0de9a3b56c9d14c13cb7b1f",
+      "sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+      "size_bytes": 46984,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 591,
+          "end_line": 602,
+          "text": "\n        config.raw_fd(tun_fd);\n        config.close_fd_on_drop(false);\n        config.up();\n\n        let has_packet_info = cfg!(any(\n            target_os = \"ios\",\n            all(target_os = \"macos\", feature = \"macos-ne\")\n        ));\n        let dev = tun::create(&config)?;\n        let dev = AsyncDevice::new(dev)?;\n        let (a, b) = BiLock::new(dev);"
+        },
+        {
+          "start_line": 1299,
+          "end_line": 1310,
+          "text": "\n    #[cfg(mobile)]\n    pub async fn run_for_mobile(&mut self, tun_fd: std::os::fd::RawFd) -> Result<(), Error> {\n        let tunnel = {\n            let mut nic = self.nic.lock().await;\n            match nic.create_dev_for_mobile(tun_fd).await {\n                Ok(ret) => {\n                    self.global_ctx\n                        .set_tun_device_ready(nic.ifname().to_string());\n                    ret\n                }\n                Err(err) => {"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/socket_protector.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/socket_protector.rs",
+      "git_blob_sha": "0806533351ff5bb053582d80b4056b28555c7241",
+      "sha256": "839650ad9b00fc6f30d9cfff3c23d5d0fbf63b6826be764c530ed170d1abc245",
+      "size_bytes": 9179,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 19,
+          "end_line": 40,
+          "text": "/// creation operations, using core's encoded bind options, not this raw-FD API.\n#[async_trait]\npub trait NativeSocketProtector: Send + Sync + 'static {\n    async fn protect(&self, socket_handle: u64) -> io::Result<()>;\n}\n\nstatic NATIVE_SOCKET_PROTECTOR: RwLock<Option<Arc<dyn NativeSocketProtector>>> = RwLock::new(None);\n\n/// Installs or removes the process-wide native socket protection capability.\n///\n/// Instance-specific routing policy still travels in socket options; this hook\n/// only exposes a platform service such as Android/iOS/HarmonyOS VPN bypass.\npub fn set_native_socket_protector(protector: Option<Arc<dyn NativeSocketProtector>>) {\n    let mut guard = NATIVE_SOCKET_PROTECTOR\n        .write()\n        .unwrap_or_else(std::sync::PoisonError::into_inner);\n    *guard = protector;\n}\n\nfn native_socket_protector() -> Option<Arc<dyn NativeSocketProtector>> {\n    #[cfg(all(test, unix))]\n    if let Ok(protector) = TEST_SOCKET_PROTECTOR.try_with(Arc::clone) {"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-ffi/src/lib.rs",
+      "git_blob_sha": "6c332c890c4fdd4689d3f775b3432ea2d078ad76",
+      "sha256": "0b7003033974baa9108f9b09002e1c39dc2bd4ee96e4adcf667a7086e83b1c98",
+      "size_bytes": 14526,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 193,
+          "end_line": 204,
+          "text": "/// failure.\n#[cfg_attr(feature = \"c-abi\", unsafe(no_mangle))]\npub unsafe extern \"C\" fn set_tun_fd(inst_name: *const c_char, fd: c_int) -> c_int {\n    unsafe { instance_api::set_tun_fd(inst_name, fd) }\n}\n\n/// Call an exposed EasyTier RPC method using protobuf JSON.\n///\n/// This generic bridge intentionally excludes instance lifecycle management\n/// RPCs. Use the dedicated FFI APIs for starting, retaining, deleting, and\n/// collecting instances. `payload_json` must contain the protobuf JSON request,\n/// including any `instance` selector required by the target RPC."
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-contrib/easytier-ffi/src/state.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-ffi/src/state.rs",
+      "git_blob_sha": "749acea781b9e4d844b8908d04aab49ce32c0788",
+      "sha256": "7b29e7bd745012cd6a12edd50957108fb1c10319cbc772e227370d3d8fc9cf3e",
+      "size_bytes": 2075,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 46,
+          "end_line": 57,
+          "text": "}\n\nstatic FFI_CONTEXT: once_cell::sync::Lazy<FfiContext> = once_cell::sync::Lazy::new(FfiContext::new);\n\npub(crate) fn ffi_context() -> &'static FfiContext {\n    &FFI_CONTEXT\n}\n\npub(crate) fn resolve_instance_id_by_name(inst_name: &str) -> Result<Option<uuid::Uuid>, String> {\n    easytier_core::management::resolve_optional_instance_by_name(\n        ffi_context().manager.as_ref(),\n        inst_name,"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/instance/runtime_host.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/runtime_host.rs",
+      "git_blob_sha": "aa22a702856817df6d8f6de25b73cfd721b09b32",
+      "sha256": "ec499b01ad5d98e2d0b114c7cb88d3d65367764d4fb9b14a98ebb5a8cb74f6ed",
+      "size_bytes": 8183,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 75,
+          "end_line": 86,
+          "text": "    }\n\n    async fn shutdown_runtime(&self) {\n        self.cancel.cancel();\n        let _operation = self.operation.lock().await;\n        self.event_journal.stop().await;\n        self.tun.shutdown().await;\n    }\n\n    fn request_runtime_shutdown(&self) {\n        self.cancel.cancel();\n    }"
+        },
+        {
+          "start_line": 129,
+          "end_line": 140,
+          "text": "    }\n\n    fn attach_runtime_tun_fd(&self, fd: i32) -> anyhow::Result<()> {\n        self.tun.attach_fd(fd)\n    }\n\n    fn install_packet_receiver(&self, receiver: HostPacketReceiver) -> anyhow::Result<()> {\n        self.tun.install_packet_receiver(receiver)\n    }\n}\n\n#[cfg(test)]"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/instance/runtime_host/tun_common.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/runtime_host/tun_common.rs",
+      "git_blob_sha": "a86aead96d4176320bfc5fa145c466176377e5aa",
+      "sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+      "size_bytes": 2509,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 58,
+          "end_line": 69,
+          "text": "    }\n\n    pub(super) async fn stop(&self) {\n        let mut old = self.nic_ctx.lock().await.take();\n        if let Some(nic) = old.as_mut() {\n            nic.magic_dns.stop().await;\n        }\n        drop(old);\n    }\n\n    pub(super) async fn drain(&self) {\n        self.stop().await;"
+        }
+      ]
+    },
+    {
+      "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+      "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/8428a89d2dabc94c97d370ec607c6ca142473626/easytier-contrib/easytier-ffi/src/lib.rs",
+      "git_blob_sha": "e9b65be4280dca0354a0fbbd3ac8b495424727a0",
+      "sha256": "a8c17c74d407373cc0d832c763f7adac044efd2d695e76e10ede2b9fde3d106b",
+      "size_bytes": 7099,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 32,
+          "end_line": 43,
+          "text": "/// Set the tun fd\n#[unsafe(no_mangle)]\npub unsafe extern \"C\" fn set_tun_fd(\n    inst_name: *const std::ffi::c_char,\n    fd: std::ffi::c_int,\n) -> std::ffi::c_int {\n    let inst_name = unsafe {\n        assert!(!inst_name.is_null());\n        std::ffi::CStr::from_ptr(inst_name)\n            .to_string_lossy()\n            .into_owned()\n    };"
+        }
+      ]
+    },
+    {
+      "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+      "path": "easytier/src/instance/virtual_nic.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/8428a89d2dabc94c97d370ec607c6ca142473626/easytier/src/instance/virtual_nic.rs",
+      "git_blob_sha": "1faa1fd5212984441315f7e7a63e110660b4cf5f",
+      "sha256": "c238d1d81d23e9ba92c301a0267e6564178b2434148ba8e03685926bfee8f776",
+      "size_bytes": 51937,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 596,
+          "end_line": 607,
+          "text": "\n        config.raw_fd(tun_fd);\n        config.close_fd_on_drop(false);\n        config.up();\n\n        let has_packet_info = cfg!(any(\n            target_os = \"ios\",\n            all(target_os = \"macos\", feature = \"macos-ne\")\n        ));\n        let dev = tun::create(&config)?;\n        let dev = AsyncDevice::new(dev)?;\n        let (a, b) = BiLock::new(dev);"
+        },
+        {
+          "start_line": 1400,
+          "end_line": 1411,
+          "text": "\n    #[cfg(mobile)]\n    pub async fn run_for_mobile(&mut self, tun_fd: std::os::fd::RawFd) -> Result<(), Error> {\n        let tunnel = {\n            let mut nic = self.nic.lock().await;\n            match nic.create_dev_for_mobile(tun_fd).await {\n                Ok(ret) => {\n                    self.global_ctx\n                        .issue_event(GlobalCtxEvent::TunDeviceReady(nic.ifname().to_string()));\n                    ret\n                }\n                Err(err) => {"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-contrib/easytier-android-jni/Cargo.toml",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/Cargo.toml",
+      "git_blob_sha": "6cb68059da482278661fa28def69b5eb265dec59",
+      "sha256": "ae2d347ea3f9581e94f0b9d066e84a6ab90ff3d57721e9c0f1fddbb8dcb5ea65",
+      "size_bytes": 424,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 1,
+          "end_line": 14,
+          "text": "[package]\nname = \"easytier-android-jni\"\nversion = \"0.1.0\"\nedition.workspace = true\nrust-version.workspace = true\n\n[lib]\ncrate-type = [\"cdylib\"]\n\n[dependencies]\n# JNI 0.22 changes native entry points to EnvUnowned and Env.\njni = \"0.21.1\"\nonce_cell.workspace = true\nlog.workspace = true"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/instance/factory.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/factory.rs",
+      "git_blob_sha": "71c341ce7c2089514111cb0a0024908809583ea8",
+      "sha256": "37a03edaf119520cc597e32dc5d7878e6ca573b74c5b131a0cb9487f0f929246",
+      "size_bytes": 20392,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 18,
+          "end_line": 31,
+          "text": "};\n\npub type NativeCoreInstance = CoreInstance<NativeInstanceHost>;\n#[cfg(feature = \"management-rpc\")]\npub type NativeInstanceManager = InstanceManager<NativeInstanceFactory>;\n#[cfg(feature = \"management\")]\npub type NativeProcessManagement =\n    easytier_core::management::ProcessManagement<NativeInstanceFactory>;\n\n#[cfg(feature = \"management-rpc\")]\npub fn native_instance_manager() -> NativeInstanceManager {\n    native_instance_manager_with_optional_runtime(None)\n}\n"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-core/src/instance/manager.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/src/instance/manager.rs",
+      "git_blob_sha": "64b479008c2027a109b505522d5458ee6db145e9",
+      "sha256": "60c0d090670f71dac2261932866737f2e346e3a73c4fcf769d905d3d47a65f24",
+      "size_bytes": 23190,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 473,
+          "end_line": 484,
+          "text": "    }\n\n    pub fn attach_tun_fd(&self, instance_id: Uuid, fd: i32) -> anyhow::Result<()> {\n        self.get(instance_id)\n            .ok_or_else(|| anyhow::anyhow!(\"instance {instance_id} not found\"))?\n            .attach_tun_fd(fd)\n    }\n\n    pub fn data_plane_runtime_handle(&self, instance_id: &Uuid) -> Option<tokio::runtime::Handle> {\n        self.instance(*instance_id)?\n            .runtime_handle()\n            .or_else(|| self.runtime_handle.clone())"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-core/src/instance/mod.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/src/instance/mod.rs",
+      "git_blob_sha": "3ae2c028891341ddf3639427d8873d1a34d5b2c7",
+      "sha256": "e612237ce6c804294df46905e74fab2a57a27a648dcf7b7777bda36252bd12c8",
+      "size_bytes": 37067,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 241,
+          "end_line": 252,
+          "text": "    ) -> anyhow::Result<Option<Arc<dyn DhcpIpv4Host>>>;\n\n    async fn shutdown(&self);\n\n    /// Requests prompt Host cleanup when the canonical instance owner is\n    /// dropped without an opportunity to await [`Self::shutdown`].\n    fn request_shutdown(&self) {}\n\n    /// Returns the bounded, serialized event journal exposed by process\n    /// management. Hosts that do not produce events keep the default empty\n    /// journal.\n    fn management_events(&self) -> Vec<String> {"
+        },
+        {
+          "start_line": 267,
+          "end_line": 278,
+          "text": "    fn publish_config_patch(&self, _patch: crate::proto::api::config::InstanceConfigPatch) {}\n\n    fn attach_tun_fd(&self, _fd: i32) -> anyhow::Result<()> {\n        anyhow::bail!(\"external TUN attachment is not supported by this Host\")\n    }\n}\n\n#[async_trait::async_trait]\nimpl InstanceRuntimeHost for () {\n    async fn prepare(\n        &self,\n        _packet_plane: Arc<CorePacketPlane>,"
+        },
+        {
+          "start_line": 281,
+          "end_line": 292,
+          "text": "    }\n\n    async fn shutdown(&self) {}\n}\n\n/// Host Adapters and optional native capabilities for one core instance.\n///\n/// Callers provide this bundle and one normalized [`CoreInstanceConfig`] to\n/// [`CoreInstance::new`]. Core constructs and owns every portable runtime\n/// Module behind that seam.\npub struct CoreHostAdapters<H>\nwhere"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-contrib/easytier-android-jni/build.sh",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/build.sh",
+      "git_blob_sha": "46169b9e423075eeab12de473d3a0b64a80fd75d",
+      "sha256": "997b0118f64f270f481dafde1115f78fdf63674936a0a7045ce616a91413dcab",
+      "size_bytes": 4596,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 76,
+          "end_line": 90,
+          "text": "    # 首先构建 easytier-ffi\n    echo -e \"${YELLOW}构建 easytier-ffi for $android_target${NC}\"\n    (cd $REPO_ROOT/easytier-contrib/easytier-ffi && cargo ndk -t $android_target build --release)\n    \n    # 构建 JNI 库\n    cargo ndk -t $android_target build --release\n    \n    # 复制库文件到输出目录\n    # cargo-ndk 使用 Rust target 名称作为目录名，而不是 Android 架构名称\n    rust_target=\"${TARGET_MAP[$android_target]}\"\n    mkdir -p \"$OUTPUT_DIR/$android_target\"\n    cp \"$REPO_ROOT/target/$rust_target/release/libeasytier_android_jni.so\" \"$OUTPUT_DIR/$android_target/\"\n    cp \"$REPO_ROOT/target/$rust_target/release/libeasytier_ffi.so\" \"$OUTPUT_DIR/$android_target/\"\n    echo -e \"${GREEN}库文件已复制到: $OUTPUT_DIR/$android_target/${NC}\"\n}"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "Cargo.toml",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/Cargo.toml",
+      "git_blob_sha": "098d9683f49a6dcea1f600f06c302758c2035ee9",
+      "sha256": "597486b84f007251198b927323dd3d2d492446a75f31538230c95641dc3176c7",
+      "size_bytes": 3680,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 20,
+          "end_line": 31,
+          "text": "[workspace.package]\nedition = \"2024\"\nrust-version = \"1.95\"\n\n[workspace.dependencies]\noptionize = \"0.5\"\n# Shared versions and sources; members select features and optional dependencies.\nanyhow = \"1.0\"\narc-swap = \"1.9\"\nasync-trait = \"0.1.92\"\natomic-shim = \"0.2.0\"\nauto_impl = \"1.3.0\""
+        },
+        {
+          "start_line": 104,
+          "end_line": 119,
+          "text": "\n[profile.dev]\npanic = \"unwind\"\ndebug = 2\n\n[profile.release]\npanic = \"abort\"\nlto = true\ncodegen-units = 1\nopt-level = 3\nstrip = true\n\n[profile.mini]\ninherits = \"release\"\nopt-level = \"z\"\nstrip = \"symbols\""
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier/src/instance/runtime_host/implementation.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/runtime_host/implementation.rs",
+      "git_blob_sha": "1d5f21e173072dd4bcf4aca7da5a9d69f6bdcd28",
+      "sha256": "e0680a46f14c6a0032463bb0b73a0f8b2795fdf5da8e67cda3ebdae6c4988824",
+      "size_bytes": 1919,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 22,
+          "end_line": 33,
+          "text": "    }\n\n    async fn shutdown(&self) {\n        self.shutdown_runtime().await;\n    }\n\n    fn request_shutdown(&self) {\n        self.request_runtime_shutdown();\n    }\n\n    fn management_events(&self) -> Vec<String> {\n        self.management_events_snapshot()"
+        },
+        {
+          "start_line": 51,
+          "end_line": 69,
+          "text": "    }\n\n    fn attach_tun_fd(&self, fd: i32) -> anyhow::Result<()> {\n        self.attach_runtime_tun_fd(fd)\n    }\n}\n\n#[async_trait::async_trait]\nimpl PacketEgressHost for NativeInstanceRuntimeHost {\n    async fn start(&self, receiver: HostPacketReceiver) -> anyhow::Result<()> {\n        self.install_packet_receiver(receiver)\n    }\n\n    async fn stop(&self) {}\n\n    fn request_stop(&self) {\n        self.request_runtime_shutdown();\n    }\n}"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-core/src/instance/management.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/src/instance/management.rs",
+      "git_blob_sha": "b8ec79ec78be720251b268f9a142fe62769ee6f3",
+      "sha256": "580eba2ba5fa2c9e4491721d6f8c7f1b5a7d800b9c5b2f32c4b346162a016f5b",
+      "size_bytes": 7625,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 74,
+          "end_line": 85,
+          "text": "    }\n\n    pub fn attach_tun_fd(&self, fd: i32) -> anyhow::Result<()> {\n        self.instance_runtime.attach_tun_fd(fd)\n    }\n\n    pub fn latest_error(&self) -> Option<String> {\n        self.latest_error.read().clone()\n    }\n\n    pub fn is_ready(&self) -> bool {\n        self.state() == super::CoreInstanceState::Running"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-contrib/easytier-android-jni/src/logger.rs",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/src/logger.rs",
+      "git_blob_sha": "20c149b47d0d294f56c17bc04a77a688b3abbd2f",
+      "sha256": "af5569c122c6a1373051d12ad4512d0ec6823a66c7b0e27aad5472d8a3e7c556",
+      "size_bytes": 307,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 5,
+          "end_line": 13,
+          "text": "        android_logger::Config::default()\n            .with_max_level(log::LevelFilter::Debug)\n            .with_tag(\"EasyTier-JNI\"),\n    );\n});\n\npub(crate) fn init() {\n    Lazy::force(&LOGGER_INIT);\n}"
+        }
+      ]
+    },
+    {
+      "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "path": "easytier-proto/proto/api_logger.proto",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-proto/proto/api_logger.proto",
+      "git_blob_sha": "c738ba255fe895adfffadb65e69ce32a5329136f",
+      "sha256": "12d8226bdbf1540509aafab6886753bae7d8730c612dddf5632dce97a2a17d22",
+      "size_bytes": 509,
+      "retrieval": "GitHub read-only fetch_file, fixed commit; independently checked Git blob SHA",
+      "excerpts": [
+        {
+          "start_line": 19,
+          "end_line": 24,
+          "text": "\nmessage GetLoggerConfigResponse { LogLevel level = 1; }\nservice LoggerRpc {\n  rpc SetLoggerConfig(SetLoggerConfigRequest) returns (SetLoggerConfigResponse);\n  rpc GetLoggerConfig(GetLoggerConfigRequest) returns (GetLoggerConfigResponse);\n}"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "command": "python3 docs/verification/p00/p00-04-preflight.py --help",
+      "exit_code": 0,
+      "scope": "CLI 入口"
+    },
+    {
+      "command": "python3 docs/verification/p00/p00-04-preflight.py --source-cache /tmp/chuanmen-p00-04-source-cache --sources-only --output /tmp/chuanmen-p00-04-source-review-result.json",
+      "exit_code": 0,
+      "captured_at_utc": "2026-10-11T10:37:06.305323+00:00",
+      "result": {
+        "status": "pass",
+        "files": [
+          {
+            "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+            "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+            "status": "pass",
+            "git_blob_sha": "a9f3731e8bdedb80913b5cac45df75c509422ecb",
+            "sha256": "7053c52096a8ca7442790df04f2e72a97bd4f652332ccff19a094548a8bf3922",
+            "excerpts_match": true
+          },
+          {
+            "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+            "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+            "status": "pass",
+            "git_blob_sha": "8f1b0efe00c20aee375858be22cd34b98f35d071",
+            "sha256": "50cb5b2510770729fd02992d7398907dfeda289eae83efbe78dfd1a2e46b28a3",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+            "status": "pass",
+            "git_blob_sha": "1b9e00976e24ad88c3809c076e17c970a91949ff",
+            "sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+            "status": "pass",
+            "git_blob_sha": "ccc2410da051cf617e3e158f46e54fc9ff563d4a",
+            "sha256": "52943965a88ab33764cda29928545c3922067819073e9f65ee9f15100440e1e4",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-contrib/easytier-android-jni/src/network_api.rs",
+            "status": "pass",
+            "git_blob_sha": "7d11b106cb84b4ad20dbf5dbf160e3dc7df8979d",
+            "sha256": "b7e46dd99686acf089ecaa01996e9697134c1739608d702a99cf4cc21ccd57df",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-contrib/easytier-ffi/src/instance_api.rs",
+            "status": "pass",
+            "git_blob_sha": "285d0eaa1cfd3a1d2e9fd2ef7a9f24f88c139cb8",
+            "sha256": "6e837c173aeba0f89411d67efffdfd46f77eaa14212e8d804bcb94ec95d5acb7",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier/src/instance/runtime_host/tun_mobile.rs",
+            "status": "pass",
+            "git_blob_sha": "4f4593261056bd816004cb1d9d8010717f66bf38",
+            "sha256": "bb60244dcb182c5263bf669ba4c9e28a23e68155d167633edcd99e81a4ed0c2b",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier/src/instance/virtual_nic.rs",
+            "status": "pass",
+            "git_blob_sha": "43c97aa690d8c015c0de9a3b56c9d14c13cb7b1f",
+            "sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier/src/socket_protector.rs",
+            "status": "pass",
+            "git_blob_sha": "0806533351ff5bb053582d80b4056b28555c7241",
+            "sha256": "839650ad9b00fc6f30d9cfff3c23d5d0fbf63b6826be764c530ed170d1abc245",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+            "status": "pass",
+            "git_blob_sha": "6c332c890c4fdd4689d3f775b3432ea2d078ad76",
+            "sha256": "0b7003033974baa9108f9b09002e1c39dc2bd4ee96e4adcf667a7086e83b1c98",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-contrib/easytier-ffi/src/state.rs",
+            "status": "pass",
+            "git_blob_sha": "749acea781b9e4d844b8908d04aab49ce32c0788",
+            "sha256": "7b29e7bd745012cd6a12edd50957108fb1c10319cbc772e227370d3d8fc9cf3e",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier/src/instance/runtime_host.rs",
+            "status": "pass",
+            "git_blob_sha": "aa22a702856817df6d8f6de25b73cfd721b09b32",
+            "sha256": "ec499b01ad5d98e2d0b114c7cb88d3d65367764d4fb9b14a98ebb5a8cb74f6ed",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier/src/instance/runtime_host/tun_common.rs",
+            "status": "pass",
+            "git_blob_sha": "a86aead96d4176320bfc5fa145c466176377e5aa",
+            "sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+            "excerpts_match": true
+          },
+          {
+            "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+            "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+            "status": "pass",
+            "git_blob_sha": "e9b65be4280dca0354a0fbbd3ac8b495424727a0",
+            "sha256": "a8c17c74d407373cc0d832c763f7adac044efd2d695e76e10ede2b9fde3d106b",
+            "excerpts_match": true
+          },
+          {
+            "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+            "path": "easytier/src/instance/virtual_nic.rs",
+            "status": "pass",
+            "git_blob_sha": "1faa1fd5212984441315f7e7a63e110660b4cf5f",
+            "sha256": "c238d1d81d23e9ba92c301a0267e6564178b2434148ba8e03685926bfee8f776",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-contrib/easytier-android-jni/Cargo.toml",
+            "status": "pass",
+            "git_blob_sha": "6cb68059da482278661fa28def69b5eb265dec59",
+            "sha256": "ae2d347ea3f9581e94f0b9d066e84a6ab90ff3d57721e9c0f1fddbb8dcb5ea65",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier/src/instance/factory.rs",
+            "status": "pass",
+            "git_blob_sha": "71c341ce7c2089514111cb0a0024908809583ea8",
+            "sha256": "37a03edaf119520cc597e32dc5d7878e6ca573b74c5b131a0cb9487f0f929246",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-core/src/instance/manager.rs",
+            "status": "pass",
+            "git_blob_sha": "64b479008c2027a109b505522d5458ee6db145e9",
+            "sha256": "60c0d090670f71dac2261932866737f2e346e3a73c4fcf769d905d3d47a65f24",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-core/src/instance/mod.rs",
+            "status": "pass",
+            "git_blob_sha": "3ae2c028891341ddf3639427d8873d1a34d5b2c7",
+            "sha256": "e612237ce6c804294df46905e74fab2a57a27a648dcf7b7777bda36252bd12c8",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-contrib/easytier-android-jni/build.sh",
+            "status": "pass",
+            "git_blob_sha": "46169b9e423075eeab12de473d3a0b64a80fd75d",
+            "sha256": "997b0118f64f270f481dafde1115f78fdf63674936a0a7045ce616a91413dcab",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "Cargo.toml",
+            "status": "pass",
+            "git_blob_sha": "098d9683f49a6dcea1f600f06c302758c2035ee9",
+            "sha256": "597486b84f007251198b927323dd3d2d492446a75f31538230c95641dc3176c7",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier/src/instance/runtime_host/implementation.rs",
+            "status": "pass",
+            "git_blob_sha": "1d5f21e173072dd4bcf4aca7da5a9d69f6bdcd28",
+            "sha256": "e0680a46f14c6a0032463bb0b73a0f8b2795fdf5da8e67cda3ebdae6c4988824",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-core/src/instance/management.rs",
+            "status": "pass",
+            "git_blob_sha": "b8ec79ec78be720251b268f9a142fe62769ee6f3",
+            "sha256": "580eba2ba5fa2c9e4491721d6f8c7f1b5a7d800b9c5b2f32c4b346162a016f5b",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-contrib/easytier-android-jni/src/logger.rs",
+            "status": "pass",
+            "git_blob_sha": "20c149b47d0d294f56c17bc04a77a688b3abbd2f",
+            "sha256": "af5569c122c6a1373051d12ad4512d0ec6823a66c7b0e27aad5472d8a3e7c556",
+            "excerpts_match": true
+          },
+          {
+            "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+            "path": "easytier-proto/proto/api_logger.proto",
+            "status": "pass",
+            "git_blob_sha": "c738ba255fe895adfffadb65e69ce32a5329136f",
+            "sha256": "12d8226bdbf1540509aafab6886753bae7d8730c612dddf5632dce97a2a17d22",
+            "excerpts_match": true
+          }
+        ],
+        "scope": "文件哈希和摘录复核；没有编译或调用 JNI"
+      },
+      "native_experiment_status": "unverified"
+    },
+    {
+      "command": "python3 docs/verification/p00/p00-04-preflight.py --source-cache /tmp/chuanmen-p00-04-source-cache --output /tmp/chuanmen-p00-04-preflight-result.json",
+      "exit_code": 2,
+      "result": {
+        "task": "P00-04",
+        "captured_at_utc": "2026-10-11T10:37:06.305367+00:00",
+        "native_experiment_status": "unverified",
+        "source_review": {
+          "status": "pass",
+          "files": [
+            {
+              "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+              "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+              "status": "pass",
+              "git_blob_sha": "a9f3731e8bdedb80913b5cac45df75c509422ecb",
+              "sha256": "7053c52096a8ca7442790df04f2e72a97bd4f652332ccff19a094548a8bf3922",
+              "excerpts_match": true
+            },
+            {
+              "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+              "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+              "status": "pass",
+              "git_blob_sha": "8f1b0efe00c20aee375858be22cd34b98f35d071",
+              "sha256": "50cb5b2510770729fd02992d7398907dfeda289eae83efbe78dfd1a2e46b28a3",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+              "status": "pass",
+              "git_blob_sha": "1b9e00976e24ad88c3809c076e17c970a91949ff",
+              "sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+              "status": "pass",
+              "git_blob_sha": "ccc2410da051cf617e3e158f46e54fc9ff563d4a",
+              "sha256": "52943965a88ab33764cda29928545c3922067819073e9f65ee9f15100440e1e4",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-contrib/easytier-android-jni/src/network_api.rs",
+              "status": "pass",
+              "git_blob_sha": "7d11b106cb84b4ad20dbf5dbf160e3dc7df8979d",
+              "sha256": "b7e46dd99686acf089ecaa01996e9697134c1739608d702a99cf4cc21ccd57df",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-contrib/easytier-ffi/src/instance_api.rs",
+              "status": "pass",
+              "git_blob_sha": "285d0eaa1cfd3a1d2e9fd2ef7a9f24f88c139cb8",
+              "sha256": "6e837c173aeba0f89411d67efffdfd46f77eaa14212e8d804bcb94ec95d5acb7",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier/src/instance/runtime_host/tun_mobile.rs",
+              "status": "pass",
+              "git_blob_sha": "4f4593261056bd816004cb1d9d8010717f66bf38",
+              "sha256": "bb60244dcb182c5263bf669ba4c9e28a23e68155d167633edcd99e81a4ed0c2b",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier/src/instance/virtual_nic.rs",
+              "status": "pass",
+              "git_blob_sha": "43c97aa690d8c015c0de9a3b56c9d14c13cb7b1f",
+              "sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier/src/socket_protector.rs",
+              "status": "pass",
+              "git_blob_sha": "0806533351ff5bb053582d80b4056b28555c7241",
+              "sha256": "839650ad9b00fc6f30d9cfff3c23d5d0fbf63b6826be764c530ed170d1abc245",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+              "status": "pass",
+              "git_blob_sha": "6c332c890c4fdd4689d3f775b3432ea2d078ad76",
+              "sha256": "0b7003033974baa9108f9b09002e1c39dc2bd4ee96e4adcf667a7086e83b1c98",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-contrib/easytier-ffi/src/state.rs",
+              "status": "pass",
+              "git_blob_sha": "749acea781b9e4d844b8908d04aab49ce32c0788",
+              "sha256": "7b29e7bd745012cd6a12edd50957108fb1c10319cbc772e227370d3d8fc9cf3e",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier/src/instance/runtime_host.rs",
+              "status": "pass",
+              "git_blob_sha": "aa22a702856817df6d8f6de25b73cfd721b09b32",
+              "sha256": "ec499b01ad5d98e2d0b114c7cb88d3d65367764d4fb9b14a98ebb5a8cb74f6ed",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier/src/instance/runtime_host/tun_common.rs",
+              "status": "pass",
+              "git_blob_sha": "a86aead96d4176320bfc5fa145c466176377e5aa",
+              "sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+              "excerpts_match": true
+            },
+            {
+              "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+              "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+              "status": "pass",
+              "git_blob_sha": "e9b65be4280dca0354a0fbbd3ac8b495424727a0",
+              "sha256": "a8c17c74d407373cc0d832c763f7adac044efd2d695e76e10ede2b9fde3d106b",
+              "excerpts_match": true
+            },
+            {
+              "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+              "path": "easytier/src/instance/virtual_nic.rs",
+              "status": "pass",
+              "git_blob_sha": "1faa1fd5212984441315f7e7a63e110660b4cf5f",
+              "sha256": "c238d1d81d23e9ba92c301a0267e6564178b2434148ba8e03685926bfee8f776",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-contrib/easytier-android-jni/Cargo.toml",
+              "status": "pass",
+              "git_blob_sha": "6cb68059da482278661fa28def69b5eb265dec59",
+              "sha256": "ae2d347ea3f9581e94f0b9d066e84a6ab90ff3d57721e9c0f1fddbb8dcb5ea65",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier/src/instance/factory.rs",
+              "status": "pass",
+              "git_blob_sha": "71c341ce7c2089514111cb0a0024908809583ea8",
+              "sha256": "37a03edaf119520cc597e32dc5d7878e6ca573b74c5b131a0cb9487f0f929246",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-core/src/instance/manager.rs",
+              "status": "pass",
+              "git_blob_sha": "64b479008c2027a109b505522d5458ee6db145e9",
+              "sha256": "60c0d090670f71dac2261932866737f2e346e3a73c4fcf769d905d3d47a65f24",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-core/src/instance/mod.rs",
+              "status": "pass",
+              "git_blob_sha": "3ae2c028891341ddf3639427d8873d1a34d5b2c7",
+              "sha256": "e612237ce6c804294df46905e74fab2a57a27a648dcf7b7777bda36252bd12c8",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-contrib/easytier-android-jni/build.sh",
+              "status": "pass",
+              "git_blob_sha": "46169b9e423075eeab12de473d3a0b64a80fd75d",
+              "sha256": "997b0118f64f270f481dafde1115f78fdf63674936a0a7045ce616a91413dcab",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "Cargo.toml",
+              "status": "pass",
+              "git_blob_sha": "098d9683f49a6dcea1f600f06c302758c2035ee9",
+              "sha256": "597486b84f007251198b927323dd3d2d492446a75f31538230c95641dc3176c7",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier/src/instance/runtime_host/implementation.rs",
+              "status": "pass",
+              "git_blob_sha": "1d5f21e173072dd4bcf4aca7da5a9d69f6bdcd28",
+              "sha256": "e0680a46f14c6a0032463bb0b73a0f8b2795fdf5da8e67cda3ebdae6c4988824",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-core/src/instance/management.rs",
+              "status": "pass",
+              "git_blob_sha": "b8ec79ec78be720251b268f9a142fe62769ee6f3",
+              "sha256": "580eba2ba5fa2c9e4491721d6f8c7f1b5a7d800b9c5b2f32c4b346162a016f5b",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-contrib/easytier-android-jni/src/logger.rs",
+              "status": "pass",
+              "git_blob_sha": "20c149b47d0d294f56c17bc04a77a688b3abbd2f",
+              "sha256": "af5569c122c6a1373051d12ad4512d0ec6823a66c7b0e27aad5472d8a3e7c556",
+              "excerpts_match": true
+            },
+            {
+              "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+              "path": "easytier-proto/proto/api_logger.proto",
+              "status": "pass",
+              "git_blob_sha": "c738ba255fe895adfffadb65e69ce32a5329136f",
+              "sha256": "12d8226bdbf1540509aafab6886753bae7d8730c612dddf5632dce97a2a17d22",
+              "excerpts_match": true
+            }
+          ],
+          "scope": "文件哈希和摘录复核；没有编译或调用 JNI"
+        },
+        "tool_versions": {
+          "python": "3.14.8 (main, Oct  2 2026, 10:23:31) [GCC 16.2.1 20260810]",
+          "adb": {
+            "exit_code": 0,
+            "historical_stdout_sha256": "f32eebd7da0a5dc86b037dbf261bd20ac63d7d16fae30714f386ff27dac5133f",
+            "command_output_retention": "structured_observations_and_exit_code_only",
+            "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "java": {
+            "exit_code": 0,
+            "historical_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "command_output_retention": "structured_observations_and_exit_code_only",
+            "historical_stderr_sha256": "43895e4b5f500a3c895d8c44ecbdaba206b28a8d2c79153be952812d88bf1876"
+          },
+          "rustc": {
+            "exit_code": 0,
+            "historical_stdout_sha256": "3d39fb41cdfa163aa880be59d9c8f2c2bd1bc6d3bb77723b4e6ae0f8b36964af",
+            "command_output_retention": "structured_observations_and_exit_code_only",
+            "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "cargo": {
+            "exit_code": 0,
+            "historical_stdout_sha256": "75e7bb7eb60d1576ca315ad3c9363816433e0270d28f2bd8b99ee2f1c72d692f",
+            "command_output_retention": "structured_observations_and_exit_code_only",
+            "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "declared_environment": {
+          "agp": "9.4.1",
+          "kotlin": "2.2.10",
+          "composeBom": "2026.02.01",
+          "gradle_wrapper": "9.6.0",
+          "gradle_daemon_jdk": "25",
+          "installed_ndk_revisions": [
+            "30.0.16248370"
+          ],
+          "meaning": "声明及本机库存，未验证兼容组合"
+        },
+        "project_head": {
+          "exit_code": 128,
+          "historical_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command_output_retention": "structured_observations_and_exit_code_only",
+          "historical_stderr_sha256": "ced3c476c97bf0a1f97518337c5d562a1de1f3c2b68c0650350ddd1fd75b4158"
+        },
+        "device_inventory": {
+          "status": "blocked",
+          "error": "[Errno 1] Operation not permitted",
+          "devices": null,
+          "meaning": "无法查询设备；不能据此断言没有真机"
+        },
+        "selected_device": {
+          "status": "not_selected"
+        },
+        "blockers": [
+          "未运行原生实验探针，未确认受控网络与测试对端",
+          "无法查询已有 ADB server"
+        ],
+        "preflight_status": "blocked",
+        "exit_code": 2
+      }
+    },
+    {
+      "scope": "临时缓存中为 tun_mobile.rs 追加一行，验证哈希不符不能通过；未修改原始缓存或项目文件",
+      "result": {
+        "name": "tampered_source_rejected",
+        "exit_code": 1,
+        "failed_paths": [
+          "easytier/src/instance/runtime_host/tun_mobile.rs"
+        ],
+        "native_experiment_status": "unverified"
+      }
+    },
+    {
+      "command": "python3 scripts/validate_handoff.py",
+      "exit_code": 0,
+      "result": {
+        "status": "PASS",
+        "errors": [],
+        "warnings": [
+          "尚无 SHA256SUMS；开发阶段可继续，正式打包前必须生成并复核。",
+          "本检查不执行 Android 构建、真实网络、浏览器像素或商店审核。"
+        ],
+        "counts": {
+          "phase_files": 8,
+          "markdown_files": 42,
+          "local_links": 89,
+          "json_files": 110,
+          "vendored_assets_and_licenses": 4,
+          "checksums": 0
+        },
+        "catalog": {
+          "core_editors": 37,
+          "android_editors": 7,
+          "visible_editors": 44,
+          "groups": 6,
+          "source_fields": 52,
+          "hidden_editors": 8
+        }
+      },
+      "scope": "交接包结构、链接、JSON 与目录；不验证原生能力"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "scope": "已跟踪改动格式；新增文件另做语法和文档检查"
+    },
+    {
+      "scope": "对照任务前130份已跟踪文件的 SHA-256",
+      "original_file_count": 130,
+      "changed_files": []
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "A1",
+      "status": "unverified",
+      "owner": "P00-04 实验执行者",
+      "next_action": "在真机同时记录 JNI 返回和对应 attachment 安装结果"
+    },
+    {
+      "id": "A2",
+      "status": "unverified",
+      "owner": "P00-04 实验执行者",
+      "next_action": "证明停止返回后原 attachment 无在途 I/O，再关闭 Kotlin PFD"
+    },
+    {
+      "id": "A3",
+      "status": "unverified",
+      "owner": "P00-04 实验执行者",
+      "next_action": "证明 fd 替换/取消不会由旧任务操作复用后的 fd"
+    },
+    {
+      "id": "A4",
+      "status": "unverified",
+      "owner": "P00-04 实验执行者",
+      "next_action": "注册项目自有 Android protect 桥并观测失败时阻止 socket 创建"
+    },
+    {
+      "id": "A5",
+      "status": "unverified",
+      "owner": "P00-04 实验执行者",
+      "next_action": "记录 callback 线程与异常，区分 release panic abort 与可恢复错误"
+    },
+    {
+      "id": "A6",
+      "status": "unverified",
+      "owner": "P00-04 实验执行者",
+      "next_action": "在固定产物调用信息/日志路径，核对 DTO 及 logger 初始化"
+    }
+  ],
+  "gate": {
+    "P00_04_verified": false,
+    "P00_05_authorized_as_part_of_this_task": false,
+    "P02_entry_passed": false
+  },
+  "toolchain_observations": {
+    "queried": {
+      "python": "3.14.8 (main, Oct  2 2026, 10:23:31) [GCC 16.2.1 20260810]",
+      "adb": {
+        "exit_code": 0,
+        "historical_stdout_sha256": "f32eebd7da0a5dc86b037dbf261bd20ac63d7d16fae30714f386ff27dac5133f",
+        "command_output_retention": "structured_observations_and_exit_code_only",
+        "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "java": {
+        "exit_code": 0,
+        "historical_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "command_output_retention": "structured_observations_and_exit_code_only",
+        "historical_stderr_sha256": "43895e4b5f500a3c895d8c44ecbdaba206b28a8d2c79153be952812d88bf1876"
+      },
+      "rustc": {
+        "exit_code": 0,
+        "historical_stdout_sha256": "3d39fb41cdfa163aa880be59d9c8f2c2bd1bc6d3bb77723b4e6ae0f8b36964af",
+        "command_output_retention": "structured_observations_and_exit_code_only",
+        "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cargo": {
+        "exit_code": 0,
+        "historical_stdout_sha256": "75e7bb7eb60d1576ca315ad3c9363816433e0270d28f2bd8b99ee2f1c72d692f",
+        "command_output_retention": "structured_observations_and_exit_code_only",
+        "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "declared": {
+      "agp": "9.4.1",
+      "kotlin": "2.2.10",
+      "composeBom": "2026.02.01",
+      "gradle_wrapper": "9.6.0",
+      "gradle_daemon_jdk": "25",
+      "installed_ndk_revisions": [
+        "30.0.16248370"
+      ],
+      "meaning": "声明及本机库存，未验证兼容组合"
+    },
+    "native_compilation": "not_run"
+  },
+  "project_revision": {
+    "head": null,
+    "query": {
+      "exit_code": 128,
+      "historical_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command_output_retention": "structured_observations_and_exit_code_only",
+      "historical_stderr_sha256": "ced3c476c97bf0a1f97518337c5d562a1de1f3c2b68c0650350ddd1fd75b4158"
+    },
+    "identity_method": "input_files SHA-256; 仓库尚无可解析的 HEAD"
+  },
+  "android_reference": {
+    "url": "https://developer.android.com/reference/android/net/VpnService",
+    "page_last_updated_utc": "2026-09-16",
+    "read_status": "read",
+    "supports": [
+      "protect 成功让 socket 绕过 VPN，不关闭 socket",
+      "onRevoke 不保证主线程，调用方需关闭 fd 并停止",
+      "setUnderlyingNetworks 与 socket 绑定分工不同"
+    ]
+  },
+  "artifact_sha256": {
+    "docs/verification/p00/p00-04-native-boundary.md": "1525ba07ed26fa7135d0853b320d4ddebdf7f9c110ccb964b8719f6a8c6085da",
+    "docs/verification/p00/p00-04-preflight.py": "84e9cfada1fb7f7febc51fc4383b782b908e0563e6a54f32dbb46c2056649b90"
+  },
+  "completed_at_utc": "2026-10-11T10:38:39.370208+00:00",
+  "followup_runs": [
+    {
+      "captured_at_utc": "2026-10-11T10:45:39.530896+00:00",
+      "scope": "再次执行同一 P00-04 前置检查，补充精确 cargo-ndk/Rust 库存并修正复现命令",
+      "previous_artifact_sha256": {
+        "docs/verification/p00/p00-04-native-boundary.md": "c3786177dd44f870e33302c9836444b94fb2cd56382d1572f1b2f77fd02b0cde",
+        "docs/verification/p00/p00-04-preflight.py": "7e22981362d0c23e319309655775dbb3bb6bcd6916cbe09a111f78283e97a81d"
+      },
+      "artifact_sha256": {
+        "docs/verification/p00/p00-04-native-boundary.md": "1525ba07ed26fa7135d0853b320d4ddebdf7f9c110ccb964b8719f6a8c6085da",
+        "docs/verification/p00/p00-04-preflight.py": "84e9cfada1fb7f7febc51fc4383b782b908e0563e6a54f32dbb46c2056649b90"
+      },
+      "checks": [
+        {
+          "command": "python3 docs/verification/p00/p00-04-preflight.py --source-cache /tmp/chuanmen-p00-04-source-cache --output /tmp/chuanmen-p00-04-followup-preflight.json",
+          "exit_code": 2,
+          "result": {
+            "task": "P00-04",
+            "captured_at_utc": "2026-10-11T10:43:01.994891+00:00",
+            "native_experiment_status": "unverified",
+            "source_review": {
+              "status": "pass",
+              "files": [
+                {
+                  "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+                  "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+                  "status": "pass",
+                  "git_blob_sha": "a9f3731e8bdedb80913b5cac45df75c509422ecb",
+                  "sha256": "7053c52096a8ca7442790df04f2e72a97bd4f652332ccff19a094548a8bf3922",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+                  "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+                  "status": "pass",
+                  "git_blob_sha": "8f1b0efe00c20aee375858be22cd34b98f35d071",
+                  "sha256": "50cb5b2510770729fd02992d7398907dfeda289eae83efbe78dfd1a2e46b28a3",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+                  "status": "pass",
+                  "git_blob_sha": "1b9e00976e24ad88c3809c076e17c970a91949ff",
+                  "sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+                  "status": "pass",
+                  "git_blob_sha": "ccc2410da051cf617e3e158f46e54fc9ff563d4a",
+                  "sha256": "52943965a88ab33764cda29928545c3922067819073e9f65ee9f15100440e1e4",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/src/network_api.rs",
+                  "status": "pass",
+                  "git_blob_sha": "7d11b106cb84b4ad20dbf5dbf160e3dc7df8979d",
+                  "sha256": "b7e46dd99686acf089ecaa01996e9697134c1739608d702a99cf4cc21ccd57df",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-ffi/src/instance_api.rs",
+                  "status": "pass",
+                  "git_blob_sha": "285d0eaa1cfd3a1d2e9fd2ef7a9f24f88c139cb8",
+                  "sha256": "6e837c173aeba0f89411d67efffdfd46f77eaa14212e8d804bcb94ec95d5acb7",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/runtime_host/tun_mobile.rs",
+                  "status": "pass",
+                  "git_blob_sha": "4f4593261056bd816004cb1d9d8010717f66bf38",
+                  "sha256": "bb60244dcb182c5263bf669ba4c9e28a23e68155d167633edcd99e81a4ed0c2b",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/virtual_nic.rs",
+                  "status": "pass",
+                  "git_blob_sha": "43c97aa690d8c015c0de9a3b56c9d14c13cb7b1f",
+                  "sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/socket_protector.rs",
+                  "status": "pass",
+                  "git_blob_sha": "0806533351ff5bb053582d80b4056b28555c7241",
+                  "sha256": "839650ad9b00fc6f30d9cfff3c23d5d0fbf63b6826be764c530ed170d1abc245",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+                  "status": "pass",
+                  "git_blob_sha": "6c332c890c4fdd4689d3f775b3432ea2d078ad76",
+                  "sha256": "0b7003033974baa9108f9b09002e1c39dc2bd4ee96e4adcf667a7086e83b1c98",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-ffi/src/state.rs",
+                  "status": "pass",
+                  "git_blob_sha": "749acea781b9e4d844b8908d04aab49ce32c0788",
+                  "sha256": "7b29e7bd745012cd6a12edd50957108fb1c10319cbc772e227370d3d8fc9cf3e",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/runtime_host.rs",
+                  "status": "pass",
+                  "git_blob_sha": "aa22a702856817df6d8f6de25b73cfd721b09b32",
+                  "sha256": "ec499b01ad5d98e2d0b114c7cb88d3d65367764d4fb9b14a98ebb5a8cb74f6ed",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/runtime_host/tun_common.rs",
+                  "status": "pass",
+                  "git_blob_sha": "a86aead96d4176320bfc5fa145c466176377e5aa",
+                  "sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+                  "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+                  "status": "pass",
+                  "git_blob_sha": "e9b65be4280dca0354a0fbbd3ac8b495424727a0",
+                  "sha256": "a8c17c74d407373cc0d832c763f7adac044efd2d695e76e10ede2b9fde3d106b",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+                  "path": "easytier/src/instance/virtual_nic.rs",
+                  "status": "pass",
+                  "git_blob_sha": "1faa1fd5212984441315f7e7a63e110660b4cf5f",
+                  "sha256": "c238d1d81d23e9ba92c301a0267e6564178b2434148ba8e03685926bfee8f776",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/Cargo.toml",
+                  "status": "pass",
+                  "git_blob_sha": "6cb68059da482278661fa28def69b5eb265dec59",
+                  "sha256": "ae2d347ea3f9581e94f0b9d066e84a6ab90ff3d57721e9c0f1fddbb8dcb5ea65",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/factory.rs",
+                  "status": "pass",
+                  "git_blob_sha": "71c341ce7c2089514111cb0a0024908809583ea8",
+                  "sha256": "37a03edaf119520cc597e32dc5d7878e6ca573b74c5b131a0cb9487f0f929246",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-core/src/instance/manager.rs",
+                  "status": "pass",
+                  "git_blob_sha": "64b479008c2027a109b505522d5458ee6db145e9",
+                  "sha256": "60c0d090670f71dac2261932866737f2e346e3a73c4fcf769d905d3d47a65f24",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-core/src/instance/mod.rs",
+                  "status": "pass",
+                  "git_blob_sha": "3ae2c028891341ddf3639427d8873d1a34d5b2c7",
+                  "sha256": "e612237ce6c804294df46905e74fab2a57a27a648dcf7b7777bda36252bd12c8",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/build.sh",
+                  "status": "pass",
+                  "git_blob_sha": "46169b9e423075eeab12de473d3a0b64a80fd75d",
+                  "sha256": "997b0118f64f270f481dafde1115f78fdf63674936a0a7045ce616a91413dcab",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "Cargo.toml",
+                  "status": "pass",
+                  "git_blob_sha": "098d9683f49a6dcea1f600f06c302758c2035ee9",
+                  "sha256": "597486b84f007251198b927323dd3d2d492446a75f31538230c95641dc3176c7",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/runtime_host/implementation.rs",
+                  "status": "pass",
+                  "git_blob_sha": "1d5f21e173072dd4bcf4aca7da5a9d69f6bdcd28",
+                  "sha256": "e0680a46f14c6a0032463bb0b73a0f8b2795fdf5da8e67cda3ebdae6c4988824",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-core/src/instance/management.rs",
+                  "status": "pass",
+                  "git_blob_sha": "b8ec79ec78be720251b268f9a142fe62769ee6f3",
+                  "sha256": "580eba2ba5fa2c9e4491721d6f8c7f1b5a7d800b9c5b2f32c4b346162a016f5b",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/src/logger.rs",
+                  "status": "pass",
+                  "git_blob_sha": "20c149b47d0d294f56c17bc04a77a688b3abbd2f",
+                  "sha256": "af5569c122c6a1373051d12ad4512d0ec6823a66c7b0e27aad5472d8a3e7c556",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-proto/proto/api_logger.proto",
+                  "status": "pass",
+                  "git_blob_sha": "c738ba255fe895adfffadb65e69ce32a5329136f",
+                  "sha256": "12d8226bdbf1540509aafab6886753bae7d8730c612dddf5632dce97a2a17d22",
+                  "excerpts_match": true
+                }
+              ],
+              "scope": "文件哈希和摘录复核；没有编译或调用 JNI"
+            },
+            "tool_versions": {
+              "python": "3.14.8 (main, Oct  2 2026, 10:23:31) [GCC 16.2.1 20260810]",
+              "adb": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "f32eebd7da0a5dc86b037dbf261bd20ac63d7d16fae30714f386ff27dac5133f",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "java": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "43895e4b5f500a3c895d8c44ecbdaba206b28a8d2c79153be952812d88bf1876"
+              },
+              "rustc": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "3d39fb41cdfa163aa880be59d9c8f2c2bd1bc6d3bb77723b4e6ae0f8b36964af",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "cargo": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "75e7bb7eb60d1576ca315ad3c9363816433e0270d28f2bd8b99ee2f1c72d692f",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            },
+            "declared_environment": {
+              "agp": "9.4.1",
+              "kotlin": "2.2.10",
+              "composeBom": "2026.02.01",
+              "gradle_wrapper": "9.6.0",
+              "gradle_daemon_jdk": "25",
+              "installed_ndk_revisions": [
+                "30.0.16248370"
+              ],
+              "meaning": "声明及本机库存，未验证兼容组合"
+            },
+            "project_head": {
+              "exit_code": 128,
+              "historical_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "command_output_retention": "structured_observations_and_exit_code_only",
+              "historical_stderr_sha256": "ced3c476c97bf0a1f97518337c5d562a1de1f3c2b68c0650350ddd1fd75b4158"
+            },
+            "device_inventory": {
+              "status": "blocked",
+              "error": "[Errno 1] Operation not permitted",
+              "devices": null,
+              "meaning": "无法查询设备；不能据此断言没有真机"
+            },
+            "selected_device": {
+              "status": "not_selected"
+            },
+            "blockers": [
+              "未运行原生实验探针，未确认受控网络与测试对端",
+              "无法查询已有 ADB server"
+            ],
+            "preflight_status": "blocked",
+            "exit_code": 2
+          }
+        },
+        {
+          "command": "python3 docs/verification/p00/p00-04-preflight.py --source-cache /tmp/chuanmen-p00-04-source-cache --output /tmp/chuanmen-p00-04-followup-updated-preflight.json",
+          "exit_code": 2,
+          "result": {
+            "task": "P00-04",
+            "captured_at_utc": "2026-10-11T10:45:05.040362+00:00",
+            "native_experiment_status": "unverified",
+            "source_review": {
+              "status": "pass",
+              "files": [
+                {
+                  "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+                  "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+                  "status": "pass",
+                  "git_blob_sha": "a9f3731e8bdedb80913b5cac45df75c509422ecb",
+                  "sha256": "7053c52096a8ca7442790df04f2e72a97bd4f652332ccff19a094548a8bf3922",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+                  "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+                  "status": "pass",
+                  "git_blob_sha": "8f1b0efe00c20aee375858be22cd34b98f35d071",
+                  "sha256": "50cb5b2510770729fd02992d7398907dfeda289eae83efbe78dfd1a2e46b28a3",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+                  "status": "pass",
+                  "git_blob_sha": "1b9e00976e24ad88c3809c076e17c970a91949ff",
+                  "sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+                  "status": "pass",
+                  "git_blob_sha": "ccc2410da051cf617e3e158f46e54fc9ff563d4a",
+                  "sha256": "52943965a88ab33764cda29928545c3922067819073e9f65ee9f15100440e1e4",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/src/network_api.rs",
+                  "status": "pass",
+                  "git_blob_sha": "7d11b106cb84b4ad20dbf5dbf160e3dc7df8979d",
+                  "sha256": "b7e46dd99686acf089ecaa01996e9697134c1739608d702a99cf4cc21ccd57df",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-ffi/src/instance_api.rs",
+                  "status": "pass",
+                  "git_blob_sha": "285d0eaa1cfd3a1d2e9fd2ef7a9f24f88c139cb8",
+                  "sha256": "6e837c173aeba0f89411d67efffdfd46f77eaa14212e8d804bcb94ec95d5acb7",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/runtime_host/tun_mobile.rs",
+                  "status": "pass",
+                  "git_blob_sha": "4f4593261056bd816004cb1d9d8010717f66bf38",
+                  "sha256": "bb60244dcb182c5263bf669ba4c9e28a23e68155d167633edcd99e81a4ed0c2b",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/virtual_nic.rs",
+                  "status": "pass",
+                  "git_blob_sha": "43c97aa690d8c015c0de9a3b56c9d14c13cb7b1f",
+                  "sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/socket_protector.rs",
+                  "status": "pass",
+                  "git_blob_sha": "0806533351ff5bb053582d80b4056b28555c7241",
+                  "sha256": "839650ad9b00fc6f30d9cfff3c23d5d0fbf63b6826be764c530ed170d1abc245",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+                  "status": "pass",
+                  "git_blob_sha": "6c332c890c4fdd4689d3f775b3432ea2d078ad76",
+                  "sha256": "0b7003033974baa9108f9b09002e1c39dc2bd4ee96e4adcf667a7086e83b1c98",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-ffi/src/state.rs",
+                  "status": "pass",
+                  "git_blob_sha": "749acea781b9e4d844b8908d04aab49ce32c0788",
+                  "sha256": "7b29e7bd745012cd6a12edd50957108fb1c10319cbc772e227370d3d8fc9cf3e",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/runtime_host.rs",
+                  "status": "pass",
+                  "git_blob_sha": "aa22a702856817df6d8f6de25b73cfd721b09b32",
+                  "sha256": "ec499b01ad5d98e2d0b114c7cb88d3d65367764d4fb9b14a98ebb5a8cb74f6ed",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/runtime_host/tun_common.rs",
+                  "status": "pass",
+                  "git_blob_sha": "a86aead96d4176320bfc5fa145c466176377e5aa",
+                  "sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+                  "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+                  "status": "pass",
+                  "git_blob_sha": "e9b65be4280dca0354a0fbbd3ac8b495424727a0",
+                  "sha256": "a8c17c74d407373cc0d832c763f7adac044efd2d695e76e10ede2b9fde3d106b",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+                  "path": "easytier/src/instance/virtual_nic.rs",
+                  "status": "pass",
+                  "git_blob_sha": "1faa1fd5212984441315f7e7a63e110660b4cf5f",
+                  "sha256": "c238d1d81d23e9ba92c301a0267e6564178b2434148ba8e03685926bfee8f776",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/Cargo.toml",
+                  "status": "pass",
+                  "git_blob_sha": "6cb68059da482278661fa28def69b5eb265dec59",
+                  "sha256": "ae2d347ea3f9581e94f0b9d066e84a6ab90ff3d57721e9c0f1fddbb8dcb5ea65",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/factory.rs",
+                  "status": "pass",
+                  "git_blob_sha": "71c341ce7c2089514111cb0a0024908809583ea8",
+                  "sha256": "37a03edaf119520cc597e32dc5d7878e6ca573b74c5b131a0cb9487f0f929246",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-core/src/instance/manager.rs",
+                  "status": "pass",
+                  "git_blob_sha": "64b479008c2027a109b505522d5458ee6db145e9",
+                  "sha256": "60c0d090670f71dac2261932866737f2e346e3a73c4fcf769d905d3d47a65f24",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-core/src/instance/mod.rs",
+                  "status": "pass",
+                  "git_blob_sha": "3ae2c028891341ddf3639427d8873d1a34d5b2c7",
+                  "sha256": "e612237ce6c804294df46905e74fab2a57a27a648dcf7b7777bda36252bd12c8",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/build.sh",
+                  "status": "pass",
+                  "git_blob_sha": "46169b9e423075eeab12de473d3a0b64a80fd75d",
+                  "sha256": "997b0118f64f270f481dafde1115f78fdf63674936a0a7045ce616a91413dcab",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "Cargo.toml",
+                  "status": "pass",
+                  "git_blob_sha": "098d9683f49a6dcea1f600f06c302758c2035ee9",
+                  "sha256": "597486b84f007251198b927323dd3d2d492446a75f31538230c95641dc3176c7",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier/src/instance/runtime_host/implementation.rs",
+                  "status": "pass",
+                  "git_blob_sha": "1d5f21e173072dd4bcf4aca7da5a9d69f6bdcd28",
+                  "sha256": "e0680a46f14c6a0032463bb0b73a0f8b2795fdf5da8e67cda3ebdae6c4988824",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-core/src/instance/management.rs",
+                  "status": "pass",
+                  "git_blob_sha": "b8ec79ec78be720251b268f9a142fe62769ee6f3",
+                  "sha256": "580eba2ba5fa2c9e4491721d6f8c7f1b5a7d800b9c5b2f32c4b346162a016f5b",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-contrib/easytier-android-jni/src/logger.rs",
+                  "status": "pass",
+                  "git_blob_sha": "20c149b47d0d294f56c17bc04a77a688b3abbd2f",
+                  "sha256": "af5569c122c6a1373051d12ad4512d0ec6823a66c7b0e27aad5472d8a3e7c556",
+                  "excerpts_match": true
+                },
+                {
+                  "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+                  "path": "easytier-proto/proto/api_logger.proto",
+                  "status": "pass",
+                  "git_blob_sha": "c738ba255fe895adfffadb65e69ce32a5329136f",
+                  "sha256": "12d8226bdbf1540509aafab6886753bae7d8730c612dddf5632dce97a2a17d22",
+                  "excerpts_match": true
+                }
+              ],
+              "scope": "文件哈希和摘录复核；没有编译或调用 JNI"
+            },
+            "tool_versions": {
+              "python": "3.14.8 (main, Oct  2 2026, 10:23:31) [GCC 16.2.1 20260810]",
+              "adb": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "f32eebd7da0a5dc86b037dbf261bd20ac63d7d16fae30714f386ff27dac5133f",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "java": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "43895e4b5f500a3c895d8c44ecbdaba206b28a8d2c79153be952812d88bf1876"
+              },
+              "rustc": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "3d39fb41cdfa163aa880be59d9c8f2c2bd1bc6d3bb77723b4e6ae0f8b36964af",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "cargo": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "75e7bb7eb60d1576ca315ad3c9363816433e0270d28f2bd8b99ee2f1c72d692f",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "cargo_ndk": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "48648aa27b8fe02a6c16f8e6bd67081439491f47f007e0f87fb26f6a364ecd39",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            },
+            "rust_inventory": {
+              "toolchains": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "c5fa9a41c687d20785d773c2a5df87f7e222b8e1813c73a69ba1f16042bba595",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "installed_targets": {
+                "exit_code": 0,
+                "historical_stdout_sha256": "22c876aa4cbc63c54cb0fb2523b1b4c774ad50dbbd4dc46e1afe90bf5ea03650",
+                "command_output_retention": "structured_observations_and_exit_code_only",
+                "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "meaning": "工具链别名与安装库存；精确编译器版本以 rustc 输出为准"
+            },
+            "declared_environment": {
+              "agp": "9.4.1",
+              "kotlin": "2.2.10",
+              "composeBom": "2026.02.01",
+              "gradle_wrapper": "9.6.0",
+              "gradle_daemon_jdk": "25",
+              "installed_ndk_revisions": [
+                "30.0.16248370"
+              ],
+              "meaning": "声明及本机库存，未验证兼容组合"
+            },
+            "project_head": {
+              "exit_code": 128,
+              "historical_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "command_output_retention": "structured_observations_and_exit_code_only",
+              "historical_stderr_sha256": "ced3c476c97bf0a1f97518337c5d562a1de1f3c2b68c0650350ddd1fd75b4158"
+            },
+            "device_inventory": {
+              "status": "blocked",
+              "error": "[Errno 1] Operation not permitted",
+              "devices": null,
+              "meaning": "无法查询设备；不能据此断言没有真机"
+            },
+            "selected_device": {
+              "status": "not_selected"
+            },
+            "blockers": [
+              "未运行原生实验探针，未确认受控网络与测试对端",
+              "无法查询已有 ADB server"
+            ],
+            "preflight_status": "blocked",
+            "exit_code": 2
+          }
+        },
+        {
+          "command": "cargo ndk --help",
+          "exit_code": 0,
+          "historical_stdout_sha256": "3003cb53349e6909d8f105cfb06d269bc0a9c67cea99fbb50637d700c53ac21b",
+          "command_output_retention": "structured_observations_and_exit_code_only",
+          "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "command": "python3 scripts/validate_handoff.py",
+          "exit_code": 0,
+          "stdout": {
+            "status": "PASS",
+            "errors": [],
+            "warnings": [
+              "尚无 SHA256SUMS；开发阶段可继续，正式打包前必须生成并复核。",
+              "本检查不执行 Android 构建、真实网络、浏览器像素或商店审核。"
+            ],
+            "counts": {
+              "phase_files": 8,
+              "markdown_files": 42,
+              "local_links": 89,
+              "json_files": 110,
+              "vendored_assets_and_licenses": 4,
+              "checksums": 0
+            },
+            "catalog": {
+              "core_editors": 37,
+              "android_editors": 7,
+              "visible_editors": 44,
+              "groups": 6,
+              "source_fields": 52,
+              "hidden_editors": 8
+            }
+          },
+          "historical_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command_output_retention": "structured_observations_and_exit_code_only"
+        },
+        {
+          "scope": "改动范围与 Python 语法",
+          "python_syntax": "pass",
+          "original_file_count": 130,
+          "changed_original_files": []
+        }
+      ],
+      "project_artifact_inventory": {
+        "native_directory_exists": false,
+        "experiment_directory_exists": false,
+        "probe_artifacts_found": []
+      },
+      "native_experiment_status": "unverified",
+      "native_experiment_runs_added": 0,
+      "conclusion": "P00-04 blocked; P00 not complete"
+    }
+  ],
+  "last_checked_at_utc": "2026-10-11T10:45:39.530896+00:00",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "p00-04-evidence.json",
+        "sha256": "83598d63257bac4dd88dc5cf7f719931c69d9841042fa235e53aa105d5a754ae"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false
+  }
+}

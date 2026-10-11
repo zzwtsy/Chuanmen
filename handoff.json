@@ -1,0 +1,498 @@
+{
+  "schema_version": 2,
+  "phase": "P00",
+  "p01_p02_started": false,
+  "input_tree": "worktree",
+  "scope_prefix": "docs/verification/p00",
+  "scope": "所选脱敏阶段证据；正常开发文件不属于运输冻结范围",
+  "files": [
+    {
+      "path": "docs/verification/p00/builds/address-apk-build.json",
+      "sha256": "31afff1f20d5287a747970ea080d7e99a1f3299b58d707a7fd4149745f278192"
+    },
+    {
+      "path": "docs/verification/p00/builds/advanced-apk-build.json",
+      "sha256": "53b6f0ddc8263fdb4f2d5a96d303d547c6d356ee3d75032aca2b77643dcb2603"
+    },
+    {
+      "path": "docs/verification/p00/builds/advanced-apk-diagnostics-build.json",
+      "sha256": "a1036fcad33dd6d4f3889ea994c07f4be433732a00ae295699e213f9af3ffafd"
+    },
+    {
+      "path": "docs/verification/p00/builds/config-parser-apk-build.json",
+      "sha256": "25bd27e22c1dda85efaf1ee2af98b77120069925444d488a05e85a1f571f6762"
+    },
+    {
+      "path": "docs/verification/p00/builds/config-roundtrip-build.json",
+      "sha256": "c40d89891f99b315d10189ba30dfd9bb85e46caaed1b537b5ea4d3e639272b0f"
+    },
+    {
+      "path": "docs/verification/p00/builds/datapath-apk-build-v3-routing.json",
+      "sha256": "21cffe09fc99b5d2dc328db2187d7b3c2802af4e0de227be8c4b73063cc4a683"
+    },
+    {
+      "path": "docs/verification/p00/builds/datapath-diagnostic-apk-build.json",
+      "sha256": "4726ea329e3b66094b609603f5434e1cb33b4088dd2b3fafc14b1300e76936af"
+    },
+    {
+      "path": "docs/verification/p00/builds/host-advanced-build.json",
+      "sha256": "964887ee8474959dfa90e06e94782542b37b49f730e143c3e5c1f91670250abb"
+    },
+    {
+      "path": "docs/verification/p00/builds/host-peer-build.json",
+      "sha256": "2e754223510c291461347614aef99a88ce421142b27b54a8736f535109b70429"
+    },
+    {
+      "path": "docs/verification/p00/builds/jni-parser-build.json",
+      "sha256": "c242e6e9ee55e145657c3a7c12d3f88a62d7491f567344acae0f25222ec870dc"
+    },
+    {
+      "path": "docs/verification/p00/builds/native-boundary-apk-build.json",
+      "sha256": "9bd8e83c677dd4df510e4b754375f5ccf74a15b3a2b34a4ba13b58d818621041"
+    },
+    {
+      "path": "docs/verification/p00/builds/native-boundary-build-v3.json",
+      "sha256": "ea53724bc88011d5f953efc2893bce5134a61c1d9ed2c0dc08a1b9f9e72e0051"
+    },
+    {
+      "path": "docs/verification/p00/builds/native-boundary-build.json",
+      "sha256": "424cba62ba2ac3027a66284cff4550cc3b5c35029d1ac854af6545c63368f61a"
+    },
+    {
+      "path": "docs/verification/p00/builds/native-build.json",
+      "sha256": "b7d0928408e5290170437a850c77671877269c3db3454b594899a84dbb218eee"
+    },
+    {
+      "path": "docs/verification/p00/builds/offline-apk-build.json",
+      "sha256": "89a9db12f7b1f5b8bc033fe0d694bba9f203fb6f4672ab0499dffa8061339c79"
+    },
+    {
+      "path": "docs/verification/p00/builds/performance-apk-build.json",
+      "sha256": "688854670d5b861b301a6304e64b0d1ea40ac05b26b81237506da63792b09ade"
+    },
+    {
+      "path": "docs/verification/p00/builds/revoke-notification-apk-build.json",
+      "sha256": "81b93d5eff6c715c4c1fdf0e03bc8dbbaf53e6bc7427db8ed68c169601d1a799"
+    },
+    {
+      "path": "docs/verification/p00/builds/system-denied-apk-build.json",
+      "sha256": "745569693e7e11f04ee266887609ca0a037e3b6bee7451bb036a71016ba71309"
+    },
+    {
+      "path": "docs/verification/p00/failures.json",
+      "sha256": "599c050712310f8da67b12f197b9f47702440706a03daa64dc547588f702afe4"
+    },
+    {
+      "path": "docs/verification/p00/inputs/assistant/bundle.js",
+      "sha256": "6f8b57a22e2a348d9d1e6b078d04ddf80d1895adcccc2a91c3a45f188ccd41d5"
+    },
+    {
+      "path": "docs/verification/p00/inputs/assistant/entry.html",
+      "sha256": "2ff541efed99e1e873f68ad5640cf12d93b1af7276ef19e171849a51b4a13eae"
+    },
+    {
+      "path": "docs/verification/p00/inputs/assistant/fetch.json",
+      "sha256": "b6720afeb6213e8f3f1640b2eada1f225df8610a8308bb8a3bd5baee326f53f4"
+    },
+    {
+      "path": "docs/verification/p00/inputs/config-mapping.json",
+      "sha256": "2220d187d2b98eabe8fb680dd19341bbc1678942f95a5bb6fd57c8ecd9081466"
+    },
+    {
+      "path": "docs/verification/p00/inputs/config-roundtrip-results.json",
+      "sha256": "a0aada9765a2a14963c53ab197009cd9b907be71defdea04e1f8ed3a41d28cdb"
+    },
+    {
+      "path": "docs/verification/p00/inputs/reproduction-inputs.json",
+      "sha256": "1eb325dcaaae240096bb2bae48502f7d1f055a5593e38bebbe71ebadd80ab8d0"
+    },
+    {
+      "path": "docs/verification/p00/inputs/requirements-baseline.json",
+      "sha256": "fc2b7aa2bbbc75c113d17397ea07d1afac09d24322b3037418d53b902f3a73bb"
+    },
+    {
+      "path": "docs/verification/p00/inputs/source/address-source-evidence.json",
+      "sha256": "109b590b93bbbd09da7376d5f3a736569ce789691486be59aa50ba72b93a0013"
+    },
+    {
+      "path": "docs/verification/p00/inputs/source/advanced-source-evidence.json",
+      "sha256": "ac1da09f536d6fa28fa2589641d8adcafe2b915cb1f3014dbbc32de208dee54f"
+    },
+    {
+      "path": "docs/verification/p00/inputs/source/config-source-evidence.json",
+      "sha256": "e91c683476ac3b7f5e24c3874afe6138a619b1813d244644f53210be4ad1bc52"
+    },
+    {
+      "path": "docs/verification/p00/inputs/source/host-proxy-feature-evidence.json",
+      "sha256": "f804c57429a75b76edc5930681a2eca4ca7e6d5251ffcc66fb0ca2b42424e67d"
+    },
+    {
+      "path": "docs/verification/p00/inputs/source/p00-04-evidence.json",
+      "sha256": "df92329dc242e0a6f17472e0f007919fafc9f162be621d821fef2e9b6c2a7d13"
+    },
+    {
+      "path": "docs/verification/p00/inputs/upstream/Cargo.lock",
+      "sha256": "cd5a7951f897e45f1988b0a4896ab1f336e03e4cb6d70ca1db2a7b9b477d774b"
+    },
+    {
+      "path": "docs/verification/p00/inputs/upstream/config-roundtrip.Cargo.lock",
+      "sha256": "09d1b01943c9cd8a5686a00ac4d97accadb6325b7bd8fa0ccaa631ab4287eb1c"
+    },
+    {
+      "path": "docs/verification/p00/inputs/upstream/native-boundary-patch-v3.diff",
+      "sha256": "b0a67519a3fba1bdbec2213719e7939cd5083216f27c04a24cc47a899f9683b6"
+    },
+    {
+      "path": "docs/verification/p00/inputs/upstream/native-boundary-patch-v3.json",
+      "sha256": "b4a3b9df995cc50dc0d534253c664036c2e889d256c307e348577472a04bc819"
+    },
+    {
+      "path": "docs/verification/p00/inputs/upstream/native-boundary-patch.diff",
+      "sha256": "bd6b569d602f2bde78232bc0fa413993194b404161dc2395836df228effaf1c8"
+    },
+    {
+      "path": "docs/verification/p00/inputs/upstream/native-boundary-patch.json",
+      "sha256": "6bacd9af88a0573274e78c2dcc70166598aaae653ccca57be718bc266b761e8e"
+    },
+    {
+      "path": "docs/verification/p00/licensing/inventory.json",
+      "sha256": "6537d282068fc154f64225f5f4b667a32d392df1958eb6f8de81795fe7e1a1bc"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/005fc765ddc5115da796cca915baa9557abae13ff35e0a47c47affc56f6c414d.txt",
+      "sha256": "005fc765ddc5115da796cca915baa9557abae13ff35e0a47c47affc56f6c414d"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/021f4a01e58372b826203064fac216e15d51e07f7739b8ca33d4b746ec8abb3b.txt",
+      "sha256": "021f4a01e58372b826203064fac216e15d51e07f7739b8ca33d4b746ec8abb3b"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/06142c21559d66a76c8740d8c505a2f7ed9078c45e7baee49dac58a131362640.txt",
+      "sha256": "06142c21559d66a76c8740d8c505a2f7ed9078c45e7baee49dac58a131362640"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/11789f45bb180841cd362a5eee6789c68ddb573a11105e30768c308a6add0190.txt",
+      "sha256": "11789f45bb180841cd362a5eee6789c68ddb573a11105e30768c308a6add0190"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/154397a08d0cb342110281129971868cd562542d0780b0d10722788cd11a1399.txt",
+      "sha256": "154397a08d0cb342110281129971868cd562542d0780b0d10722788cd11a1399"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/1d85bd754b04ceec93e98e890edd1fa3c6a22e81bcb32135806beeccefa51cd1.txt",
+      "sha256": "1d85bd754b04ceec93e98e890edd1fa3c6a22e81bcb32135806beeccefa51cd1"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3.txt",
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/26b6be649244dcf3ade7fc02879afa87529f8da2214ecc4d24f7ef0d591601fd.txt",
+      "sha256": "26b6be649244dcf3ade7fc02879afa87529f8da2214ecc4d24f7ef0d591601fd"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/3fa4ca83dcc9237839b1bdeb2e6d16bdfb5ec0c5ce42b24694d8bbf0dcbef72c.txt",
+      "sha256": "3fa4ca83dcc9237839b1bdeb2e6d16bdfb5ec0c5ce42b24694d8bbf0dcbef72c"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/44d8275fd2d5c63931edd0a7cdf8986ce93998125ebf34df032bc3d5a12b93cb.txt",
+      "sha256": "44d8275fd2d5c63931edd0a7cdf8986ce93998125ebf34df032bc3d5a12b93cb"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/4fcc5d9b5db444ad3c33c79aebe18de4fa6351982646da0b78830fbad67f9e8f.md",
+      "sha256": "4fcc5d9b5db444ad3c33c79aebe18de4fa6351982646da0b78830fbad67f9e8f"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/56808e11a09029613aecf966a70c8192b77eb691de8ee5d813d079ab9b1e87af.txt",
+      "sha256": "56808e11a09029613aecf966a70c8192b77eb691de8ee5d813d079ab9b1e87af"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/5ca77347e58205d3b543c04a9c5bdd11d20a9f3108a7b246640edffa999b5f35.txt",
+      "sha256": "5ca77347e58205d3b543c04a9c5bdd11d20a9f3108a7b246640edffa999b5f35"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/5ef8fcfb6cccec8fcae043c834099a60c8b7406408db576e026d2b7e67dc5cf5.txt",
+      "sha256": "5ef8fcfb6cccec8fcae043c834099a60c8b7406408db576e026d2b7e67dc5cf5"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a.txt",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172.txt",
+      "sha256": "66a3107d5ad6a058aab753eaac2047ccb2ed0e39465dd0fe5844da3e300d5172"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/6dbef24708bad8c727bd80cca58ba8aa1637cdcb2cc6e9a31ea49235717e9391.txt",
+      "sha256": "6dbef24708bad8c727bd80cca58ba8aa1637cdcb2cc6e9a31ea49235717e9391"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/6ee2ed6c77710de911761acd5fc1ad1da00f476beb1a7ef27e78c2d1858deafc.txt",
+      "sha256": "6ee2ed6c77710de911761acd5fc1ad1da00f476beb1a7ef27e78c2d1858deafc"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/72af89a828df52a9dcc42512ed64663b3b8d7961dd7a5586d44478eede82bc7a.txt",
+      "sha256": "72af89a828df52a9dcc42512ed64663b3b8d7961dd7a5586d44478eede82bc7a"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/78e66dd24c12e0ac858e7524cdd7d51d1eee753c1e9c32e5b915dc9f1d767870.toml",
+      "sha256": "78e66dd24c12e0ac858e7524cdd7d51d1eee753c1e9c32e5b915dc9f1d767870"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/791a00933f2ea7e512856361e026998362241c3918d7be948c24d29441033b55.txt",
+      "sha256": "791a00933f2ea7e512856361e026998362241c3918d7be948c24d29441033b55"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/7fe7e5e13e445074314ba0aa12ec2e71132931632876ba27b98a1020cf24eb57.txt",
+      "sha256": "7fe7e5e13e445074314ba0aa12ec2e71132931632876ba27b98a1020cf24eb57"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/838118388fe5c2e7f1dbbaeed13e1c7f3ebf88be91319c7c1d77c18e987d1a50.txt",
+      "sha256": "838118388fe5c2e7f1dbbaeed13e1c7f3ebf88be91319c7c1d77c18e987d1a50"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/869f33d1c6a0c94b3200413d8c9ebdfe50351d7f69b250962758400b0d295f3d.txt",
+      "sha256": "869f33d1c6a0c94b3200413d8c9ebdfe50351d7f69b250962758400b0d295f3d"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/9eacbcb81be660840c714a560a9d65ba07913db98dd4baf969f78dd499fdd60f.txt",
+      "sha256": "9eacbcb81be660840c714a560a9d65ba07913db98dd4baf969f78dd499fdd60f"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2.txt",
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/a89137c40f91e102d1e3b6aa5061fbd84f6e39638e69f6bda124c104a6e1c83d.txt",
+      "sha256": "a89137c40f91e102d1e3b6aa5061fbd84f6e39638e69f6bda124c104a6e1c83d"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/b3d734001a94efff3579978d953391aa7115f877657d25eb54037a43875d078a.txt",
+      "sha256": "b3d734001a94efff3579978d953391aa7115f877657d25eb54037a43875d078a"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08.txt",
+      "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/d24acbec7495ccbbe7a3760bad1e7a80cb8fa7e2e8a05831798261c749e86c73.txt",
+      "sha256": "d24acbec7495ccbbe7a3760bad1e7a80cb8fa7e2e8a05831798261c749e86c73"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/d3cdb764b98283ee7c3a3cea8d374e2a2957322374378d1f3263f4d512741fc3.txt",
+      "sha256": "d3cdb764b98283ee7c3a3cea8d374e2a2957322374378d1f3263f4d512741fc3"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/d6fde6c28ecbccfc7f6d97c0badbb14bbea2cc8f5e81a8c1537204bdfed9a6d5.txt",
+      "sha256": "d6fde6c28ecbccfc7f6d97c0badbb14bbea2cc8f5e81a8c1537204bdfed9a6d5"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/e271993808fec50ab29350b39539cdec611a9103f827e0aa26d61da70e2d33f8.txt",
+      "sha256": "e271993808fec50ab29350b39539cdec611a9103f827e0aa26d61da70e2d33f8"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118.txt",
+      "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/f025ccfb7dfb6bdfedc75ca0f67acc69e6fb4998143d834f7c2f38a29989680f.txt",
+      "sha256": "f025ccfb7dfb6bdfedc75ca0f67acc69e6fb4998143d834f7c2f38a29989680f"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/f2ff6db400a0cd6fbfd894ba618772abcedb92c301055ad0840d971883730d83.txt",
+      "sha256": "f2ff6db400a0cd6fbfd894ba618772abcedb92c301055ad0840d971883730d83"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/f6d3f84b39d597c19748c6b50a04abe1634edb3c0b15392daa217ec44119f652.txt",
+      "sha256": "f6d3f84b39d597c19748c6b50a04abe1634edb3c0b15392daa217ec44119f652"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/f6dede52f74e360219bc8e7ba1155dbcf4f34a9c1b77612aa9bc41d1a3a04fad.txt",
+      "sha256": "f6dede52f74e360219bc8e7ba1155dbcf4f34a9c1b77612aa9bc41d1a3a04fad"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1.txt",
+      "sha256": "f7db81051789b729fea528a63ec4c938fdcb93d9d61d97dc8cc2e9df6d47f2a1"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/f80f0b4d28db4b51d16ae8485bce49265738e59df5e647ebc09467693e66e731.txt",
+      "sha256": "f80f0b4d28db4b51d16ae8485bce49265738e59df5e647ebc09467693e66e731"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/f9d857970963648b4e089bd25c11183e7c960fe901c25b41b1e805ce9bd59415.txt",
+      "sha256": "f9d857970963648b4e089bd25c11183e7c960fe901c25b41b1e805ce9bd59415"
+    },
+    {
+      "path": "docs/verification/p00/licensing/texts/fea1d5bf3dd71605ce5d7d2ff695c1837e914c77195e523a86b5391716477960.txt",
+      "sha256": "fea1d5bf3dd71605ce5d7d2ff695c1837e914c77195e523a86b5391716477960"
+    },
+    {
+      "path": "docs/verification/p00/manifest.json",
+      "sha256": "5d4844e65a6446706b1c813de78e0a55edb30bac28b320831e5195f7d613243f"
+    },
+    {
+      "path": "docs/verification/p00/migration.json",
+      "sha256": "515b8c127790437c7e0f97fde846c5364524f516576c1f1b89a3fac4d95ec331"
+    },
+    {
+      "path": "docs/verification/p00/report.md",
+      "sha256": "2c61451698ee39d14bc4cfcc331d025d9d4d61d45a83e70c6db2198a0058a24a"
+    },
+    {
+      "path": "docs/verification/p00/reports/measurement/baseline-method.json",
+      "sha256": "8b2c7043dfce22c6d9c731a3425bdf1acd2381228a9ec92347291c5a15d0eba9"
+    },
+    {
+      "path": "docs/verification/p00/reports/measurement/baseline.csv",
+      "sha256": "790197a1f28069360babc076d1c93dfcbe0a4e45c480d30620beb3347be538ac"
+    },
+    {
+      "path": "docs/verification/p00/reports/p00-01-baseline.md",
+      "sha256": "812efe62c31e75bef4fd0fcfb6a5dd83835403c4a93fa50e674db3a68abda870"
+    },
+    {
+      "path": "docs/verification/p00/reports/p00-02-versions.md",
+      "sha256": "7bed97cffd6cd408d5f5b28518252d23ebb68f289090418dd298d6d04a68e4e8"
+    },
+    {
+      "path": "docs/verification/p00/reports/p00-03-config.md",
+      "sha256": "b529661da5dd82d284f48dcdf33acecab5efe5eb0ddae74be03ce7bcbea39593"
+    },
+    {
+      "path": "docs/verification/p00/reports/p00-04-native-boundary.md",
+      "sha256": "568653f5759fe963bad38f6ac09cab5cec587c82fb08fbcc141357dc02eb1a42"
+    },
+    {
+      "path": "docs/verification/p00/reports/p00-05-datapath.md",
+      "sha256": "5166675735b4ba400db55db647455fdfd3a50b7a6576d0b3b4b322b3198db31a"
+    },
+    {
+      "path": "docs/verification/p00/reports/p00-06-address.md",
+      "sha256": "8b8be2e8ddf1ebb46f89927cb440c8256b1d445694b3ac8584f72eafd651be3e"
+    },
+    {
+      "path": "docs/verification/p00/reports/p00-07-advanced.md",
+      "sha256": "cb1713617a1387e1502b5a3be6fe6b5a584659b99a6c90b45d0dd0fb53a4847e"
+    },
+    {
+      "path": "docs/verification/p00/reports/p00-08-measurement.md",
+      "sha256": "c12196228d239944535cb0d78f796dd8d9cfb5b07f4ad9ebc3b983b37f83e030"
+    },
+    {
+      "path": "docs/verification/p00/reproduce/README.md",
+      "sha256": "c4825d2a24dad109ba5cc023ef82ce1af73cb972994bab7b57111601be13b3a6"
+    },
+    {
+      "path": "docs/verification/p00/reviews/independent-build-check.json",
+      "sha256": "395a7d1bd12a8a07d91ffef992bb1de04e8165de04767154ead55f48c8d04e4e"
+    },
+    {
+      "path": "docs/verification/p00/reviews/independent-review.json",
+      "sha256": "377e50731ec717f9504e9cda9811a581fc621435674f279f0bf67d8519e2162e"
+    },
+    {
+      "path": "docs/verification/p00/runs/independent-build-04/boundary-apk-build-report.json",
+      "sha256": "70c5281fd2704d1cedccf3b7a24ee346e235f1254e0ef90473fccfe361043a35"
+    },
+    {
+      "path": "docs/verification/p00/runs/independent-build-04/boundary-build-native-build-report.json",
+      "sha256": "3150a6671eb346bc069a9fce25014b661fd52ca025802f067661e5123538bd18"
+    },
+    {
+      "path": "docs/verification/p00/runs/independent-build-04/config-result.json",
+      "sha256": "99a5e862b7e42ee3032d35f4b9de46d4e877311880de1ed5756802b9993c246f"
+    },
+    {
+      "path": "docs/verification/p00/runs/independent-build-04/independent-ai-process-exit.json",
+      "sha256": "17bf676ae48fd791f1bffd24212e8215b03f89d79fa2c02e1ebf5c76149112ae"
+    },
+    {
+      "path": "docs/verification/p00/runs/independent-build-04/native-build-native-build-report.json",
+      "sha256": "2162ced7f92f914bb85535250ae70e31be61c6bfe14f79c2d29a32569a4fd713"
+    },
+    {
+      "path": "docs/verification/p00/runs/independent-build-04/parser-apk-build-report.json",
+      "sha256": "d48606a640e896bc0c24dbb955990a676f5638bdd4ed5fa841c6dd5485733c12"
+    },
+    {
+      "path": "docs/verification/p00/runs/independent-build-04/parser-structure-independent.json",
+      "sha256": "a1658df02a8ac8f71b8c2c2143cc0bb81d617d726aa06b9e4f97525c98628553"
+    },
+    {
+      "path": "docs/verification/p00/runs/independent-build-04/report.json",
+      "sha256": "d31a84e48aa6a28cee52815a022d327d47c714d8678b7cb45ef61338c9f3b1d2"
+    },
+    {
+      "path": "docs/verification/p00/runs/legacy-boundary/xiaomi-native-boundary.json",
+      "sha256": "431f629addc11c8ce83e3b0316e582bbd8579ebc5334487adfef51cebdd8e3b9"
+    },
+    {
+      "path": "docs/verification/p00/runs/legacy-boundary/xiaomi-native-panic.json",
+      "sha256": "ae61a02393a61346fc8cddd3b30c206614434b874f6af076d13f73058c9a6e55"
+    },
+    {
+      "path": "docs/verification/p00/runs/legacy-config-parser/xiaomi-config-parser.json",
+      "sha256": "5cdfe9d9c1ea5750eb492d0ca034a71db8e6cfe3fd11f8f66d9523904803a3d3"
+    },
+    {
+      "path": "docs/verification/p00/runs/legacy-config-roundtrip/result.json",
+      "sha256": "d0f2a5071b0827345ed13ad6b7e2fc571e53ad8e8b72d08b7efa0cec217556e2"
+    },
+    {
+      "path": "docs/verification/p00/runs/legacy-jni-parser/xiaomi-jni-parser.json",
+      "sha256": "4ea87f8154c7465aae236446aeda1f1f1fe49e96d1ade6d4833501ba885d1ef8"
+    },
+    {
+      "path": "docs/verification/p00/runs/legacy-permission-denial/xiaomi-system-denied.json",
+      "sha256": "80c116a83b84ace50a0f7a119ebcd964a21a2b98dd8f8b38325919b4f263e61e"
+    },
+    {
+      "path": "docs/verification/p00/runs/p00-159e4cbdd2e9/xiaomi-datapath-write-counter-failure.json",
+      "sha256": "c63e6d951cecde350ac087d4facca39c5fa1658c1d44fb255dc5213e3e528bf8"
+    },
+    {
+      "path": "docs/verification/p00/runs/p00-47b1a033c36c/xiaomi-datapath-proxy-disabled.json",
+      "sha256": "6b544415866f1619b1edead50de226d3792b5d6c558551c70f1ceb52464a5258"
+    },
+    {
+      "path": "docs/verification/p00/runs/p00-5425a620eda2/xiaomi-native-connected-cycles.json",
+      "sha256": "45de6cb1bfed2a0ce4fab5d48dabea78755dd446d03672791b05e8af01f90fb6"
+    },
+    {
+      "path": "docs/verification/p00/runs/p00-5b00f361a649/xiaomi-system-revoke-notification.json",
+      "sha256": "86e4a4cbb4e90ba3d487da64210cf21b9f9790c41759a0343c7b0846111038c3"
+    },
+    {
+      "path": "docs/verification/p00/runs/p00-5d2cc66e8aee/xiaomi-native-performance.json",
+      "sha256": "5112344eb382bdd97bd4201b1610125c245d7e32baf227d9a1c7839bbbd77b7d"
+    },
+    {
+      "path": "docs/verification/p00/runs/p00-7dd889eefb90/xiaomi-native-datapath.json",
+      "sha256": "c785dbf632b7764bde5b665dbd06ad174bb87a79774c6af044e8e39933292538"
+    },
+    {
+      "path": "docs/verification/p00/runs/p00-a9cc7a521f55/xiaomi-system-offline.json",
+      "sha256": "7a54173e61252ef3ced9d9045e493689611a4b032f25246ff150cddcfc781b8a"
+    },
+    {
+      "path": "docs/verification/p00/runs/p00-b1b1b40d0ad3/xiaomi-native-advanced.json",
+      "sha256": "d2823b93692c789b87f903310bf3b6cf90e23f3b2826ba9f53ac0cd1b91c78c6"
+    },
+    {
+      "path": "docs/verification/p00/runs/p00-d4144c7b6771/xiaomi-advanced-required-key-failure.json",
+      "sha256": "4f32c67038a780fe247e134abc73d46b37228ef556ee72410ebd2f3d743c40bc"
+    },
+    {
+      "path": "docs/verification/p00/runs/p00-e15d11f7efca/xiaomi-native-address.json",
+      "sha256": "baed9fa5ea91adb4c192fa69c1d05b5780ae915e94a2ea6f132743abd1c5cdfa"
+    },
+    {
+      "path": "docs/verification/p00/runs/system-errors/result.json",
+      "sha256": "8eed9e079bcc80e76d26b95204504c98ee56ed6edd1777bc9d5a9e0cef3a28e1"
+    }
+  ]
+}

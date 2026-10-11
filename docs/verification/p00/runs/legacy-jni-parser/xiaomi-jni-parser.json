@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "layer": "android_native_jni_parser",
+  "status": "passed",
+  "recorded_at_utc": "2026-10-11T12:12:45.031897+00:00",
+  "environment_kind": "physical_device",
+  "device_id": "device-01",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "apk_sha256": "c3762dd209f5a2c795e278feaa1731bc3ec6ed32cce20efa9718777eb551e6a9",
+  "build_report_sha256": "fecc33bd22503a60021867e0ac7885cb005ea35c80c8372175c3daf394129117",
+  "network_started": false,
+  "vpn_acceptance": "unverified",
+  "commands": [
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "get-state"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "c98373c1abef78070f6beef6b4ae4fbf3de348dac280195c7f93441920584af9",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "1bfaa17007aea1b639eb5c54d1c55d079f30f56b64ed20dfc02faf499d567a48",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.version.sdk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a4b2c5db15348c29451e18b8307e5ef81625ea638e807935f39ceaa8d9ac7758",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.cpu.abi"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "7f10c3cd4593d1d6ded27d658e7c05216011c955c200aac551caad0c979d4d90",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.manufacturer"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "b257d787c7da7056d0400b2829dce276da3bcb93aab6b3a903dd7f70df0e0555",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.model"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "8a1f2faeb360d564e712171d8daf644b072e0c46bc9ca8038e314868ac1ba507",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "pm",
+        "path",
+        "com.github.zzwtsy.chuanmen.p00nativeprobe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "0224ba89b990d40da2c9e6c4669001cf1480e5ba8f5ed6f2c98821c8a92094a1",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "sha256sum",
+        "/data/app/~~3yQV0ak8uto_r8uxXzx6GA==/com.github.zzwtsy.chuanmen.p00nativeprobe-43iF6-7JyoPGxHV0eo2N_g==/base.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "1cde2cfaa2ce34df44bcf45f58c1461d1e2d176208834e8600e244cf7416e5e5",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "instrument",
+        "-w",
+        "-r",
+        "com.github.zzwtsy.chuanmen.p00nativeprobe/.NativeInstrumentation"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "6d83ff9f0c9cc23a320574dfe711888a3af0a04312c99f00225281fabcfda49a",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    }
+  ],
+  "device": {
+    "ro.build.fingerprint": "Xiaomi/popsicle/popsicle:16/BP2A.250605.031.A3/OS3.0.319.0.WPBCNXM:user/release-keys",
+    "ro.build.version.sdk": "36",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.kernel.qemu": "",
+    "ro.product.manufacturer": "Xiaomi",
+    "ro.product.model": "2509FPN0BC"
+  },
+  "native_library_sha256": "f41e0397b7be1fb10d7b68982d5b8d4c5f976279925c7f77d4d80d74099815ee",
+  "installed_apk_sha256": "c3762dd209f5a2c795e278feaa1731bc3ec6ed32cce20efa9718777eb551e6a9",
+  "observations": {
+    "schema_version": 1,
+    "layer": "android_native_jni_parser",
+    "status": "passed",
+    "network_started": false,
+    "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "page_size": 4096,
+    "cases": [
+      {
+        "name": "missing_fields",
+        "input": "",
+        "expected": "accepted",
+        "return_code": 0,
+        "status": "passed"
+      },
+      {
+        "name": "explicit_empty_lists",
+        "input": "listeners = []\nroutes = []\npeer = []\n",
+        "expected": "accepted",
+        "return_code": 0,
+        "status": "passed"
+      },
+      {
+        "name": "unicode_hostname",
+        "input": "hostname = \"串门实验节点\"\n",
+        "expected": "accepted",
+        "return_code": 0,
+        "status": "passed"
+      },
+      {
+        "name": "non_default_flags",
+        "input": "[flags]\nmtu = 1420\nenable_encryption = false\nlatency_first = true\n",
+        "expected": "accepted",
+        "return_code": 0,
+        "status": "passed"
+      },
+      {
+        "name": "assistant_negative_flag_is_not_core_key",
+        "input": "[flags]\ndisable_encryption = true\n",
+        "expected": "rejected",
+        "exception": "java.lang.RuntimeException",
+        "error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:2:1 ]\n   |\n 2 | disable_encryption = true\n   | ^^^^^^^^^|^^^^^^^^  \n   |          `---------- unknown field `disable_encryption`, expected one of `default_protocol`, `defaultProtocol`, `dev_name`, `devName`, `enable_encryption`, `enableEncryption`, `enable_ipv6`, `enableIpv6`, `mtu`, `latency_first`, `latencyFirst`, `enable_exit_node`, `enableExitNode`, `no_tun`, `noTun`, `use_smoltcp`, `useSmoltcp`, `relay_network_whitelist`, `relayNetworkWhitelist`, `disable_p2p`, `disableP2p`, `relay_all_peer_rpc`, `relayAllPeerRpc`, `disable_udp_hole_punching`, `disableUdpHolePunching`, `multi_thread`, `multiThread`, `data_compress_algo`, `dataCompressAlgo`, `bind_device`, `bindDevice`, `enable_kcp_proxy`, `enableKcpProxy`, `disable_kcp_input`, `disableKcpInput`, `disable_relay_kcp`, `disableRelayKcp`, `proxy_forward_by_system`, `proxyForwardBySystem`, `accept_dns`, `acceptDns`, `private_mode`, `privateMode`, `enable_quic_proxy`, `enableQuicProxy`, `disable_quic_input`, `disableQuicInput`, `disable_relay_quic`, `disableRelayQuic`, `quic_listen_port`, `quicListenPort`, `foreign_relay_bps_limit`, `foreignRelayBpsLimit`, `multi_thread_count`, `multiThreadCount`, `enable_relay_foreign_network_kcp`, `enableRelayForeignNetworkKcp`, `enable_relay_foreign_network_quic`, `enableRelayForeignNetworkQuic`, `encryption_algorithm`, `encryptionAlgorithm`, `disable_sym_hole_punching`, `disableSymHolePunching`, `tld_dns_zone`, `tldDnsZone`, `p2p_only`, `p2pOnly`, `disable_tcp_hole_punching`, `disableTcpHolePunching`, `lazy_p2p`, `lazyP2p`, `need_p2p`, `needP2p`, `instance_recv_bps_limit`, `instanceRecvBpsLimit`, `disable_upnp`, `disableUpnp`, `disable_relay_data`, `disableRelayData`, `enable_udp_broadcast_relay`, `enableUdpBroadcastRelay`, `socket_mark`, `socketMark`, `prefer_peer_relay`, `preferPeerRelay`\n---'\n\n\nCaused by:\n    TOML parse error at line 2, column 1\n      |\n    2 | disable_encryption = true\n      | ^^^^^^^^^^^^^^^^^^\n    unknown field `disable_encryption`, expected one of `default_protocol`, `defaultProtocol`, `dev_name`, `devName`, `enable_encryption`, `enableEncryption`, `enable_ipv6`, `enableIpv6`, `mtu`, `latency_first`, `latencyFirst`, `enable_exit_node`, `enableExitNode`, `no_tun`, `noTun`, `use_smoltcp`, `useSmoltcp`, `relay_network_whitelist`, `relayNetworkWhitelist`, `disable_p2p`, `disableP2p`, `relay_all_peer_rpc`, `relayAllPeerRpc`, `disable_udp_hole_punching`, `disableUdpHolePunching`, `multi_thread`, `multiThread`, `data_compress_algo`, `dataCompressAlgo`, `bind_device`, `bindDevice`, `enable_kcp_proxy`, `enableKcpProxy`, `disable_kcp_input`, `disableKcpInput`, `disable_relay_kcp`, `disableRelayKcp`, `proxy_forward_by_system`, `proxyForwardBySystem`, `accept_dns`, `acceptDns`, `private_mode`, `privateMode`, `enable_quic_proxy`, `enableQuicProxy`, `disable_quic_input`, `disableQuicInput`, `disable_relay_quic`, `disableRelayQuic`, `quic_listen_port`, `quicListenPort`, `foreign_relay_bps_limit`, `foreignRelayBpsLimit`, `multi_thread_count`, `multiThreadCount`, `enable_relay_foreign_network_kcp`, `enableRelayForeignNetworkKcp`, `enable_relay_foreign_network_quic`, `enableRelayForeignNetworkQuic`, `encryption_algorithm`, `encryptionAlgorithm`, `disable_sym_hole_punching`, `disableSymHolePunching`, `tld_dns_zone`, `tldDnsZone`, `p2p_only`, `p2pOnly`, `disable_tcp_hole_punching`, `disableTcpHolePunching`, `lazy_p2p`, `lazyP2p`, `need_p2p`, `needP2p`, `instance_recv_bps_limit`, `instanceRecvBpsLimit`, `disable_upnp`, `disableUpnp`, `disable_relay_data`, `disableRelayData`, `enable_udp_broadcast_relay`, `enableUdpBroadcastRelay`, `socket_mark`, `socketMark`, `prefer_peer_relay`, `preferPeerRelay`\n    ",
+        "last_error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:2:1 ]\n   |\n 2 | disable_encryption = true\n   | ^^^^^^^^^|^^^^^^^^  \n   |          `---------- unknown field `disable_encryption`, expected one of `default_protocol`, `defaultProtocol`, `dev_name`, `devName`, `enable_encryption`, `enableEncryption`, `enable_ipv6`, `enableIpv6`, `mtu`, `latency_first`, `latencyFirst`, `enable_exit_node`, `enableExitNode`, `no_tun`, `noTun`, `use_smoltcp`, `useSmoltcp`, `relay_network_whitelist`, `relayNetworkWhitelist`, `disable_p2p`, `disableP2p`, `relay_all_peer_rpc`, `relayAllPeerRpc`, `disable_udp_hole_punching`, `disableUdpHolePunching`, `multi_thread`, `multiThread`, `data_compress_algo`, `dataCompressAlgo`, `bind_device`, `bindDevice`, `enable_kcp_proxy`, `enableKcpProxy`, `disable_kcp_input`, `disableKcpInput`, `disable_relay_kcp`, `disableRelayKcp`, `proxy_forward_by_system`, `proxyForwardBySystem`, `accept_dns`, `acceptDns`, `private_mode`, `privateMode`, `enable_quic_proxy`, `enableQuicProxy`, `disable_quic_input`, `disableQuicInput`, `disable_relay_quic`, `disableRelayQuic`, `quic_listen_port`, `quicListenPort`, `foreign_relay_bps_limit`, `foreignRelayBpsLimit`, `multi_thread_count`, `multiThreadCount`, `enable_relay_foreign_network_kcp`, `enableRelayForeignNetworkKcp`, `enable_relay_foreign_network_quic`, `enableRelayForeignNetworkQuic`, `encryption_algorithm`, `encryptionAlgorithm`, `disable_sym_hole_punching`, `disableSymHolePunching`, `tld_dns_zone`, `tldDnsZone`, `p2p_only`, `p2pOnly`, `disable_tcp_hole_punching`, `disableTcpHolePunching`, `lazy_p2p`, `lazyP2p`, `need_p2p`, `needP2p`, `instance_recv_bps_limit`, `instanceRecvBpsLimit`, `disable_upnp`, `disableUpnp`, `disable_relay_data`, `disableRelayData`, `enable_udp_broadcast_relay`, `enableUdpBroadcastRelay`, `socket_mark`, `socketMark`, `prefer_peer_relay`, `preferPeerRelay`\n---'\n\n\nCaused by:\n    TOML parse error at line 2, column 1\n      |\n    2 | disable_encryption = true\n      | ^^^^^^^^^^^^^^^^^^\n    unknown field `disable_encryption`, expected one of `default_protocol`, `defaultProtocol`, `dev_name`, `devName`, `enable_encryption`, `enableEncryption`, `enable_ipv6`, `enableIpv6`, `mtu`, `latency_first`, `latencyFirst`, `enable_exit_node`, `enableExitNode`, `no_tun`, `noTun`, `use_smoltcp`, `useSmoltcp`, `relay_network_whitelist`, `relayNetworkWhitelist`, `disable_p2p`, `disableP2p`, `relay_all_peer_rpc`, `relayAllPeerRpc`, `disable_udp_hole_punching`, `disableUdpHolePunching`, `multi_thread`, `multiThread`, `data_compress_algo`, `dataCompressAlgo`, `bind_device`, `bindDevice`, `enable_kcp_proxy`, `enableKcpProxy`, `disable_kcp_input`, `disableKcpInput`, `disable_relay_kcp`, `disableRelayKcp`, `proxy_forward_by_system`, `proxyForwardBySystem`, `accept_dns`, `acceptDns`, `private_mode`, `privateMode`, `enable_quic_proxy`, `enableQuicProxy`, `disable_quic_input`, `disableQuicInput`, `disable_relay_quic`, `disableRelayQuic`, `quic_listen_port`, `quicListenPort`, `foreign_relay_bps_limit`, `foreignRelayBpsLimit`, `multi_thread_count`, `multiThreadCount`, `enable_relay_foreign_network_kcp`, `enableRelayForeignNetworkKcp`, `enable_relay_foreign_network_quic`, `enableRelayForeignNetworkQuic`, `encryption_algorithm`, `encryptionAlgorithm`, `disable_sym_hole_punching`, `disableSymHolePunching`, `tld_dns_zone`, `tldDnsZone`, `p2p_only`, `p2pOnly`, `disable_tcp_hole_punching`, `disableTcpHolePunching`, `lazy_p2p`, `lazyP2p`, `need_p2p`, `needP2p`, `instance_recv_bps_limit`, `instanceRecvBpsLimit`, `disable_upnp`, `disableUpnp`, `disable_relay_data`, `disableRelayData`, `enable_udp_broadcast_relay`, `enableUdpBroadcastRelay`, `socket_mark`, `socketMark`, `prefer_peer_relay`, `preferPeerRelay`\n    ",
+        "status": "passed"
+      },
+      {
+        "name": "new_portal_clients",
+        "input": "[vpn_portal_config]\nwireguard_listen = \"127.0.0.1:51820\"\n[[vpn_portal_config.clients]]\nname = \"p00-client\"\nvirtual_ip = \"10.222.0.10/24\"\ngroups = []\n",
+        "expected": "accepted",
+        "return_code": 0,
+        "status": "passed"
+      },
+      {
+        "name": "malformed_toml",
+        "input": "[flags\n",
+        "expected": "rejected",
+        "exception": "java.lang.RuntimeException",
+        "error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:1:7 ]\n   |\n 1 | [flags\n   |       | \n   |       `- unclosed table, expected `]`\n---'\n\n\nCaused by:\n    TOML parse error at line 1, column 7\n      |\n    1 | [flags\n      |       ^\n    unclosed table, expected `]`\n    ",
+        "last_error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:1:7 ]\n   |\n 1 | [flags\n   |       | \n   |       `- unclosed table, expected `]`\n---'\n\n\nCaused by:\n    TOML parse error at line 1, column 7\n      |\n    1 | [flags\n      |       ^\n    unclosed table, expected `]`\n    ",
+        "status": "passed"
+      },
+      {
+        "name": "wrong_field_type",
+        "input": "hostname = 42\n",
+        "expected": "rejected",
+        "exception": "java.lang.RuntimeException",
+        "error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:1:12 ]\n   |\n 1 | hostname = 42\n   |            ^|  \n   |             `-- invalid type: integer `42`, expected a string\n---'\n\n\nCaused by:\n    TOML parse error at line 1, column 12\n      |\n    1 | hostname = 42\n      |            ^^\n    invalid type: integer `42`, expected a string\n    ",
+        "last_error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:1:12 ]\n   |\n 1 | hostname = 42\n   |            ^|  \n   |             `-- invalid type: integer `42`, expected a string\n---'\n\n\nCaused by:\n    TOML parse error at line 1, column 12\n      |\n    1 | hostname = 42\n      |            ^^\n    invalid type: integer `42`, expected a string\n    ",
+        "status": "passed"
+      },
+      {
+        "name": "legacy_portal_cidr",
+        "input": "[vpn_portal_config]\nclient_cidr = \"10.222.0.0/24\"\nwireguard_listen = \"127.0.0.1:51820\"\n",
+        "expected": "rejected",
+        "exception": "java.lang.RuntimeException",
+        "error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:2:1 ]\n   |\n 2 | client_cidr = \"10.222.0.0/24\"\n   | ^^^^^|^^^^^  \n   |      `------- unknown field `client_cidr`, expected one of `enabled`, `wireguard_listen`, `wireguard_private_key`, `clients`\n---'\n\n\nCaused by:\n    TOML parse error at line 2, column 1\n      |\n    2 | client_cidr = \"10.222.0.0/24\"\n      | ^^^^^^^^^^^\n    unknown field `client_cidr`, expected one of `enabled`, `wireguard_listen`, `wireguard_private_key`, `clients`\n    ",
+        "last_error": "failed to parse config: Error: failed to parse config TOML from inline config\n   ,-[ inline config:2:1 ]\n   |\n 2 | client_cidr = \"10.222.0.0/24\"\n   | ^^^^^|^^^^^  \n   |      `------- unknown field `client_cidr`, expected one of `enabled`, `wireguard_listen`, `wireguard_private_key`, `clients`\n---'\n\n\nCaused by:\n    TOML parse error at line 2, column 1\n      |\n    2 | client_cidr = \"10.222.0.0/24\"\n      | ^^^^^^^^^^^\n    unknown field `client_cidr`, expected one of `enabled`, `wireguard_listen`, `wireguard_private_key`, `clients`\n    ",
+        "status": "passed"
+      }
+    ],
+    "instances_before": {},
+    "instances_after": {},
+    "network_infos": "{}"
+  },
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-jni-parser.json",
+        "sha256": "3c654a3da2414dd5d4bac60fc3bd0a0554c43a05053975e69e662a60a0cd8812"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false,
+    "build_ref": "docs/verification/p00/builds/jni-parser-build.json"
+  }
+}

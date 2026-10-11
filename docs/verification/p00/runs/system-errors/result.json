@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "layer": "android_native",
+  "status": "passed",
+  "environment_kind": "physical_device",
+  "sources": [
+    "docs/verification/p00/runs/legacy-permission-denial/xiaomi-system-denied.json",
+    "docs/verification/p00/runs/p00-5b00f361a649/xiaomi-system-revoke-notification.json",
+    "docs/verification/p00/runs/p00-a9cc7a521f55/xiaomi-system-offline.json"
+  ],
+  "runs": 3,
+  "failed": 0,
+  "scope": "实际拒绝、撤销通知释放和断网停止"
+}

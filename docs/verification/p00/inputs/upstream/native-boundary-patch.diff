@@ -1,0 +1,136 @@
+diff --git a/easytier-contrib/easytier-android-jni/src/lib.rs b/easytier-contrib/easytier-android-jni/src/lib.rs
+index 1b9e009..4842c78 100644
+--- a/easytier-contrib/easytier-android-jni/src/lib.rs
++++ b/easytier-contrib/easytier-android-jni/src/lib.rs
+@@ -30,6 +30,7 @@ mod json_rpc_api;
+ mod logger;
+ mod network_api;
+ mod strings;
++mod p00_jni;
+ 
+ use jni::JNIEnv;
+ use jni::objects::{JClass, JObject, JObjectArray, JString};
+diff --git a/easytier/src/instance/runtime_host/tun_common.rs b/easytier/src/instance/runtime_host/tun_common.rs
+index a86aead..caf5c3a 100644
+--- a/easytier/src/instance/runtime_host/tun_common.rs
++++ b/easytier/src/instance/runtime_host/tun_common.rs
+@@ -1,5 +1,4 @@
+ use std::{
+-    any::Any,
+     sync::{Arc, OnceLock},
+ };
+ 
+@@ -10,21 +9,24 @@ use super::MagicDnsRuntime;
+ use crate::instance::virtual_nic::NicCtx;
+ 
+ struct NicCtxContainer {
+-    _nic_ctx: Option<Box<dyn Any + Send>>,
++    nic_ctx: Option<NicCtx>,
++    drain_tasks: Option<JoinSet<()>>,
+     magic_dns: MagicDnsRuntime,
+ }
+ 
+ impl NicCtxContainer {
+     fn new(nic_ctx: NicCtx, magic_dns: MagicDnsRuntime) -> Self {
+         Self {
+-            _nic_ctx: Some(Box::new(nic_ctx)),
++            nic_ctx: Some(nic_ctx),
++            drain_tasks: None,
+             magic_dns,
+         }
+     }
+ 
+     fn packet_drain(tasks: JoinSet<()>) -> Self {
+         Self {
+-            _nic_ctx: Some(Box::new(tasks)),
++            nic_ctx: None,
++            drain_tasks: Some(tasks),
+             magic_dns: MagicDnsRuntime::default(),
+         }
+     }
+@@ -61,6 +63,8 @@ impl TunNicState {
+         let mut old = self.nic_ctx.lock().await.take();
+         if let Some(nic) = old.as_mut() {
+             nic.magic_dns.stop().await;
++            if let Some(ctx) = nic.nic_ctx.as_mut() { ctx.p00_stop_io().await; }
++            if let Some(tasks) = nic.drain_tasks.as_mut() { tasks.shutdown().await; }
+         }
+         drop(old);
+     }
+diff --git a/easytier/src/instance/virtual_nic.rs b/easytier/src/instance/virtual_nic.rs
+index 43c97aa..4da7030 100644
+--- a/easytier/src/instance/virtual_nic.rs
++++ b/easytier/src/instance/virtual_nic.rs
+@@ -86,6 +86,7 @@ impl Stream for TunStream {
+ 
+         let ret = ready!(g.as_pin_mut().poll_read(cx, &mut buf));
+         let len = buf.filled().len();
++        if ret.is_ok() && len > 0 { crate::p00_observation::tun_read(buf.filled()); }
+         if len == 0 {
+             return Poll::Ready(None);
+         }
+@@ -210,7 +211,9 @@ impl AsyncWrite for TunAsyncWrite {
+     ) -> Poll<Result<usize, io::Error>> {
+         let self_mut = self.project();
+         let mut g = ready!(self_mut.l.poll_lock(cx));
+-        g.as_pin_mut().poll_write(cx, buf)
++        let result = g.as_pin_mut().poll_write(cx, buf);
++        if matches!(&result, Poll::Ready(Ok(n)) if *n > 0) { crate::p00_observation::tun_write(); }
++        result
+     }
+ 
+     fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), io::Error>> {
+@@ -798,6 +801,7 @@ pub struct NicCtx {
+ 
+     nic: Arc<Mutex<VirtualNic>>,
+     tasks: JoinSet<()>,
++    p00_borrowed_fd: Option<i32>,
+ 
+     #[cfg(target_os = "windows")]
+     windows_udp_broadcast_relay: Option<AbortOnDropHandle<()>>,
+@@ -819,12 +823,19 @@ impl NicCtx {
+ 
+             nic: Arc::new(Mutex::new(VirtualNic::new(global_ctx))),
+             tasks: JoinSet::new(),
++            p00_borrowed_fd: None,
+ 
+             #[cfg(target_os = "windows")]
+             windows_udp_broadcast_relay: None,
+         }
+     }
+ 
++    /// 等待所有 TUN I/O 任务实际退出，再允许平台关闭借用 fd。
++    pub(super) async fn p00_stop_io(&mut self) {
++        self.tasks.shutdown().await;
++        if let Some(fd) = self.p00_borrowed_fd.take() { crate::p00_observation::tun_state(fd, "released"); }
++    }
++
+     pub async fn ifname(&self) -> Option<String> {
+         let nic = self.nic.lock().await;
+         nic.ifname.as_ref().map(|s| s.to_owned())
+@@ -1314,11 +1325,11 @@ impl NicCtx {
+             }
+         };
+ 
++        self.p00_borrowed_fd = Some(tun_fd);
+         let (stream, sink) = tunnel.split();
+-
+         self.do_forward_nic_to_peers_task(stream)?;
+         self.do_forward_peers_to_nic(sink);
+-
++        crate::p00_observation::tun_state(tun_fd, "installed");
+         Ok(())
+     }
+ }
+diff --git a/easytier/src/lib.rs b/easytier/src/lib.rs
+index f782395..ffa9580 100644
+--- a/easytier/src/lib.rs
++++ b/easytier/src/lib.rs
+@@ -21,6 +21,7 @@ pub mod rpc_service;
+ pub mod service_manager;
+ pub(crate) mod socket;
+ pub mod socket_protector;
++pub mod p00_observation;
+ pub mod tunnel;
+ pub mod utils;
+ #[cfg(feature = "web-client")]

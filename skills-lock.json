@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "skills": {
+    "adaptive": {
+      "source": "android/skills",
+      "sourceType": "github",
+      "skillPath": "jetpack-compose/adaptive/SKILL.md",
+      "computedHash": "acc4ca48c32c1cb6c2b511b7649856fa646b9db284efbc12130440eae1391e77"
+    },
+    "android-intent-security": {
+      "source": "android/skills",
+      "sourceType": "github",
+      "skillPath": "security/android-intent-security/SKILL.md",
+      "computedHash": "9f0e9b26ba6624d174f49225370ed3abcfdc2f8bff49b9b7cc997f81d5e08f6d"
+    },
+    "android-permissions-security": {
+      "source": "android/skills",
+      "sourceType": "github",
+      "skillPath": "security/android-permissions-security/SKILL.md",
+      "computedHash": "9b92b71e414068a7495d303dc683c4ca3040d8a899f94a4af11bb013998ba081"
+    },
+    "edge-to-edge": {
+      "source": "android/skills",
+      "sourceType": "github",
+      "skillPath": "system/edge-to-edge/SKILL.md",
+      "computedHash": "7db3c09f145f5bad71b09da526dad46cb8b2ace56e62e87aa2ca7e81a0b4790e"
+    },
+    "navigation-3": {
+      "source": "android/skills",
+      "sourceType": "github",
+      "skillPath": "navigation/navigation-3/SKILL.md",
+      "computedHash": "e2d0b960682ae0b7e8a2cbf4769ef058cc164b1a6096177d3a7022dc8e73b54c"
+    },
+    "navigation-event": {
+      "source": "android/skills",
+      "sourceType": "github",
+      "skillPath": "navigation/navigation-event/SKILL.md",
+      "computedHash": "315522dc24b2207a8bec803109999fb411750958b64c36b5893d32bca989651d"
+    },
+    "styles": {
+      "source": "android/skills",
+      "sourceType": "github",
+      "skillPath": "jetpack-compose/theming/styles/SKILL.md",
+      "computedHash": "8a48036f2673329dc4d2f419ab5473d25a741d550c817c707e3be42ae30517a2"
+    },
+    "testing-setup": {
+      "source": "android/skills",
+      "sourceType": "github",
+      "skillPath": "testing/testing-setup/SKILL.md",
+      "computedHash": "52e837051a86739d08e7e8601e891732e1008b9f6829851f441ebc841e4d6940"
+    }
+  }
+}

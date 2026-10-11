@@ -1,0 +1,92 @@
+{
+  "layer": "android_native_panic",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "device_id": "device-01",
+  "experiment": "synthetic panic in disposable own instrumentation process",
+  "commands": [
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "instrument",
+        "-w",
+        "-r",
+        "-e",
+        "panic",
+        "true",
+        "com.github.zzwtsy.chuanmen.p00probe/.BoundaryInstrumentation"
+      ],
+      "exit_code": 0,
+      "output": "INSTRUMENTATION_RESULT: shortMsg=Process crashed.\nINSTRUMENTATION_CODE: 0\n"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "dumpsys",
+        "activity",
+        "exit-info",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "output": "ACTIVITY MANAGER PROCESS EXIT INFO (dumpsys activity exit-info)\nLast Timestamp of Persistence Into Persistent Storage: 2026-10-11 20:11:08.996\n  package: com.github.zzwtsy.chuanmen.p00probe\n    Historical Process Exit for uid=10438\n        ApplicationExitInfo #0:\n          timestamp=2026-10-11 20:29:02.801 pid=13151 realUid=10438 packageUid=10438 definingUid=10438 user=0\n          process=com.github.zzwtsy.chuanmen.p00probe reason=5 (APP CRASH(NATIVE)) subreason=0 (UNKNOWN) status=6\n          importance=125 pss=0.00 rss=0.00 description=crash state=empty trace=null\n        ApplicationExitInfo #1:\n          timestamp=2026-10-11 20:27:56.805 pid=12151 realUid=10438 packageUid=10438 definingUid=10438 user=0\n          process=com.github.zzwtsy.chuanmen.p00probe reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0\n          importance=100 pss=0.00 rss=0.00 description=stop com.github.zzwtsy.chuanmen.p00probe due to finished inst state=empty trace=null\n        ApplicationExitInfo #2:\n          timestamp=2026-10-11 20:07:07.933 pid=2411 realUid=10438 packageUid=10438 definingUid=10438 user=0\n          process=com.github.zzwtsy.chuanmen.p00probe reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0\n          importance=100 pss=0.00 rss=0.00 description=stop com.github.zzwtsy.chuanmen.p00probe due to finished inst state=empty trace=null\n        ApplicationExitInfo #3:\n          timestamp=2026-10-11 20:05:25.643 pid=31704 realUid=10438 packageUid=10438 definingUid=10438 user=0\n          process=com.github.zzwtsy.chuanmen.p00probe reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0\n          importance=100 pss=0.00 rss=0.00 description=stop com.github.zzwtsy.chuanmen.p00probe due to finished inst state=empty trace=null\n        ApplicationExitInfo #4:\n          timestamp=2026-10-11 20:05:22.716 pid=19176 realUid=10438 packageUid=10438 definingUid=10438 user=0\n          process=com.github.zzwtsy.chuanmen.p00probe reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0\n          importance=100 pss=74MB rss=215MB description=stop com.github.zzwtsy.chuanmen.p00probe due to start instr state=empty trace=null\n        ApplicationExitInfo #5:\n          timestamp=2026-10-11 19:59:56.161 pid=27854 realUid=10438 packageUid=10438 definingUid=10438 user=0\n          process=com.github.zzwtsy.chuanmen.p00probe reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0\n          importance=125 pss=0.00 rss=0.00 description=stop com.github.zzwtsy.chuanmen.p00probe due to finished inst state=empty trace=null\n        ApplicationExitInfo #6:\n          timestamp=2026-10-11 19:55:43.230 pid=24871 realUid=10438 packageUid=10438 definingUid=10438 user=0\n          process=com.github.zzwtsy.chuanmen.p00probe reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0\n          importance=100 pss=23MB rss=125MB description=stop com.github.zzwtsy.chuanmen.p00probe due to from process:26856 state=empty trace=null\n        ApplicationExitInfo #7:\n          timestamp=2026-10-11 19:49:43.842 pid=22786 realUid=10438 packageUid=10438 definingUid=10438 user=0\n          process=com.github.zzwtsy.chuanmen.p00probe reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0\n          importance=125 pss=0.00 rss=0.00 description=stop com.github.zzwtsy.chuanmen.p00probe due to set debug app state=empty trace=null\n        ApplicationExitInfo #8:\n          timestamp=2026-10-11 19:49:33.773 pid=10382 realUid=10438 packageUid=10438 definingUid=10438 user=0\n          process=com.github.zzwtsy.chuanmen.p00probe reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0\n          importance=100 pss=80MB rss=221MB description=stop com.github.zzwtsy.chuanmen.p00probe due to start instr state=empty trace=null\n"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "dumpsys",
+        "activity",
+        "services",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "output": "ACTIVITY MANAGER SERVICES (dumpsys activity services)\n  (nothing)\n"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "pidof",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 1,
+      "output": ""
+    }
+  ],
+  "environment_kind": "physical_device",
+  "apk_sha256": "9417895094b8369bfe3a8e1cf708390db1933df3a9795c518fd5f8ec7444b907",
+  "native_library_sha256": "18a67dd3cd19433d61be5dde9c25fe2365d64f67674a047f9b93e863e2ded1f0",
+  "build_report_sha256": "9f35f6ef86ca43ec7bed30fe50995b26fb7574fbd580481349cd69665bd6899c",
+  "device_fingerprint": "Xiaomi/popsicle/popsicle:16/BP2A.250605.031.A3/OS3.0.319.0.WPBCNXM:user/release-keys",
+  "recorded_at_utc": "2026-10-11T12:29:02.801+00:00",
+  "status": "passed",
+  "interpretation": "合成 panic 终止独立实验进程；不能声称 catch_unwind 恢复或生产故障自愈",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-native-panic.json",
+        "sha256": "234ba7b8dda3de908917ae8cb1253c26b9878b66f6336fd5333a4ff5aa2a06c7"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false,
+    "build_ref": "docs/verification/p00/builds/native-boundary-apk-build.json"
+  }
+}

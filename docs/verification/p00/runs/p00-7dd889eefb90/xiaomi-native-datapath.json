@@ -1,0 +1,1222 @@
+{
+  "schema_version": 1,
+  "layer": "android_native_datapath",
+  "status": "passed",
+  "environment_kind": "physical_device",
+  "native_status": "unverified",
+  "recorded_at_utc": "2026-10-11T13:13:42.997331+00:00",
+  "device_id": "device-01",
+  "apk_sha256": "1a7328abeda812bcd20b89a5d154a5351104f4566a3228d7841df35f78fcbda1",
+  "build_report_sha256": "18a2f216a817e90f610fbf35fbaeb2420b45cdda274b89e04df70a950e0ac444",
+  "commands": [
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "get-state"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "c98373c1abef78070f6beef6b4ae4fbf3de348dac280195c7f93441920584af9",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.fingerprint"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "1bfaa17007aea1b639eb5c54d1c55d079f30f56b64ed20dfc02faf499d567a48",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.build.version.sdk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a4b2c5db15348c29451e18b8307e5ef81625ea638e807935f39ceaa8d9ac7758",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.cpu.abi"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "7f10c3cd4593d1d6ded27d658e7c05216011c955c200aac551caad0c979d4d90",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.manufacturer"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "b257d787c7da7056d0400b2829dce276da3bcb93aab6b3a903dd7f70df0e0555",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.product.model"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "8a1f2faeb360d564e712171d8daf644b072e0c46bc9ca8038e314868ac1ba507",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "getprop",
+        "ro.kernel.qemu"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "pm",
+        "path",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "30f9d7f2929acea6dc676a5782c5c417339c59678b21725c3339b334de5f2c6a",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "sha256sum",
+        "/data/app/~~kSY5FJ9G8HtbY3O5Js3Q6Q==/com.github.zzwtsy.chuanmen.p00probe-tjoKT_GF70kf-ZUnB-eu2Q==/base.apk"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "8d9cd2cd1bd39096a2b203e441f4de32408196c5cc67691481a14dfcf1e80fee",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.github.zzwtsy.chuanmen.p00probe/.BoundaryActivity"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "a606c542f0f9c185b206fe90d43e487d9614c29039af0b2543add74861893abb",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "am",
+        "instrument",
+        "-w",
+        "-r",
+        "-e",
+        "host_launch",
+        "true",
+        "-e",
+        "peer_host",
+        "<HOST_LAN_IP>",
+        "-e",
+        "run_id",
+        "p00-7dd889eefb90",
+        "com.github.zzwtsy.chuanmen.p00probe/.DatapathInstrumentation"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "b9e8f7d8e2cf4f382342efbb0f45bcf52299e21ab9a1f5604783646e9ad4ac90",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    },
+    {
+      "argv": [
+        "adb",
+        "-s",
+        "<controlled-serial>",
+        "shell",
+        "dumpsys",
+        "activity",
+        "services",
+        "com.github.zzwtsy.chuanmen.p00probe"
+      ],
+      "exit_code": 0,
+      "historical_output_sha256": "e9990d2b9ce9e862271712ca1ecd0c280ac8cd7a2fd48fc18fb69623521c33b0",
+      "command_output_retention": "structured_observations_and_exit_code_only"
+    }
+  ],
+  "runner_sha256": "f5a67c34cd3e6d9be672784363fc428d4393abb4f3ac418c186512ea646065ae",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "patches": [
+    {
+      "report_path": "/tmp/chuanmen-p00-boundary-core-v3-patch.json",
+      "report_sha256": "98563956236d50e60803327506af709b627a9e99b1cca20cd8dee25458bf18b1",
+      "files": {
+        "easytier/src/p00_observation.rs": {
+          "original_sha256": null,
+          "patched_sha256": "848636b7c17003c7da94006282f59f52ed97a45100208a1357e712ad6fed30b0"
+        },
+        "easytier-contrib/easytier-android-jni/src/p00_jni.rs": {
+          "original_sha256": null,
+          "patched_sha256": "fbb93cdf651f455e44d87d8989b3c84416811c9e2b4deeea656611f3449dd2c7"
+        },
+        "easytier/src/lib.rs": {
+          "original_sha256": "f1d538cd0e48f0d780dfb5ddf4153a0284fb12d30feae5e71adc97755ee7587c",
+          "patched_sha256": "5bf1aa2e120abd2e94a29936c784affad332ea6b8c130f0a0dfb5c0f8bdf4d00"
+        },
+        "easytier-contrib/easytier-android-jni/src/lib.rs": {
+          "original_sha256": "ea472f76a659eed5250d07a43c8aac1757736daf99f350405d87cd597c5dc28c",
+          "patched_sha256": "85910308e060af1fef16d91cd08417339696a2cd8a9580d808218cadf2403fcf"
+        },
+        "easytier/src/instance/virtual_nic.rs": {
+          "original_sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+          "patched_sha256": "a85a519168cb785897772e4882c3fcbf60529f6e26369309d0467054bd9a159b"
+        },
+        "easytier/src/instance/runtime_host/tun_common.rs": {
+          "original_sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+          "patched_sha256": "bef34f9d67b89415f7584fd7f6fc780234c40c8719f3ae948119c873abb88b59"
+        }
+      },
+      "production_approved": false
+    }
+  ],
+  "acceptance_scope": "tcp_udp_roundtrip_and_scoped_loop_prevention",
+  "vpn_acceptance": "unverified",
+  "run_id": "p00-7dd889eefb90",
+  "controlled_topology": {
+    "host_bind": "<HOST_LAN_IP>:31270",
+    "virtual_ip": "10.222.0.1/24",
+    "tcp_echo": "127.0.0.1:31271",
+    "udp_echo": "127.0.0.1:31272",
+    "requires_host_tun": false,
+    "public_discovery": false,
+    "system_routes_modified": false
+  },
+  "peer_binary_sha256": "75387de6bbd85f0de5bcd613f74968f473d7c2b6bbeb9692e22dcea69ec4af2c",
+  "peer_ready_report_sha256": "23ae3596dd3dbdb679e2f279203c30f6ce18b87c69a5357879f65d5c1baa65a3",
+  "device": {
+    "ro.build.fingerprint": "Xiaomi/popsicle/popsicle:16/BP2A.250605.031.A3/OS3.0.319.0.WPBCNXM:user/release-keys",
+    "ro.build.version.sdk": "36",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.product.manufacturer": "Xiaomi",
+    "ro.product.model": "2509FPN0BC",
+    "ro.kernel.qemu": ""
+  },
+  "native_library_sha256": "8e523672e0b5c0efb80ed8e649f8308f5e8ef84924bbdef5ab06d06cb4ba5065",
+  "installed_apk_sha256": "1a7328abeda812bcd20b89a5d154a5351104f4566a3228d7841df35f78fcbda1",
+  "observations": {
+    "schema_version": 1,
+    "layer": "android_native_datapath",
+    "status": "passed",
+    "run_id": "p00-7dd889eefb90",
+    "peer_host": "<HOST_LAN_IP>",
+    "virtual_destination": "10.222.0.1",
+    "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "configuration": "instance_name = \"p00-datapath\"\nhostname = \"p00-android\"\nipv4 = \"10.222.0.2/24\"\ndhcp = false\nlisteners = []\nstun_servers = []\ntcp_stun_servers = []\nstun_servers_v6 = []\n[[peer]]\nuri = \"tcp://<HOST_LAN_IP>:31270\"\n[network_identity]\nnetwork_name = \"chuanmen-p00-isolated\"\nnetwork_secret = \"p00-synthetic-public-test-only\"\n[flags]\nenable_ipv6 = false\ndisable_upnp = true\ndisable_udp_hole_punching = true\ndisable_tcp_hole_punching = true\ndisable_p2p = true\nbind_device = false\nprivate_mode = true\n",
+    "tcp": [
+      {
+        "round": 1,
+        "status": "passed",
+        "request_sha256": "409875f4fb2d41e5d3fc386795c731be24dc1cd803de8832c95b5094bcd98241",
+        "response_sha256": "409875f4fb2d41e5d3fc386795c731be24dc1cd803de8832c95b5094bcd98241",
+        "bytes": 23,
+        "elapsed_ms": 11.479687
+      },
+      {
+        "round": 2,
+        "status": "passed",
+        "request_sha256": "86f641351e9a4ac40be9e9a6cb6aff51f93a6e1847de4cd8359cbfe42939e4a9",
+        "response_sha256": "86f641351e9a4ac40be9e9a6cb6aff51f93a6e1847de4cd8359cbfe42939e4a9",
+        "bytes": 23,
+        "elapsed_ms": 40.864844
+      },
+      {
+        "round": 3,
+        "status": "passed",
+        "request_sha256": "a3b9d67eefc3dfb6acbc003698deb663c0f0a7b7de0667b0801a1b3a7cfa7885",
+        "response_sha256": "a3b9d67eefc3dfb6acbc003698deb663c0f0a7b7de0667b0801a1b3a7cfa7885",
+        "bytes": 23,
+        "elapsed_ms": 16.132657
+      },
+      {
+        "round": 4,
+        "status": "passed",
+        "request_sha256": "53a68db9afc29060840354b48c952498da3881a9d5af0ba517808c4faf7e9803",
+        "response_sha256": "53a68db9afc29060840354b48c952498da3881a9d5af0ba517808c4faf7e9803",
+        "bytes": 23,
+        "elapsed_ms": 13.940364
+      },
+      {
+        "round": 5,
+        "status": "passed",
+        "request_sha256": "a2de1e112fae552e895f2e470a555eb19a207437c9ed7e3e1d26adc745f28bb4",
+        "response_sha256": "a2de1e112fae552e895f2e470a555eb19a207437c9ed7e3e1d26adc745f28bb4",
+        "bytes": 23,
+        "elapsed_ms": 12.161406
+      },
+      {
+        "round": 6,
+        "status": "passed",
+        "request_sha256": "b4c6348678430f3231b5388a1e2251a7312a92882f84320e455ac81a680bd09a",
+        "response_sha256": "b4c6348678430f3231b5388a1e2251a7312a92882f84320e455ac81a680bd09a",
+        "bytes": 23,
+        "elapsed_ms": 10.719791
+      },
+      {
+        "round": 7,
+        "status": "passed",
+        "request_sha256": "fbd5c6321e9e792a16f0ebf668b2ddd5e54fd4aae54de7279783d63a36082e5b",
+        "response_sha256": "fbd5c6321e9e792a16f0ebf668b2ddd5e54fd4aae54de7279783d63a36082e5b",
+        "bytes": 23,
+        "elapsed_ms": 9.256458
+      },
+      {
+        "round": 8,
+        "status": "passed",
+        "request_sha256": "4b7207846f8dfc739b2684c6a3319b565c17782f8309e739ca1c441fc282aea6",
+        "response_sha256": "4b7207846f8dfc739b2684c6a3319b565c17782f8309e739ca1c441fc282aea6",
+        "bytes": 23,
+        "elapsed_ms": 15.91448
+      },
+      {
+        "round": 9,
+        "status": "passed",
+        "request_sha256": "f348582136d50b65d818d0b216073e406271205c72ab679b9f450dbebb38cb64",
+        "response_sha256": "f348582136d50b65d818d0b216073e406271205c72ab679b9f450dbebb38cb64",
+        "bytes": 23,
+        "elapsed_ms": 14.041875
+      },
+      {
+        "round": 10,
+        "status": "passed",
+        "request_sha256": "2ced72b10bb209a7b109ec76190e02dedb1674dfc91d1bdffb738bd1567f321f",
+        "response_sha256": "2ced72b10bb209a7b109ec76190e02dedb1674dfc91d1bdffb738bd1567f321f",
+        "bytes": 24,
+        "elapsed_ms": 12.695781
+      },
+      {
+        "round": 11,
+        "status": "passed",
+        "request_sha256": "e52907350fc6c1d05fea4161b6c81e62595afb7588699d2f0397a2d66af41ad0",
+        "response_sha256": "e52907350fc6c1d05fea4161b6c81e62595afb7588699d2f0397a2d66af41ad0",
+        "bytes": 24,
+        "elapsed_ms": 12.193125
+      },
+      {
+        "round": 12,
+        "status": "passed",
+        "request_sha256": "91f2afd4170adf66930fe29ca2d7e571213ebf27143afbb400269f4d957b6161",
+        "response_sha256": "91f2afd4170adf66930fe29ca2d7e571213ebf27143afbb400269f4d957b6161",
+        "bytes": 24,
+        "elapsed_ms": 8.575521
+      },
+      {
+        "round": 13,
+        "status": "passed",
+        "request_sha256": "b22e7f296b0df7dcd9f18492c4d4b2a668244e717bd5eaeb941ba86bdc116d03",
+        "response_sha256": "b22e7f296b0df7dcd9f18492c4d4b2a668244e717bd5eaeb941ba86bdc116d03",
+        "bytes": 24,
+        "elapsed_ms": 18.411667
+      },
+      {
+        "round": 14,
+        "status": "passed",
+        "request_sha256": "daa872e26fdd32d8a0938738e5d78573d51580ec8bc6a8f895c4f7858f9fc5ce",
+        "response_sha256": "daa872e26fdd32d8a0938738e5d78573d51580ec8bc6a8f895c4f7858f9fc5ce",
+        "bytes": 24,
+        "elapsed_ms": 6.071719
+      },
+      {
+        "round": 15,
+        "status": "passed",
+        "request_sha256": "61388346eedb4f5869f84da47beada5a1d33e686cc9b662007c47f5c63ab026c",
+        "response_sha256": "61388346eedb4f5869f84da47beada5a1d33e686cc9b662007c47f5c63ab026c",
+        "bytes": 24,
+        "elapsed_ms": 16.204271
+      },
+      {
+        "round": 16,
+        "status": "passed",
+        "request_sha256": "13af38178332eb18d43c4773255de12a293d26106ea4c345f0809d2a4f8daa95",
+        "response_sha256": "13af38178332eb18d43c4773255de12a293d26106ea4c345f0809d2a4f8daa95",
+        "bytes": 24,
+        "elapsed_ms": 16.211407
+      },
+      {
+        "round": 17,
+        "status": "passed",
+        "request_sha256": "845db8a1889bb84370f664cfdd1acdfaac24d9e3da908c355ebbb0de79c24517",
+        "response_sha256": "845db8a1889bb84370f664cfdd1acdfaac24d9e3da908c355ebbb0de79c24517",
+        "bytes": 24,
+        "elapsed_ms": 11.490781
+      },
+      {
+        "round": 18,
+        "status": "passed",
+        "request_sha256": "d5742da8e937b5169a3aff37466aad30550bcf0347eb565bcc220c9f5f072922",
+        "response_sha256": "d5742da8e937b5169a3aff37466aad30550bcf0347eb565bcc220c9f5f072922",
+        "bytes": 24,
+        "elapsed_ms": 17.000209
+      },
+      {
+        "round": 19,
+        "status": "passed",
+        "request_sha256": "ae28aca647f3681ca4c74cabce86abc18c80810adbfdc8e2a9d5ceaba21f9aa7",
+        "response_sha256": "ae28aca647f3681ca4c74cabce86abc18c80810adbfdc8e2a9d5ceaba21f9aa7",
+        "bytes": 24,
+        "elapsed_ms": 10.975938
+      },
+      {
+        "round": 20,
+        "status": "passed",
+        "request_sha256": "7cb4b1e75f8685f968ccdb562bd79e590db7443c5de0815f382664565d784e71",
+        "response_sha256": "7cb4b1e75f8685f968ccdb562bd79e590db7443c5de0815f382664565d784e71",
+        "bytes": 24,
+        "elapsed_ms": 11.444688
+      }
+    ],
+    "udp": [
+      {
+        "round": 1,
+        "status": "passed",
+        "request_sha256": "a3a0ea0ceaaeb7a8f4bee95bf4e6a4a39716154424b56afeb8e7ba895a8cf479",
+        "response_sha256": "a3a0ea0ceaaeb7a8f4bee95bf4e6a4a39716154424b56afeb8e7ba895a8cf479",
+        "bytes": 23,
+        "elapsed_ms": 5.116094
+      },
+      {
+        "round": 2,
+        "status": "passed",
+        "request_sha256": "839cc2330dae9d078c6de49391627f064b9a3a6d30d3fe79d984af6134bff495",
+        "response_sha256": "839cc2330dae9d078c6de49391627f064b9a3a6d30d3fe79d984af6134bff495",
+        "bytes": 23,
+        "elapsed_ms": 3.710521
+      },
+      {
+        "round": 3,
+        "status": "passed",
+        "request_sha256": "c430db14b3c600ecd9c4e7d66f1d0e935758a1061dfa91a2e33da106a79e90ae",
+        "response_sha256": "c430db14b3c600ecd9c4e7d66f1d0e935758a1061dfa91a2e33da106a79e90ae",
+        "bytes": 23,
+        "elapsed_ms": 5.731928
+      },
+      {
+        "round": 4,
+        "status": "passed",
+        "request_sha256": "ffa36d241881dbbc61e188780652eb1ae0817469f9aeb666e878f4a034d36462",
+        "response_sha256": "ffa36d241881dbbc61e188780652eb1ae0817469f9aeb666e878f4a034d36462",
+        "bytes": 23,
+        "elapsed_ms": 6.14901
+      },
+      {
+        "round": 5,
+        "status": "passed",
+        "request_sha256": "e1028a14da4ce28493d0cd1be449201f0be62e272b37c5917cc5a97183bd4624",
+        "response_sha256": "e1028a14da4ce28493d0cd1be449201f0be62e272b37c5917cc5a97183bd4624",
+        "bytes": 23,
+        "elapsed_ms": 7.579532
+      },
+      {
+        "round": 6,
+        "status": "passed",
+        "request_sha256": "8413a0efab1de251b3493f07ece00f283c1b914c3b789c02c028f644228d05c9",
+        "response_sha256": "8413a0efab1de251b3493f07ece00f283c1b914c3b789c02c028f644228d05c9",
+        "bytes": 23,
+        "elapsed_ms": 7.405937
+      },
+      {
+        "round": 7,
+        "status": "passed",
+        "request_sha256": "ea7bc211967c83c6d80f8addfe4de0e113890da1d149c701da2b61188497b2e9",
+        "response_sha256": "ea7bc211967c83c6d80f8addfe4de0e113890da1d149c701da2b61188497b2e9",
+        "bytes": 23,
+        "elapsed_ms": 6.065417
+      },
+      {
+        "round": 8,
+        "status": "passed",
+        "request_sha256": "ca321ff4f471272b05d6f1b6791df5dab68fd67f8893ec25ebcfbc08b75734e5",
+        "response_sha256": "ca321ff4f471272b05d6f1b6791df5dab68fd67f8893ec25ebcfbc08b75734e5",
+        "bytes": 23,
+        "elapsed_ms": 6.139375
+      },
+      {
+        "round": 9,
+        "status": "passed",
+        "request_sha256": "6d998868b132c2db39d917285ecb6f68bd409b5392c4994c991343b5e06745e4",
+        "response_sha256": "6d998868b132c2db39d917285ecb6f68bd409b5392c4994c991343b5e06745e4",
+        "bytes": 23,
+        "elapsed_ms": 8.92026
+      },
+      {
+        "round": 10,
+        "status": "passed",
+        "request_sha256": "30ae5de138c96bd6e4762cf1ff5e18499c1180bc78b5cb39e130e002669cde57",
+        "response_sha256": "30ae5de138c96bd6e4762cf1ff5e18499c1180bc78b5cb39e130e002669cde57",
+        "bytes": 24,
+        "elapsed_ms": 5.603437
+      },
+      {
+        "round": 11,
+        "status": "passed",
+        "request_sha256": "109c78229cb7044e75dd53832b8d8d9797e156fe1a77d958358e27ce49129073",
+        "response_sha256": "109c78229cb7044e75dd53832b8d8d9797e156fe1a77d958358e27ce49129073",
+        "bytes": 24,
+        "elapsed_ms": 3.961146
+      },
+      {
+        "round": 12,
+        "status": "passed",
+        "request_sha256": "cf1937cd7a947e3d383d7ce2baf656ab9793e634651d2c4f4b3dd2a88bdcff17",
+        "response_sha256": "cf1937cd7a947e3d383d7ce2baf656ab9793e634651d2c4f4b3dd2a88bdcff17",
+        "bytes": 24,
+        "elapsed_ms": 4.873281
+      },
+      {
+        "round": 13,
+        "status": "passed",
+        "request_sha256": "9dd3396e03575e8cb04830b3e71606ecc9bfda73d05d7e87bb716db101a80fb6",
+        "response_sha256": "9dd3396e03575e8cb04830b3e71606ecc9bfda73d05d7e87bb716db101a80fb6",
+        "bytes": 24,
+        "elapsed_ms": 3.90901
+      },
+      {
+        "round": 14,
+        "status": "passed",
+        "request_sha256": "a1c87da0979b1743c568bfb6232bdfe0c43c0a896c8512cb9e4745c4fa3a0ecc",
+        "response_sha256": "a1c87da0979b1743c568bfb6232bdfe0c43c0a896c8512cb9e4745c4fa3a0ecc",
+        "bytes": 24,
+        "elapsed_ms": 4.175885
+      },
+      {
+        "round": 15,
+        "status": "passed",
+        "request_sha256": "576f1d2acbe4a713a61981578ee71277e380c4cc3893d9d34250a07d5fd50650",
+        "response_sha256": "576f1d2acbe4a713a61981578ee71277e380c4cc3893d9d34250a07d5fd50650",
+        "bytes": 24,
+        "elapsed_ms": 5.23401
+      },
+      {
+        "round": 16,
+        "status": "passed",
+        "request_sha256": "feb6104c7c420843343f492635ce7b5872cddc6f67f3ccee20d4d7132efb011c",
+        "response_sha256": "feb6104c7c420843343f492635ce7b5872cddc6f67f3ccee20d4d7132efb011c",
+        "bytes": 24,
+        "elapsed_ms": 7.202917
+      },
+      {
+        "round": 17,
+        "status": "passed",
+        "request_sha256": "94e57d7c97a5a2055bdaceaa818e4dcb31422da141283319d70856afd9ec105b",
+        "response_sha256": "94e57d7c97a5a2055bdaceaa818e4dcb31422da141283319d70856afd9ec105b",
+        "bytes": 24,
+        "elapsed_ms": 7.982187
+      },
+      {
+        "round": 18,
+        "status": "passed",
+        "request_sha256": "79e8fb7f4cf1d627a7178f6ff99bd67e052ffc6ecc66f1b6217709ae891e3fed",
+        "response_sha256": "79e8fb7f4cf1d627a7178f6ff99bd67e052ffc6ecc66f1b6217709ae891e3fed",
+        "bytes": 24,
+        "elapsed_ms": 6.410312
+      },
+      {
+        "round": 19,
+        "status": "passed",
+        "request_sha256": "251e001843fd4420e3c498e1e5aed61ae672325ed7802e2cf35339c5dcc695c5",
+        "response_sha256": "251e001843fd4420e3c498e1e5aed61ae672325ed7802e2cf35339c5dcc695c5",
+        "bytes": 24,
+        "elapsed_ms": 7.054687
+      },
+      {
+        "round": 20,
+        "status": "passed",
+        "request_sha256": "70ce08ebaa4082faf9c6692e79481f14550049a053dd6c751e16bdf9df956e2d",
+        "response_sha256": "70ce08ebaa4082faf9c6692e79481f14550049a053dd6c751e16bdf9df956e2d",
+        "bytes": 24,
+        "elapsed_ms": 6.774583
+      }
+    ],
+    "tun_install_ms": 35.683541,
+    "observations": {
+      "destinations": {
+        "10.222.0.1": 137
+      },
+      "protections": [
+        {
+          "before_port": 0,
+          "fd": 188,
+          "native_thread": "ThreadId(11)",
+          "success": true
+        },
+        {
+          "before_port": 0,
+          "fd": 188,
+          "native_thread": "ThreadId(12)",
+          "success": true
+        }
+      ],
+      "read_packets": 141,
+      "tun": {
+        "191": "installed"
+      },
+      "write_packets": 100
+    },
+    "network_infos": {
+      "map": {
+        "p00-datapath": {
+          "my_node_info": {
+            "virtual_ipv4": {
+              "address": {
+                "addr": 182321154
+              },
+              "network_length": 24
+            },
+            "hostname": "p00-android",
+            "version": "2.7.0-7592951b~",
+            "stun_info": {
+              "last_update_time": "1791724422",
+              "max_port": 65535
+            },
+            "listeners": [
+              {
+                "url": "ring://70990b77-0661-4828-97fb-6071457610b3"
+              }
+            ],
+            "peer_id": 3313262474
+          },
+          "events": [
+            "{\"time\":\"2026-10-11T21:13:42.922890732+08:00\",\"event\":{\"PeerAdded\":2719677961}}",
+            "{\"time\":\"2026-10-11T21:13:42.922709482+08:00\",\"event\":{\"PeerConnAdded\":{\"conn_id\":\"d4b45b49-def6-42d5-979c-e6b2fc5c7f7f\",\"my_peer_id\":3313262474,\"peer_id\":2719677961,\"features\":[\"liveness-echo-v1\"],\"tunnel\":{\"tunnel_type\":\"tcp\",\"local_addr\":{\"url\":\"tcp://<DEVICE_LAN_IP>:58310\"},\"remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"},\"resolved_remote_addr\":{\"url\":\"tcp://<HOST_LAN_IP>:31270\"}},\"stats\":{\"rx_bytes\":\"109\",\"tx_bytes\":\"125\",\"rx_packets\":\"1\",\"tx_packets\":\"1\"},\"is_client\":true,\"network_name\":\"chuanmen-p00-isolated\"}}}",
+            "{\"time\":\"2026-10-11T21:13:42.913501722+08:00\",\"event\":{\"TunDeviceReady\":\"tunfd_191\"}}",
+            "{\"time\":\"2026-10-11T21:13:42.913496670+08:00\",\"event\":{\"Connecting\":\"tcp://<HOST_LAN_IP>:31270\"}}",
+            "{\"time\":\"2026-10-11T21:13:42.908191722+08:00\",\"event\":{\"ListenerAdded\":\"ring://70990b77-0661-4828-97fb-6071457610b3\"}}"
+          ],
+          "routes": [
+            {
+              "peer_id": 2719677961,
+              "ipv4_addr": {
+                "address": {
+                  "addr": 182321153
+                },
+                "network_length": 24
+              },
+              "next_hop_peer_id": 2719677961,
+              "cost": 1,
+              "path_latency": 500,
+              "hostname": "p00-host-peer",
+              "stun_info": {},
+              "inst_id": "86340156-ba5b-4ee0-8e9d-6ecac37a01cc",
+              "version": "2.7.0-7592951b",
+              "feature_flag": {
+                "kcp_input": true,
+                "support_conn_list_sync": true,
+                "quic_input": true,
+                "disable_p2p": true
+              },
+              "next_hop_peer_id_latency_first": 2719677961,
+              "cost_latency_first": 1,
+              "path_latency_latency_first": 500
+            }
+          ],
+          "peers": [
+            {
+              "peer_id": 2719677961,
+              "conns": [
+                {
+                  "conn_id": "d4b45b49-def6-42d5-979c-e6b2fc5c7f7f",
+                  "my_peer_id": 3313262474,
+                  "peer_id": 2719677961,
+                  "features": [
+                    "liveness-echo-v1"
+                  ],
+                  "tunnel": {
+                    "tunnel_type": "tcp",
+                    "local_addr": {
+                      "url": "tcp://<DEVICE_LAN_IP>:58310"
+                    },
+                    "remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    },
+                    "resolved_remote_addr": {
+                      "url": "tcp://<HOST_LAN_IP>:31270"
+                    }
+                  },
+                  "stats": {
+                    "rx_bytes": "10506",
+                    "tx_bytes": "16330",
+                    "rx_packets": "106",
+                    "tx_packets": "143",
+                    "latency_us": "7738"
+                  },
+                  "is_client": true,
+                  "network_name": "chuanmen-p00-isolated"
+                }
+              ],
+              "default_conn_id": {
+                "part1": 3568589641,
+                "part2": 3740680917,
+                "part3": 2543642290,
+                "part4": 4233920383
+              },
+              "directly_connected_conns": [
+                {
+                  "part1": 3568589641,
+                  "part2": 3740680917,
+                  "part3": 2543642290,
+                  "part4": 4233920383
+                }
+              ]
+            }
+          ],
+          "peer_route_pairs": [
+            {
+              "route": {
+                "peer_id": 2719677961,
+                "ipv4_addr": {
+                  "address": {
+                    "addr": 182321153
+                  },
+                  "network_length": 24
+                },
+                "next_hop_peer_id": 2719677961,
+                "cost": 1,
+                "path_latency": 500,
+                "hostname": "p00-host-peer",
+                "stun_info": {},
+                "inst_id": "86340156-ba5b-4ee0-8e9d-6ecac37a01cc",
+                "version": "2.7.0-7592951b",
+                "feature_flag": {
+                  "kcp_input": true,
+                  "support_conn_list_sync": true,
+                  "quic_input": true,
+                  "disable_p2p": true
+                },
+                "next_hop_peer_id_latency_first": 2719677961,
+                "cost_latency_first": 1,
+                "path_latency_latency_first": 500
+              },
+              "peer": {
+                "peer_id": 2719677961,
+                "conns": [
+                  {
+                    "conn_id": "d4b45b49-def6-42d5-979c-e6b2fc5c7f7f",
+                    "my_peer_id": 3313262474,
+                    "peer_id": 2719677961,
+                    "features": [
+                      "liveness-echo-v1"
+                    ],
+                    "tunnel": {
+                      "tunnel_type": "tcp",
+                      "local_addr": {
+                        "url": "tcp://<DEVICE_LAN_IP>:58310"
+                      },
+                      "remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      },
+                      "resolved_remote_addr": {
+                        "url": "tcp://<HOST_LAN_IP>:31270"
+                      }
+                    },
+                    "stats": {
+                      "rx_bytes": "10506",
+                      "tx_bytes": "16330",
+                      "rx_packets": "106",
+                      "tx_packets": "143",
+                      "latency_us": "7738"
+                    },
+                    "is_client": true,
+                    "network_name": "chuanmen-p00-isolated"
+                  }
+                ],
+                "default_conn_id": {
+                  "part1": 3568589641,
+                  "part2": 3740680917,
+                  "part3": 2543642290,
+                  "part4": 4233920383
+                },
+                "directly_connected_conns": [
+                  {
+                    "part1": 3568589641,
+                    "part2": 3740680917,
+                    "part3": 2543642290,
+                    "part4": 4233920383
+                  }
+                ]
+              }
+            }
+          ],
+          "running": true,
+          "foreign_network_summary": {}
+        }
+      }
+    },
+    "closed": {
+      "fd": 191,
+      "native_state": "released",
+      "valid_before_owner_close": true,
+      "valid_after_owner_close": false
+    },
+    "connected_cycles": false,
+    "service_destroyed": true,
+    "cleanup_error": null
+  },
+  "host_echo_records": [
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.710460+00:00",
+      "bytes": 23,
+      "request_sha256": "409875f4fb2d41e5d3fc386795c731be24dc1cd803de8832c95b5094bcd98241",
+      "source": [
+        "127.0.0.1",
+        34960
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.730992+00:00",
+      "bytes": 23,
+      "request_sha256": "86f641351e9a4ac40be9e9a6cb6aff51f93a6e1847de4cd8359cbfe42939e4a9",
+      "source": [
+        "127.0.0.1",
+        34964
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.769731+00:00",
+      "bytes": 23,
+      "request_sha256": "a3b9d67eefc3dfb6acbc003698deb663c0f0a7b7de0667b0801a1b3a7cfa7885",
+      "source": [
+        "127.0.0.1",
+        34966
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.783757+00:00",
+      "bytes": 23,
+      "request_sha256": "53a68db9afc29060840354b48c952498da3881a9d5af0ba517808c4faf7e9803",
+      "source": [
+        "127.0.0.1",
+        34972
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.795735+00:00",
+      "bytes": 23,
+      "request_sha256": "a2de1e112fae552e895f2e470a555eb19a207437c9ed7e3e1d26adc745f28bb4",
+      "source": [
+        "127.0.0.1",
+        34988
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.806873+00:00",
+      "bytes": 23,
+      "request_sha256": "b4c6348678430f3231b5388a1e2251a7312a92882f84320e455ac81a680bd09a",
+      "source": [
+        "127.0.0.1",
+        34996
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.817321+00:00",
+      "bytes": 23,
+      "request_sha256": "fbd5c6321e9e792a16f0ebf668b2ddd5e54fd4aae54de7279783d63a36082e5b",
+      "source": [
+        "127.0.0.1",
+        35012
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.832600+00:00",
+      "bytes": 23,
+      "request_sha256": "4b7207846f8dfc739b2684c6a3319b565c17782f8309e739ca1c441fc282aea6",
+      "source": [
+        "127.0.0.1",
+        35024
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.845032+00:00",
+      "bytes": 23,
+      "request_sha256": "f348582136d50b65d818d0b216073e406271205c72ab679b9f450dbebb38cb64",
+      "source": [
+        "127.0.0.1",
+        35026
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.859282+00:00",
+      "bytes": 24,
+      "request_sha256": "2ced72b10bb209a7b109ec76190e02dedb1674dfc91d1bdffb738bd1567f321f",
+      "source": [
+        "127.0.0.1",
+        35036
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.872192+00:00",
+      "bytes": 24,
+      "request_sha256": "e52907350fc6c1d05fea4161b6c81e62595afb7588699d2f0397a2d66af41ad0",
+      "source": [
+        "127.0.0.1",
+        35040
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.881747+00:00",
+      "bytes": 24,
+      "request_sha256": "91f2afd4170adf66930fe29ca2d7e571213ebf27143afbb400269f4d957b6161",
+      "source": [
+        "127.0.0.1",
+        35046
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.897865+00:00",
+      "bytes": 24,
+      "request_sha256": "b22e7f296b0df7dcd9f18492c4d4b2a668244e717bd5eaeb941ba86bdc116d03",
+      "source": [
+        "127.0.0.1",
+        35060
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.905893+00:00",
+      "bytes": 24,
+      "request_sha256": "daa872e26fdd32d8a0938738e5d78573d51580ec8bc6a8f895c4f7858f9fc5ce",
+      "source": [
+        "127.0.0.1",
+        35074
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.920718+00:00",
+      "bytes": 24,
+      "request_sha256": "61388346eedb4f5869f84da47beada5a1d33e686cc9b662007c47f5c63ab026c",
+      "source": [
+        "127.0.0.1",
+        35090
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.937099+00:00",
+      "bytes": 24,
+      "request_sha256": "13af38178332eb18d43c4773255de12a293d26106ea4c345f0809d2a4f8daa95",
+      "source": [
+        "127.0.0.1",
+        35106
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.950675+00:00",
+      "bytes": 24,
+      "request_sha256": "845db8a1889bb84370f664cfdd1acdfaac24d9e3da908c355ebbb0de79c24517",
+      "source": [
+        "127.0.0.1",
+        35116
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.966208+00:00",
+      "bytes": 24,
+      "request_sha256": "d5742da8e937b5169a3aff37466aad30550bcf0347eb565bcc220c9f5f072922",
+      "source": [
+        "127.0.0.1",
+        35128
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.979711+00:00",
+      "bytes": 24,
+      "request_sha256": "ae28aca647f3681ca4c74cabce86abc18c80810adbfdc8e2a9d5ceaba21f9aa7",
+      "source": [
+        "127.0.0.1",
+        35144
+      ]
+    },
+    {
+      "protocol": "tcp",
+      "utc": "2026-10-11T13:13:43.990689+00:00",
+      "bytes": 24,
+      "request_sha256": "7cb4b1e75f8685f968ccdb562bd79e590db7443c5de0815f382664565d784e71",
+      "source": [
+        "127.0.0.1",
+        35152
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:43.995725+00:00",
+      "bytes": 23,
+      "request_sha256": "a3a0ea0ceaaeb7a8f4bee95bf4e6a4a39716154424b56afeb8e7ba895a8cf479",
+      "source": [
+        "127.0.0.1",
+        58712
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.000842+00:00",
+      "bytes": 23,
+      "request_sha256": "839cc2330dae9d078c6de49391627f064b9a3a6d30d3fe79d984af6134bff495",
+      "source": [
+        "127.0.0.1",
+        46367
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.005567+00:00",
+      "bytes": 23,
+      "request_sha256": "c430db14b3c600ecd9c4e7d66f1d0e935758a1061dfa91a2e33da106a79e90ae",
+      "source": [
+        "127.0.0.1",
+        55618
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.012012+00:00",
+      "bytes": 23,
+      "request_sha256": "ffa36d241881dbbc61e188780652eb1ae0817469f9aeb666e878f4a034d36462",
+      "source": [
+        "127.0.0.1",
+        54714
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.020396+00:00",
+      "bytes": 23,
+      "request_sha256": "e1028a14da4ce28493d0cd1be449201f0be62e272b37c5917cc5a97183bd4624",
+      "source": [
+        "127.0.0.1",
+        51425
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.027388+00:00",
+      "bytes": 23,
+      "request_sha256": "8413a0efab1de251b3493f07ece00f283c1b914c3b789c02c028f644228d05c9",
+      "source": [
+        "127.0.0.1",
+        50603
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.034779+00:00",
+      "bytes": 23,
+      "request_sha256": "ea7bc211967c83c6d80f8addfe4de0e113890da1d149c701da2b61188497b2e9",
+      "source": [
+        "127.0.0.1",
+        55129
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.041028+00:00",
+      "bytes": 23,
+      "request_sha256": "ca321ff4f471272b05d6f1b6791df5dab68fd67f8893ec25ebcfbc08b75734e5",
+      "source": [
+        "127.0.0.1",
+        49721
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.049319+00:00",
+      "bytes": 23,
+      "request_sha256": "6d998868b132c2db39d917285ecb6f68bd409b5392c4994c991343b5e06745e4",
+      "source": [
+        "127.0.0.1",
+        38426
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.055045+00:00",
+      "bytes": 24,
+      "request_sha256": "30ae5de138c96bd6e4762cf1ff5e18499c1180bc78b5cb39e130e002669cde57",
+      "source": [
+        "127.0.0.1",
+        47278
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.059343+00:00",
+      "bytes": 24,
+      "request_sha256": "109c78229cb7044e75dd53832b8d8d9797e156fe1a77d958358e27ce49129073",
+      "source": [
+        "127.0.0.1",
+        34095
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.063610+00:00",
+      "bytes": 24,
+      "request_sha256": "cf1937cd7a947e3d383d7ce2baf656ab9793e634651d2c4f4b3dd2a88bdcff17",
+      "source": [
+        "127.0.0.1",
+        35912
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.068158+00:00",
+      "bytes": 24,
+      "request_sha256": "9dd3396e03575e8cb04830b3e71606ecc9bfda73d05d7e87bb716db101a80fb6",
+      "source": [
+        "127.0.0.1",
+        49680
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.071730+00:00",
+      "bytes": 24,
+      "request_sha256": "a1c87da0979b1743c568bfb6232bdfe0c43c0a896c8512cb9e4745c4fa3a0ecc",
+      "source": [
+        "127.0.0.1",
+        37400
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.077861+00:00",
+      "bytes": 24,
+      "request_sha256": "576f1d2acbe4a713a61981578ee71277e380c4cc3893d9d34250a07d5fd50650",
+      "source": [
+        "127.0.0.1",
+        46573
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.085235+00:00",
+      "bytes": 24,
+      "request_sha256": "feb6104c7c420843343f492635ce7b5872cddc6f67f3ccee20d4d7132efb011c",
+      "source": [
+        "127.0.0.1",
+        37835
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.092652+00:00",
+      "bytes": 24,
+      "request_sha256": "94e57d7c97a5a2055bdaceaa818e4dcb31422da141283319d70856afd9ec105b",
+      "source": [
+        "127.0.0.1",
+        48861
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.099551+00:00",
+      "bytes": 24,
+      "request_sha256": "79e8fb7f4cf1d627a7178f6ff99bd67e052ffc6ecc66f1b6217709ae891e3fed",
+      "source": [
+        "127.0.0.1",
+        38685
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.106679+00:00",
+      "bytes": 24,
+      "request_sha256": "251e001843fd4420e3c498e1e5aed61ae672325ed7802e2cf35339c5dcc695c5",
+      "source": [
+        "127.0.0.1",
+        38338
+      ]
+    },
+    {
+      "protocol": "udp",
+      "utc": "2026-10-11T13:13:44.113533+00:00",
+      "bytes": 24,
+      "request_sha256": "70ce08ebaa4082faf9c6692e79481f14550049a053dd6c751e16bdf9df956e2d",
+      "source": [
+        "127.0.0.1",
+        45603
+      ]
+    }
+  ],
+  "host_echo_sha256": "3b0c12121ef77c6451eaafde152155d70d8e44a6b06c23a6752eb74ba44b5c1e",
+  "services_after": "ACTIVITY MANAGER SERVICES (dumpsys activity services)\n  (nothing)\n",
+  "publication": {
+    "form": "sanitized_legacy_record",
+    "original_bytes_retained": false,
+    "original_record_sha256": [
+      {
+        "name": "xiaomi-native-datapath.json",
+        "sha256": "60166f2e364d52ed6fc14b6e6d0a60aa1dd345cd3eb307bf28ba3db50c97d94c"
+      }
+    ],
+    "transformations": [
+      "logical_paths",
+      "opaque_device_id",
+      "removed_source_cache_locations",
+      "selected_structured_observations"
+    ],
+    "experiment_reexecuted": false,
+    "build_ref": "docs/verification/p00/builds/datapath-apk-build-v3-routing.json"
+  }
+}

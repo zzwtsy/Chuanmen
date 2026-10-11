@@ -1,0 +1,748 @@
+{
+  "schemaVersion": 1,
+  "documentDate": "2026-10-11",
+  "timezone": "Asia/Shanghai",
+  "scope": "技术架构研究，只读文档/源码；未构建或运行原生VPN",
+  "upstream": {
+    "repository": "EasyTier/EasyTier",
+    "latestNonPrerelease": "v2.6.4",
+    "releasePublishedAt": "2026-05-12T15:25:14Z",
+    "releaseCommit": "8428a89d2dabc94c97d370ec607c6ca142473626",
+    "mainCommit": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "mainCommitDate": "2026-10-10T17:35:33Z",
+    "mainPackageVersion": "2.7.0 (source manifest, not a released-version claim)",
+    "prototypeCoreSemanticsRevision": "83baead0599110bee0d47f4c70b63b23753252a7",
+    "selection": "P00 pending; stable and main must not be mixed"
+  },
+  "apiSources": [
+    {
+      "id": "ET-01-repo",
+      "url": "https://api.github.com/repos/EasyTier/EasyTier",
+      "readStatus": "read",
+      "retrieval": "GitHub read-only tool"
+    },
+    {
+      "id": "ET-01-release",
+      "url": "https://api.github.com/repos/EasyTier/EasyTier/releases/latest",
+      "readStatus": "read",
+      "retrieval": "GitHub read-only tool"
+    },
+    {
+      "id": "ET-02-tag",
+      "url": "https://api.github.com/repos/EasyTier/EasyTier/git/ref/tags/v2.6.4",
+      "readStatus": "read",
+      "retrieval": "GitHub read-only tool"
+    },
+    {
+      "id": "ET-01-main",
+      "url": "https://api.github.com/repos/EasyTier/EasyTier/commits/main",
+      "readStatus": "read",
+      "retrieval": "GitHub read-only tool"
+    }
+  ],
+  "webSources": [
+    {
+      "id": "A-01",
+      "title": "Android VPN 指南",
+      "url": "https://developer.android.com/develop/connectivity/vpn",
+      "toolRefs": [
+        "turn111view0"
+      ],
+      "readStatus": "read",
+      "supports": "VPN授权、服务、撤销、Always-on、应用允许/排除名单",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-02",
+      "title": "VpnService API",
+      "url": "https://developer.android.com/reference/android/net/VpnService",
+      "toolRefs": [
+        "turn127view0",
+        "turn128view3"
+      ],
+      "readStatus": "read",
+      "supports": "protect返回值与回环、PFD、setUnderlyingNetworks",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-03",
+      "title": "Compose Material3 发布页",
+      "url": "https://developer.android.com/jetpack/androidx/releases/compose-material3",
+      "toolRefs": [
+        "turn117view0",
+        "turn122view0",
+        "turn124view1"
+      ],
+      "readStatus": "read",
+      "supports": "stable1.4.0、beta1.5.0-beta01、1.4线移出Expressive实验API",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-04",
+      "title": "Material Design 3 in Compose",
+      "url": "https://developer.android.com/develop/ui/compose/designsystems/material3",
+      "toolRefs": [
+        "turn111view1",
+        "turn112view3"
+      ],
+      "readStatus": "read",
+      "supports": "Monet Android12+、动态色回退、语义色角色",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-05",
+      "title": "Google Play target API要求",
+      "url": "https://developer.android.com/google/play/requirements/target-sdk",
+      "toolRefs": [
+        "turn111view2",
+        "turn112view0"
+      ],
+      "readStatus": "read",
+      "supports": "2026-08-31起新应用/更新需API36+；页更新2026-10-01",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-06",
+      "title": "16KB页面支持",
+      "url": "https://developer.android.com/guide/practices/page-sizes",
+      "toolRefs": [
+        "turn111view3",
+        "turn112view1",
+        "turn124view2"
+      ],
+      "readStatus": "read",
+      "supports": "ELF、APK/AAB、AGP8.5.1+、NDKr28+、页面大小运行假设",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-07",
+      "title": "前台服务类型",
+      "url": "https://developer.android.com/develop/background-work/services/fgs/service-types",
+      "toolRefs": [
+        "turn117view1",
+        "turn124view0"
+      ],
+      "readStatus": "read",
+      "supports": "systemExempted的VPN条件、specialUse用途、声明",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-08",
+      "title": "进程和线程",
+      "url": "https://developer.android.com/guide/components/processes-and-threads",
+      "toolRefs": [
+        "turn117view2",
+        "turn120view3"
+      ],
+      "readStatus": "read",
+      "supports": "默认单进程、Service非独立线程、可回收",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-09",
+      "title": "Android架构建议",
+      "url": "https://developer.android.com/topic/architecture/recommendations",
+      "toolRefs": [
+        "turn128view0"
+      ],
+      "readStatus": "read",
+      "supports": "数据层、UDF和生命周期感知观察",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-10",
+      "title": "DataStore",
+      "url": "https://developer.android.com/topic/libraries/architecture/datastore",
+      "toolRefs": [
+        "turn128view2"
+      ],
+      "readStatus": "read",
+      "supports": "小量持久状态的适用边界",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-11",
+      "title": "读取网络状态",
+      "url": "https://developer.android.com/develop/connectivity/network-ops/reading-network-state",
+      "toolRefs": [
+        "turn127view3"
+      ],
+      "readStatus": "read",
+      "supports": "NetworkCallback与网络能力/LinkProperties",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-12",
+      "title": "Android17正式发布",
+      "url": "https://developer.android.com/blog/posts/android-17-is-here",
+      "toolRefs": [
+        "turn131view1"
+      ],
+      "readStatus": "read",
+      "supports": "2026-06-16正式发布、API37、大屏自适应",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-16",
+      "title": "启动前台服务",
+      "url": "https://developer.android.com/develop/background-work/services/fgs/launch",
+      "toolRefs": [
+        "turn127view2"
+      ],
+      "readStatus": "read",
+      "supports": "前台服务启动顺序与条件",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-17",
+      "title": "Room发布页",
+      "url": "https://developer.android.com/jetpack/androidx/releases/room",
+      "toolRefs": [
+        "turn128view1"
+      ],
+      "readStatus": "read",
+      "supports": "读取作为存储依赖调研；未据此锁定本项目版本",
+      "temporal": "Recheck changeable policy/version information at P00 and P07"
+    },
+    {
+      "id": "A-13",
+      "title": "复制与粘贴",
+      "url": "https://developer.android.com/develop/ui/views/touch-and-input/copy-paste",
+      "toolRefs": [
+        "turn135view0"
+      ],
+      "readStatus": "read",
+      "supports": "Android13系统复制反馈与避免重复提示"
+    },
+    {
+      "id": "A-14",
+      "title": "Compose可访问性默认值",
+      "url": "https://developer.android.com/develop/ui/compose/accessibility/api-defaults",
+      "toolRefs": [
+        "turn135view1"
+      ],
+      "readStatus": "read",
+      "supports": "48dp触控目标与语义"
+    },
+    {
+      "id": "A-15",
+      "title": "Android Keystore",
+      "url": "https://developer.android.com/privacy-and-security/keystore",
+      "toolRefs": [
+        "turn135view2"
+      ],
+      "readStatus": "read",
+      "supports": "密钥使用和不可导出边界；不代表Room/DataStore默认加密"
+    }
+  ],
+  "githubSources": [
+    {
+      "id": "ET-03-main",
+      "title": "主干JNI facade",
+      "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/src/lib.rs",
+      "readStatus": "read",
+      "supports": "JNI公开API映射，未暴露完整protect/TUN-ready/logs/counter契约",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-03-kotlin",
+      "title": "主干Kotlin接口",
+      "path": "easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/kotlin/com/easytier/jni/EasyTierJNI.kt",
+      "readStatus": "read",
+      "supports": "现有Kotlin签名与JSON RPC约束",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-03-json",
+      "title": "主干JSON RPC桥",
+      "path": "easytier-contrib/easytier-ffi/src/json_rpc.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-ffi/src/json_rpc.rs",
+      "readStatus": "read",
+      "supports": "进程内JSON RPC调度；不在配置服务回调内调用",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-03-readme",
+      "title": "JNI README",
+      "path": "easytier-contrib/easytier-android-jni/README.md",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/README.md",
+      "readStatus": "read",
+      "supports": "作为入口说明读取；旧工具链描述不能覆盖实际manifest",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-04",
+      "title": "NativeHostRuntime",
+      "path": "easytier/src/host_runtime.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/host_runtime.rs",
+      "readStatus": "read",
+      "supports": "复用原生socket/DNS宿主",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-04-instance",
+      "title": "NativeInstanceHost",
+      "path": "easytier/src/instance/host.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/host.rs",
+      "readStatus": "read",
+      "supports": "实例策略与机械I/O分离",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-05-ffi",
+      "title": "TUN fd FFI",
+      "path": "easytier-contrib/easytier-ffi/src/instance_api.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-ffi/src/instance_api.rs",
+      "readStatus": "read",
+      "supports": "fd附加调用链与返回值",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-05-mobile",
+      "title": "Mobile TUN runtime",
+      "path": "easytier/src/instance/runtime_host/tun_mobile.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/runtime_host/tun_mobile.rs",
+      "readStatus": "read",
+      "supports": "try_send入队与异步安装区别、DHCP路径",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-05-host",
+      "title": "Runtime host接口实现",
+      "path": "easytier/src/instance/runtime_host/implementation.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/runtime_host/implementation.rs",
+      "readStatus": "read",
+      "supports": "attach_tun_fd委派与shutdown",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-06-main",
+      "title": "主干TUN I/O",
+      "path": "easytier/src/instance/virtual_nic.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/instance/virtual_nic.rs",
+      "readStatus": "read",
+      "supports": "close_fd_on_drop(false)、唯一TUN读写包装点",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-07",
+      "title": "NativeSocketProtector",
+      "path": "easytier/src/socket_protector.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/socket_protector.rs",
+      "readStatus": "read",
+      "supports": "等待保护确认、未安装时直接成功、作用域与测试",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-07-tcp",
+      "title": "TCP socket",
+      "path": "easytier/src/socket/tcp.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/socket/tcp.rs",
+      "readStatus": "read",
+      "supports": "连接与accepted socket保护路径",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-07-udp",
+      "title": "UDP socket",
+      "path": "easytier/src/socket/udp.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/socket/udp.rs",
+      "readStatus": "read",
+      "supports": "host UDP创建与need_protect",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-07-bind",
+      "title": "通用socket bind",
+      "path": "easytier/src/tunnel/common.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/tunnel/common.rs",
+      "readStatus": "read",
+      "supports": "protect顺序与socket mark关系",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-08",
+      "title": "API设备信息",
+      "path": "easytier-proto/proto/api_instance.proto",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-proto/proto/api_instance.proto",
+      "readStatus": "read",
+      "supports": "peer收发/版本/路由/RPC字段",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-08-core",
+      "title": "核心peer schema",
+      "path": "easytier-proto/proto/core_peer.proto",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-proto/proto/core_peer.proto",
+      "readStatus": "read",
+      "supports": "核心peer路由/连接字段",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-16",
+      "title": "公共schema",
+      "path": "easytier-proto/proto/common.proto",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-proto/proto/common.proto",
+      "readStatus": "read",
+      "supports": "TCP与UDP NAT字段",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-15",
+      "title": "peer ping实现",
+      "path": "easytier-core/src/peers/conn/peer_conn_ping.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/src/peers/conn/peer_conn_ping.rs",
+      "readStatus": "read",
+      "supports": "loss_rate为探测成功失败窗口",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-08-projection",
+      "title": "连接统计投影",
+      "path": "easytier-core/src/peers/conn/peer_conn.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/src/peers/conn/peer_conn.rs",
+      "readStatus": "read",
+      "supports": "收发与loss_rate转DTO",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-08-logical",
+      "title": "逻辑流量metrics",
+      "path": "easytier-core/src/peers/traffic_metrics.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/src/peers/traffic_metrics.rs",
+      "readStatus": "read",
+      "supports": "不能将peer逻辑流量无条件等同本机TUN",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-09",
+      "title": "配置patch schema",
+      "path": "easytier-proto/proto/api_config.proto",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-proto/proto/api_config.proto",
+      "readStatus": "read",
+      "supports": "PatchConfig仅列特定字段",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-09-registry",
+      "title": "管理RPC注册",
+      "path": "easytier-core/src/management/full/compiled.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/src/management/full/compiled.rs",
+      "readStatus": "read",
+      "supports": "peer/config/stats等实例RPC注册",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-10",
+      "title": "FFI进程上下文",
+      "path": "easytier-contrib/easytier-ffi/src/state.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-ffi/src/state.rs",
+      "readStatus": "read",
+      "supports": "一个静态Runtime与manager",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-10-cargo",
+      "title": "FFI Cargo",
+      "path": "easytier-contrib/easytier-ffi/Cargo.toml",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-ffi/Cargo.toml",
+      "readStatus": "read",
+      "supports": "cdylib/rlib、features、依赖",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-11",
+      "title": "编译能力校验",
+      "path": "easytier-core/src/instance/build_capabilities.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-core/src/instance/build_capabilities.rs",
+      "readStatus": "read",
+      "supports": "DHCP/代理/Portal等feature能力条件",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-12-schema",
+      "title": "日志RPC schema",
+      "path": "easytier-proto/proto/api_logger.proto",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-proto/proto/api_logger.proto",
+      "readStatus": "read",
+      "supports": "只有级别get/set，没有流订阅",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-17",
+      "title": "JNI logger",
+      "path": "easytier-contrib/easytier-android-jni/src/logger.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/src/logger.rs",
+      "readStatus": "read",
+      "supports": "android_logger init_once",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-18",
+      "title": "核心日志",
+      "path": "easytier/src/common/log/mod.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/common/log/mod.rs",
+      "readStatus": "read",
+      "supports": "核心日志单次初始化与级别",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-12-file",
+      "title": "日志文件sink",
+      "path": "easytier/src/common/log/file.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/common/log/file.rs",
+      "readStatus": "read",
+      "supports": "滚动文件与filter",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-12-management",
+      "title": "日志管理初始化",
+      "path": "easytier/src/common/log/management.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/common/log/management.rs",
+      "readStatus": "read",
+      "supports": "console/file init顺序",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-12-tracing",
+      "title": "tracing桥",
+      "path": "easytier/src/common/log/tracing_backend.rs",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/src/common/log/tracing_backend.rs",
+      "readStatus": "read",
+      "supports": "tracing subscriber接入",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-13",
+      "title": "上游Tauri VPN服务",
+      "path": "tauri-plugin-vpnservice/android/src/main/java/TauriVpnService.kt",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/tauri-plugin-vpnservice/android/src/main/java/TauriVpnService.kt",
+      "readStatus": "read",
+      "supports": "specialUse示例选择；不可直接当本项目policy结论",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-13-manifest",
+      "title": "Tauri plugin Manifest",
+      "path": "tauri-plugin-vpnservice/android/src/main/AndroidManifest.xml",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/tauri-plugin-vpnservice/android/src/main/AndroidManifest.xml",
+      "readStatus": "read",
+      "supports": "参考声明，非本项目完整manifest",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-14",
+      "title": "核心LICENSE",
+      "path": "easytier/LICENSE",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/LICENSE",
+      "readStatus": "read",
+      "supports": "LGPLv3文本",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-19-workspace",
+      "title": "主干Cargo workspace",
+      "path": "Cargo.toml",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/Cargo.toml",
+      "readStatus": "read",
+      "supports": "核心拆分、Rust1.95与依赖来源",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-19-native",
+      "title": "主干核心manifest",
+      "path": "easytier/Cargo.toml",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier/Cargo.toml",
+      "readStatus": "read",
+      "supports": "2.7.0源码版本、features、license-file",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-19-toolchain",
+      "title": "主干Rust工具链",
+      "path": "rust-toolchain.toml",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/rust-toolchain.toml",
+      "readStatus": "read",
+      "supports": "1.95",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-19-jni",
+      "title": "JNI manifest",
+      "path": "easytier-contrib/easytier-android-jni/Cargo.toml",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/Cargo.toml",
+      "readStatus": "read",
+      "supports": "0.1.0 JNI crate与核心依赖",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-19-build",
+      "title": "JNI构建脚本",
+      "path": "easytier-contrib/easytier-android-jni/build.sh",
+      "ref": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "url": "https://github.com/EasyTier/EasyTier/blob/7592951b808c4839cb9d77cc4bc642f124915951/easytier-contrib/easytier-android-jni/build.sh",
+      "readStatus": "read",
+      "supports": "构建输出与ABI，不等于16KB已验证",
+      "retrieval": "GitHub fetch_file at fixed main SHA"
+    },
+    {
+      "id": "ET-03-stable",
+      "title": "稳定JNI facade",
+      "path": "easytier-contrib/easytier-android-jni/src/lib.rs",
+      "requestedRef": "v2.6.4",
+      "resolvedRef": "8428a89d2dabc94c97d370ec607c6ca142473626",
+      "url": "https://github.com/EasyTier/EasyTier/blob/8428a89d2dabc94c97d370ec607c6ca142473626/easytier-contrib/easytier-android-jni/src/lib.rs",
+      "readStatus": "read",
+      "supports": "6个基础JNI入口，没有主干新增generic RPC",
+      "retrieval": "GitHub fetch_file, tag resolved separately"
+    },
+    {
+      "id": "ET-03-stable-ffi",
+      "title": "稳定FFI",
+      "path": "easytier-contrib/easytier-ffi/src/lib.rs",
+      "requestedRef": "v2.6.4",
+      "resolvedRef": "8428a89d2dabc94c97d370ec607c6ca142473626",
+      "url": "https://github.com/EasyTier/EasyTier/blob/8428a89d2dabc94c97d370ec607c6ca142473626/easytier-contrib/easytier-ffi/src/lib.rs",
+      "readStatus": "read",
+      "supports": "稳定生命周期接口",
+      "retrieval": "GitHub fetch_file, tag resolved separately"
+    },
+    {
+      "id": "ET-06-stable",
+      "title": "稳定mobile TUN",
+      "path": "easytier/src/instance/virtual_nic.rs",
+      "requestedRef": "v2.6.4",
+      "resolvedRef": "8428a89d2dabc94c97d370ec607c6ca142473626",
+      "url": "https://github.com/EasyTier/EasyTier/blob/8428a89d2dabc94c97d370ec607c6ca142473626/easytier/src/instance/virtual_nic.rs",
+      "readStatus": "read",
+      "supports": "close_fd_on_drop(false)",
+      "retrieval": "GitHub fetch_file, tag resolved separately"
+    },
+    {
+      "id": "ET-19-stable",
+      "title": "稳定Cargo workspace",
+      "path": "Cargo.toml",
+      "requestedRef": "v2.6.4",
+      "resolvedRef": "8428a89d2dabc94c97d370ec607c6ca142473626",
+      "url": "https://github.com/EasyTier/EasyTier/blob/8428a89d2dabc94c97d370ec607c6ca142473626/Cargo.toml",
+      "readStatus": "read",
+      "supports": "Rust1.95，与README旧描述不同",
+      "retrieval": "GitHub fetch_file, tag resolved separately"
+    },
+    {
+      "id": "ET-09-stable-config",
+      "title": "稳定配置解析",
+      "path": "easytier/src/common/config.rs",
+      "requestedRef": "v2.6.4",
+      "resolvedRef": "8428a89d2dabc94c97d370ec607c6ca142473626",
+      "url": "https://github.com/EasyTier/EasyTier/blob/8428a89d2dabc94c97d370ec607c6ca142473626/easytier/src/common/config.rs",
+      "readStatus": "read",
+      "supports": "TOML解析存在；未将字段范围视为Android能力验证",
+      "retrieval": "GitHub fetch_file, tag resolved separately"
+    }
+  ],
+  "localScopeEvidence": {
+    "file": "focused-catalog.json",
+    "origin": "此前原型官网部署快照，本轮只读meta",
+    "assistantUrl": "https://easytier.cn/assistant/",
+    "entrySha256": "2ff541efed99e1e873f68ad5640cf12d93b1af7276ef19e171849a51b4a13eae",
+    "bundleSha256": "6f8b57a22e2a348d9d1e6b078d04ddf80d1895adcccc2a91c3a45f188ccd41d5",
+    "visibleCoreEditingUnits": 37,
+    "visibleAndroidEditingUnits": 7,
+    "productionCapabilityProof": false,
+    "hiddenFieldsStatus": "all 8 require platform review; temporary adaptation gaps are not permanent exclusions"
+  },
+  "limitedOrFailed": [
+    {
+      "id": "A-16KB-announcement",
+      "url": "https://android-developers.googleblog.com/2025/05/prepare-play-apps-for-devices-with-16kb-page-size.html",
+      "readStatus": "search-snippet-only",
+      "toolRefs": [
+        "turn129search0",
+        "turn131view0"
+      ],
+      "notes": "Direct open redirected to Google verification page and failed; do not treat full policy page as read"
+    },
+    {
+      "id": "A-builder",
+      "url": "https://developer.android.com/reference/android/net/VpnService.Builder",
+      "readStatus": "failed",
+      "toolRefs": [
+        "turn127view1"
+      ],
+      "notes": "Internal error; did not rely on this failed open, used official VPN guide and VpnService API"
+    }
+  ],
+  "noRuntimeVerification": [
+    "Android Gradle build",
+    "JNI load",
+    "real VPN",
+    "real peer statistics",
+    "16KB device",
+    "real screenshot/touch",
+    "performance"
+  ],
+  "proposedInterfaces": [
+    "CoreEngine",
+    "TunPlan",
+    "attachTunAndAwait",
+    "detachTunAndAwait",
+    "stopAndAwait",
+    "readTunCounters",
+    "observeCoreLogs"
+  ],
+  "openGates": [
+    "exact tag/commit and patch set",
+    "protect bridge all enabled transport paths",
+    "TUN ownership and completion",
+    "DHCP/routes/DNS synchronization",
+    "actual native capabilities",
+    "source-mapped telemetry",
+    "logger initialization",
+    "SDK/NDK/Compose dependency matrix"
+  ],
+  "timeAnchorUtc": "2026-10-10T22:43:59Z",
+  "recordedAtUtc": "2026-10-10T22:52:55Z",
+  "retrievedOnLocalDate": "2026-10-11"
+}
