@@ -1,0 +1,6 @@
+interface:
+  display_name: "GitHub PR 交付"
+  short_description: "核对任务分支，使用 gh 创建或更新 PR，跟踪检查并交付待审结果"
+  default_prompt: "使用 $github-pr 按项目规范创建或更新当前任务的 PR，跟踪检查并交付 Ready 待审结果。"
+policy:
+  allow_implicit_invocation: true

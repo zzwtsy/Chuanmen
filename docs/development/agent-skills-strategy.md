@@ -8,6 +8,7 @@
 |---|---|---|
 | 项目配置工作流 | [easytier-config-audit](../../.agents/skills/easytier-config-audit/SKILL.md) | 配置目录、助手映射与 Android 显隐审计，不证明真实 VPN 连通 |
 | 项目实验工作流 | [verification-evidence](../../.agents/skills/verification-evidence/SKILL.md) | 技术可行性、真机实验、证据筛选与发布；普通功能开发和常规测试不触发 |
+| 项目 PR 工作流 | [github-pr](../../.agents/skills/github-pr/SKILL.md) | 使用 gh 创建或更新 PR、跟踪检查并交付 Ready 待审结果；仅明确的后续请求才合并，tag 与 Release 另行授权 |
 | 导入的 Android 专题技能 | `.agents/skills/` 中的 adaptive、android-intent-security、android-permissions-security、edge-to-edge、navigation-3、navigation-event、styles、testing-setup；来源见锁文件 | 遇到相应平台或 API 问题时按描述加载；它们不是项目专属工作流，也不替代当前依赖和代码 |
 | 跨任务辅助技能 | [android-kotlin-comments](../../.agents/skills/android-kotlin-comments/SKILL.md)、[git-commit](../../.agents/skills/git-commit/SKILL.md)、[trim-authoring-residue](../../.agents/skills/trim-authoring-residue/SKILL.md) | 分别处理注释与测试意图、提交信息与已授权提交、写作过程残留；不自动扩大修改或提交范围 |
 | 候选规格 | [easytier-core-upgrade](skill-drafts/easytier-core-upgrade.md)、[easytier-vpn-diagnose](skill-drafts/easytier-vpn-diagnose.md) | 设计草案，不是可安装技能；正式产品流程和复现记录稳定后再决定创建 |
@@ -25,7 +26,7 @@
 
 Skill 不必有脚本；本项目配置审计需要脚本，是因为重复的目录一致性检查适合确定性执行。Agent Skills 规范要求技能目录包含具有 `name`、`description` 的 `SKILL.md`，支持引用脚本、资料和资产；可选 `allowed-tools` 仍是实验字段，不能理解为跨工具通用授权机制。[格式规范](https://agentskills.io/specification)。
 
-日常 Git 协作规范由 [Git 工作流](git-workflow.md) 维护，版本规范由 [版本治理](versioning.md) 维护。先验收分支、PR、检查与人工 Squash 的实际流程，再提炼轻量 `github-pr` 项目 skill；规范保持在文档，确定性门禁保持在 `scripts/git` 与 CI，skill 只组织执行和待审交付。创建 tag 与发布 Release 保持独立授权。
+日常 Git 协作规范由 [Git 工作流](git-workflow.md) 维护，版本规范由 [版本治理](versioning.md) 维护。[github-pr](../../.agents/skills/github-pr/SKILL.md) 组织分支核对、复用本地提交、PR 更新、检查跟踪与待审交付；确定性门禁保持在 `scripts/git` 与 CI。技能默认允许按任务描述发现，不自动合并；创建 tag 与发布 Release 保持独立授权。
 
 ## 3. 配置审计工作流
 
