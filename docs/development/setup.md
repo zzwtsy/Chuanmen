@@ -24,9 +24,17 @@ demo 使用 Android/Kotlin 工具链，无真实 VPN、NDK 或网络秘密要求
 ## 首次搭建与构建
 
 1. 在 Android Studio 打开仓库根目录，按上述配置准备 Daemon JDK 和 Android SDK。
-2. 通过 SDK Manager 安装 `compileSdk` 对应平台、固定构建工具和 `platform-tools`。SDK 位置由本机 `local.properties` 或环境配置提供；本机目录不进入版本库。
+2. 通过 SDK Manager 安装 `compileSdk` 对应平台、固定构建工具和 `platform-tools`。SDK 优先使用 `local.properties` 中有效的 `sdk.dir`，再使用环境配置；相对路径按仓库根目录解析，本机目录不进入版本库。
 3. 首次 Gradle 同步与构建允许获取 Wrapper、插件和依赖。自动工具链解析可能访问配置中的分发来源；受限网络环境需预先准备对应缓存。
 4. 安装 Python 和 uv 后，从根目录运行诊断、快速检查与 demo 构建。
+
+诊断启动 Java 时与 Wrapper 一样优先使用 `JAVA_HOME/bin/java`，未设置时才查找 PATH；Daemon JVM 仍按工程配置选择。Rust 已安装但没有可用工具链时，doctor 保留失败日志并提示 demo 不要求 Rust；必需工具失败和命令超时仍返回失败。
+
+需要直接调用下文的 ADB 命令时，将同一 SDK 的位置设为 `ANDROID_HOME`，并把 `platform-tools` 加入 PATH。若保留旧的 `ANDROID_SDK_ROOT`，它须与 `ANDROID_HOME` 一致；仅设置 `sdk.dir` 不会自动配置 shell 的 PATH。
+
+```bash
+export PATH="$ANDROID_HOME/platform-tools:$PATH"
+```
 
 无界面 CI 使用官方 [Android CLI](https://developer.android.com/tools/agents/android-cli/download) 的 [`android sdk install`](https://developer.android.com/tools/agents/android-cli/commands/sdk_install) 安装工程声明的包；[`sdkmanager` 已弃用](https://developer.android.com/tools/sdkmanager)。Android 工作流显式下载固定版本的启动器与组件，不依赖 runner 预装命令或 SDK；`ANDROID_HOME` 与 `ANDROID_SDK_ROOT` 指向同一个临时 SDK 目录，后续诊断、测试和构建复用该目录。SDK 安装结果与完整 CI 验收分别记录，见 [CI SDK 安装入口修复](../plan/p01-foundation.md#ci-sdk-安装入口修复2026-10-13)。
 

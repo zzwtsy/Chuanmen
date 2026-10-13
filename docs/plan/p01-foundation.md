@@ -14,7 +14,7 @@
 |---|---|---|
 | Android 工程 | `:app -> :contracts`、demo 配置切片、四页导航、生命周期收集、主题组件及具名预览；41 项 JVM 测试（27 项领域/状态、14 项 UI）通过，20 张主题/场景图已渲染；API 36 设备 14 项 UI 用例与 20 张有效 PNG 验收通过 | API 24–25 尚未实测，系统栏、完整真机矩阵与完整无障碍验证不继承 JVM 或 API 36 结果 |
 | 工具链 | Wrapper、版本目录、Daemon JVM；2026-10-12 的新 checkout 加任务补丁复建 demoDebug 通过，live 明确阻断；候选核心/NDK/Rust/ABI 与来源摘要已固定并自动核对 | P02 实际接入与生产批准分别验收，不阻塞 P01 demo 工程基础 |
-| 质量检查 | Python 检查及 CI；四个 Android 入口、15 项工具回归、模块/import 检查、Android CI 配置 | Android CI 的完整运行与源码定位；首次运行在 SDK 安装步骤失败，见 [CI SDK 安装入口修复](#ci-sdk-安装入口修复2026-10-13) |
+| 质量检查 | Python 检查及 CI；四个 Android 入口、23 项工具回归、模块/import 检查、Android CI 配置 | Android CI 的完整运行与源码定位；首次运行在 SDK 安装步骤失败，见 [CI SDK 安装入口修复](#ci-sdk-安装入口修复2026-10-13) |
 | 协作与文档 | 根 AGENTS.md、目录边界 ADR、任务模板、开发环境文档 | 随实际切片补充入口、依赖检查和任务验收，不重复建立文档副本 |
 
 历史模板、当前 demo 与 P00 探针分别覆盖各自范围；本地领域测试不表示正式 VpnService 或生产桥接已验收。当前装配决策见 [ADR 0004](../design/adr/0004-demo-assembly.md)。

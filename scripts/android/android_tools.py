@@ -26,17 +26,39 @@ class ToolFailure(Exception):
 
 
 def sdk_path(root: Path) -> Path:
-    """只读取 SDK 定位项，不访问签名、凭据或其他个人配置。"""
-    configured = os.environ.get("ANDROID_HOME") or os.environ.get("ANDROID_SDK_ROOT")
-    if configured:
-        return Path(configured)
+    """优先使用有效 sdk.dir，再检查环境变量，与 AGP 的常规 SDK 定位顺序一致。"""
     properties = root / "local.properties"
-    if properties.exists():
-        match = re.search(r"^sdk\.dir=(.+)$", properties.read_text(), re.MULTILINE)
+    if properties.is_file():
+        match = re.search(
+            r"^[ \t]*sdk\.dir[ \t]*[=:][ \t]*(.+)$",
+            properties.read_text(),
+            re.MULTILINE,
+        )
         if match:
-            return Path(match.group(1).replace("\\:", ":").replace("\\\\", "\\"))
+            # SDK Manager 写入的冒号、空格及反斜杠转义不属于路径本身。
+            local = Path(re.sub(r"\\(.)", r"\1", match.group(1)))
+            local = local if local.is_absolute() else root / local
+            if local.is_dir():
+                return local
+    configured = {}
+    for name in ("ANDROID_HOME", "ANDROID_SDK_ROOT"):
+        value = os.environ.get(name)
+        if value:
+            path = Path(value)
+            path = path if path.is_absolute() else root / path
+            if path.is_dir():
+                configured[name] = path
+    if len(configured) == 2 and (
+        configured["ANDROID_HOME"].resolve() != configured["ANDROID_SDK_ROOT"].resolve()
+    ):
+        raise ToolFailure(
+            3, "SDK_CONFLICT: ANDROID_HOME 与 ANDROID_SDK_ROOT 必须指向同一 SDK"
+        )
+    if configured:
+        return next(iter(configured.values()))
     raise ToolFailure(
-        3, "SDK_MISSING: 设置 ANDROID_HOME 或 local.properties 的 sdk.dir"
+        3,
+        "SDK_MISSING: 将 local.properties 的 sdk.dir 或 ANDROID_HOME 指向有效 SDK 目录",
     )
 
 
@@ -176,7 +198,9 @@ def doctor(runner: Runner, offline: bool, native: bool) -> None:
         f"候选核心 {candidate['upstream']['commit']}；NDK {toolchain['ndk_revision']}；"
         f"Rust {toolchain['rust_version']}；ABI {', '.join(toolchain['abis'])}；生产未批准"
     )
-    java = runner.run("java", ["java", "-version"])
+    java_home = os.environ.get("JAVA_HOME")
+    java_command = str(Path(java_home) / "bin/java") if java_home else "java"
+    java = runner.run("java", [java_command, "-version"])
     print(java.strip())
     print(f"Python {os.sys.version.split()[0]}")
     print(runner.run("uv", ["uv", "--version"]).strip())
@@ -216,7 +240,13 @@ def doctor(runner: Runner, offline: bool, native: bool) -> None:
         ("rust-targets", ["rustup", "target", "list", "--installed"]),
     ):
         if shutil.which(argv[0]):
-            print(runner.run(label, argv).strip())
+            try:
+                print(runner.run(label, argv).strip())
+            except ToolFailure as exc:
+                if exc.code != 4:
+                    raise
+                # rustup shim 存在不代表工具链可用；demo 不因此增加原生前置要求。
+                print(f"{argv[0]} 诊断失败（demo 不要求）：{exc}")
         else:
             print(f"{argv[0]} 未安装（demo 不要求）")
     print(

@@ -1,14 +1,24 @@
 """Android 入口与边界检查回归；不启动 Gradle、ADB 或真实设备。"""
 
 import hashlib
+import io
 import json
+import os
 import subprocess
 import unittest
+from contextlib import redirect_stdout
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
-from android_tools import Runner, ToolFailure, doctor, native_candidate, select_device
+from android_tools import (
+    Runner,
+    ToolFailure,
+    doctor,
+    native_candidate,
+    sdk_path,
+    select_device,
+)
 from check_boundaries import violations
 
 
@@ -74,6 +84,161 @@ class AndroidToolsTest(unittest.TestCase):
         }
         self.write(root, "gradle/native-candidate.json", json.dumps(data))
         return data
+
+    def doctor_fixture(self, root: Path) -> Runner:
+        self.candidate(root)
+        self.write(
+            root,
+            "app/build.gradle.kts",
+            'compileSdk { version = release(37) }\nbuildToolsVersion = "36.0.0"\n',
+        )
+        self.write(root, "sdk/platforms/android-37.0/android.jar", "fixture")
+        self.write(root, "sdk/build-tools/36.0.0/source.properties", "fixture")
+        self.write(root, "local.properties", "sdk.dir=sdk\n")
+        return Runner(root, root, 30)
+
+    def test_local_sdk_overrides_environment_and_resolves_escaped_relative_path(
+        self,
+    ) -> None:
+        """本地 SDK 使用含转义空格的相对路径且环境另指两个目录时定位，断言选择与 AGP 相同的本地目录。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ("local sdk", "environment", "legacy"):
+                (root / name).mkdir()
+            self.write(root, "local.properties", "sdk.dir=local\\ sdk\n")
+            with patch.dict(
+                os.environ,
+                {
+                    "ANDROID_HOME": str(root / "environment"),
+                    "ANDROID_SDK_ROOT": str(root / "legacy"),
+                },
+                clear=True,
+            ):
+                self.assertEqual(root / "local sdk", sdk_path(root))
+
+    def test_invalid_local_sdk_falls_back_to_valid_environment(self) -> None:
+        """本地 SDK 路径不存在而 ANDROID_HOME 有效时定位，断言使用环境目录而不是拒绝可用环境。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            sdk = root / "sdk"
+            sdk.mkdir()
+            self.write(root, "local.properties", "sdk.dir=missing\n")
+            with patch.dict(os.environ, {"ANDROID_HOME": str(sdk)}, clear=True):
+                self.assertEqual(sdk, sdk_path(root))
+
+    def test_sdk_root_fallback_and_environment_conflict(self) -> None:
+        """仅旧 SDK 环境变量有效时定位成功；两个变量分别指向有效目录时定位失败并明确指出冲突。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            sdk = root / "sdk"
+            sdk.mkdir()
+            other = root / "other"
+            other.mkdir()
+            with patch.dict(os.environ, {"ANDROID_SDK_ROOT": str(sdk)}, clear=True):
+                self.assertEqual(sdk, sdk_path(root))
+                os.environ["ANDROID_HOME"] = str(other)
+                with self.assertRaises(ToolFailure) as failure:
+                    sdk_path(root)
+            self.assertEqual(3, failure.exception.code)
+            self.assertIn("SDK_CONFLICT", str(failure.exception))
+
+    def test_sdk_without_valid_directory_is_blocked(self) -> None:
+        """本地与环境均没有有效 SDK 目录时定位，断言返回前置缺失而不误报平台可用。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            with (
+                patch.dict(
+                    os.environ, {"ANDROID_HOME": str(root / "missing")}, clear=True
+                ),
+                self.assertRaises(ToolFailure) as failure,
+            ):
+                sdk_path(root)
+            self.assertEqual(3, failure.exception.code)
+            self.assertIn("SDK_MISSING", str(failure.exception))
+
+    def test_doctor_uses_java_home_when_java_is_absent_from_path(self) -> None:
+        """PATH 没有 java 而 JAVA_HOME 提供可执行程序时诊断，断言实际运行该程序并保留版本日志。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = self.doctor_fixture(root)
+            jdk = root / "jdk"
+            self.write(jdk, "bin/java", '#!/bin/sh\nprintf "fixture JAVA_HOME\\n"\n')
+            (jdk / "bin/java").chmod(0o755)
+            run_command = runner.run
+
+            def run(label, argv, env=None):
+                return (
+                    run_command(label, argv, env)
+                    if label == "java"
+                    else "fixture version"
+                )
+
+            with (
+                patch.dict(os.environ, {"JAVA_HOME": str(jdk), "PATH": ""}, clear=True),
+                patch.object(runner, "run", side_effect=run),
+            ):
+                doctor(runner, True, False)
+            self.assertEqual("fixture JAVA_HOME\n", (root / "java.log").read_text())
+            self.assertEqual(0, runner.records[0]["exit_code"])
+
+    def test_doctor_does_not_fall_back_from_invalid_java_home(self) -> None:
+        """JAVA_HOME 指向缺少 java 的目录时诊断，断言前置失败，与 Wrapper 一样不改用 PATH 中的其他 JDK。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = self.doctor_fixture(root)
+            with (
+                patch.dict(os.environ, {"JAVA_HOME": str(root / "missing")}),
+                self.assertRaises(ToolFailure) as failure,
+            ):
+                doctor(runner, True, False)
+            self.assertEqual(3, failure.exception.code)
+            self.assertIn("TOOL_MISSING", str(failure.exception))
+            self.assertIn(str(root / "missing/bin/java"), str(failure.exception))
+            self.assertEqual([], runner.records)
+
+    def test_optional_rust_failure_does_not_block_demo_doctor(self) -> None:
+        """Rust shim 存在但没有可用工具链时诊断 demo，断言记录诊断失败原因并继续说明 live 阻断。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = self.doctor_fixture(root)
+            output = io.StringIO()
+
+            def run(label, argv, env=None):
+                if label in ("rust", "rust-targets"):
+                    raise ToolFailure(4, "TASK_FAILED: fixture missing toolchain")
+                return "fixture version"
+
+            with (
+                patch.object(runner, "run", side_effect=run),
+                patch("android_tools.shutil.which", return_value="fixture shim"),
+                redirect_stdout(output),
+            ):
+                doctor(runner, True, False)
+            self.assertIn("rustc 诊断失败（demo 不要求）", output.getvalue())
+            self.assertIn("rustup 诊断失败（demo 不要求）", output.getvalue())
+            self.assertIn("live 阻断原因", output.getvalue())
+
+    def test_doctor_preserves_required_failure_and_optional_timeout(self) -> None:
+        """必需的 JDK 命令失败或可选 Rust 命令超时时诊断，断言原失败分类保留，不能被 demo 宽容策略吞掉。"""
+        for label, code in (("java", 4), ("rust", 6)):
+            with self.subTest(label=label), TemporaryDirectory() as directory:
+                root = Path(directory)
+                runner = self.doctor_fixture(root)
+
+                def run(
+                    current, argv, env=None, *, failure_label=label, failure_code=code
+                ):
+                    if current == failure_label:
+                        raise ToolFailure(failure_code, "fixture failure")
+                    return "fixture version"
+
+                with (
+                    patch.object(runner, "run", side_effect=run),
+                    patch("android_tools.shutil.which", return_value="fixture shim"),
+                    self.assertRaises(ToolFailure) as failure,
+                ):
+                    doctor(runner, True, False)
+                self.assertEqual(code, failure.exception.code)
 
     def test_candidate_inputs_match_frozen_sources(self) -> None:
         """候选版本及四个输入与冻结来源相符时核对，断言返回候选且生产批准仍为 false。"""
