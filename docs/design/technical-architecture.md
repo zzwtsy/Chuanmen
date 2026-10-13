@@ -2,7 +2,7 @@
 
 架构设计基线 1.0 · 外部资料核对日期：2026-10-11（Asia/Shanghai）。文中的上游“当前/最新”按该日期理解，实际依赖以仓库配置为准。
 
-本文规定客户端的目标边界、状态归属、平台适配与验证门槛。现有 `:app` 模板的组合入口与共享主题见 [开发环境](../development/setup.md)，目录演进见 [目录边界 ADR](adr/0003-directory-boundaries.md)，实施状态见 [路线图](../plan/ROADMAP.md)。正式 VPN/JNI 与业务契约尚待实现；交互原型和 P00 探针分别支撑设计表达与限定实验结论。
+本文规定目标边界、状态归属、平台适配与验证门槛。现有 demo 与纯领域契约见 [开发环境](../development/setup.md)，目录演进见 [目录边界 ADR](adr/0003-directory-boundaries.md)，实施状态见 [路线图](../plan/ROADMAP.md)。正式 VPN/JNI 尚待实现；交互原型、demo 和 P00 探针分别支撑各自范围的验证。
 
 本文的证据等级为：**已证实**指研究时读取的一手文档或固定版本源码；**拟议**指本项目应建立的设计与接口；**待实测**指必须由所选构建产物与设备实验确认的行为。读取记录见 [Android 与核心证据](../research/android-core-evidence.md)，后续实测结果见 [P00 报告](../verification/p00/report.md)；源码事实不能代替产品验收。
 
@@ -24,7 +24,7 @@ P00 的固定核心来源、实验补丁决策与遗留限制以报告为准。�
 
 ## 2. 工程边界与依赖
 
-采用包级业务切片与独立运行模块。当前只有 `:app` 模板；目标为 `:app`、`:contracts`、`:vpn`、`:core-bridge`，按实际实现与消费者建立。详细目录约定见 [目录边界 ADR](adr/0003-directory-boundaries.md)。
+采用包级业务切片与独立运行模块。当前为 `:app -> :contracts`；`:vpn`、`:core-bridge` 在实际实现与消费者就绪后建立。详细目录约定见 [目录边界 ADR](adr/0003-directory-boundaries.md)，当前 demo 边界见 [装配 ADR](adr/0004-demo-assembly.md)。
 
 | 模块 / 目录 | 唯一职责 | 不应承担的职责 |
 |---|---|---|

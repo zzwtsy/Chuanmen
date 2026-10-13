@@ -19,7 +19,7 @@
 
 | 时间点 | 应具备的东西 | 明确边界 |
 |---|---|---|
-| 已有工程基础 | `:app` 模板与共享主题、构建配置、设计/原型/配置目录、Python 校验与 Ruff、CI 配置、代理规则和专用技能 | 模板仅有示例行为；Python CI 配置不等于 Android 构建 CI 已运行 |
+| 已有工程基础 | `:app -> :contracts`、demo 切片与共享主题、构建配置、设计/原型/配置目录、Python 与 Android 检查、CI 配置、代理规则 | 本地通过的范围见 P01；Android CI 尚无远端运行记录 |
 | P00 历史验收 | 固定核心来源、许可技术复核、限定场景的实验源码与冻结证据 | 结论以 [P00 报告](../verification/p00/report.md) 的制品和范围为准，维护后的探针不继承旧验收 |
 | P01 退出目标 | 干净环境构建、首条业务切片、demo 数据源、领域契约、导航、Android 快速检查和 CI | 复用已有基础，补齐剩余门槛；通用脚本须真正创建、运行后才进入可用命令列表 |
 | P02 | 真正的 VpnService/native 生命周期、数据路径、结构化诊断与故障夹具 | 获得这批证据后再提炼核心升级和 VPN 排障技能 |
@@ -48,13 +48,13 @@ P01 应维护一张很小的任务导航表，更新时与实际目录一致：
 
 ## 4. 模块边界以实际责任划分
 
-当前已有 `:app` 的组合入口与共享主题，业务切片尚未实现。后续目标为 `:app`、`:contracts`、`:vpn`、`:core-bridge`；按实际消费者和实现建立，目录与依赖见 [目录边界 ADR](../design/adr/0003-directory-boundaries.md) 和 [技术架构](../design/technical-architecture.md#2-工程边界与依赖)。
+当前为 `:app -> :contracts`，已有 demo 配置编辑、四页导航与共享主题；`:vpn`、`:core-bridge` 按实际消费者和实现建立，目录与依赖见 [目录边界 ADR](../design/adr/0003-directory-boundaries.md)和[demo 装配](../design/adr/0004-demo-assembly.md)。
 
 配置编辑、改名、保存、应用，以及日志、设备、首页和偏好相关变更，先查所属能力和操作。状态、校验、持久化和测试聚合在切片；跨模块接口才进入 `:contracts`。根导航和 DI 归 application，公共视觉能力归 shared/designsystem。测试保留标准 source set，镜像被测包。
 
-服务持有唯一真实会话，JNI 适配通过窄桥实现。仓库实现由配置切片提供，经装配注入服务；业务 UI 不访问 DAO 或 JNI。Kotlin 包不是编译隔离边界；P01 建立首条业务切片时落实依赖检查，有实际隔离或编译收益后再提取功能模块。
+正式服务应持有唯一真实会话，JNI 适配通过窄桥实现。当前模拟仓库由配置切片提供，经装配注入；业务 UI 不访问存储或引擎。Kotlin 包不是编译隔离边界；check-fast 已落实当前依赖/import 检查，有实际隔离或编译收益后再提取功能模块。
 
-工程工具按任务聚合在 scripts；固定问题的实验、fixture 和探针归 experiments；输出归忽略的 build 目录。Android 通用工具在 P01 实施时归 scripts/android。实际复用后才提取共享支持，不提前生成空目录、页面模块或通用插件框架。[Android 模块化指南](https://developer.android.com/topic/modularization)
+工程工具按任务聚合在 scripts；固定问题的实验、fixture 和探针归 experiments；输出归忽略的 build 目录。Android 通用工具已在 scripts/android 提供。实际复用后才提取共享支持，不提前生成空目录、页面模块或通用插件框架。[Android 模块化指南](https://developer.android.com/topic/modularization)
 
 ## 5. 构建环境必须能明确复现
 
@@ -74,9 +74,9 @@ Gradle Wrapper 能使用声明的 Gradle 版本；分发包校验和与 Wrapper 
 
 现有 Python 工具与实验源码的 lint、格式检查使用根 [ruff.toml](../../ruff.toml)，运行命令见 [开发环境](setup.md)。CI 通过隔离的 uv 工具环境执行固定版本的 Ruff；校验脚本自身仍使用标准库。规则例外限定到具体 CLI 文件或有中文理由的语句，子进程显式声明 `check` 并保留原有退出码处理与日志记录。
 
-以下四个正式 Android 通用脚本是 P01 的交付目标，当前尚未提供。已有模板构建和实验探针各自验证对应范围；待通用脚本完成并被运行验证后，才能从阶段计划移入 README 的“可用命令”。
+以下四个 Android 通用脚本已创建；实际参数、运行结果和设备执行范围见 [开发环境](setup.md)和[P01](../plan/p01-foundation.md)。demo 检查与实验探针各自验证对应范围。
 
-| 拟建入口 | 输入和职责 | 完成后须保证 |
+| 实际入口 | 输入和职责 | 命令契约 |
 |---|---|---|
 | `scripts/android/doctor.sh` | 检查工具链、SDK/NDK、ABI、核心来源 | 默认只读；报告缺什么及安装说明，不悄悄改全局环境 |
 | `scripts/android/check-fast.sh` | 执行格式检查、领域测试、配置目录与契约检查 | 缺依赖或有失败返回非零；打印各子项和报告路径 |

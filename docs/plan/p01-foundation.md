@@ -12,12 +12,12 @@
 
 | 范围 | 已有基础 | P01 仍需完成 |
 |---|---|---|
-| Android 工程 | `:app` 模板、application 组合入口、shared/designsystem 主题 | 首条业务切片、导航、领域契约及行为测试；按实际消费者建立模块 |
-| 工具链 | Wrapper、版本目录、Daemon JVM 配置；本地 debug 构建与示例 JVM 测试已通过 | 干净环境复建、demo 构建边界及正式 native 接入条件 |
-| 质量检查 | Python 配置审计、隐私/证据/结构校验、Ruff、相关回归与 Python CI 配置 | Android 快速检查、demo 构建和 JVM 测试进入 CI，并取得实际运行结果 |
+| Android 工程 | `:app -> :contracts`、demo 配置切片、四页导航、生命周期收集、主题组件及具名预览；41 项 JVM 测试（27 项领域/状态、14 项 UI）通过，20 张主题/场景图已渲染；API 36 设备 14 项 UI 用例与 20 张有效 PNG 验收通过 | API 24–25 尚未实测，系统栏、完整真机矩阵与完整无障碍验证不继承 JVM 或 API 36 结果 |
+| 工具链 | Wrapper、版本目录、Daemon JVM；2026-10-12 的新 checkout 加任务补丁复建 demoDebug 通过，live 明确阻断；候选核心/NDK/Rust/ABI 与来源摘要已固定并自动核对 | P02 实际接入与生产批准分别验收，不阻塞 P01 demo 工程基础 |
+| 质量检查 | Python 检查及 CI；四个 Android 入口、15 项工具回归、模块/import 检查、Android CI 配置 | Android CI 的实际运行与源码定位；当前 checkout 无 Git 远端，待指定目标仓库 |
 | 协作与文档 | 根 AGENTS.md、目录边界 ADR、任务模板、开发环境文档 | 随实际切片补充入口、依赖检查和任务验收，不重复建立文档副本 |
 
-模板测试和 P00 探针分别覆盖各自范围；它们不代表 demo 业务、正式 VpnService 或生产桥接已验收。
+历史模板、当前 demo 与 P00 探针分别覆盖各自范围；本地领域测试不表示正式 VpnService 或生产桥接已验收。当前装配决策见 [ADR 0004](../design/adr/0004-demo-assembly.md)。
 
 ## 2. 前置门槛
 
@@ -113,7 +113,7 @@
 
 ## 4. 文件与接口交付物
 
-下表是阶段退出时应具备的结果。已有构建配置、开发环境、ADR 和代理规则在原文件中维护；业务目录与 Android 脚本尚待实现，模块按实际消费者建立。
+下表是阶段退出时应具备的结果。构建配置、开发环境、ADR 和代理规则在原文件中维护；业务目录与四个 Android 脚本已建立，后续模块按实际消费者建立。
 
 | 位置 | 最小交付 |
 |---|---|
@@ -139,7 +139,7 @@
 
 ## 6. 验证与明确通过标准
 
-以下 scripts/android 入口当前尚未提供；创建并验证后才成为可执行命令。现有模板与 Python 命令继续使用开发环境文档中的入口：
+以下 scripts/android 入口已创建并在本地运行，参数与产物见开发环境文档：
 
 ~~~bash
 ./scripts/android/doctor.sh
@@ -160,6 +160,85 @@
 
 CI 首次成功须能定位到具体运行及其源码版本，不能以工作流文件或本机脚本存在宣称远端持续集成已经成功。普通检查使用 CI 报告和忽略目录中的诊断输出；阶段验收再按验证规范选择必要记录，不把每次运行永久入库。
 屏幕预览通过不代表真机布局、TalkBack 或系统权限流程已通过。
+
+### 本地实施与复验记录（2026-10-12）
+
+源码基线为 `a4b6572979a73473379692aac5064a03713d7b4b`，本次实现为其上的工作区改动。使用 Linux x86_64；Wrapper、AGP、Compose、SDK 与编译级别以构建配置为准。实测 Launcher Java 21.0.12.1、Daemon JDK 25、Python 3.14.8、uv 0.13.0、SDK Platform 37、build-tools 36.0.0；Doctor 另报告 NDK 30.0.16248370 和 Rust 1.99.0，它们不构成正式 native 工具链批准。
+
+| 命令 / 环境 | 退出码与观察结果 |
+|---|---|
+| `./scripts/android/doctor.sh --offline`，本地 | 0；读取实际工具与 SDK；不修改全局配置 |
+| `./scripts/android/check-fast.sh --offline`，本地 | 0；32 项 JVM 测试、15 项工具回归、Ruff、模块/import 和配置目录通过，JVM 无跳过 |
+| `./scripts/android/build-demo.sh --offline`，本地 | 0；输出 `app/build/outputs/apk/demo/debug/app-demo-debug.apk`，核对独立包名并打印 SHA-256 |
+| `./gradlew --offline --console=plain :app:assembleDemoDebugAndroidTest` | 0；编译两个 Compose 测试类中的 13 项设备测试，未执行设备断言 |
+| `./gradlew --offline :app:assembleLiveDebug` | 1；`verifyLiveEngine` 报 `LIVE_ENGINE_MISSING`，没有生成 live APK |
+| `./scripts/android/doctor.sh --offline --native` | 3；明确报告 `NATIVE_NOT_READY`，不把本机 NDK/Rust 或 P00 产物当成正式接入 |
+| `./scripts/android/verify-device.sh --offline --timeout 30` | 5；无在线设备，未安装或执行设备测试 |
+| 新 checkout 未提供 SDK 路径，运行 doctor | 3；明确报告 `SDK_MISSING` |
+| 当前源码的新 checkout 提供 `ANDROID_HOME` 后依次运行 doctor/check-fast/build-demo/设备测试编译 | 全部 0；分别约 0.52、13.45、3.67、1.62 秒，总计 19.25 秒；32 项 JVM 测试无失败、错误或跳过，生成 20 张渲染图 |
+
+源码副本在忽略目录 `build/android/p01-checkout-current`：从本地仓库全新 clone，应用 `git diff --binary HEAD` 并复制 `git ls-files --others --exclude-standard` 列出的本任务文件。不复制 `local.properties` 或模块构建输出，SDK 通过标准 `ANDROID_HOME` 提供；Gradle/uv 依赖缓存复用。在副本根目录依次执行上表前三条命令和设备测试编译命令，命令、耗时和测试计数在该副本的 `build/android/source-rebuild/result.json` 与 `summary.json`，完整日志同目录；本地入口报告见 `build/android/<入口名>/`。本次不声称空缓存、第二主机或 APK 字节一致复建。
+
+JVM 测试覆盖：改名不修改身份或重连、仅保存不改变 applied、失败及超时保留旧 applied、恢复配置保留本地名称、无效 raw/错误与静态地址保留、迟到会话/操作回执隔离、显式断开幂等、查看 B 与运行 A 分离，以及设置/导航保持草稿。所有测试逐例说明中文条件、操作和可观察结果，使用同一份具名 fixture 与虚拟调度器，不依赖公网或真实 sleep。
+
+P01 剩余验收：Android Actions 实际运行。新 checkout 构建已满足本阶段的复建要求，独立主机/空缓存属于额外验证；完整真机矩阵和 TalkBack 实测在 P06 验收。P02 的服务/JNI/fd 所有权、生产补丁批准和 P03 的磁盘持久化/完整表单不属于本次 demo 验证。P00 冻结证据、运输摘要及生产签名配置保持原身份。
+
+### 实施补齐与本地 UI 验收（2026-10-12）
+
+- `gradle/native-candidate.json` 固定候选核心 SHA、NDK 30.0.16248370、Rust 1.99.0/commit、arm64-v8a 与 x86_64，以及冻结锁文件、补丁和参考构建摘要。doctor/check-fast 校验来源、版本和 `production_approved=false`；未改变正式构建的批准或签名配置。
+- `check-fast.sh --offline` 完整执行 32 项 JVM 测试与 15 项工具回归，均通过、无跳过。UI 部分包含 10 个 fixture/外观条件和 3 项实际 demo Activity 交互，复用设备断言；剪贴板写入是在 JVM Android 模拟环境观察到的结果。
+- Robolectric 4.17/API 37 native graphics 已生成 20 张图到 `app/build/p01-ui/`。浅/深/大字/高对比/动态色、六个具名场景的布局可渲染，字段可滚动到达；测试验证 heading、48 dp 主导航、唯一朗读名称、无效草稿跨页/设置返回保留和复制。
+- 两次隔离软件模拟器启动分别在 240/600 秒内未完成，均已关闭。本机无 `/dev/kvm`；第二次已排除沙箱本地 ADB 权限并观察到 Android 初始化，但设备保持 offline。日志在 `build/android/emulator/`；未执行设备断言，不把 JVM 渲染写成设备或 TalkBack 通过。
+- UI 首次运行发现传递 Espresso 3.5.0 调用 API 37 已移除的 `InputManager.getInstance()`；显式复用已有 3.7.0 后修复。JVM 没有真实显示 Surface，捕获采用 native Canvas；设备保持 PixelCopy。未删除行为断言、关闭检查或创建截图基线。
+- 当前 checkout 没有 Git 远端；需要明确目标仓库后取得 Actions 运行 URL 与具体源码版本，才能关闭 CI 门槛。基础 UI、候选输入及新 checkout 验证不再作为未完成事项重复列入。
+
+### 配置恢复与低版本截图修复复验（2026-10-13）
+
+在同一源码基线上的工作区继续修复，保留公共契约、保存模型、依赖版本与 `minSdk=24`。待应用仅比较当前运行网络的已保存 `core`、`vpnPolicy` 与 applied；恢复仍创建新修订，内容一致后清除待应用，本地名称与 applied 不变且不提交引擎命令。设备截图仅在 API 26+ 执行；API 24–25 在创建目录或文件前记录用例、页面、API 和原因，保留全部 UI 断言，不将用例标记为跳过。
+
+| 命令 / 环境 | 退出码与观察结果 |
+|---|---|
+| `./scripts/android/check-fast.sh --offline`，本地 | 0；41 项 JVM 测试（27 项领域/状态、14 项 UI），失败、错误、跳过均为 0；15 项工具回归、Ruff、模块/import 与配置目录通过 |
+| `./scripts/android/build-demo.sh --offline`，本地 | 0；生成并核对 demoDebug APK 元数据；SHA-256 为 `9dacb1a536f13e2730f0ed3a6869f5ed9092b683b94f6634185435fd29d2514e` |
+| `./gradlew --offline --console=plain :app:assembleDemoDebugAndroidTest` | 0；编译 14 项共享 UI 用例对应的设备测试 APK |
+| `./scripts/android/verify-device.sh --offline --timeout 300` 与 `--timeout 180`，API 36、arm64 设备 | 均为 6；已安装 demo 与测试 APK，但用例执行超时，未产生完整设备测试报告或 PNG |
+| 已安装 APK 的 `adb shell am instrument -w -r -e package com.github.zzwtsy.chuanmen.application com.github.zzwtsy.chuanmen.demo.test/androidx.test.runner.AndroidJUnitRunner`，120 秒预算 | 调用器返回 6；仅收到 1 项用例开始状态，0 项完成；未报告失败、错误或跳过，但整组结果不完整，不能登记设备通过 |
+| `python3 scripts/validate_handoff.py --strict` | 0；文档、链接、配置与阶段运输摘要校验通过 |
+| `python3 scripts/verification/check-privacy.py` | 0；工作区文件未命中已实现的隐私规则 |
+| `python3 scripts/verification/check-evidence.py --stage p00 --require-stage` | 0；仅复核 P00 既有证据完整性与判据，没有重新执行 P00 真机实验 |
+
+新增 7 项状态测试覆盖修订号、核心内容、VPN 策略、离线、查看另一网络、本地改名和未保存草稿；ViewModel 与共享 UI 各新增 1 项恢复回归。ViewModel 验证保存新 MTU 后待应用为真、恢复后为假，saved 修订递增、本地名称与 applied 保留、引擎命令数为 0；共享 UI 验证 MTU 从 1400 恢复为 1380，待应用提示及 Apply 按钮消失。新增和调整的测试逐例保留中文条件、操作与可观察结果。
+
+JVM 报告在 `contracts/build/test-results/test/`、`app/build/test-results/testDemoDebugUnitTest/`；固定 API 37 native Canvas 生成 20 张 PNG 到 `app/build/p01-ui/`，已核对 PNG 签名、非零尺寸和结束块。快速检查与构建的运行记录在 `build/android/<入口名>/`，属于可覆盖的本地诊断输出。
+
+首次设备安装被 `INSTALL_FAILED_USER_RESTRICTED` 拒绝，Gradle/入口虽然返回 0，但没有测试报告，不登记为通过。允许安装后的某次运行记录了 4 项交互用例的 TestRunner 结束日志，随后停在首个展示场景；当时观察到熄屏与锁屏。解锁后再次运行及直接 instrumentation 仍超时，原因尚未定位。临时常亮已关闭、屏幕超时设置已恢复，残留 demo 测试进程已关闭。设备日志与部分状态摘要在 `build/android/verify-device/`；没有完整用例报告，不据结束日志宣称 14 项设备断言通过。
+
+API 24–25 暂无测试设备或已安装的系统镜像，低版本的全部断言执行、无新增截图和原因日志尚未实测；API 36 的整组测试与有效 PNG 验收也未完成，不能推广为 API 26+ 通过。JVM API 37 结果不代替设备兼容性验收。本次未重复历史全新 checkout 复建、空缓存或独立主机验证，也不构成真实 VPN、系统栏或 TalkBack 验收；2026-10-12 的历史记录保持原范围。
+
+### API 36 设备复试（2026-10-13）
+
+复试时设备为 API 36、arm64，已亮屏、解锁，屏幕超时为 10 分钟。独立展示测试仍停在第一个用例，未进入测试正文，也没有创建截图文件。
+
+只对本次 demo 进程读取 Java 线程栈，确认 instrumentation 线程等待在 `Instrumentation.startActivitySync()`，调用链来自 `ActivityScenarioRule.before`。系统记录同一 Activity 启动请求返回 `START_ABORTED (102)`；demo 包的 MIUI 后台启动权限 `10021` 为 `ignore`。这与启动被设备侧后台弹出限制取消一致，等待 Activity 创建的线程未进入 UI 断言或截图。
+
+临时测试进度日志已移除，设备测试 APK 已重新编译通过；诊断用 JDWP 转发已移除，诊断测试进程已关闭。诊断日志放在忽略目录 `build/android/verify-device/retry-api36/`，不纳入阶段冻结记录。允许 demo 的后台弹出后，才能继续核对整组用例和有效 PNG。
+
+### API 36 设备验收（2026-10-13）
+
+用户允许后台弹出后，核对 demo 的 MIUI `10021=allow`，设备亮屏且已解锁。正常设备入口完成全部 14 项测试；其后默认卸载 APK 删除了截图缓存并重置授权。为导出截图，使用保留 APK 的单次运行选项复跑，但安装阶段再次重置授权，该次运行未完成。恢复用户已授予的后台弹出权限后，直接对已安装 APK 执行同一组用例，完成全部断言并取得截图。
+
+| 命令 / 环境 | 退出码与观察结果 |
+|---|---|
+| `./scripts/android/verify-device.sh --offline --timeout 180`，API 36、arm64 设备 | 0；Gradle XML 包含 4 项 `DemoNavigationTest`、10 项 `DemoPresentationTest`，失败、错误、跳过均为 0 |
+| 同一入口加 `ORG_GRADLE_PROJECT_android.injected.androidTest.leaveApksInstalledAfterRun=true` | 6；安装后后台弹出权限恢复为 `ignore`，运行未完成；APK 得以保留，不登记为设备通过 |
+| `adb shell am instrument -w -r -e package com.github.zzwtsy.chuanmen.application com.github.zzwtsy.chuanmen.demo.test/androidx.test.runner.AndroidJUnitRunner`，恢复授权后的已安装 APK | 0；165.34 秒，14 项开始、14 项通过，失败、错误、忽略及假设跳过均为 0，runner 报告 `OK (14 tests)` |
+| 导出 demo 的 `cache/p01-ui/` 并校验 PNG | 20/20 有效；每个展示用例各有总览与配置页截图，尺寸均为 1220 × 2440；逐张核对签名、块 CRC、IDAT 解压后的像素长度与行过滤、结束块 |
+
+第一轮成功运行的 XML、入口结果与日志保存在忽略目录 `build/android/verify-device/retry-api36/first-passing-run/`；直接运行的输出和状态摘要为同级 `direct-full-ui.log`、`direct-full-ui-summary.json`，截图与结构校验摘要为 `p01-ui/`、`png-summary.json`。这两次通过结果分别登记；`build/android/verify-device/result.json` 对应中间未完成的复跑，不代替直接运行结果。
+
+共享恢复回归在设备执行通过：保存 MTU 1400 后出现待应用，恢复运行配置后 MTU 回到 1380，待应用提示及 Apply 按钮消失。20 张截图由设备 PixelCopy 生成；已抽查浅色总览图可见实际 demo 页面内容。本次未修改源码、断言或依赖；用户已允许的后台弹出授权保留为 `allow`，屏幕超时仍为 600000 毫秒，USB 常亮设置仍为 0。
+
+本次设备验收仅覆盖 API 36、arm64 的 demo UI 与截图。API 24–25 暂无设备或已安装系统镜像，低版本全部断言执行、无新增截图与原因日志尚未实测；不扩大为全部 API 26+、真实 VPN、系统栏或 TalkBack 通过。此前超时、安装受限和 2026-10-12 的历史记录保留原貌。
 
 ## 7. 失败回退与本阶段不做
 

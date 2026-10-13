@@ -2,7 +2,7 @@
 
 ## 当前状态与任务入口
 
-串门（Chuanmen）是基于 EasyTier 的 Android 客户端开发仓库，已有 `:app` 模板、原型、配置目录和工程校验工具。业务切片与正式 VPN/JNI 接入仍待实施；阶段状态以 [路线图](docs/plan/ROADMAP.md) 为准，实验结论以对应报告的验证范围为准。
+串门（Chuanmen）是基于 EasyTier 的 Android 客户端开发仓库，已有 `:app -> :contracts`、demo 配置切片、四页导航、原型、配置目录和工程校验工具。正式 VPN/JNI 接入仍待实施；阶段状态以 [路线图](docs/plan/ROADMAP.md) 为准，实验结论以对应报告的验证范围为准。
 
 中文产品名使用“串门”，英文拼音写法为 Chuanmen；文档首次介绍产品时使用“串门（Chuanmen）”，现有工程与代码标识沿用 `Chuanmen` / `chuanmen`。名称含义与介绍文案见 [项目名称](README.md#项目名称)。EasyTier 保留用于上游核心、版本、配置语义和来源引用。
 
@@ -33,7 +33,7 @@ python3 scripts/verification/check-evidence.py --stage p00 --require-stage
 python3 scripts/validate_handoff.py --strict
 ```
 
-这些校验检查工作区结构、隐私、配置目录和既有门槛记录，不重复验证真实 VPN 行为。交付前需要检查暂存内容时，为支持该参数的检查添加 `--tree index`。模板构建与测试入口见 [开发环境](docs/development/setup.md)，原型维护见 [原型说明](prototype/README.md)，实验流程见 [验证规范](docs/development/verification.md)。正式 demo、native 和设备脚本须建立并实测后再登记。
+这些校验检查工作区结构、隐私、配置目录和既有门槛记录，不重复验证真实 VPN 行为。交付前需要检查暂存内容时，为支持该参数的检查添加 `--tree index`。Android 入口为 `scripts/android/doctor.sh`、`check-fast.sh`、`build-demo.sh` 和 `verify-device.sh`；参数、报告及当前设备验证范围见 [开发环境](docs/development/setup.md)。原型维护见 [原型说明](prototype/README.md)，实验流程见 [验证规范](docs/development/verification.md)。正式 native 命令须建立并实测后再登记。
 
 Python 源码修改须运行 [开发环境](docs/development/setup.md) 中固定版本的 uv + Ruff lint 与格式检查，再运行受影响的回归。规则在 [ruff.toml](ruff.toml)；入口通过 `python3` 调用，局部规则例外须说明契约或测试意图，不全局忽略告警。
 

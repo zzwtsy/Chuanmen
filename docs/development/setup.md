@@ -1,44 +1,103 @@
 # 开发环境与验证命令
 
-本页说明当前仓库实际具备的构建和检查入口。阶段状态见 [路线图](../plan/ROADMAP.md)，目标工程边界见 [目录 ADR](../design/adr/0003-directory-boundaries.md)。正式 demo 变体、VPN/JNI 产品模块和 `scripts/android/` 通用工具仍按阶段实施。
+本页说明实际构建和检查入口。阶段状态见 [路线图](../plan/ROADMAP.md)，边界见 [目录 ADR](../design/adr/0003-directory-boundaries.md)和[demo 装配 ADR](../design/adr/0004-demo-assembly.md)。当前提供 `demoDebug`、纯领域契约与 Android 脚本；正式 VPN/JNI 尚未接入，live 构建明确阻断。
 
 ## 环境与版本来源
 
 | 项目 | 权威配置 | 使用要求 |
 |---|---|---|
-| 已有模块 | [settings.gradle.kts](../../settings.gradle.kts) | 当前只有 `:app` |
+| 已有模块 | [settings.gradle.kts](../../settings.gradle.kts) | `:app -> :contracts`；不预建 VPN/JNI 空模块 |
 | Gradle | [Wrapper 配置](../../gradle/wrapper/gradle-wrapper.properties) | 使用仓库的 `./gradlew` |
 | Gradle Daemon JDK | [Daemon JVM 配置](../../gradle/gradle-daemon-jvm.properties) | 按 `toolchainVersion` 准备 JDK；它与 Java 编译兼容级别分别配置 |
 | AGP、Compose 编译插件及 Android 依赖 | [版本目录](../../gradle/libs.versions.toml)和[根构建](../../build.gradle.kts) | 随配置获取固定版本，升级单独评审 |
-| Android SDK 与 Java 编译级别 | [app/build.gradle.kts](../../app/build.gradle.kts) | 安装 `compileSdk` 指定的平台；`minSdk` 不代表已经完成最低系统的产品验收 |
+| JVM UI runtime | [版本目录](../../gradle/libs.versions.toml)和[app 构建](../../app/build.gradle.kts) | Robolectric 4.17 与固定 API 37 instrumented jar；仅测试依赖，runtime 由 Gradle 解析，Robolectric 禁止自行下载 |
+| Android SDK、构建工具与 Java 编译级别 | [app/build.gradle.kts](../../app/build.gradle.kts) | 安装 `compileSdk` 与 `buildToolsVersion` 指定版本；`minSdk` 不代表最低系统已验收 |
 | Python | 工具源码与[实验说明](../../experiments/android-vpn-smoke/README.md) | scripts 使用 Python 3.10+ 标准库；实验离线回归使用 Python 3.11+ |
+| 原生接入候选 | [候选输入清单](../../gradle/native-candidate.json) | 固定核心、NDK、Rust、ABI 和冻结来源摘要；doctor/check-fast 自动核对，生产批准仍为 false |
 | uv 与 CI Python | [CI 配置](../../.github/workflows/verification.yml) | 安装 uv；CI 固定工具版本与 Python 环境 |
 | Ruff | [ruff.toml](../../ruff.toml) | 固定版本与格式；scripts / experiments 分别按对应 Python 最低版本检查 |
 | 实验工具链 | [实验声明](../../experiments/android-vpn-smoke/experiment.json)与[复建入口](../../experiments/android-vpn-smoke/rebuild.py) | NDK、Rust、核心及补丁属于实验或后续正式 native 工程的要求 |
 
-Android 模板构建使用 Android/Kotlin 工具链；完整 native 复建另有输入和环境要求。P00 的实验工具链与主应用配置分别定位，更新其中一方不能替代另一方的验证。
+demo 使用 Android/Kotlin 工具链，无真实 VPN、NDK 或网络秘密要求。完整 native 复建另有输入和环境要求；P00 实验与正式产品分别定位，更新其中一方不能替代另一方的验证。
 
 ## 首次搭建与构建
 
 1. 在 Android Studio 打开仓库根目录，按上述配置准备 Daemon JDK 和 Android SDK。
 2. 通过 SDK Manager 安装 `compileSdk` 对应平台及构建工具。SDK 位置由本机 `local.properties` 或环境配置提供；本机目录不进入版本库。
 3. 首次 Gradle 同步与构建允许获取 Wrapper、插件和依赖。自动工具链解析可能访问配置中的分发来源；受限网络环境需预先准备对应缓存。
-4. 安装 Python 和 uv 后检查版本，再从根目录运行模板构建与 JVM 测试。
+4. 安装 Python 和 uv 后，从根目录运行诊断、快速检查与 demo 构建。
 
 ```bash
-python3 --version
-uv --version
-./gradlew --version
-./gradlew :app:assembleDebug :app:testDebugUnitTest
+./scripts/android/doctor.sh
+./scripts/android/check-fast.sh
+./scripts/android/build-demo.sh
 ```
 
-模板此前通过的离线复验命令为：
+缓存齐备后的离线复验命令为：
 
 ```bash
-./gradlew --offline :app:assembleDebug :app:testDebugUnitTest
+./scripts/android/doctor.sh --offline
+./scripts/android/check-fast.sh --offline
+./scripts/android/build-demo.sh --offline
 ```
 
-离线模式要求 Wrapper、插件、依赖、SDK 与 JDK 已齐备。空缓存或缺少平台时先处理具体缺项。APK 输出在 `app/build/outputs/apk/debug/`，JVM 报告在 `app/build/reports/tests/testDebugUnitTest/`。当前 JVM 测试为模板示例；业务验收测试随功能建立。
+离线模式要求 Wrapper、插件、依赖、SDK 与 JDK 已齐备。新增 Kotlin/JVM 插件还需其插件标记；缺缓存时依据 Gradle 错误从已配置的官方来源补齐。默认 Gradle/uv 缓存目录在只读沙箱外时，需要宿主允许正常缓存写入，或预备可写缓存；权限失败不算测试通过。
+
+APK 为 `app/build/outputs/apk/demo/debug/app-demo-debug.apk`，包名后缀 `.demo`、名称“串门 · 演示”，常驻“模拟数据”标记。脚本核对产物元数据并输出路径和 SHA-256。签名沿用标准 debug 配置，正式 release 设置和签名配置未改动。
+
+快速检查核对原生候选输入，再执行固定 Ruff、Android 工具回归、模块/import 边界、配置目录审计，以及 `:contracts:test :app:testDemoDebugUnitTest`，不操作设备。JVM 报告在 `contracts/build/reports/tests/test/` 和 `app/build/reports/tests/testDemoDebugUnitTest/`。其中 27 项领域/状态测试与 14 项 Robolectric UI 测试分别覆盖业务不变量和真实 demo Activity 的界面绑定；20 张 UI 渲染图在 `app/build/p01-ui/`。JVM native Canvas 渲染不表示设备、系统栏或 TalkBack 已验收。
+
+四个入口支持 `--help`、`--offline`、`--timeout SECONDS`，默认每条子命令超时 600 秒。日志和 `result.json` 放 `build/android/<入口名>/`；退出码：0 成功、2 参数错误、3 前置缺失、4 子任务失败、5 设备阻塞、6 超时。每次覆盖该入口的临时报告，历史结论不依赖日志永久保留。
+
+## demo fixture 与设备入口
+
+具名场景见 `app/src/demo/java/com/github/zzwtsy/chuanmen/application/demo/DemoFixtures.kt`：空网络、未连接、已连接、连接失败、应用失败、无采样。运行入口使用已连接 fixture；Preview 与 JVM 测试复用同一份数据。仓库和外观偏好只在内存保留；Apply 模拟回执，不承诺核心热应用或 VPN 重建。
+
+恢复运行配置到已保存会创建新修订，保留本地名称和 applied，不调用引擎。待应用由当前运行网络的已保存核心配置与 VPN 策略是否不同决定；内容恢复一致后，修订号不同也不显示“更改待应用”或 Apply 按钮。
+
+只编译已实现的 Compose 设备测试，不安装 APK：
+
+```bash
+./gradlew --offline :app:assembleDemoDebugAndroidTest
+```
+
+连接且仅连接一个已授权的 API 24+ 测试设备后运行：
+
+```bash
+./scripts/android/verify-device.sh --offline
+```
+
+可用 `--serial` 核对唯一设备；多设备、未授权、离线或不存在时返回 5，不执行安装。入口检查 ADB 和系统 API，再安装 demo 执行 application 包中的 `DemoNavigationTest` 与 `DemoPresentationTest`，共 14 项：验证无效草稿跨页/设置返回保留、保存新 MTU 后恢复运行配置并消除待应用、模拟标记/剪贴板写入，以及六个具名场景和浅/深/大字/高对比/动态色的渲染、heading、48 dp 导航触控尺寸及唯一朗读名称。设备报告在 `app/build/reports/androidTests/connected/debug/flavors/demo/`。
+
+测试期间设备须保持亮屏、解锁并允许 USB 安装；MIUI 设备还需在“串门 · 演示 → 其他权限”允许“后台弹出界面”。安装或卸载可能重置该授权；系统取消 Activity 启动时，测试会停在 `ActivityScenarioRule`，尚未进入 UI 断言或截图。
+
+API 26+ 通过 PixelCopy 在测试设备 demo 应用的 `cache/p01-ui/` 生成 20 张渲染图；截图失败仍导致测试失败。API 24–25 仅省略截图，在创建目录、文件之前用 `P01_UI_CAPTURE` 日志记录用例、页面、API 和原因，全部 14 项 UI 用例及断言继续执行，不使用 JUnit 跳过机制。低版本验收须核对失败、错误、跳过均为 0，没有新增截图文件且有对应省略日志；高版本须核对有效 PNG。这些图是临时复核图，不是截图基线。同一组断言由 JVM 和设备入口复用，两类结果分别登记；实际执行结果见 [P01 修复复验](../plan/p01-foundation.md#配置恢复与低版本截图修复复验2026-10-13)与 [API 36 设备验收](../plan/p01-foundation.md#api-36-设备验收2026-10-13)，历史结果保留在同页。
+
+AGP 默认在测试结束后卸载 APK，截图缓存随之删除。需要导出截图时，可用以下单次运行选项保留 APK 与缓存：
+
+```bash
+env 'ORG_GRADLE_PROJECT_android.injected.androidTest.leaveApksInstalledAfterRun=true' \
+    ./scripts/android/verify-device.sh --offline
+```
+
+若安装阶段重置了后台弹出授权，恢复授权并核对亮屏、解锁后，可直接运行已安装的同一组用例，避免再次安装：
+
+```bash
+adb shell am instrument -w -r \
+    -e package com.github.zzwtsy.chuanmen.application \
+    com.github.zzwtsy.chuanmen.demo.test/androidx.test.runner.AndroidJUnitRunner
+```
+
+此入口的结果在 instrumentation 输出中，需核对 14 项开始、14 项通过以及失败、错误、跳过均为 0；不将其与 Gradle XML 报告混为一次运行。截图可通过 `adb exec-out run-as com.github.zzwtsy.chuanmen.demo cat cache/p01-ui/<文件名>.png` 导出到忽略目录。
+
+正式入口的负向验证命令：
+
+```bash
+./gradlew --offline :app:assembleLiveDebug
+./scripts/android/doctor.sh --offline --native
+```
+
+P01 中分别预期返回 Gradle 1（`LIVE_ENGINE_MISSING`）和脚本 3（`NATIVE_NOT_READY`）。生产补丁仍未批准，不可用 fake 或 P00 实验制品绕过门槛。
 
 ## Python lint 与格式
 
@@ -55,16 +114,18 @@ uv tool run --isolated --no-python-downloads --from ruff==0.17.0 ruff format --n
 
 ## 回归与结构检查
 
-按变更选择相关入口；全套 Python 回归由三个现有测试入口组成：
+按变更选择相关入口；Python 回归包括：
 
 ```bash
 python3 scripts/catalog/test_audit_config_catalog.py
 python3 scripts/verification/test-evidence.py
 python3 experiments/android-vpn-smoke/test_workflow.py
+python3 scripts/android/test_android_tools.py
 ```
 
 | 检查 | 命令 | 可支持的结论 |
 |---|---|---|
+| Android 边界 | `python3 scripts/android/check_boundaries.py` | 当前模块、切片和 demo/live 直接引用符合规则 |
 | 配置映射与台账 | `python3 scripts/catalog/audit_config_catalog.py` | 冻结目录、来源覆盖与实施台账结构一致 |
 | 文档与交付结构 | `python3 scripts/validate_handoff.py --strict` | 所需文件、本地链接、配置和阶段运输摘要可检查 |
 | 隐私 | `python3 scripts/verification/check-privacy.py` | 选定文件集合未命中已实现的隐私规则 |
@@ -92,11 +153,11 @@ python3 scripts/prototype/export_prototype.py
 
 它会更新原型片段和页面，维护顺序见 [原型说明](../../prototype/README.md)。根 `SHA256SUMS` 属于 P00 运输范围，原型修改不刷新这份阶段清单。
 
-实验的离线测试、复建预览、源码导出及实际设备运行条件见 [实验 README](../../experiments/android-vpn-smoke/README.md)。设备命令需要对应授权与环境；本页的模板构建和 Python 检查不操作设备。
+实验的离线测试、复建预览、源码导出及实际设备运行条件见 [实验 README](../../experiments/android-vpn-smoke/README.md)。设备命令需要对应授权与环境；demo 构建、快速检查和 Python 检查不操作设备。
 
 ## CI 与输出
 
-现有 [GitHub 工作流](../../.github/workflows/verification.yml) 配置了固定版本的 uv + Ruff、Python 回归、隐私、目录和 P00 判据检查。正式 Android 构建/JVM CI 属于 P01 剩余工作。远端是否成功以实际 Actions 运行记录为准，本地通过只登记本地结果。
+现有 [Python 工作流](../../.github/workflows/verification.yml) 保留 uv + Ruff、回归、隐私、目录和 P00 判据检查。新增 [Android 工作流](../../.github/workflows/android.yml) 调用相同 doctor/check-fast/build-demo 入口（含 JVM UI 渲染）并编译设备测试，SDK 安装版本与构建配置保持一致。当前 checkout 未配置 Git 远端，尚无目标仓库及 Android Actions 实际成功记录；本地通过只登记本地结果。
 
 本地构建、缓存、私密配置和实验输出按 [.gitignore](../../.gitignore) 放入忽略范围。普通检查的结果保留在执行报告或临时输出中；只有支撑技术结论或阶段门槛的筛选材料才按 [验证规范](verification.md) 发布。
 

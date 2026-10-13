@@ -138,9 +138,8 @@ demo / live 构建：
 产物 / 验证结果位置（仅需保留必要记录）：
 ~~~
 
-已有模板 Gradle、Python 审计与回归命令见 [开发环境](setup.md)，按任务风险选择，不能用示例测试代替业务验收。
-P01 拟建 doctor.sh、check-fast.sh、build-demo.sh、verify-device.sh，当前尚未提供。
-它们创建后位于 scripts/android/，具体参数与用法以实际 --help / 文档为准。
+实际 Gradle、Python 审计与回归命令见 [开发环境](setup.md)，按任务风险选择。
+Android 入口已在 scripts/android/ 提供 doctor.sh、check-fast.sh、build-demo.sh、verify-device.sh；具体参数与用法以实际 --help / 文档为准。
 真机检查脚本需明确区分“无设备”“未执行”“失败”和“通过”。
 
 ## 9. 假设、阻塞与决策

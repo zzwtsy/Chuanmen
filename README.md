@@ -2,7 +2,7 @@
 
 串门（Chuanmen）是基于 EasyTier 的 Android 组网客户端，正在开发中。
 
-仓库已有可构建的 `:app` 模板、交互原型、配置目录、工程校验工具和维护中的实验探针。正式 VPN/JNI、配置闭环与四个业务页面待实施。P00 技术可行性已在限定设备和网络范围通过；阶段状态及剩余工作以 [路线图](docs/plan/ROADMAP.md) 为准。
+仓库已有可构建的 demo、纯领域契约、四页导航、交互原型、配置目录、工程工具和维护中的实验探针。正式 VPN/JNI、持久化配置闭环与真实运行数据尚待实施。P00 技术可行性已在限定设备和网络范围通过；阶段状态及剩余工作以 [路线图](docs/plan/ROADMAP.md) 为准。
 
 ## 项目名称
 
@@ -24,21 +24,24 @@
 先按 [开发环境与验证命令](docs/development/setup.md) 配置 JDK、Android SDK、Python 和 uv。从仓库根运行：
 
 ```bash
-./gradlew :app:assembleDebug :app:testDebugUnitTest
+./scripts/android/doctor.sh
+./scripts/android/check-fast.sh
+./scripts/android/build-demo.sh
 python3 scripts/validate_handoff.py --strict
 ```
 
-模板此前已通过本地离线构建和 JVM 示例测试；首次构建需要获取依赖，缓存齐备后可使用 `--offline`。业务测试、demo 变体和正式 Android CI 在 [P01](docs/plan/p01-foundation.md) 建立。
+当前提供独立包名的 `demoDebug`，本地领域/导航测试与 APK 构建已通过；首次构建需要获取依赖，缓存齐备后可使用 `--offline`。live 在缺少正式服务/桥接时明确失败；P01 剩余验收见 [阶段记录](docs/plan/p01-foundation.md)。
 
-Python lint、格式检查、回归测试及暂存树检查见 [开发命令](docs/development/setup.md)。已有 [CI](.github/workflows/verification.yml) 配置检查 Python、隐私、目录和阶段证据；远端运行结果以实际 Actions 记录为准。
+Python lint、格式检查、回归测试及设备入口见 [开发命令](docs/development/setup.md)。已有 [Python CI](.github/workflows/verification.yml) 和 [Android CI](.github/workflows/android.yml) 配置；Android 远端运行尚未验证，结果以实际 Actions 记录为准。
 
 ## 当前工程与目录
 
-Android 源码只有 `:app`：`MainActivity` 处理 Activity 与窗口设置，`application/ChuanmenApp.kt` 是组合入口，`shared/designsystem/theme` 保存主题。当前界面仍是模板。业务切片及跨模块边界按 [目录边界 ADR](docs/design/adr/0003-directory-boundaries.md) 随实际功能建立。
+Android 工程为 `:app -> :contracts`：`MainActivity` 处理 Activity 与窗口设置，`application` 装配四页导航与 ViewModel，配置切片维护草稿，`shared/designsystem` 保存公共组件和主题。模拟实现、fixture 与 Preview 只在 demo source set。边界见 [目录 ADR](docs/design/adr/0003-directory-boundaries.md)和[装配 ADR](docs/design/adr/0004-demo-assembly.md)。
 
 | 路径 | 职责 |
 |---|---|
 | `app/` | Android 应用、组合入口、主题与标准测试 source set |
+| `contracts/` | 纯 Kotlin 配置、会话、仓库及带操作归属的引擎契约 |
 | `scripts/` | catalog、prototype、verification 工具及交付结构校验入口 |
 | `experiments/` | 按问题和子场景维护的实验源码、声明、合成夹具及离线回归 |
 | `prototype/` | 模拟交互原型、可编辑源与固定的离线资源 |

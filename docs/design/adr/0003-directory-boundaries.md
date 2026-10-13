@@ -1,6 +1,6 @@
 # ADR 0003：业务切片、工程工具与实验目录边界
 
-状态：已采纳。当前 Gradle 工程只有 `:app` 模板；正式模块和业务切片在 P01—P05 按实际实现建立。
+状态：已采纳。当前工程为 `:app -> :contracts`，已有 demo 配置切片与导航；后续模块按实际实现建立。demo 装配见 [ADR 0004](0004-demo-assembly.md)。
 
 ## 决策依据
 
@@ -11,6 +11,8 @@
 ## Android 源码归属
 
 源码保留 Android 标准 source set。下列路径相对于 `app/src/main/java/com/github/zzwtsy/chuanmen/`；测试在 `src/test`、`src/androidTest` 中镜像被测包。
+
+demo 的 JVM 测试在 `src/testDemo`，设备测试在 `src/androidTestDemo`。两者实际复用的 UI 渲染断言放 `src/demoUiTest/java`，通过 AGP 内置 Kotlin 的 `kotlin.directories` 加入这两个测试 source set；该目录不参与 demo/live 应用编译。
 
 | 位置 | 职责与建立时机 |
 |---|---|
@@ -33,13 +35,13 @@
 - `:vpn` 依赖 `:contracts` 和 `:core-bridge`，拥有唯一真实会话、命令串行化、TUN 和资源生命周期；`:core-bridge` 依赖 `:contracts`，管理窄 JNI 适配。
 - 保存和改名归配置能力；实际应用与重连归会话服务。只有服务回执才能更新 applied 状态。
 
-同模块包目录提供组织边界；Kotlin `internal` 的可见范围仍是编译模块。[Kotlin 可见性](https://kotlinlang.org/docs/visibility-modifiers.html) 首条业务切片及跨模块契约建立时，P01 加入允许依赖与 import 边界检查。只有实际隔离、交付或编译收益需要时，再提取功能模块。
+同模块包目录提供组织边界；Kotlin `internal` 的可见范围仍是编译模块。[Kotlin 可见性](https://kotlinlang.org/docs/visibility-modifiers.html) 已建立的 [边界检查](../../../scripts/android/check_boundaries.py) 检查当前模块依赖、切片 import 和页面/fake 引用，由 check-fast 调用。只有实际隔离、交付或编译收益需要时，再提取功能模块。
 
 ## 工程工具归属
 
 `scripts/catalog` 保存配置审计与其测试；`scripts/prototype` 保存原型导出；`scripts/verification` 保存隐私、证据、发布、导出和清理工具。根 `scripts/validate_handoff.py` 是交付聚合入口，使用普通包导入。
 
-后续通用 Android 工具归 `scripts/android`，P01 创建并实测后才登记为可用命令。按任务聚合入口、必要实现和测试，避免横向拆成全局 build/run/check/test 目录，也不建立万能脚本或自动插件注册器。各 CLI 保留帮助、明确输入、稳定退出码和适当超时；路径变更同步文档、skill 和 CI。
+通用 Android 工具归 `scripts/android`，当前已提供四个 P01 入口。按任务聚合入口、必要实现和测试，避免横向拆成全局 build/run/check/test 目录，也不建立万能脚本或自动插件注册器。各 CLI 保留帮助、明确输入、稳定退出码和适当超时；路径变更同步文档、skill 和 CI。
 
 ## 实验源码与复现闭包
 
