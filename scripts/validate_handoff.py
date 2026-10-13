@@ -87,7 +87,13 @@ def main() -> int:
         )
     files.extend(
         ROOT / name
-        for name in ("README.md", "AGENTS.md", "handoff.json", "SHA256SUMS")
+        for name in (
+            "README.md",
+            "AGENTS.md",
+            "CONTRIBUTING.md",
+            "handoff.json",
+            "SHA256SUMS",
+        )
         if (ROOT / name).is_file()
     )
     files.extend(

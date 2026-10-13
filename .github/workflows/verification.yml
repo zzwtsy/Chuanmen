@@ -1,10 +1,8 @@
 name: Verification evidence
 
 on:
-  push:
-    paths: ['docs/**', 'experiments/**', 'scripts/**', '.agents/skills/verification-evidence/**', '.agents/skills/easytier-config-audit/**', '.github/workflows/verification.yml', 'ruff.toml', 'AGENTS.md', 'README.md', 'handoff.json', 'SHA256SUMS']
-  pull_request:
-    paths: ['docs/**', 'experiments/**', 'scripts/**', '.agents/skills/verification-evidence/**', '.agents/skills/easytier-config-audit/**', '.github/workflows/verification.yml', 'ruff.toml', 'AGENTS.md', 'README.md', 'handoff.json', 'SHA256SUMS']
+  workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -35,4 +33,5 @@ jobs:
           python3 scripts/catalog/test_audit_config_catalog.py
           python3 scripts/catalog/audit_config_catalog.py
           python3 experiments/android-vpn-smoke/test_workflow.py
+          python3 scripts/git/test_workflow_policy.py
           python3 scripts/validate_handoff.py --strict

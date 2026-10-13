@@ -25,6 +25,8 @@
 
 Skill 不必有脚本；本项目配置审计需要脚本，是因为重复的目录一致性检查适合确定性执行。Agent Skills 规范要求技能目录包含具有 `name`、`description` 的 `SKILL.md`，支持引用脚本、资料和资产；可选 `allowed-tools` 仍是实验字段，不能理解为跨工具通用授权机制。[格式规范](https://agentskills.io/specification)。
 
+日常 Git 协作规范由 [Git 工作流](git-workflow.md) 维护，版本规范由 [版本治理](versioning.md) 维护。先验收分支、PR、检查与人工 Squash 的实际流程，再提炼轻量 `github-pr` 项目 skill；规范保持在文档，确定性门禁保持在 `scripts/git` 与 CI，skill 只组织执行和待审交付。创建 tag 与发布 Release 保持独立授权。
+
 ## 3. 配置审计工作流
 
 ### 使用范围

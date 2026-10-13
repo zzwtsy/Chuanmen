@@ -136,6 +136,7 @@ python3 scripts/catalog/test_audit_config_catalog.py
 python3 scripts/verification/test-evidence.py
 python3 experiments/android-vpn-smoke/test_workflow.py
 python3 scripts/android/test_android_tools.py
+python3 scripts/git/test_workflow_policy.py
 ```
 
 | 检查 | 命令 | 可支持的结论 |
@@ -172,7 +173,9 @@ python3 scripts/prototype/export_prototype.py
 
 ## CI 与输出
 
-现有 [Python 工作流](../../.github/workflows/verification.yml) 保留 uv + Ruff、回归、隐私、目录和 P00 判据检查。[Android 工作流](../../.github/workflows/android.yml) 调用相同 doctor/check-fast/build-demo 入口（含 JVM UI 渲染）并编译设备测试，安装声明的 SDK 平台、构建工具和 `platform-tools`。仓库已有 GitHub 远端；首次 Android Actions 在 SDK 安装步骤失败，修复版尚待远端完整复验，见 [P01 CI 记录](../plan/p01-foundation.md#ci-sdk-安装入口修复2026-10-13)。本地结果单独登记。
+现有 [Python 工作流](../../.github/workflows/verification.yml) 保留 uv + Ruff、回归、隐私、目录和 P00 判据检查，并运行 PR/门禁回归。[Android 工作流](../../.github/workflows/android.yml) 调用相同 doctor/check-fast/build-demo 入口（含 JVM UI 渲染）并编译设备测试，安装声明的 SDK 平台、构建工具和 `platform-tools`。两者由 [统一 CI](../../.github/workflows/ci.yml) 复用，保留手动入口；验证每次执行，Android 按变更分类执行。PR 另有 `pr-policy`，最终 `quality-gate` 拒绝失败、取消与意外跳过，规则见 [Git 工作流](git-workflow.md)。
+
+已有 `main` 源码的 Python 与 Android 远端运行通过，SHA 与链接见 [P01 CI 记录](../plan/p01-foundation.md#远端-ci-通过记录2026-10-14)。首次 SDK 安装失败保留在历史记录中；新工作流须以本次实际 Actions 结果验收。工作流修改使用固定 `actionlint 1.7.12` 检查 `.github/workflows/*.yml`。本地与远端结果分别报告，CI 不执行真机或产品发布验收。
 
 本地构建、缓存、私密配置和实验输出按 [.gitignore](../../.gitignore) 放入忽略范围。普通检查的结果保留在执行报告或临时输出中；只有支撑技术结论或阶段门槛的筛选材料才按 [验证规范](verification.md) 发布。
 
