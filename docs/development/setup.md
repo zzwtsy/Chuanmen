@@ -9,7 +9,7 @@
 | 已有模块 | [settings.gradle.kts](../../settings.gradle.kts) | `:app -> :contracts`；不预建 VPN/JNI 空模块 |
 | Gradle | [Wrapper 配置](../../gradle/wrapper/gradle-wrapper.properties) | 使用仓库的 `./gradlew` |
 | Gradle Daemon JDK | [Daemon JVM 配置](../../gradle/gradle-daemon-jvm.properties) | 按 `toolchainVersion` 准备 JDK；它与 Java 编译兼容级别分别配置 |
-| AGP、Compose 编译插件及 Android 依赖 | [版本目录](../../gradle/libs.versions.toml)和[根构建](../../build.gradle.kts) | 随配置获取固定版本，升级单独评审 |
+| AGP、Kotlin、Compose 编译插件及 Android 依赖 | [版本目录](../../gradle/libs.versions.toml)和[根构建](../../build.gradle.kts) | Kotlin 与 Compose 编译插件使用同版；应用、JVM 和设备 UI 测试共用 Compose BOM |
 | JVM UI runtime | [版本目录](../../gradle/libs.versions.toml)和[app 构建](../../app/build.gradle.kts) | Robolectric 4.17 与固定 API 37 instrumented jar；仅测试依赖，runtime 由 Gradle 解析，Robolectric 禁止自行下载 |
 | Android SDK、构建工具与 Java 编译级别 | [app/build.gradle.kts](../../app/build.gradle.kts) | 安装 `compileSdk` 与 `buildToolsVersion` 指定版本；`minSdk` 不代表最低系统已验收 |
 | CI SDK 安装工具 | [Android 工作流](../../.github/workflows/android.yml) | Android CLI 启动器与组件固定同一版本；SDK 与 CLI 缓存位于 runner 临时目录 |
@@ -57,6 +57,10 @@ export PATH="$ANDROID_HOME/platform-tools:$PATH"
 APK 为 `app/build/outputs/apk/demo/debug/app-demo-debug.apk`，包名后缀 `.demo`、名称“串门 · 演示”，常驻“模拟数据”标记。脚本核对产物元数据并输出路径和 SHA-256。签名沿用标准 debug 配置，正式 release 设置和签名配置未改动。
 
 快速检查核对原生候选输入，再执行固定 Ruff、Android 工具回归、模块/import 边界、配置目录审计，以及 `:contracts:test :app:testDemoDebugUnitTest`，不操作设备。JVM 报告在 `contracts/build/reports/tests/test/` 和 `app/build/reports/tests/testDemoDebugUnitTest/`。其中 27 项领域/状态测试与 14 项 Robolectric UI 测试分别覆盖业务不变量和真实 demo Activity 的界面绑定；20 张 UI 渲染图在 `app/build/p01-ui/`。JVM native Canvas 渲染不表示设备、系统栏或 TalkBack 已验收。
+
+共享 UI 契约使用 [Compose v2 测试入口](https://developer.android.com/develop/ui/compose/testing/migrate-v2)，默认 `StandardTestDispatcher` 将组合协程排队；语义操作、`waitForIdle` 与 `runOnIdle` 负责断言前的同步。测试使用 JUnit 4 与既有 Robolectric / 设备入口。Lifecycle 的 KTX API 已移入 [`lifecycle-runtime`](https://developer.android.com/jetpack/androidx/releases/lifecycle#2.8.0)，工程直接依赖该模块。
+
+Kotlin 版本须同时核对 [Gradle 兼容表](https://kotlinlang.org/docs/gradle-configure-project.html)和实际构建：当前固定版覆盖工程的 Gradle 版本，AGP 版本高于该表的完全支持上限；Android 模块沿用 AGP 的[内置 Kotlin](https://developer.android.com/build/migrate-to-built-in-kotlin)，通过根插件声明使用[更高版本的 KGP](https://developer.android.com/build/releases/agp-9-0-0-release-notes)。实际解析、构建与设备结果见 [P01 环境与依赖复验](../plan/p01-foundation.md#环境诊断与依赖迁移复验2026-10-13)，不推导其他 AGP 功能兼容性。
 
 四个入口支持 `--help`、`--offline`、`--timeout SECONDS`，默认每条子命令超时 600 秒。日志和 `result.json` 放 `build/android/<入口名>/`；退出码：0 成功、2 参数错误、3 前置缺失、4 子任务失败、5 设备阻塞、6 超时。每次覆盖该入口的临时报告，历史结论不依赖日志永久保留。
 

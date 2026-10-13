@@ -5,7 +5,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -17,6 +17,7 @@ import org.junit.Test
 
 /** JVM 与设备共用实际 demo Activity 的交互契约，不操作真实 VPN 或网络。 */
 abstract class DemoNavigationContract {
+    // v2 使用排队调度；语义操作和 runOnIdle 在断言前同步组合与副作用。
     @get:Rule
     val compose = createAndroidComposeRule<MainActivity>()
 

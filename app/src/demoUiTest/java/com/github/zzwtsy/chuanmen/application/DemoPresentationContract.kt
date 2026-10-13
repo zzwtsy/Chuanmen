@@ -23,7 +23,7 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
@@ -55,6 +55,7 @@ data class PresentationCase(
 
 @OptIn(ExperimentalTestApi::class)
 abstract class DemoPresentationContract(private val case: PresentationCase) {
+    // JVM 与设备共用 v2 调度及空闲同步，截图继续在完成界面断言后采集。
     @get:Rule
     val compose = createAndroidComposeRule<ComponentActivity>()
 

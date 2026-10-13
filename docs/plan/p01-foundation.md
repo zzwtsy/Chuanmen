@@ -14,7 +14,7 @@
 |---|---|---|
 | Android 工程 | `:app -> :contracts`、demo 配置切片、四页导航、生命周期收集、主题组件及具名预览；41 项 JVM 测试（27 项领域/状态、14 项 UI）通过，20 张主题/场景图已渲染；API 36 设备 14 项 UI 用例与 20 张有效 PNG 验收通过 | API 24–25 尚未实测，系统栏、完整真机矩阵与完整无障碍验证不继承 JVM 或 API 36 结果 |
 | 工具链 | Wrapper、版本目录、Daemon JVM；2026-10-12 的新 checkout 加任务补丁复建 demoDebug 通过，live 明确阻断；候选核心/NDK/Rust/ABI 与来源摘要已固定并自动核对 | P02 实际接入与生产批准分别验收，不阻塞 P01 demo 工程基础 |
-| 质量检查 | Python 检查及 CI；四个 Android 入口、23 项工具回归、模块/import 检查、Android CI 配置 | Android CI 的完整运行与源码定位；首次运行在 SDK 安装步骤失败，见 [CI SDK 安装入口修复](#ci-sdk-安装入口修复2026-10-13) |
+| 质量检查 | Python 检查及 CI；四个 Android 入口、23 项工具回归、模块/import 检查、Android CI 配置；环境诊断与依赖迁移已[复验](#环境诊断与依赖迁移复验2026-10-13) | Android CI 的完整运行与源码定位；首次运行在 SDK 安装步骤失败，见 [CI SDK 安装入口修复](#ci-sdk-安装入口修复2026-10-13) |
 | 协作与文档 | 根 AGENTS.md、目录边界 ADR、任务模板、开发环境文档 | 随实际切片补充入口、依赖检查和任务验收，不重复建立文档副本 |
 
 历史模板、当前 demo 与 P00 探针分别覆盖各自范围；本地领域测试不表示正式 VpnService 或生产桥接已验收。当前装配决策见 [ADR 0004](../design/adr/0004-demo-assembly.md)。
@@ -262,6 +262,29 @@ API 24–25 暂无测试设备或已安装的系统镜像，低版本的全部�
 本地诊断日志与计数摘要在忽略目录 `build/android/ci-sdk-retry/`；独立 checkout 的 JUnit XML 已逐项汇总，不以命令退出码单独推断测试通过。本次没有重新执行设备测试、真实 VPN 或空依赖缓存复建。
 
 修复后的 GitHub Actions 尚未执行，Android CI 的完整运行门槛仍待远端复验；此前本地、设备及复建记录保留各自范围。
+
+### 环境诊断与依赖迁移复验（2026-10-13）
+
+SDK 诊断优先读取有效的本地 `sdk.dir`，支持相对目录及常见路径转义；无效本地目录回退到有效环境目录，环境目录冲突明确失败。Java 诊断优先使用 `JAVA_HOME`，不因 PATH 缺少 java 拒绝可用 JDK，也不回退绕过无效 `JAVA_HOME`。可选 Rust 诊断的命令失败保留日志并继续 demo，必需命令失败与超时仍阻断。新增 8 项中文说明的工具回归，合计 23 项。
+
+Lifecycle 直接依赖 `lifecycle-runtime`，Kotlin 与 Compose 编译插件同版升级，应用、JVM 与设备测试统一 Compose BOM；两个共享 UI 契约使用 v2 测试入口，保留全部断言和 Canvas / PixelCopy 截图实现。实际解析得到 KGP 与 Compose 编译插件均为 2.4.21，Compose UI 与 UI 测试均为 1.12.1；权威版本仍以版本目录为准。新编译器指出的多余非空断言已移除，领域模型、生产公共接口和最低 API 24 保持原约定。
+
+| 命令 / 环境 | 退出码与观察结果 |
+|---|---|
+| 固定 Ruff lint 与格式检查，`scripts experiments` | 均为 0；35 个 Python 文件格式通过 |
+| `python3 scripts/android/test_android_tools.py` | 0；23 项工具回归，失败、错误、跳过均为 0，覆盖 SDK 优先级/冲突、JAVA_HOME 及可选 Rust 失败边界 |
+| `./scripts/android/doctor.sh --offline`、`check-fast.sh --offline`、`build-demo.sh --offline`，本地 | 均为 0；41 项 JVM 测试（contracts 3、app 38），失败、错误、跳过均为 0；边界、配置目录和 demo APK 元数据通过；20 张 JVM PNG 结构有效 |
+| `./gradlew --console=plain --warning-mode all :contracts:test :app:testDemoDebugUnitTest :app:assembleDemoDebug :app:assembleDemoDebugAndroidTest` | 0；获取新依赖后完成 JVM 回归、demo 与设备测试 APK 编译；编译告警修正后由快速检查再次通过受影响的 JVM 测试 |
+| 当前 Android 工作流 SDK 安装步骤，本地临时 SDK | 0；声明的 Platform 37.0、build-tools 36.0.0 和新增 `platform-tools` 可安装；复用此前临时 SDK，不是空 SDK 复建 |
+| `actionlint .github/workflows/android.yml .github/workflows/verification.yml`，1.7.12；安装脚本 `bash -n` | 均为 0；工作流与脚本语法通过 |
+| `verify-device.sh --offline --timeout 300`，保留 APK，API 36 | 4；安装将 MIUI 后台弹出权限重置为 `ignore`，4 项交互通过后展示用例启动受阻；主动停止后 XML 登记 5 项、失败 1、错误 0、跳过 0，整组未完成 |
+| 恢复权限后，直接执行已安装同一 APK 的 `adb shell am instrument -w -r -e package com.github.zzwtsy.chuanmen.application com.github.zzwtsy.chuanmen.demo.test/androidx.test.runner.AndroidJUnitRunner` | 0；runner 用时 27.798 秒，14 项开始、14 项通过，失败、错误、忽略及假设跳过均为 0，报告 `OK (14 tests)` |
+| 导出本次新生成的设备 PNG | 20/20 有效，尺寸均为 1220 × 2440；核对签名、块 CRC、像素解压长度与行过滤、结束块 |
+| live 构建与 `doctor.sh --offline --native` | 分别为预期的 1、3，明确报告 `LIVE_ENGINE_MISSING` 与 `NATIVE_NOT_READY` |
+
+验证日志、解析版本、JUnit 汇总、设备直接运行输出与截图在忽略目录 `build/android/dependency-repair/`。正常设备入口的失败 XML 与直接 instrumentation 的成功结果分别登记，不将二者合并为 Gradle 设备测试通过。用户恢复的后台弹出权限保留；临时 USB 常亮恢复为 0，屏幕超时仍为 600000 毫秒。
+
+Kotlin 当前版本在官方完全支持表中覆盖工程 Gradle；AGP 高于该表的完全支持上限，沿用内置 Kotlin 并核对实际解析与编译结果，不声称全部 AGP 功能已经验证。设备任务仍出现 AGP 传递依赖 `protobuf-java` 在 JDK 25 上调用 `sun.misc.Unsafe` 的上游弃用告警；未通过强制覆盖插件内部依赖或关闭告警处理。本次未推送或执行修复版远端 CI，API 24–25 未实测，未重复全新 checkout、空缓存或第二主机复建，不构成真实 VPN、系统栏或 TalkBack 验收；历史记录保留原范围。
 
 ## 7. 失败回退与本阶段不做
 

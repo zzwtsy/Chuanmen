@@ -97,7 +97,7 @@ class NavigationBehaviorTest {
             assertEquals(originalSession.applied, restored.session.applied)
             assertEquals(originalSession, restored.session)
             assertEquals(originalSaved.core.mtu.toString(), restored.draft!!.rawMtu)
-            assertFalse(restored.draft!!.dirty)
+            assertFalse(restored.draft.dirty)
             assertTrue(engine.submittedCommands.isEmpty())
         }
     }
