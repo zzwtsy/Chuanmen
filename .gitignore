@@ -19,19 +19,15 @@ signing.properties
 !.env.template
 /.aws/
 
-# Android Studio / IntelliJ 个人状态；代码风格、检查和运行配置继续共享。
+# Android Studio / IntelliJ 状态默认忽略；只共享团队配置。
 *.iml
 *.iws
-/.idea/caches/
-/.idea/libraries/
-/.idea/shelf/
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/tasks.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-/.idea/deploymentTargetSelector.xml
-/.idea/deploymentTargetDropDown.xml
+/.idea/*
+!/.idea/.gitignore
+!/.idea/codeStyles/
+!/.idea/inspectionProfiles/
+!/.idea/runConfigurations/
+!/.idea/vcs.xml
 /.idea/inspectionProfiles/profiles_settings.xml
 /captures/
 
