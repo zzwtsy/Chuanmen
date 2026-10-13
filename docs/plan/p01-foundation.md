@@ -14,7 +14,7 @@
 |---|---|---|
 | Android 工程 | `:app -> :contracts`、demo 配置切片、四页导航、生命周期收集、主题组件及具名预览；41 项 JVM 测试（27 项领域/状态、14 项 UI）通过，20 张主题/场景图已渲染；API 36 设备 14 项 UI 用例与 20 张有效 PNG 验收通过 | API 24–25 尚未实测，系统栏、完整真机矩阵与完整无障碍验证不继承 JVM 或 API 36 结果 |
 | 工具链 | Wrapper、版本目录、Daemon JVM；2026-10-12 的新 checkout 加任务补丁复建 demoDebug 通过，live 明确阻断；候选核心/NDK/Rust/ABI 与来源摘要已固定并自动核对 | P02 实际接入与生产批准分别验收，不阻塞 P01 demo 工程基础 |
-| 质量检查 | Python 检查及 CI；四个 Android 入口、15 项工具回归、模块/import 检查、Android CI 配置 | Android CI 的实际运行与源码定位；当前 checkout 无 Git 远端，待指定目标仓库 |
+| 质量检查 | Python 检查及 CI；四个 Android 入口、15 项工具回归、模块/import 检查、Android CI 配置 | Android CI 的完整运行与源码定位；首次运行在 SDK 安装步骤失败，见 [CI SDK 安装入口修复](#ci-sdk-安装入口修复2026-10-13) |
 | 协作与文档 | 根 AGENTS.md、目录边界 ADR、任务模板、开发环境文档 | 随实际切片补充入口、依赖检查和任务验收，不重复建立文档副本 |
 
 历史模板、当前 demo 与 P00 探针分别覆盖各自范围；本地领域测试不表示正式 VpnService 或生产桥接已验收。当前装配决策见 [ADR 0004](../design/adr/0004-demo-assembly.md)。
@@ -239,6 +239,29 @@ API 24–25 暂无测试设备或已安装的系统镜像，低版本的全部�
 共享恢复回归在设备执行通过：保存 MTU 1400 后出现待应用，恢复运行配置后 MTU 回到 1380，待应用提示及 Apply 按钮消失。20 张截图由设备 PixelCopy 生成；已抽查浅色总览图可见实际 demo 页面内容。本次未修改源码、断言或依赖；用户已允许的后台弹出授权保留为 `allow`，屏幕超时仍为 600000 毫秒，USB 常亮设置仍为 0。
 
 本次设备验收仅覆盖 API 36、arm64 的 demo UI 与截图。API 24–25 暂无设备或已安装系统镜像，低版本全部断言执行、无新增截图与原因日志尚未实测；不扩大为全部 API 26+、真实 VPN、系统栏或 TalkBack 通过。此前超时、安装受限和 2026-10-12 的历史记录保留原貌。
+
+### CI SDK 安装入口修复（2026-10-13）
+
+[Android foundation 首次运行](https://github.com/zzwtsy/Chuanmen/actions/runs/38382258126) 由 `workflow_dispatch` 触发，源码为 `7c746609f5f909961313d8ff57602704fbf4ae5c`，使用 Ubuntu 24.04、镜像 `20261004.327.1`。`Install declared SDK packages` 报 `sdkmanager: command not found`，退出码为 127；诊断、JVM 检查、demo 构建和设备测试编译四个后续步骤均未执行，不能登记为 CI 构建或测试通过。
+
+官方已将 [`sdkmanager` 标为弃用](https://developer.android.com/tools/sdkmanager)，替代入口为 [`android sdk install`](https://developer.android.com/tools/agents/android-cli/commands/sdk_install)。工作流改为显式下载 Android CLI `1.0.16500706` 的启动器与组件，SDK 和 CLI 缓存使用 runner 临时目录，安装 `platforms/android-37.0` 与 `build-tools/36.0.0`。两种 SDK 环境变量指向同一目录，现有诊断、测试与构建入口继续复用；Gradle、项目依赖及最低支持版本未调整。
+
+本地 Linux x86_64 已在空的临时 SDK 目录实测同版官方 CLI，`android --no-metrics --sdk=<临时目录> sdk install platforms/android-37.0 build-tools/36.0.0` 退出码为 0，stdin 关闭时仍完成安装。CLI 报告版本 `1.0.16500706`，SDK 安装结果不等于远端工作流通过。
+
+随后原样提取并执行修复后的工作流安装步骤，核对 `GITHUB_ENV` 与 `GITHUB_PATH` 中的 SDK、缓存和 CLI 路径。以该步骤新安装的 SDK 在独立 checkout 复验，源码为上述提交加本次 CI 修复；未复制 `local.properties` 或构建输出，复用已有 Gradle/uv 依赖缓存。本地 Launcher Java 21、Daemon JDK 25，与远端 Launcher Java 25 分别报告。
+
+| 命令 / 环境 | 退出码与观察结果 |
+|---|---|
+| 修复后的 SDK 安装步骤，本地临时目录 | 0；固定版本启动器与组件可下载，Platform 37.0 revision 2、build-tools 36.0.0 和许可记录已生成，SDK 环境变量一致 |
+| `actionlint .github/workflows/android.yml .github/workflows/verification.yml`，1.7.12 | 0；工作流语法、上下文和步骤检查通过，安装脚本另通过 `bash -n` |
+| `./scripts/android/doctor.sh --offline`，独立 checkout 与新 SDK | 0；约 0.66 秒，诊断新 SDK 与实际工具链 |
+| `./scripts/android/check-fast.sh --offline`，同一 checkout | 0；约 22.70 秒，41 项 JVM 测试（contracts 3、app 38），失败、错误、跳过均为 0；15 项工具回归、Ruff、边界与配置目录通过 |
+| `./scripts/android/build-demo.sh --offline`，同一 checkout | 0；约 6.34 秒，生成并核对 demo APK |
+| `./gradlew --offline --console=plain :app:assembleDemoDebugAndroidTest`，同一 checkout | 0；约 2.53 秒，生成设备测试 APK，仅编译、未运行设备用例 |
+
+本地诊断日志与计数摘要在忽略目录 `build/android/ci-sdk-retry/`；独立 checkout 的 JUnit XML 已逐项汇总，不以命令退出码单独推断测试通过。本次没有重新执行设备测试、真实 VPN 或空依赖缓存复建。
+
+修复后的 GitHub Actions 尚未执行，Android CI 的完整运行门槛仍待远端复验；此前本地、设备及复建记录保留各自范围。
 
 ## 7. 失败回退与本阶段不做
 

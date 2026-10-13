@@ -1,6 +1,6 @@
 # Chuanmen 路线图
 
-版本：2026-10-12。目标是在现有 Android 模板与交互原型基础上，实现可持续维护、基于 EasyTier 的原生 Android 客户端，并保留已经确认的简洁交互。本文统一维护阶段状态；现有环境与命令见 [开发环境](../development/setup.md)。
+版本：2026-10-13。目标是在现有 Android 模板与交互原型基础上，实现可持续维护、基于 EasyTier 的原生 Android 客户端，并保留已经确认的简洁交互。本文统一维护阶段状态；现有环境与命令见 [开发环境](../development/setup.md)。
 
 ## 1. 交付目标与阶段顺序
 
@@ -74,7 +74,7 @@
 阶段任务只有同时具备代码或明确调查结论、相关验证和结果定位，才算完成。状态采用 `planned / in_progress / blocked / verified`；工具和目录维护不自动构成阶段启动或验收。
 
 - **P00 / M1**：限定 Xiaomi API 36、arm64、4096 字节页及受控 IPv4 场景已验证。历史独立复核完成第二主机空缓存复建与许可技术复核，没有重复真机实验；生产补丁尚未批准，范围外能力继续按后续阶段验收。具体结果、制品身份和缺口以 [P00 报告](../verification/p00/report.md)、[退出边界](../verification/p00/report.md#未验证项与停止条件) 和 [独立复核](../verification/p00/reviews/independent-review.json) 为准。
-- **P01**：已实现 `:app -> :contracts`、配置编辑/改名、确定性 demo、四页导航与生命周期收集、主题预览、四个 Android 入口和 Android CI 配置。候选核心/NDK/Rust/ABI 与冻结来源摘要已固定并自动核对；恢复配置按实际内容消除待应用，API 24–25 保留全部 UI 断言并省略截图；本地 41 项 JVM 测试（含 14 项 UI）、15 项工具回归和主题/场景渲染通过。2026-10-12 的全新 checkout 加任务补丁、复用依赖缓存的源码复建通过，live 缺失引擎时明确失败；本次 API 36 设备 14 项 UI 用例与 20 张有效 PNG 验收通过，API 24–25 尚未实测，不继承 JVM 或历史复建结果。阶段保持 `in_progress`，仅剩 Android CI 实际运行门槛：当前 checkout 无 Git 远端，待明确目标仓库。空缓存/第二主机不额外作为 P01 门槛，完整真机矩阵与 TalkBack 实测归 P06；具体命令、结果和限制见 [P01](p01-foundation.md)。
+- **P01**：已实现 `:app -> :contracts`、配置编辑/改名、确定性 demo、四页导航与生命周期收集、主题预览、四个 Android 入口和 Android CI 配置。候选核心/NDK/Rust/ABI 与冻结来源摘要已固定并自动核对；恢复配置按实际内容消除待应用，API 24–25 保留全部 UI 断言并省略截图；本地 41 项 JVM 测试（含 14 项 UI）、15 项工具回归和主题/场景渲染通过。2026-10-12 的全新 checkout 加任务补丁、复用依赖缓存的源码复建通过，live 缺失引擎时明确失败；本次 API 36 设备 14 项 UI 用例与 20 张有效 PNG 验收通过，API 24–25 尚未实测，不继承 JVM 或历史复建结果。阶段保持 `in_progress`，仅剩 Android CI 完整通过门槛：首次 GitHub Actions 在 SDK 安装步骤因命令缺失失败，改用固定版本 Android CLI 后仍需远端复验。空缓存/第二主机不额外作为 P01 门槛，完整真机矩阵与 TalkBack 实测归 P06；具体命令、结果和限制见 [P01](p01-foundation.md)。
 - **P02–P07**：正式 VPN/JNI、配置业务、监控页面、高级能力、可靠性与发布工作保持 `planned`。实验探针不等于产品实现。
 
 根 `handoff.json` 与 `SHA256SUMS` 只描述已冻结的 P00 运输范围。其 `p01_p02_started` 字段记录冻结时的状态，不作为当前仓库进度来源，也不随日常开发更新。

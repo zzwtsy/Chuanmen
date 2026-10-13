@@ -12,6 +12,7 @@
 | AGP、Compose 编译插件及 Android 依赖 | [版本目录](../../gradle/libs.versions.toml)和[根构建](../../build.gradle.kts) | 随配置获取固定版本，升级单独评审 |
 | JVM UI runtime | [版本目录](../../gradle/libs.versions.toml)和[app 构建](../../app/build.gradle.kts) | Robolectric 4.17 与固定 API 37 instrumented jar；仅测试依赖，runtime 由 Gradle 解析，Robolectric 禁止自行下载 |
 | Android SDK、构建工具与 Java 编译级别 | [app/build.gradle.kts](../../app/build.gradle.kts) | 安装 `compileSdk` 与 `buildToolsVersion` 指定版本；`minSdk` 不代表最低系统已验收 |
+| CI SDK 安装工具 | [Android 工作流](../../.github/workflows/android.yml) | Android CLI 启动器与组件固定同一版本；SDK 与 CLI 缓存位于 runner 临时目录 |
 | Python | 工具源码与[实验说明](../../experiments/android-vpn-smoke/README.md) | scripts 使用 Python 3.10+ 标准库；实验离线回归使用 Python 3.11+ |
 | 原生接入候选 | [候选输入清单](../../gradle/native-candidate.json) | 固定核心、NDK、Rust、ABI 和冻结来源摘要；doctor/check-fast 自动核对，生产批准仍为 false |
 | uv 与 CI Python | [CI 配置](../../.github/workflows/verification.yml) | 安装 uv；CI 固定工具版本与 Python 环境 |
@@ -23,9 +24,11 @@ demo 使用 Android/Kotlin 工具链，无真实 VPN、NDK 或网络秘密要求
 ## 首次搭建与构建
 
 1. 在 Android Studio 打开仓库根目录，按上述配置准备 Daemon JDK 和 Android SDK。
-2. 通过 SDK Manager 安装 `compileSdk` 对应平台及构建工具。SDK 位置由本机 `local.properties` 或环境配置提供；本机目录不进入版本库。
+2. 通过 SDK Manager 安装 `compileSdk` 对应平台、固定构建工具和 `platform-tools`。SDK 位置由本机 `local.properties` 或环境配置提供；本机目录不进入版本库。
 3. 首次 Gradle 同步与构建允许获取 Wrapper、插件和依赖。自动工具链解析可能访问配置中的分发来源；受限网络环境需预先准备对应缓存。
 4. 安装 Python 和 uv 后，从根目录运行诊断、快速检查与 demo 构建。
+
+无界面 CI 使用官方 [Android CLI](https://developer.android.com/tools/agents/android-cli/download) 的 [`android sdk install`](https://developer.android.com/tools/agents/android-cli/commands/sdk_install) 安装工程声明的包；[`sdkmanager` 已弃用](https://developer.android.com/tools/sdkmanager)。Android 工作流显式下载固定版本的启动器与组件，不依赖 runner 预装命令或 SDK；`ANDROID_HOME` 与 `ANDROID_SDK_ROOT` 指向同一个临时 SDK 目录，后续诊断、测试和构建复用该目录。SDK 安装结果与完整 CI 验收分别记录，见 [CI SDK 安装入口修复](../plan/p01-foundation.md#ci-sdk-安装入口修复2026-10-13)。
 
 ```bash
 ./scripts/android/doctor.sh
@@ -157,7 +160,7 @@ python3 scripts/prototype/export_prototype.py
 
 ## CI 与输出
 
-现有 [Python 工作流](../../.github/workflows/verification.yml) 保留 uv + Ruff、回归、隐私、目录和 P00 判据检查。新增 [Android 工作流](../../.github/workflows/android.yml) 调用相同 doctor/check-fast/build-demo 入口（含 JVM UI 渲染）并编译设备测试，SDK 安装版本与构建配置保持一致。当前 checkout 未配置 Git 远端，尚无目标仓库及 Android Actions 实际成功记录；本地通过只登记本地结果。
+现有 [Python 工作流](../../.github/workflows/verification.yml) 保留 uv + Ruff、回归、隐私、目录和 P00 判据检查。[Android 工作流](../../.github/workflows/android.yml) 调用相同 doctor/check-fast/build-demo 入口（含 JVM UI 渲染）并编译设备测试，安装声明的 SDK 平台、构建工具和 `platform-tools`。仓库已有 GitHub 远端；首次 Android Actions 在 SDK 安装步骤失败，修复版尚待远端完整复验，见 [P01 CI 记录](../plan/p01-foundation.md#ci-sdk-安装入口修复2026-10-13)。本地结果单独登记。
 
 本地构建、缓存、私密配置和实验输出按 [.gitignore](../../.gitignore) 放入忽略范围。普通检查的结果保留在执行报告或临时输出中；只有支撑技术结论或阶段门槛的筛选材料才按 [验证规范](verification.md) 发布。
 
