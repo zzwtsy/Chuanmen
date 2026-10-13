@@ -24,4 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Chuanmen"
 include(":app")
- 
+include(":contracts")
