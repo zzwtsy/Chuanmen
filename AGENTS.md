@@ -15,6 +15,8 @@
 | 开始/继续实施 | [路线图](docs/plan/ROADMAP.md)及其中对应的阶段文件 |
 | 环境、构建与现有检查 | [开发环境](docs/development/setup.md) |
 | 测试策略、代理协作 | [AI 友好工程](docs/development/ai-friendly-android.md) |
+| 分支、提交、PR 与合并 | [Git 工作流](docs/development/git-workflow.md)；提交复用 [git-commit](.agents/skills/git-commit/SKILL.md) |
+| 应用版本、tag 与 Release | [版本治理](docs/development/versioning.md) |
 | 配置项核对 | `docs/design/config/assistant-catalog.snapshot.json`、`docs/design/config/android-capability-plan.json`；[配置审计 skill](.agents/skills/easytier-config-audit/SKILL.md) |
 
 查找先用 `rg` / `rg --files`。不要把阶段文档中的拟建模块、命令或 API 当成已经存在；实现后同步对应状态与验证记录。
@@ -68,6 +70,8 @@ Python 源码修改须运行 [开发环境](docs/development/setup.md) 中固定
 代码注释用中文解释意图、生命周期和约束；测试说明清楚条件、操作和可观察结果。公共类型、命令及协议字段保留其原始名称。
 
 不要覆盖不属于本任务的改动。多代理并行先划分文件/接口所有权，整合后验证共同流程。网络密码、私钥、凭据不进入日志、测试夹具或提交记录；使用合成数据。
+
+日常开发从最新 `main` 建短期任务分支，通过 `gh` 创建或更新 PR。完成实际检查后转为 Ready，报告链接、head SHA 和检查结果，默认停在待审；维护者手动 Squash。只有明确的后续合并请求才核对已审阅 SHA 并执行合并，tag 与 Release 另行授权。完整流程以 Git 工作流为准。
 
 本文件不授予发布、签名密钥访问、上传诊断数据或安装个人技能的额外权限。按当前用户已授权范围工作；普通本地实现与验证无需再增加确认步骤。
 

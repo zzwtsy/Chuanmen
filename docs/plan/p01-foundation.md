@@ -14,7 +14,7 @@
 |---|---|---|
 | Android 工程 | `:app -> :contracts`、demo 配置切片、四页导航、生命周期收集、主题组件及具名预览；41 项 JVM 测试（27 项领域/状态、14 项 UI）通过，20 张主题/场景图已渲染；API 36 设备 14 项 UI 用例与 20 张有效 PNG 验收通过 | API 24–25 尚未实测，系统栏、完整真机矩阵与完整无障碍验证不继承 JVM 或 API 36 结果 |
 | 工具链 | Wrapper、版本目录、Daemon JVM；2026-10-12 的新 checkout 加任务补丁复建 demoDebug 通过，live 明确阻断；候选核心/NDK/Rust/ABI 与来源摘要已固定并自动核对 | P02 实际接入与生产批准分别验收，不阻塞 P01 demo 工程基础 |
-| 质量检查 | Python 检查及 CI；四个 Android 入口、23 项工具回归、模块/import 检查、Android CI 配置；环境诊断与依赖迁移已[复验](#环境诊断与依赖迁移复验2026-10-13) | Android CI 的完整运行与源码定位；首次运行在 SDK 安装步骤失败，见 [CI SDK 安装入口修复](#ci-sdk-安装入口修复2026-10-13) |
+| 质量检查 | Python 与 Android CI 已[远端通过](#远端-ci-通过记录2026-10-14)；四个 Android 入口、23 项工具回归、模块/import 检查；环境诊断与依赖迁移已[复验](#环境诊断与依赖迁移复验2026-10-13) | CI 门槛已有运行与源码定位，阶段退出另行评审；首次 SDK 失败保留在历史记录 |
 | 协作与文档 | 根 AGENTS.md、目录边界 ADR、任务模板、开发环境文档 | 随实际切片补充入口、依赖检查和任务验收，不重复建立文档副本 |
 
 历史模板、当前 demo 与 P00 探针分别覆盖各自范围；本地领域测试不表示正式 VpnService 或生产桥接已验收。当前装配决策见 [ADR 0004](../design/adr/0004-demo-assembly.md)。
@@ -285,6 +285,17 @@ Lifecycle 直接依赖 `lifecycle-runtime`，Kotlin 与 Compose 编译插件同�
 验证日志、解析版本、JUnit 汇总、设备直接运行输出与截图在忽略目录 `build/android/dependency-repair/`。正常设备入口的失败 XML 与直接 instrumentation 的成功结果分别登记，不将二者合并为 Gradle 设备测试通过。用户恢复的后台弹出权限保留；临时 USB 常亮恢复为 0，屏幕超时仍为 600000 毫秒。
 
 Kotlin 当前版本在官方完全支持表中覆盖工程 Gradle；AGP 高于该表的完全支持上限，沿用内置 Kotlin 并核对实际解析与编译结果，不声称全部 AGP 功能已经验证。设备任务仍出现 AGP 传递依赖 `protobuf-java` 在 JDK 25 上调用 `sun.misc.Unsafe` 的上游弃用告警；未通过强制覆盖插件内部依赖或关闭告警处理。本次未推送或执行修复版远端 CI，API 24–25 未实测，未重复全新 checkout、空缓存或第二主机复建，不构成真实 VPN、系统栏或 TalkBack 验收；历史记录保留原范围。
+
+### 远端 CI 通过记录（2026-10-14）
+
+`main` 源码 `8180bbbd8c20ff74be98bdc004c8e690265b69f1` 的 push 运行已完整成功：
+
+| 工作流 | 实际运行 | 结论范围 |
+|---|---|---|
+| Android foundation | [38409455625](https://github.com/zzwtsy/Chuanmen/actions/runs/38409455625) | SDK 安装、doctor、快速检查、demo 构建与设备测试 APK 编译成功 |
+| Verification evidence | [38409456078](https://github.com/zzwtsy/Chuanmen/actions/runs/38409456078) | Python lint/格式、现有回归、隐私、目录与 P00 既有证据校验成功 |
+
+两项均定位到同一完整 SHA，满足远端 CI 运行门槛。首次 SDK 安装失败及本地修复记录保留原时间与范围；本次没有重新执行 P00、真机、空缓存或独立主机验收。Git 工作流和版本治理的引导 PR 仍须验证新的 `pr-policy`、`quality-gate` 与远端设置；普通 CI 成功不自动完成 P01 退出评审，阶段状态以路线图为准。
 
 ## 7. 失败回退与本阶段不做
 

@@ -1,5 +1,7 @@
 请说明触发条件、原有问题和修改后的可观察行为。
 
+规范：[Git 工作流](https://github.com/zzwtsy/Chuanmen/blob/main/docs/development/git-workflow.md) · [版本治理](https://github.com/zzwtsy/Chuanmen/blob/main/docs/development/versioning.md)
+
 - 影响模块与切片：
 - 验证环境、实际命令、退出码及报告位置：
 - 未验证事项与限制：

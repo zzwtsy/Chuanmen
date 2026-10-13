@@ -1,10 +1,7 @@
 name: Android foundation
 
 on:
-  push:
-    paths: ['app/**', 'contracts/**', 'gradle/**', '*.gradle.kts', 'gradle.properties', 'gradlew', 'scripts/android/**', 'scripts/catalog/**', 'docs/design/config/**', 'ruff.toml', '.github/workflows/android.yml']
-  pull_request:
-    paths: ['app/**', 'contracts/**', 'gradle/**', '*.gradle.kts', 'gradle.properties', 'gradlew', 'scripts/android/**', 'scripts/catalog/**', 'docs/design/config/**', 'ruff.toml', '.github/workflows/android.yml']
+  workflow_call:
   workflow_dispatch:
 
 permissions:

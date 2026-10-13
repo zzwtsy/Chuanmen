@@ -32,7 +32,7 @@ python3 scripts/validate_handoff.py --strict
 
 当前提供独立包名的 `demoDebug`，本地领域/导航测试与 APK 构建已通过；首次构建需要获取依赖，缓存齐备后可使用 `--offline`。live 在缺少正式服务/桥接时明确失败；P01 剩余验收见 [阶段记录](docs/plan/p01-foundation.md)。
 
-Python lint、格式检查、回归测试及设备入口见 [开发命令](docs/development/setup.md)。已有 [Python CI](.github/workflows/verification.yml) 和 [Android CI](.github/workflows/android.yml) 配置；Android 远端运行尚未验证，结果以实际 Actions 记录为准。
+Python lint、格式检查、回归测试及设备入口见 [开发命令](docs/development/setup.md)。[统一 CI](.github/workflows/ci.yml) 复用 Python 与 Android 检查，PR 通过固定门禁后由维护者手动 Squash。已有主干远端检查成功的源码与运行定位见 [P01 CI 记录](docs/plan/p01-foundation.md#远端-ci-通过记录2026-10-14)。参与开发见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 当前工程与目录
 
@@ -42,7 +42,7 @@ Android 工程为 `:app -> :contracts`：`MainActivity` 处理 Activity 与窗�
 |---|---|
 | `app/` | Android 应用、组合入口、主题与标准测试 source set |
 | `contracts/` | 纯 Kotlin 配置、会话、仓库及带操作归属的引擎契约 |
-| `scripts/` | catalog、prototype、verification 工具及交付结构校验入口 |
+| `scripts/` | Android、catalog、git、prototype、verification 工具及交付结构校验入口 |
 | `experiments/` | 按问题和子场景维护的实验源码、声明、合成夹具及离线回归 |
 | `prototype/` | 模拟交互原型、可编辑源与固定的离线资源 |
 | `docs/design/` | 产品契约、目标架构、ADR 与配置目录 |
@@ -59,6 +59,8 @@ Android 工程为 `:app -> :contracts`：`MainActivity` 处理 Activity 与窗�
 | 任务 | 入口 |
 |---|---|
 | 搭建环境、构建、选择检查 | [setup.md](docs/development/setup.md) |
+| 分支、PR 与手动合并 | [Git 工作流](docs/development/git-workflow.md) |
+| 应用版本、tag 与 Release | [版本治理](docs/development/versioning.md) |
 | 开始下一阶段实施 | [P01 工程基础](docs/plan/p01-foundation.md)及[路线图](docs/plan/ROADMAP.md) |
 | 产品行为与 UI/UX | [总体设计](docs/design/overall-design.md) |
 | Android、会话和 JNI 边界 | [技术架构](docs/design/technical-architecture.md)与[ADR](docs/design/adr/0003-directory-boundaries.md) |

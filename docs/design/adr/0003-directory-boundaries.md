@@ -41,6 +41,8 @@ demo 的 JVM 测试在 `src/testDemo`，设备测试在 `src/androidTestDemo`。
 
 `scripts/catalog` 保存配置审计与其测试；`scripts/prototype` 保存原型导出；`scripts/verification` 保存隐私、证据、发布、导出和清理工具。根 `scripts/validate_handoff.py` 是交付聚合入口，使用普通包导入。
 
+`scripts/git` 保存 GitHub 事件读取、PR 元数据策略、变更分类与 CI 门禁判定及回归，只使用 Python 标准库。分支/PR 协作规则由 [Git 工作流](../../development/git-workflow.md) 维护，版本和发布由 [版本治理](../../development/versioning.md) 维护；不在工程工具中混入产品发布操作。
+
 通用 Android 工具归 `scripts/android`，当前已提供四个 P01 入口。按任务聚合入口、必要实现和测试，避免横向拆成全局 build/run/check/test 目录，也不建立万能脚本或自动插件注册器。各 CLI 保留帮助、明确输入、稳定退出码和适当超时；路径变更同步文档、skill 和 CI。
 
 ## 实验源码与复现闭包
