@@ -67,7 +67,7 @@ Draft 用于尚在开发或等待检查的 PR，不绕过 CI。完成代码复�
 
 ## 规范的落地与维护
 
-日常规则维护在本文，版本规则维护在版本治理；README、CONTRIBUTING、AGENTS 和模板保留入口与必要边界。项目 skill 执行已经验收的重复流程，不复制规范。GitHub 设置承载合并与 tag 保护，CI 和脚本承载确定性判断。
+日常规则维护在本文，版本规则维护在版本治理；README、CONTRIBUTING、AGENTS 和模板保留入口与必要边界。[github-pr skill](../../.agents/skills/github-pr/SKILL.md) 组织已经验收的 PR 流程，默认交付待审结果，不复制规范。GitHub 设置承载合并与 tag 保护，CI 和脚本承载确定性判断。
 
 修改远端设置前，将相关原值保存到忽略的 `build/git-workflow/`；逐项修改、回读核对，失败恢复对应设置。备份和提交不包含凭据。GitHub 设置不会随源码自动同步，规范变化须核对远端状态。
 

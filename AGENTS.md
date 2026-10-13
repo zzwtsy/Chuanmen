@@ -15,7 +15,7 @@
 | 开始/继续实施 | [路线图](docs/plan/ROADMAP.md)及其中对应的阶段文件 |
 | 环境、构建与现有检查 | [开发环境](docs/development/setup.md) |
 | 测试策略、代理协作 | [AI 友好工程](docs/development/ai-friendly-android.md) |
-| 分支、提交、PR 与合并 | [Git 工作流](docs/development/git-workflow.md)；提交复用 [git-commit](.agents/skills/git-commit/SKILL.md) |
+| 分支、提交、PR 与合并 | [Git 工作流](docs/development/git-workflow.md)；PR 交付使用 [github-pr](.agents/skills/github-pr/SKILL.md)，本地提交复用 [git-commit](.agents/skills/git-commit/SKILL.md) |
 | 应用版本、tag 与 Release | [版本治理](docs/development/versioning.md) |
 | 配置项核对 | `docs/design/config/assistant-catalog.snapshot.json`、`docs/design/config/android-capability-plan.json`；[配置审计 skill](.agents/skills/easytier-config-audit/SKILL.md) |
 
