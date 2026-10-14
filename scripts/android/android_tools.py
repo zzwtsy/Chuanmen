@@ -8,21 +8,152 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
+import tempfile
 import time
+from contextlib import contextmanager
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 RUFF = "0.17.0"
 DEVICE_TEST_PACKAGE = "com.github.zzwtsy.chuanmen.application"
+TERMINATE_GRACE_SECONDS = 5.0
+KILL_WAIT_SECONDS = 5.0
 
 
 class ToolFailure(Exception):
-    """可分类的前置缺失、任务失败、设备阻塞或超时。"""
+    """可分类的前置缺失、任务失败、设备阻塞、超时或中断。"""
 
-    def __init__(self, code: int, message: str):
+    def __init__(self, code: int, message: str, record: dict | None = None):
         super().__init__(message)
         self.code = code
+        self.record = record
+
+    @property
+    def status(self) -> str:
+        return {
+            3: "blocked",
+            5: "blocked",
+            6: "timed_out",
+            130: "interrupted",
+            143: "interrupted",
+        }.get(self.code, "failed")
+
+
+class Interruption:
+    """信号处理器只记录首次中断，进程所有者在安全边界执行清理。"""
+
+    def __init__(self):
+        self.signum: int | None = None
+
+    def receive(self, signum: int, _frame) -> None:
+        if self.signum is None:
+            self.signum = signum
+
+    def check(self) -> None:
+        if self.signum is not None:
+            raise ToolFailure(128 + self.signum, f"COMMAND_INTERRUPTED: {self.signum}")
+
+
+@contextmanager
+def cli_signals(interruption: Interruption):
+    """只在 CLI 生命周期内接管信号，连续中断不能打断资源收束或报告落盘。"""
+    previous = {}
+    try:
+        for signum in (signal.SIGINT, signal.SIGTERM):
+            previous[signum] = signal.signal(signum, interruption.receive)
+        yield
+    finally:
+        for signum, handler in previous.items():
+            signal.signal(signum, handler)
+
+
+class _OwnedProcess:
+    """仅收束本次创建的进程组；重复清理复用第一次的结果。"""
+
+    def __init__(self, process: subprocess.Popen):
+        self.process = process
+        self.scope = "process_group" if os.name == "posix" else "process"
+        self.complete: bool | None = None
+        self.error: str | None = None
+        self.signals: list[int] = []
+
+    def alive(self) -> bool:
+        running = self.process.poll() is None
+        if self.scope == "process":
+            return running
+        try:
+            os.killpg(self.process.pid, 0)
+        except ProcessLookupError:
+            return running
+        # Linux 上孤儿可能暂留为僵尸；它们已结束，不应被当作仍在运行的资源。
+        proc = Path("/proc")
+        if os.sys.platform.startswith("linux") and proc.is_dir():
+            for entry in proc.iterdir():
+                if not entry.name.isdigit():
+                    continue
+                try:
+                    fields = (
+                        (entry / "stat")
+                        .read_text(errors="replace")
+                        .rsplit(")", 1)[1]
+                        .split()
+                    )
+                    if int(fields[2]) == self.process.pid and fields[0] not in (
+                        "Z",
+                        "X",
+                    ):
+                        return True
+                except (FileNotFoundError, ProcessLookupError):
+                    continue
+                except PermissionError:
+                    # 无权读取成员时保守地继续等待，不把不可观察写成已结束。
+                    return True
+            return running
+        return True
+
+    def _send(self, signum: int, *, force: bool = False) -> None:
+        try:
+            if self.scope == "process_group":
+                os.killpg(self.process.pid, signum)
+            elif force:
+                self.process.kill()
+            else:
+                self.process.terminate()
+            self.signals.append(signum)
+        except ProcessLookupError:
+            pass
+        except OSError as exc:
+            self.error = f"{self.error + '; ' if self.error else ''}{exc}"
+
+    def _wait(self, budget: float) -> bool:
+        deadline = time.monotonic() + budget
+        while self.alive():
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return False
+            time.sleep(min(0.05, remaining))
+        # poll 已回收直接子进程；这里显式确认退出，不能留下未等待的 Popen。
+        self.process.wait(timeout=max(0, deadline - time.monotonic()))
+        return True
+
+    def cleanup(self) -> None:
+        if self.complete is not None:
+            return
+        self.complete = False
+        try:
+            self._send(signal.SIGTERM)
+            if self._wait(TERMINATE_GRACE_SECONDS):
+                self.complete = True
+            else:
+                self._send(getattr(signal, "SIGKILL", signal.SIGTERM), force=True)
+                self.complete = self._wait(KILL_WAIT_SECONDS)
+            if not self.complete:
+                detail = "CLEANUP_INCOMPLETE: 超过清理预算，进程仍未确认结束"
+                self.error = f"{self.error + '; ' if self.error else ''}{detail}"
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            self.error = f"CLEANUP_FAILED: {exc}"
 
 
 def sdk_path(root: Path) -> Path:
@@ -132,54 +263,150 @@ def select_device(output: str, requested: str | None) -> str:
 
 
 class Runner:
-    """对子命令设置超时；完整输出留在忽略目录，终端保留失败分类和日志定位。"""
+    """记录每个尝试，超时或中断时有界收束所属进程，再保留两路输出。"""
 
-    def __init__(self, root: Path, output: Path, timeout: int):
+    def __init__(
+        self,
+        root: Path,
+        output: Path,
+        timeout: float,
+        interruption: Interruption | None = None,
+    ):
         self.root = root
         self.output = output
         self.timeout = timeout
         self.records: list[dict] = []
+        self.interruption = interruption or Interruption()
+
+    def _wait(self, process: subprocess.Popen) -> None:
+        deadline = time.monotonic() + self.timeout
+        while True:
+            self.interruption.check()
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise ToolFailure(6, "COMMAND_TIMEOUT: 超过步骤超时")
+            try:
+                process.wait(timeout=min(0.1, remaining))
+                self.interruption.check()
+                return
+            except subprocess.TimeoutExpired:
+                continue
 
     def run(self, label: str, argv: list[str], env: dict | None = None) -> str:
-        executable = argv[0]
-        if not (shutil.which(executable) or (self.root / executable).is_file()):
-            raise ToolFailure(3, f"TOOL_MISSING: {executable}")
         started = time.monotonic()
         log = self.output / f"{label}.log"
+        record = {
+            "label": label,
+            "exit_code": None,
+            "elapsed_seconds": 0,
+            "log": log.name,
+            "status": "passed",
+            "timed_out": False,
+            "interrupted": False,
+            "interruption_signal": None,
+            "termination_signal": None,
+            "cleanup_scope": "process_group" if os.name == "posix" else "process",
+            "cleanup_complete": None,
+            "cleanup_signals": [],
+            "cleanup_error": None,
+            "log_error": None,
+            "failure_handled": False,
+        }
+        self.records.append(record)
+        owned = None
+        failure = None
+        output = ""
         try:
-            result = subprocess.run(
-                argv,
-                cwd=self.root,
-                env=env,
-                capture_output=True,
-                text=True,
-                timeout=self.timeout,
-                check=False,
+            self.interruption.check()
+            executable = argv[0]
+            if not (shutil.which(executable) or (self.root / executable).is_file()):
+                raise ToolFailure(3, f"TOOL_MISSING: {executable}")
+            # 独立文件不受衍生进程持有管道影响；超预算后读取已收到的有界快照。
+            with (
+                tempfile.TemporaryFile(dir=self.output) as stdout,
+                tempfile.TemporaryFile(dir=self.output) as stderr,
+            ):
+                try:
+                    owned = _OwnedProcess(
+                        subprocess.Popen(
+                            argv,
+                            cwd=self.root,
+                            env=env,
+                            stdout=stdout,
+                            stderr=stderr,
+                            start_new_session=os.name == "posix",
+                        )
+                    )
+                    self._wait(owned.process)
+                    if owned.process.returncode:
+                        raise ToolFailure(
+                            4, f"TASK_FAILED: {label} 退出码 {owned.process.returncode}"
+                        )
+                except KeyboardInterrupt:
+                    failure = ToolFailure(130, "COMMAND_INTERRUPTED: SIGINT")
+                except ToolFailure as exc:
+                    failure = exc
+                except (OSError, ValueError) as exc:
+                    failure = ToolFailure(4, f"COMMAND_FAILED: {label}: {exc}")
+                finally:
+                    record["timed_out"] = failure is not None and failure.code == 6
+                    if owned is not None:
+                        if self.interruption.signum is not None:
+                            failure = ToolFailure(
+                                128 + self.interruption.signum,
+                                f"COMMAND_INTERRUPTED: {self.interruption.signum}",
+                            )
+                        if failure is not None:
+                            owned.cleanup()
+                        record.update(
+                            exit_code=owned.process.poll(),
+                            cleanup_complete=owned.complete,
+                            cleanup_signals=owned.signals,
+                            cleanup_error=owned.error,
+                        )
+                    for stream in (stdout, stderr):
+                        size = os.fstat(stream.fileno()).st_size
+                        stream.seek(0)
+                        output += stream.read(size).decode(errors="replace")
+        except ToolFailure as exc:
+            failure = exc
+        except (OSError, ValueError) as exc:
+            if owned is not None:
+                record["log_error"] = f"OUTPUT_READ_FAILED: {exc}"
+            failure = failure or ToolFailure(4, f"COMMAND_FAILED: {label}: {exc}")
+        except KeyboardInterrupt:
+            failure = ToolFailure(130, "COMMAND_INTERRUPTED: SIGINT")
+        if self.interruption.signum is not None:
+            failure = ToolFailure(
+                128 + self.interruption.signum,
+                f"COMMAND_INTERRUPTED: {self.interruption.signum}",
             )
-        except subprocess.TimeoutExpired as exc:
-            partial = exc.stdout or b""
-            log.write_text(
-                partial.decode(errors="replace")
-                if isinstance(partial, bytes)
-                else partial
+        try:
+            log.write_text(output, encoding="utf-8")
+        except OSError as exc:
+            record["log_error"] = str(exc)
+            failure = failure or ToolFailure(4, f"LOG_WRITE_FAILED: {label}: {exc}")
+        record["elapsed_seconds"] = round(time.monotonic() - started, 3)
+        code = record["exit_code"]
+        record["termination_signal"] = -code if code is not None and code < 0 else None
+        if failure is not None:
+            record.update(
+                status=failure.status,
+                timed_out=record["timed_out"] or failure.code == 6,
+                interrupted=failure.code in (130, 143),
+                interruption_signal=(failure.code - 128)
+                if failure.code in (130, 143)
+                else None,
             )
-            raise ToolFailure(6, f"COMMAND_TIMEOUT: {label}；日志 {log}") from exc
-        log.write_text(result.stdout + result.stderr)
-        self.records.append(
-            {
-                "label": label,
-                "exit_code": result.returncode,
-                "elapsed_seconds": round(time.monotonic() - started, 3),
-                "log": log.name,
-            }
-        )
-        if result.returncode:
-            print((result.stdout + result.stderr)[-6000:])
-            raise ToolFailure(
-                4, f"TASK_FAILED: {label} 退出码 {result.returncode}；日志 {log}"
-            )
+            print(output[-6000:])
+            detail = f"{failure}；日志 {log}"
+            if record["cleanup_error"]:
+                detail += f"；{record['cleanup_error']}"
+            if record["log_error"]:
+                detail += f"；LOG_WRITE_FAILED: {record['log_error']}"
+            raise ToolFailure(failure.code, detail, record) from failure
         print(f"OK: {label}；日志 {log}")
-        return result.stdout + result.stderr
+        return output
 
 
 def gradle(
@@ -243,9 +470,19 @@ def doctor(runner: Runner, offline: bool, native: bool) -> None:
             try:
                 print(runner.run(label, argv).strip())
             except ToolFailure as exc:
-                if exc.code != 4:
+                record = exc.record
+                if (
+                    exc.code != 4
+                    or record is None
+                    or record["exit_code"] in (None, 0)
+                    or record["termination_signal"] is not None
+                    or record["cleanup_complete"] is False
+                    or record["cleanup_error"] is not None
+                    or record["log_error"] is not None
+                ):
                     raise
                 # rustup shim 存在不代表工具链可用；demo 不因此增加原生前置要求。
+                record["failure_handled"] = True
                 print(f"{argv[0]} 诊断失败（demo 不要求）：{exc}")
         else:
             print(f"{argv[0]} 未安装（demo 不要求）")
@@ -326,12 +563,29 @@ def verify_device(runner: Runner, offline: bool, serial: str | None) -> None:
     )
 
 
+def write_report(path: Path, report: dict) -> None:
+    """同目录原子替换，写入失败时保留原报告且不遗留半份新报告。"""
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=path.parent, delete=False
+        ) as stream:
+            temporary = Path(stream.name)
+            json.dump(report, stream, ensure_ascii=False, indent=2)
+            stream.write("\n")
+        temporary.replace(path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=__doc__,
         epilog="前置：Python 3.10+、仓库 Wrapper 与配置要求的 JDK/SDK；check-fast 另需 uv。"
         "报告：build/android/<命令>/；APK：app/build/outputs/apk/demo/debug/。"
-        "退出码：0 成功；2 参数错误；3 前置缺失；4 任务失败；5 设备阻塞；6 超时。",
+        "退出码：0 成功；2 参数错误；3 前置缺失；4 任务失败；5 设备阻塞；6 超时；"
+        "130 SIGINT；143 SIGTERM。",
     )
     parser.add_argument(
         "command", choices=("doctor", "check-fast", "build-demo", "verify-device")
@@ -358,31 +612,61 @@ def main() -> int:
     if args.serial and args.command != "verify-device":
         parser.error("--serial 仅供 verify-device")
     output = ROOT / "build/android" / args.command
-    output.mkdir(parents=True, exist_ok=True)
-    runner = Runner(ROOT, output, args.timeout)
-    code = 0
-    try:
-        if args.command == "doctor":
-            doctor(runner, args.offline, args.native)
-        elif args.command == "check-fast":
-            check_fast(runner, args.offline)
-        elif args.command == "build-demo":
-            build_demo(runner, args.offline)
-        else:
-            verify_device(runner, args.offline, args.serial)
-    except ToolFailure as exc:
-        print(str(exc))
-        code = exc.code
-    (output / "result.json").write_text(
-        json.dumps(
-            {"command": args.command, "exit_code": code, "steps": runner.records},
-            ensure_ascii=False,
-            indent=2,
-        )
-        + "\n"
-    )
-    print(f"报告：{output / 'result.json'}；退出码 {code}")
-    return code
+    interruption = Interruption()
+    runner = Runner(ROOT, output, args.timeout, interruption)
+    with cli_signals(interruption):
+        failure = None
+        try:
+            output.mkdir(parents=True, exist_ok=True)
+            interruption.check()
+            if args.command == "doctor":
+                doctor(runner, args.offline, args.native)
+            elif args.command == "check-fast":
+                check_fast(runner, args.offline)
+            elif args.command == "build-demo":
+                build_demo(runner, args.offline)
+            else:
+                verify_device(runner, args.offline, args.serial)
+        except ToolFailure as exc:
+            failure = exc
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            failure = ToolFailure(4, f"COMMAND_FAILED: {exc}")
+        while True:
+            if interruption.signum is not None:
+                # 即使被中断的进程自行返回 0，也不能宣布命令成功。
+                failure = ToolFailure(
+                    128 + interruption.signum,
+                    f"COMMAND_INTERRUPTED: {interruption.signum}",
+                    failure.record if failure is not None else None,
+                )
+            code = failure.code if failure is not None else 0
+            report = {
+                "schema_version": 1,
+                "command": args.command,
+                "exit_code": code,
+                "status": failure.status if failure is not None else "passed",
+                "failure": {
+                    "message": str(failure),
+                    "step": failure.record["label"] if failure.record else None,
+                }
+                if failure is not None
+                else None,
+                "steps": runner.records,
+            }
+            try:
+                write_report(output / "result.json", report)
+            except OSError as exc:
+                print(f"REPORT_WRITE_FAILED: {exc}", file=os.sys.stderr)
+                return (
+                    (128 + interruption.signum) if interruption.signum else (code or 4)
+                )
+            # 落盘期间首次收到信号时重写一次，保证顶层状态与实际退出码一致。
+            if interruption.signum is None or code == 128 + interruption.signum:
+                break
+        if failure is not None:
+            print(str(failure))
+        print(f"报告：{output / 'result.json'}；退出码 {code}")
+        return code
 
 
 if __name__ == "__main__":
