@@ -56,7 +56,7 @@ export PATH="$ANDROID_HOME/platform-tools:$PATH"
 
 APK 为 `app/build/outputs/apk/demo/debug/app-demo-debug.apk`，包名后缀 `.demo`、名称“串门 · 演示”，常驻“模拟数据”标记。脚本核对产物元数据并输出路径和 SHA-256。签名沿用标准 debug 配置，正式 release 设置和签名配置未改动。
 
-快速检查核对原生候选输入，再执行固定 Ruff、Android 工具回归、模块/import 边界、配置目录审计，以及 `:contracts:test :app:testDemoDebugUnitTest`，不操作设备。JVM 报告在 `contracts/build/reports/tests/test/` 和 `app/build/reports/tests/testDemoDebugUnitTest/`。其中 27 项领域/状态测试与 14 项 Robolectric UI 测试分别覆盖业务不变量和真实 demo Activity 的界面绑定；20 张 UI 渲染图在 `app/build/p01-ui/`。JVM native Canvas 渲染不表示设备、系统栏或 TalkBack 已验收。
+快速检查核对原生候选输入，再执行固定 Ruff、Android 工具回归、模块/import 边界、配置目录审计，以及 `:contracts:test :app:testDemoDebugUnitTest`，不操作设备。JVM 报告在 `contracts/build/reports/tests/test/` 和 `app/build/reports/tests/testDemoDebugUnitTest/`；领域/状态与 Robolectric UI 测试分别覆盖业务不变量和真实 demo Activity 的界面绑定，测试计数以对应运行报告为准。UI 渲染图在 `app/build/p01-ui/`。JVM native Canvas 渲染不表示设备、系统栏或 TalkBack 已验收。
 
 共享 UI 契约使用 [Compose v2 测试入口](https://developer.android.com/develop/ui/compose/testing/migrate-v2)，默认 `StandardTestDispatcher` 将组合协程排队；语义操作、`waitForIdle` 与 `runOnIdle` 负责断言前的同步。测试使用 JUnit 4 与既有 Robolectric / 设备入口。Lifecycle 的 KTX API 已移入 [`lifecycle-runtime`](https://developer.android.com/jetpack/androidx/releases/lifecycle#2.8.0)，工程直接依赖该模块。
 
