@@ -12,12 +12,40 @@ import signal
 import subprocess
 import tempfile
 import time
+import xml.etree.ElementTree as ET
 from contextlib import contextmanager
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 RUFF = "0.17.0"
 DEVICE_TEST_PACKAGE = "com.github.zzwtsy.chuanmen.application"
+# 设备入口的验收集合；增加共享交互或渲染场景时须同步此契约与开发环境说明。
+DEVICE_TEST_CASES = {
+    (f"{DEVICE_TEST_PACKAGE}.DemoNavigationTest", name)
+    for name in (
+        "navigation_preservesInvalidDraft",
+        "demoModeAndCopyAction_areVisible",
+        "settingsReturn_preservesInvalidDraft",
+        "restoreRunningConfiguration_clearsPendingActions",
+    )
+} | {
+    (
+        f"{DEVICE_TEST_PACKAGE}.DemoPresentationTest",
+        f"presentation_preservesStateAndAccessibleActions[{case}]",
+    )
+    for case in (
+        "empty",
+        "disconnected",
+        "connected-light",
+        "connection-failure",
+        "apply-failure",
+        "no-samples",
+        "connected-dark",
+        "connected-large-font",
+        "connected-high-contrast",
+        "connected-dynamic-color",
+    )
+}
 TERMINATE_GRACE_SECONDS = 5.0
 KILL_WAIT_SECONDS = 5.0
 
@@ -537,6 +565,60 @@ def build_demo(runner: Runner, offline: bool) -> None:
         print(f"APK: {apk.relative_to(runner.root)}\nSHA256: {digest}")
 
 
+def device_test_results(directory: Path) -> dict:
+    """只接受完整且无失败、错误或跳过的本次 XML，不以退出码或总数代替用例身份。"""
+    reports = sorted(directory.rglob("TEST-*.xml"))
+    if not reports:
+        raise ToolFailure(4, "DEVICE_REPORT_MISSING: 本次设备测试未生成 XML 报告")
+    observed: set[tuple[str, str]] = set()
+    try:
+        for path in reports:
+            root = ET.parse(path).getroot()
+            if root.tag not in {"testsuite", "testsuites"}:
+                raise ValueError("根元素不是 JUnit 测试报告")
+            suites = [root] if root.tag == "testsuite" else list(root)
+            if not suites or any(suite.tag != "testsuite" for suite in suites):
+                raise ValueError("缺少有效 testsuite")
+            for suite in suites:
+                cases = suite.findall("testcase")
+                counts = {
+                    key: int(suite.attrib[key])
+                    for key in ("tests", "failures", "errors", "skipped")
+                }
+                if counts["tests"] != len(cases) or any(
+                    value < 0 for value in counts.values()
+                ):
+                    raise ValueError("报告计数与用例数量不一致")
+                if any(counts[key] for key in ("failures", "errors", "skipped")):
+                    raise ValueError("存在失败、错误或跳过")
+                for case in cases:
+                    identity = (case.attrib["classname"], case.attrib["name"])
+                    if any(
+                        case.find(tag) is not None
+                        for tag in ("failure", "error", "skipped")
+                    ):
+                        raise ValueError("用例包含失败、错误或跳过节点")
+                    if identity in observed:
+                        raise ValueError("重复用例不能充当完整执行")
+                    observed.add(identity)
+    except (ET.ParseError, ValueError, KeyError) as exc:
+        raise ToolFailure(4, f"DEVICE_REPORT_INVALID: {exc}") from exc
+    if observed != DEVICE_TEST_CASES:
+        raise ToolFailure(
+            4,
+            "DEVICE_TESTS_INCOMPLETE: "
+            f"缺少 {len(DEVICE_TEST_CASES - observed)} 项，"
+            f"非预期 {len(observed - DEVICE_TEST_CASES)} 项",
+        )
+    return {
+        "tests": len(observed),
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "cases": [{"class": cls, "name": name} for cls, name in sorted(observed)],
+    }
+
+
 def verify_device(runner: Runner, offline: bool, serial: str | None) -> None:
     adb = shutil.which("adb")
     if not adb:
@@ -552,15 +634,31 @@ def verify_device(runner: Runner, offline: bool, serial: str | None) -> None:
     if not api.isdigit() or int(api) < 24:
         raise ToolFailure(5, "DEVICE_BLOCKED: 设备 API 未知或低于当前 minSdk")
     print(f"唯一设备 API {api}；仅安装 demo 并执行 Compose 测试，不代表真实 VPN 验证")
+    results = (
+        runner.root
+        / "app/build/outputs/androidTest-results/connected/debug/flavors/demo"
+    )
+    # 旧报告只移动到忽略的诊断目录，保留失败材料且不让其参与本次成功判断。
+    summary_path = runner.output / "device-tests.json"
+    if results.exists() or summary_path.exists():
+        previous = Path(tempfile.mkdtemp(prefix="previous-results-", dir=runner.output))
+        if results.exists():
+            results.rename(previous / "demo")
+        if summary_path.exists():
+            summary_path.rename(previous / "device-tests.json")
     environment = dict(os.environ, ANDROID_SERIAL=selected)
     gradle(
         runner,
         offline,
         "demo-device-tests",
         ":app:connectedDemoDebugAndroidTest",
+        "--rerun-tasks",
         f"-Pandroid.testInstrumentationRunnerArguments.package={DEVICE_TEST_PACKAGE}",
         env=environment,
     )
+    summary = device_test_results(results)
+    write_report(summary_path, summary)
+    print(f"DEVICE_TESTS_OK: {summary['tests']} 项完整通过；失败、错误、跳过均为 0")
 
 
 def write_report(path: Path, report: dict) -> None:

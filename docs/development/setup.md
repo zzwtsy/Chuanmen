@@ -98,6 +98,8 @@ Kotlin 版本须同时核对 [Gradle 兼容表](https://kotlinlang.org/docs/grad
 
 可用 `--serial` 核对唯一设备；多设备、未授权、离线或不存在时返回 5，不执行安装。入口检查 ADB 和系统 API，再安装 demo 执行 application 包中的 `DemoNavigationTest` 与 `DemoPresentationTest`，共 14 项：验证无效草稿跨页/设置返回保留、保存新 MTU 后恢复运行配置并消除待应用、模拟标记/剪贴板写入，以及六个具名场景和浅/深/大字/高对比/动态色的渲染、heading、48 dp 导航触控尺寸及唯一朗读名称。设备报告在 `app/build/reports/androidTests/connected/debug/flavors/demo/`。
 
+入口在运行前将旧 XML 和旧 `device-tests.json` 移至 `build/android/verify-device/previous-results-*/`，保留历史失败材料；使用 `--rerun-tasks` 强制本次执行。Gradle 返回 0 后，仍须核对 `app/build/outputs/androidTest-results/connected/debug/flavors/demo/` 中的 JUnit XML：当前 14 项身份完整、无重复、失败/错误/跳过均为 0，计数与节点一致。缺报告、损坏或不完整均返回 4，不能以旧报告或成功退出码登记通过。校验成功才生成 `build/android/verify-device/device-tests.json` 的用例摘要。新增共享用例时同步 `android_tools.py` 的 `DEVICE_TEST_CASES` 与本节。
+
 测试期间设备须保持亮屏、解锁并允许 USB 安装；MIUI 设备还需在“串门 · 演示 → 其他权限”允许“后台弹出界面”。安装或卸载可能重置该授权；系统取消 Activity 启动时，测试会停在 `ActivityScenarioRule`，尚未进入 UI 断言或截图。
 
 API 26+ 通过 PixelCopy 在测试设备 demo 应用的 `cache/p01-ui/` 生成 20 张渲染图；截图失败仍导致测试失败。API 24–25 仅省略截图，在创建目录、文件之前用 `P01_UI_CAPTURE` 日志记录用例、页面、API 和原因，全部 14 项 UI 用例及断言继续执行，不使用 JUnit 跳过机制。低版本验收须核对失败、错误、跳过均为 0，没有新增截图文件且有对应省略日志；高版本须核对有效 PNG。这些图是临时复核图，不是截图基线。同一组断言由 JVM 和设备入口复用，两类结果分别登记；实际执行结果见 [P01 修复复验](../plan/p01-foundation.md#配置恢复与低版本截图修复复验2026-10-13)与 [API 36 设备验收](../plan/p01-foundation.md#api-36-设备验收2026-10-13)，历史结果保留在同页。

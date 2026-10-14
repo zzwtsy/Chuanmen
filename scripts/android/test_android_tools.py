@@ -9,20 +9,24 @@ import subprocess
 import sys
 import time
 import unittest
+import xml.etree.ElementTree as ET
 from contextlib import contextmanager, redirect_stderr, redirect_stdout
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest.mock import patch
 
 from android_tools import (
+    DEVICE_TEST_CASES,
     Runner,
     ToolFailure,
     _OwnedProcess,
+    device_test_results,
     doctor,
     main,
     native_candidate,
     sdk_path,
     select_device,
+    verify_device,
     write_report,
 )
 from check_boundaries import violations
@@ -79,6 +83,194 @@ def tracked_processes():
             for stream in (process.stdout, process.stderr):
                 if stream is not None:
                     stream.close()
+
+
+class DeviceResultsTest(unittest.TestCase):
+    """用合成 JUnit 报告验证设备入口，不连接设备或启动 Gradle。"""
+
+    def report(self, directory: Path, identities=None) -> Path:
+        directory.mkdir(parents=True, exist_ok=True)
+        cases = sorted(DEVICE_TEST_CASES if identities is None else identities)
+        suite = ET.Element(
+            "testsuite", tests=str(len(cases)), failures="0", errors="0", skipped="0"
+        )
+        for cls, name in cases:
+            ET.SubElement(suite, "testcase", classname=cls, name=name)
+        path = directory / "TEST-synthetic.xml"
+        ET.ElementTree(suite).write(path, encoding="utf-8")
+        return path
+
+    def test_complete_report_records_all_expected_cases(self) -> None:
+        """完整的 14 项合成用例均成功时读取报告，断言摘要保留全部身份且失败、错误、跳过为零。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.report(root)
+            result = device_test_results(root)
+            self.assertEqual(14, result["tests"])
+            self.assertEqual(
+                DEVICE_TEST_CASES, {(c["class"], c["name"]) for c in result["cases"]}
+            )
+            self.assertEqual(
+                (0, 0, 0), tuple(result[k] for k in ("failures", "errors", "skipped"))
+            )
+
+    def test_missing_empty_partial_and_wrong_cases_are_rejected(self) -> None:
+        """报告缺失、零用例、仅部分完成或总数相同但身份错误时校验，断言全部返回任务失败。"""
+        cases = sorted(DEVICE_TEST_CASES)
+        for identities in (None, [], cases[:-1], cases[:-1] + [("unexpected", "case")]):
+            with self.subTest(identities=identities), TemporaryDirectory() as directory:
+                root = Path(directory)
+                if identities is not None:
+                    self.report(root, identities)
+                with self.assertRaises(ToolFailure) as raised:
+                    device_test_results(root)
+                self.assertEqual(4, raised.exception.code)
+
+    def test_duplicate_cases_across_reports_are_rejected(self) -> None:
+        """两个报告重复登记同一用例时合并校验，断言重复不能补足或冒充完整执行。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = self.report(root)
+            (root / "TEST-duplicate.xml").write_bytes(path.read_bytes())
+            with self.assertRaisesRegex(ToolFailure, "重复用例"):
+                device_test_results(root)
+
+    def test_failure_error_and_skip_counts_or_nodes_are_rejected(self) -> None:
+        """失败、错误、跳过分别只出现在计数或节点时校验，断言任何一种都不能登记成功。"""
+        for tag, attribute in (
+            ("failure", "failures"),
+            ("error", "errors"),
+            ("skipped", "skipped"),
+        ):
+            for by_count in (True, False):
+                with (
+                    self.subTest(tag=tag, by_count=by_count),
+                    TemporaryDirectory() as directory,
+                ):
+                    root = Path(directory)
+                    path = self.report(root)
+                    tree = ET.parse(path)
+                    if by_count:
+                        tree.getroot().set(attribute, "1")
+                    else:
+                        ET.SubElement(tree.getroot().find("testcase"), tag)
+                    tree.write(path)
+                    with self.assertRaises(ToolFailure):
+                        device_test_results(root)
+
+    def test_malformed_reports_and_inconsistent_counts_are_rejected(self) -> None:
+        """XML 损坏、计数缺失/非整数/负数/与节点数量不符或根元素错误时校验，断言明确失败。"""
+        for mode in ("xml", "missing", "text", "negative", "mismatch", "root"):
+            with self.subTest(mode=mode), TemporaryDirectory() as directory:
+                root = Path(directory)
+                path = self.report(root)
+                tree = ET.parse(path)
+                suite = tree.getroot()
+                if mode == "xml":
+                    path.write_text("<testsuite")
+                else:
+                    if mode == "missing":
+                        del suite.attrib["errors"]
+                    elif mode == "root":
+                        suite.tag = "other"
+                    else:
+                        suite.set(
+                            "tests",
+                            {"text": "invalid", "negative": "-1", "mismatch": "15"}[
+                                mode
+                            ],
+                        )
+                    tree.write(path)
+                with self.assertRaisesRegex(ToolFailure, "DEVICE_REPORT_INVALID"):
+                    device_test_results(root)
+
+    def test_testsuites_container_and_split_reports_are_supported(self) -> None:
+        """完整集合分在 testsuites 容器及另一个报告中时校验，断言跨报告合并仍得到 14 项。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            cases = sorted(DEVICE_TEST_CASES)
+            path = self.report(root, cases[:4])
+            container = ET.Element("testsuites")
+            container.append(ET.parse(path).getroot())
+            ET.ElementTree(container).write(path)
+            self.report(root / "second", cases[4:])
+            self.assertEqual(14, device_test_results(root)["tests"])
+
+    def run_device(self, root: Path, write_current: bool) -> Runner:
+        runner = Runner(root, root / "diagnostics", 30)
+        runner.output.mkdir(exist_ok=True)
+
+        def command(label, argv, env=None):
+            if label == "device-list":
+                return "List of devices attached\nsynthetic-device\tdevice\n"
+            if label == "device-api":
+                return "36"
+            self.assertEqual("demo-device-tests", label)
+            self.assertIn("--rerun-tasks", argv)
+            if write_current:
+                self.report(
+                    root
+                    / "app/build/outputs/androidTest-results/connected/debug/flavors/demo"
+                )
+            return "BUILD SUCCESSFUL"
+
+        with (
+            patch("android_tools.shutil.which", return_value="/synthetic/adb"),
+            patch.object(runner, "run", side_effect=command),
+        ):
+            verify_device(runner, offline=True, serial=None)
+        return runner
+
+    def test_zero_exit_without_report_cannot_reuse_previous_success(self) -> None:
+        """旧报告完整成功而本次 Gradle 返回 0 但不生成报告时运行入口，断言旧文件被保留隔离且本次失败。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.report(
+                root
+                / "app/build/outputs/androidTest-results/connected/debug/flavors/demo"
+            )
+            (root / "diagnostics").mkdir()
+            (root / "diagnostics/device-tests.json").write_text('{"tests": 14}')
+            with self.assertRaisesRegex(ToolFailure, "DEVICE_REPORT_MISSING"):
+                self.run_device(root, write_current=False)
+            self.assertEqual(1, len(list((root / "diagnostics").rglob("TEST-*.xml"))))
+            self.assertFalse((root / "diagnostics/device-tests.json").exists())
+
+    def test_cli_zero_exit_without_xml_is_failed_in_top_level_report(self) -> None:
+        """设备子命令正常返回但缺少 XML 时调用真实 CLI 汇总，断言退出码为 4、状态为 failed 且保留缺报告原因。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            def without_report(runner, *_):
+                device_test_results(runner.root / "missing")
+
+            with (
+                patch("android_tools.ROOT", root),
+                patch("sys.argv", ["android_tools.py", "verify-device"]),
+                patch("android_tools.verify_device", side_effect=without_report),
+                redirect_stdout(io.StringIO()),
+            ):
+                code = main()
+            result = json.loads(
+                (root / "build/android/verify-device/result.json").read_text()
+            )
+            self.assertEqual(4, code)
+            self.assertEqual(4, result["exit_code"])
+            self.assertEqual("failed", result["status"])
+            self.assertIn("DEVICE_REPORT_MISSING", result["failure"]["message"])
+
+    def test_device_entry_writes_summary_only_for_current_complete_report(self) -> None:
+        """旧报告存在且本次重新生成完整报告时运行入口，断言强制执行并写入本次 14 项摘要。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.report(
+                root
+                / "app/build/outputs/androidTest-results/connected/debug/flavors/demo"
+            )
+            runner = self.run_device(root, write_current=True)
+            summary = json.loads((runner.output / "device-tests.json").read_text())
+            self.assertEqual(14, summary["tests"])
+            self.assertEqual(1, len(list(runner.output.rglob("TEST-*.xml"))))
 
 
 class AndroidToolsTest(unittest.TestCase):

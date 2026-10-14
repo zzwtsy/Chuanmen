@@ -12,12 +12,12 @@
 
 | 范围 | 已有基础与结果定位 | 待评审事项与后续边界 |
 |---|---|---|
-| Android 工程 | `:app -> :contracts`、demo 配置切片、四页导航、生命周期收集、主题组件及具名预览；JVM/UI 与限定 API 36 设备结果见下方历史摘要 | 退出评审核对 demo 边界与第 6 节标准；API 24–25 未实测，系统栏与完整无障碍尚未验收，完整设备矩阵和 TalkBack 归 P06 |
+| Android 工程 | `:app -> :contracts`、demo 配置切片、四页导航、生命周期收集、主题组件及具名预览；JVM/UI 与限定 API 36 设备结果见下方历史摘要 | [退出评审](#p01-退出评审2026-10-14)已核对 demo 边界与第 6 节标准；API 24–25 未实测，系统栏与完整无障碍尚未验收，完整设备矩阵和 TalkBack 归 P06 |
 | 工具链 | Wrapper、版本目录、Daemon JVM；[新 checkout 复建](#本地实施与复验记录2026-10-12)通过；候选核心/NDK/Rust/ABI 与来源摘要已固定并自动核对，live 明确阻断 | 复建复用了依赖缓存，不声称空缓存或第二主机；P02 正式接入与生产批准另行验收 |
-| 质量检查 | 四个 Android 入口、工具回归与模块/import 检查已建立，参数和报告见[开发环境](../development/setup.md)；Python 与 Android CI 已[远端通过](#远端-ci-通过记录2026-10-14) | 退出评审核对执行报告与源码身份；测试计数以对应运行报告为准，Git 工作流门禁与阶段退出分别判断 |
-| 协作与文档 | 根 AGENTS.md、目录边界 ADR、任务模板、开发环境与 PR 规范 | 按实际切片复核入口、依赖检查和任务验收 |
+| 质量检查 | 四个 Android 入口、工具回归与模块/import 检查已建立，参数和报告见[开发环境](../development/setup.md)；Python 与 Android CI 已[远端通过](#远端-ci-通过记录2026-10-14) | [退出评审](#p01-退出评审2026-10-14)已核对执行报告与源码身份；测试计数以对应运行报告为准，Git 工作流门禁与阶段退出分别判断 |
+| 协作与文档 | 根 AGENTS.md、目录边界 ADR、任务模板、开发环境与 PR 规范；[退出评审](#p01-退出评审2026-10-14)已核对工程门槛 | 第一方代码已确定为 AGPL-3.0-only，见根 LICENSE 与 README；第三方许可和正式发行义务另行保持 |
 
-**下一步是 P01 退出评审**：按第 6 节标准核对代码、结果定位与未覆盖范围，再决定阶段状态。当前保持 `in_progress`；空缓存/第二主机不额外作为 P01 门槛，API 36 demo 通过也不代替完整设备或正式 VPN 验收。
+**P01 已在工程基础与限定 demo 范围完成退出验收**：第 6 节标准已复验，第一方代码许可证确定为 AGPL-3.0-only，结果见[退出评审](#p01-退出评审2026-10-14)。阶段状态以路线图的 `verified` 为准。空缓存/第二主机不额外作为 P01 门槛，API 36 demo 通过也不代替完整设备或正式 VPN 验收。
 
 历史模板、当前 demo 与 P00 探针分别覆盖各自范围；本地领域测试不表示正式 VpnService 或生产桥接已验收。当前装配决策见 [ADR 0004](../design/adr/0004-demo-assembly.md)。
 
@@ -209,6 +209,29 @@ API 36 安装曾被 INSTALL_FAILED_USER_RESTRICTED 拒绝，入口返回 0 但�
 | Verification evidence | [38409456078](https://github.com/zzwtsy/Chuanmen/actions/runs/38409456078) | Python lint/格式、回归、隐私、目录与 P00 既有证据校验成功 |
 
 这是固定 SHA 的历史结果，没有重新执行 P00、真机、空缓存或独立主机验收，也不自动关闭 P01。现行 PR 门禁按[Git 工作流](../development/git-workflow.md)与各 PR 的最新 head 检查。
+
+### P01 退出评审（2026-10-14）
+
+评审源码为 `1a63d9a7615ab37ab368b2c533e7230e9dd8d28d`，执行者为 Codex；宿主为 Linux x86_64，Launcher Java 21.0.12.1、Daemon JDK 25。设备为 Xiaomi、API 36、arm64-v8a，保持亮屏、解锁及既有后台弹出授权。本次没有改动产品 UI、领域契约或设备测试断言。
+
+| 第 6 节标准 | 本次核对与结论 |
+|---|---|
+| 干净环境 | 新 checkout 未复制 local.properties 或构建输出，通过环境变量提供 SDK，复用依赖缓存；诊断、快速检查、demo 构建、设备测试 APK 编译全部为 0 |
+| 命令契约 | 四个入口与帮助存在；设备入口隔离旧报告、强制执行并校验完整用例，48 项工具回归实际通过；缺报告、损坏、计数不符、重复、错误身份、失败和跳过均有负向回归 |
+| 版本固定 | Wrapper、版本目录、Daemon JVM 与候选来源摘要核对通过；live 构建为预期的 1（LIVE_ENGINE_MISSING），native 诊断为预期的 3（NATIVE_NOT_READY） |
+| 模块边界 | 当前 :app -> :contracts 的模块/import 检查通过；纯 Kotlin 契约和 demo/live source set 边界保持有效 |
+| demo 隔离 | 新 checkout 离线构建成功，设备显示模拟标记；live 不回退 fake，生产批准仍为 false |
+| 状态复现 | 新 checkout 实际执行 41 项 JVM/UI 测试，失败、错误、跳过均为 0；包含超时、迟到回执、保存/应用分离及本地名称隔离 |
+| 最小导航 | 本次设备入口完整执行 4 项交互和 10 项展示用例，失败、错误、跳过均为 0；覆盖返回、草稿保留、复制和恢复运行配置 |
+| 主题与无障碍基础 | 浅/深/大字体、高对比和动态色的共享展示断言通过；heading、唯一导航名称和 48 dp 导航目标通过；20/20 PNG 结构有效，大字体配置与深色总览复核可操作 |
+
+新 checkout 的完整命令为 `./scripts/android/doctor.sh --offline`、`./scripts/android/check-fast.sh --offline`、`./scripts/android/build-demo.sh --offline`、`./gradlew --offline --console=plain :app:assembleDemoDebugAndroidTest`；四步耗时分别为 0.565、19.859、4.276、2.021 秒。live/native 负向检查使用开发环境登记的命令。六步总耗时 28.201 秒；不声称空缓存、第二主机或通用 APK 字节一致复建。
+
+设备命令为 `env 'ORG_GRADLE_PROJECT_android.injected.androidTest.leaveApksInstalledAfterRun=true' ./scripts/android/verify-device.sh --offline --timeout 600`，设备 Gradle 步骤为 0，用时 47.972 秒，入口为 0。测试 APK SHA-256 为 `0f0dc79aeb2ecc5aac308f130985f7ae4a0cc516a29332903acbee0ade9cd3fe`；demo APK SHA-256 为 `8e012877260fbd13ffba3f358a1809ca263a0e3a4cace53035b2169afb47b88f`。本次 20 张设备图尺寸均为 1220 × 2440。
+
+上述固定源码的 [CI 38503937604](https://github.com/zzwtsy/Chuanmen/actions/runs/38503937604) 实际执行 Android 与 Python 检查并通过，`quality-gate` 成功；[PR 策略 38503937455](https://github.com/zzwtsy/Chuanmen/actions/runs/38503937455) 通过。后续文档提交仍按 PR 最新 head 门禁交付。
+
+验收范围限定工程基础和上述 demo。API 24–25、完整设备矩阵、系统栏/IME 实机专项、TalkBack、进程恢复、正式 VPN/JNI 与完整配置仍未验收，按 P02–P06 推进；不扩大 P00 运输清单。第 2 节的第一方代码许可证已明确为 AGPL-3.0-only，根 LICENSE 保存 GNU 官方全文，README 说明适用范围和第三方许可边界。该决定不改写 P00 冻结许可记录或批准发行。第 6 节工程标准与前置门槛已闭合，阶段登记为 `verified`（工程基础与限定 demo 范围）。工程验证绑定上述源码 SHA，许可与状态登记为后续文档提交，PR 最新 head 检查另行核对。
 
 ## 7. 失败回退与本阶段不做
 

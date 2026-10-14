@@ -30,7 +30,7 @@
 python3 scripts/validate_handoff.py --strict
 ```
 
-当前提供独立包名的 `demoDebug`，本地领域/导航测试与 APK 构建已通过；首次构建需要获取依赖，缓存齐备后可使用 `--offline`。live 在缺少正式服务/桥接时明确失败；P01 剩余验收见 [阶段记录](docs/plan/p01-foundation.md)。
+当前提供独立包名的 `demoDebug`，本地领域/导航测试与 APK 构建已通过；首次构建需要获取依赖，缓存齐备后可使用 `--offline`。live 在缺少正式服务/桥接时明确失败；P01 已在限定 demo 范围通过工程基础验收，详见 [退出评审](docs/plan/p01-foundation.md#p01-退出评审2026-10-14)。
 
 Python lint、格式检查、回归测试及设备入口见 [开发命令](docs/development/setup.md)。[统一 CI](.github/workflows/ci.yml) 复用 Python 与 Android 检查，PR 通过固定门禁后由维护者手动 Squash。已有主干远端检查成功的源码与运行定位见 [P01 CI 记录](docs/plan/p01-foundation.md#远端-ci-通过记录2026-10-14)。参与开发见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
@@ -79,3 +79,9 @@ Android 工程为 `:app -> :contracts`：`MainActivity` 处理 Activity 与窗�
 [P00 报告](docs/verification/p00/report.md) 支持固定核心、限定设备与受控网络下的技术结论。生产 bridge、其他设备/API/ABI、范围外网络能力和发行安排仍需各自验收。当前维护探针的静态检查与源码更新不继承历史 APK 的真机通过状态。
 
 原型使用模拟数据。配置快照中的历史 `availability`、`apply` 与核心语义版本描述当时的研究；正式产品实施状态由 [能力台账](docs/design/config/android-capability-plan.json) 记录。外部资料的核对日期及限制见 [研究导航](docs/research/README.md)。
+
+## 许可证
+
+除另有许可声明的第三方代码和资源外，串门（Chuanmen）第一方代码采用 **GNU Affero General Public License v3.0 only**（SPDX：`AGPL-3.0-only`），全文见 [LICENSE](LICENSE)。许可版本固定为第 3 版。
+
+EasyTier、Android 依赖及原型第三方资源保留各自的原始许可证和版权声明，使用与分发时须同时满足对应义务；固定 EasyTier 候选及依赖的来源与许可复核见 [P00 许可记录](docs/verification/p00/report.md)。正式发行的对应源码、通知及原生库许可安排仍按发布阶段验收。
