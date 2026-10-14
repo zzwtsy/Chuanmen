@@ -229,8 +229,6 @@ API 36 安装曾被 INSTALL_FAILED_USER_RESTRICTED 拒绝，入口返回 0 但�
 
 设备命令为 `env 'ORG_GRADLE_PROJECT_android.injected.androidTest.leaveApksInstalledAfterRun=true' ./scripts/android/verify-device.sh --offline --timeout 600`，设备 Gradle 步骤为 0，用时 47.972 秒，入口为 0。测试 APK SHA-256 为 `0f0dc79aeb2ecc5aac308f130985f7ae4a0cc516a29332903acbee0ade9cd3fe`；demo APK SHA-256 为 `8e012877260fbd13ffba3f358a1809ca263a0e3a4cace53035b2169afb47b88f`。本次 20 张设备图尺寸均为 1220 × 2440。
 
-本地临时结果为 `build/android/p01-exit-review/rebuild-summary.json`、同目录 `device-summary.json`、`device-png-summary.json` 及设备入口的 `build/android/verify-device/result.json`、`device-tests.json`；固定源码和本节摘要承担长期结果定位，忽略目录的原始输出不作为永久来源。
-
 上述固定源码的 [CI 38503937604](https://github.com/zzwtsy/Chuanmen/actions/runs/38503937604) 实际执行 Android 与 Python 检查并通过，`quality-gate` 成功；[PR 策略 38503937455](https://github.com/zzwtsy/Chuanmen/actions/runs/38503937455) 通过。后续文档提交仍按 PR 最新 head 门禁交付。
 
 验收范围限定工程基础和上述 demo。API 24–25、完整设备矩阵、系统栏/IME 实机专项、TalkBack、进程恢复、正式 VPN/JNI 与完整配置仍未验收，按 P02–P06 推进；不扩大 P00 运输清单。第 2 节的第一方代码许可证已明确为 AGPL-3.0-only，根 LICENSE 保存 GNU 官方全文，README 说明适用范围和第三方许可边界。该决定不改写 P00 冻结许可记录或批准发行。第 6 节工程标准与前置门槛已闭合，阶段登记为 `verified`（工程基础与限定 demo 范围）。工程验证绑定上述源码 SHA，许可与状态登记为后续文档提交，PR 最新 head 检查另行核对。
