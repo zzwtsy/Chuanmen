@@ -74,7 +74,7 @@
 阶段任务只有同时具备代码或明确调查结论、相关验证和结果定位，才算完成。状态采用 `planned / in_progress / blocked / verified`；工具和目录维护不自动构成阶段启动或验收。
 
 - **P00 / M1**：限定 Xiaomi API 36、arm64、4096 字节页及受控 IPv4 场景已验证。历史独立复核完成第二主机空缓存复建与许可技术复核，没有重复真机实验；生产补丁尚未批准，范围外能力继续按后续阶段验收。具体结果、制品身份和缺口以 [P00 报告](../verification/p00/report.md)、[退出边界](../verification/p00/report.md#未验证项与停止条件) 和 [独立复核](../verification/p00/reviews/independent-review.json) 为准。
-- **P01**：已实现 `:app -> :contracts`、配置编辑/改名、确定性 demo、四页导航与生命周期收集、主题预览、四个 Android 入口和 Android CI 配置。候选核心/NDK/Rust/ABI 与冻结来源摘要已固定并自动核对；恢复配置按实际内容消除待应用，API 24–25 保留全部 UI 断言并省略截图；本地 41 项 JVM 测试（含 14 项 UI）、23 项工具回归和主题/场景渲染通过；环境诊断已修复，依赖与 Compose v2 测试迁移后的 API 36 回归通过。2026-10-12 的全新 checkout 加任务补丁、复用依赖缓存的源码复建通过，live 缺失引擎时明确失败；API 36 设备 14 项 UI 用例与 20 张有效 PNG 验收通过，API 24–25 尚未实测，不继承 JVM 或历史复建结果。修复后的 Android 与 Python CI 已在固定主干 SHA 完整通过，运行定位见 [远端 CI 记录](p01-foundation.md#远端-ci-通过记录2026-10-14)；首次 SDK 安装失败保留为历史。阶段保持 `in_progress`，退出评审与 Git 工作流治理分开，不由 CI 成功自动关闭。空缓存/第二主机不额外作为 P01 门槛，完整真机矩阵与 TalkBack 实测归 P06；具体命令、结果和限制见 [P01](p01-foundation.md)。
+- **P01**：已有 `:app -> :contracts`、demo 配置切片、四页导航、主题预览、Android 工具与远端 CI。当前基础、待评审门槛及验证范围集中在 [P01](p01-foundation.md#已有基础与剩余门槛)，运行记录保留执行时的日期和源码身份。阶段保持 `in_progress`，下一步是按 P01 退出标准进行阶段评审；CI 成功和日常工具维护不自动关闭阶段。
 - **P02–P07**：正式 VPN/JNI、配置业务、监控页面、高级能力、可靠性与发布工作保持 `planned`。实验探针不等于产品实现。
 
 根 `handoff.json` 与 `SHA256SUMS` 只描述已冻结的 P00 运输范围。其 `p01_p02_started` 字段记录冻结时的状态，不作为当前仓库进度来源，也不随日常开发更新。
