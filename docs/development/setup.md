@@ -28,7 +28,7 @@ demo 使用 Android/Kotlin 工具链，无真实 VPN、NDK 或网络秘密要求
 3. 首次 Gradle 同步与构建允许获取 Wrapper、插件和依赖。自动工具链解析可能访问配置中的分发来源；受限网络环境需预先准备对应缓存。
 4. 安装 Python 和 uv 后，从根目录运行诊断、快速检查与 demo 构建。
 
-诊断启动 Java 时与 Wrapper 一样优先使用 `JAVA_HOME/bin/java`，未设置时才查找 PATH；Daemon JVM 仍按工程配置选择。Rust 已安装但没有可用工具链时，doctor 保留失败日志并提示 demo 不要求 Rust；必需工具失败和命令超时仍返回失败。
+诊断启动 Java 时与 Wrapper 一样优先使用 `JAVA_HOME/bin/java`，未设置时才查找 PATH；Daemon JVM 仍按工程配置选择。Rust 已安装但没有可用工具链、命令普通非零退出时，doctor 保留失败步骤和日志并标记 `failure_handled=true`，提示 demo 不要求 Rust；必需工具失败、启动失败、超时、中断、日志或清理错误仍阻断。
 
 需要直接调用下文的 ADB 命令时，将同一 SDK 的位置设为 `ANDROID_HOME`，并把 `platform-tools` 加入 PATH。若保留旧的 `ANDROID_SDK_ROOT`，它须与 `ANDROID_HOME` 一致；仅设置 `sdk.dir` 不会自动配置 shell 的 PATH。
 
@@ -62,7 +62,21 @@ APK 为 `app/build/outputs/apk/demo/debug/app-demo-debug.apk`，包名后缀 `.d
 
 Kotlin 版本须同时核对 [Gradle 兼容表](https://kotlinlang.org/docs/gradle-configure-project.html)和实际构建：当前固定版覆盖工程的 Gradle 版本，AGP 版本高于该表的完全支持上限；Android 模块沿用 AGP 的[内置 Kotlin](https://developer.android.com/build/migrate-to-built-in-kotlin)，通过根插件声明使用[更高版本的 KGP](https://developer.android.com/build/releases/agp-9-0-0-release-notes)。实际解析、构建与设备结果见 [P01 环境与依赖复验](../plan/p01-foundation.md#环境诊断与依赖迁移复验2026-10-13)，不推导其他 AGP 功能兼容性。
 
-四个入口支持 `--help`、`--offline`、`--timeout SECONDS`，默认每条子命令超时 600 秒。日志和 `result.json` 放 `build/android/<入口名>/`；退出码：0 成功、2 参数错误、3 前置缺失、4 子任务失败、5 设备阻塞、6 超时。每次覆盖该入口的临时报告，历史结论不依赖日志永久保留。
+四个入口支持 `--help`、`--offline`、`--timeout SECONDS`，默认每条子命令超时 600 秒。日志和 `result.json` 放 `build/android/<入口名>/`；退出码：0 成功、2 参数错误、3 前置缺失、4 子任务失败或报告写入失败、5 设备阻塞、6 超时、130 SIGINT 中断、143 SIGTERM 中断。每次原子替换该入口的临时报告，历史结论不依赖日志永久保留；报告写入失败经 stderr 输出 `REPORT_WRITE_FAILED`，保留的旧报告不代表本次结果。
+
+有效命令调用的前置失败也生成顶层报告。`schema_version=1` 保留原有 `command`、`exit_code`、`steps`，新增顶层 `status` 和 `failure`（成功时为 `null`，失败时含 `message`、`step`）。状态为 `passed / failed / blocked / timed_out / interrupted`。每个已尝试步骤保留 `label`、`exit_code`、`elapsed_seconds` 和 `log`，新增字段如下：
+
+| 步骤字段 | 含义 |
+|---|---|
+| `status`、`timed_out`、`interrupted` | 步骤结果；超时或中断后，即使子进程返回 0 也不成功 |
+| `interruption_signal`、`termination_signal` | CLI 接收的中断信号与直接子进程实际终止信号分别记录，未发生时为 `null` |
+| `cleanup_scope` | POSIX 为 `process_group`，其他平台为直接子进程 `process` |
+| `cleanup_complete`、`cleanup_signals`、`cleanup_error` | 是否完成清理、发出的清理信号和清理错误；未请求清理时为 `null`、空列表、`null` |
+| `log_error`、`failure_handled` | 日志写入错误和 doctor 已处理的可选诊断失败 |
+
+缺工具、启动失败、非零退出、超时与中断均有步骤记录；未启动进程时，退出码和终止信号为 `null`。每步日志保留 stdout 和 stderr，沿用先 stdout 后 stderr 的合并方式，不承诺两路输出的时间顺序。前置失败可能没有步骤，参数错误由 argparse 返回 2。
+
+每次 POSIX 执行建立独立进程组，超时或中断先发送 SIGTERM 并等待最多 5 秒，仍有运行成员时发送 SIGKILL 并再等待最多 5 秒；直接子进程退出后仍检查衍生成员，Linux 排除已结束的僵尸进程。超过预算明确记录清理未完成，不无限等待。清理只操作本次创建的组，不能终止其他任务或组外的共享 Gradle daemon。非 POSIX 使用直接子进程清理，本轮进程组验收针对 Linux。SIGINT / SIGTERM 处理只在 CLI 调用期间安装，退出时恢复宿主处理器。
 
 ## demo fixture 与设备入口
 
