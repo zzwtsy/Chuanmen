@@ -2,7 +2,7 @@
 
 架构设计基线 1.0 · 外部资料核对日期：2026-10-11（Asia/Shanghai）。文中的上游“当前/最新”按该日期理解，实际依赖以仓库配置为准。
 
-本文规定目标边界、状态归属、平台适配与验证门槛。现有 demo 与纯领域契约见 [开发环境](../development/setup.md)，目录演进见 [目录边界 ADR](adr/0003-directory-boundaries.md)，实施状态见 [路线图](../plan/ROADMAP.md)。正式 bridge 与 Service 已接入 P02；阶段退出仍须核对正式 APK 的设备证据。交互原型、demo 和 P00 探针分别支撑各自范围的验证。
+本文规定状态归属、平台适配与验证门槛。P02 已建立正式 bridge 与 Service；现行单模块边界见 [ADR 0005](adr/0005-single-app.md)，构建见 [开发环境](../development/setup.md)，阶段与验证范围见 [路线图](../plan/ROADMAP.md)。
 
 本文的证据等级为：**已证实**指研究时读取的一手文档或固定版本源码；**拟议**指本项目应建立的设计与接口；**待实测**指必须由所选构建产物与设备实验确认的行为。读取记录见 [Android 与核心证据](../research/android-core-evidence.md)，后续实测结果见 [P00 报告](../verification/p00/report.md)；源码事实不能代替产品验收。
 
@@ -24,33 +24,41 @@ P00 的固定核心来源、实验补丁决策与遗留限制以报告为准。�
 
 ## 2. 工程边界与依赖
 
-采用包级业务切片与独立运行模块。当前 app 依赖 contracts，live 经实际 vpn 与 core-bridge 模块访问原生；Service 唯一持有控制器、核心与 TUN。详细目录约定见 [目录边界 ADR](adr/0003-directory-boundaries.md)，当前 demo 边界见 [装配 ADR](adr/0004-demo-assembly.md)。
+仅保留 `:app`，基础包为 `com.github.zzwtsy.chuanmen`。功能代码聚合在 `features/<功能>`，共享能力按实际消费者进入根 `lib`、`components`、`utils`，主题保留 `ui/theme`。详细边界见 [ADR 0005](adr/0005-single-app.md)。
 
-| 模块 / 目录 | 唯一职责 | 不应承担的职责 |
-|---|---|---|
-| `:app` | 应用装配、Compose 与业务切片；配置状态/校验/存储/codec、日志存储与外观偏好归各自能力 | 页面不直接读 TUN、调用 JNI、访问 DAO 或维护第二份连接真相 |
-| `:contracts` | 实际跨模块使用的纯 Kotlin 接口、不可变模型与快照，如 ProfileRepository、SessionController、CoreEngine | 不依赖 Android、Compose、Room 或 Rust 类型，不收纳切片私有草稿与校验 |
-| `:vpn` | VpnService、会话命令串行化、授权结果、网络变化、TUN 建立与替换、通知与恢复 | 不决定表单布局，不反向依赖 app 存储实现，不解析任意上游 JSON |
-| `:core-bridge` | JNI 包装、版本握手、DTO 解码、上游错误映射、回调线程与资源契约、真实 CoreEngine 适配 | 不拥有页面导航、不直接保存用户表单 |
-| `native/` | 固定上游引用、最小补丁、本项目桥接源码、ABI 与 feature 清单、原生构建和符号产物 | 不跟踪浮动主干、不复制一份无人维护的完整网络协议 |
-| 各模块测试目录 | fake engine、固定时钟、DTO/配置样本、设备场景与测试支持；实际跨模块复用后再提取 `:testing` | 不在 real 失败时返回模拟成功 |
+| 目录 / 所有者 | 职责 |
+|---|---|
+| 根六个 Kotlin 文件 | Activity、Application、装配、导航、查看身份、顶栏摘要及主题 |
+| `features/configuration` | 草稿、模式、保存、改名、待应用和实际配置恢复；独占编辑器 |
+| `features/overview` | 查看/运行归属、连接动作、真实地址、在线数与 60 秒流量投影 |
+| `features/devices` | 当前会话观测匹配、在线设备、路由、NAT 与缺测投影 |
+| `features/logs` | 真实生命周期与核心诊断的完整来源、原有格式和顺序 |
+| `features/settings` | 更新共享外观偏好、只读展示当前查看配置的互联网范围 |
+| `components` | 多个功能使用的复制 IP、指标、分组卡片与条件操作区；不读取仓库或提交命令 |
+| `lib/profile` | 配置身份、核心输入、已保存修订、内存仓库及窄仓库所有者接口 |
+| `lib/vpn` | 唯一真实会话、Service/JNI、TUN、授权、资源生命周期与真实采样 |
+| `lib/AppearancePreferences`、`utils/Ipv4` | 根与设置共享的外观对象；跨能力复用的纯 IPv4 校验 |
+| `app/native` | 固定上游来源、必要补丁、Rust 桥与原生回归 |
+| `app/src/test`、`app/src/androidTest` | 按功能/共享能力镜像组织的 JVM/Compose 测试和真实设备契约 |
 
 ```mermaid
-flowchart TD
-    A[":app application 装配"] --> F[":app feature 业务切片"]
-    A --> C[":contracts 公开契约"]
-    A --> V[":vpn 会话服务"]
-    A --> B[":core-bridge JNI 适配"]
-    F --> C
-    V --> C
-    V --> B
-    B --> C
-    B --> N["native/ 固定核心与补丁"]
+flowchart LR
+    Host[根导航与装配] --> Features[五个功能 Screen 与 ViewModel]
+    Features --> Client[同一个 VpnSessionClient]
+    Features --> Profiles[同一个 ProfileRepository]
+    Client --> Service[Service 与会话协调器]
+    Service --> Profiles
+    Service --> Bridge[NativeCoreEngine 与 JNI]
+    Bridge --> Rust[app/native 固定核心]
 ```
 
-配置切片实现 `ProfileRepository`，应用装配层将其注入服务；VPN 无需依赖 app 实现。配置保存与本地改名属于配置业务，实际 Apply 与重连由服务串行执行，并通过回执确认 applied 修订。跨切片通过公开契约协作，真实会话只有服务一个来源。
+每个功能的 Screen 渲染自己的 UiState 和回调；ViewModel 负责业务投影。功能动作直接交给所属 ViewModel，跨页导航回调由根处理；根不持有草稿、整份会话、流量、日志、待应用或功能消息。
 
-操作的状态、校验、用例和测试聚合到所属切片；无需给每个简单读写创建 UseCase。界面采用单向数据流：状态向下、用户意图向上；公开只读 StateFlow，内部可变状态不泄漏。该方向符合 Android 官方架构建议，具体模块数量是本项目的取舍。[A-09]
+根与五个功能 ViewModel 在同一个 Activity owner 下以稳定键创建，不按查看身份重建。根仅向功能传只读查看身份流及必要的共享依赖，不注入其他 ViewModel。配置动作处理当下读取当前查看 ID，并确保编辑器已经打开该草稿；快速切换不会编辑旧对象。草稿按配置 ID 保留，页面/设置切换和配置重建不丢失原始输入或错误。
+
+Application 持有唯一仓库及 lazy 客户端。Service 通过 `ProfileRepositoryOwner` 核对保存修订，继续唯一拥有真实会话。主题和设置共享根 ViewModel 生命周期内的同一个外观对象；新 owner 恢复默认，不新增持久化。订阅展示状态不增加真实采样器，清理 ViewModel 不停止 Service。
+
+实体 source set 只有 main/test/androidTest；debug/release 共用正式内存输入，无应用侧演示数据或 Preview。初次保存不连接，显式连接才申请授权并进入真实核心；内存配置不获得 P03 持久化保证。
 
 ### 2.1 为什么先单进程
 
@@ -126,7 +134,7 @@ Android 默认让应用组件处于同一进程；Service 不自动拥有专用�
 
 结果未知时优先查询实际运行配置，与目标修订及当前会话核对。不能查询时，等待停止确认后受控重建，再发布新的运行快照；停止未获确认时不能重建。晚到回执仍须核对会话代次与操作归属，不能改变新会话。运行结果不确定不影响用户继续编辑或仅保存草稿。
 
-这是 P02 会话事务与 P03 展示共用的目标契约，当前 demo 不代表真实回执丢失场景已实现或验收。用户可见状态与动作见 [总体设计 §6.5](overall-design.md#65-按需操作区)。
+这是会话事务与配置展示共用的契约；实现和设备验证范围分别以当前回归与 P02 报告为准。用户可见状态与动作见 [总体设计 §6.5](overall-design.md#65-按需操作区)。
 
 ## 5. TUN、socket 与网络变化的硬契约
 
@@ -188,7 +196,7 @@ IPv6 必须有可验证的支持或阻断策略，不能只显示一个“启用
 
 上游 JSON/protobuf DTO 只出现在 bridge 内。外层使用领域类型，未知枚举保留原值与 Unknown 展示；64 位累计值不先转成 Float/Double 再存储。JNI 的线程附着、全局引用释放、异常到错误类型的映射、字符串编码与回调取消都要有契约测试。
 
-P02 批次 A 已在 `:contracts` 建立 `BridgeProtocol.VERSION=1`、`AttachmentId`、`VpnInterfaceSpec`、`TunInstalled`、`StopConfirmation`、`ConfirmationResult` 和 `RuntimeSnapshot`。`OperationResult.Accepted` 只表示命令受理；停止回执必须携带同会话的排空证明。`RuntimeSnapshot.lastOperation` 与实际修订共同核对丢失的应用回执，查询到旧修订或 Unknown 不解锁新的应用。`AppliedSessionSnapshot.freshness=Stale` 表示历史配置。当前消费者仍是 demo 和测试，不代表 JNI 已提供这些确认；正式版本握手、资源排空和 Service 仍按 P02 后续批次实现。
+P02 已建立 `BridgeProtocol.VERSION=1`、`AttachmentId`、`VpnInterfaceSpec`、`TunInstalled`、`StopConfirmation`、`ConfirmationResult` 和 `RuntimeSnapshot`。`OperationResult.Accepted` 只表示命令受理；停止回执必须携带同会话的排空证明。`RuntimeSnapshot.lastOperation` 与实际修订共同核对丢失的应用回执，查询到旧修订或 Unknown 不解锁新的应用。`AppliedSessionSnapshot.freshness=Stale` 表示历史配置。这些类型位于 `com.github.zzwtsy.chuanmen.lib.vpn`，正式 JNI、Service 与测试共同使用；实际验证范围见 P02 报告。
 
 在同一应用入口 `.so` 中保持一个受控 Rust runtime 和实例缓存。当前 FFI 使用进程静态上下文；构建脚本即使生成多个 `.so`，也不能无审计地同时加载出互不共享的单例。P00 检查最终依赖和动态符号，P02 证明 UI 重建不会重新初始化核心。[ET-10]
 
@@ -220,6 +228,14 @@ P00 记录每项的新源码依据和结论；P05 将仍属于合理产品范围
 “基础配置”与“完整配置”共享草稿。基础页保留网络名称、网络密码、连接节点以及地址分配摘要；本地配置名称在共用元数据区域编辑。完整页按同级分组展开、支持同页搜索定位。监听、映射监听、P2P、ACL、代理、出口、Portal 等低频功能不能仅因不常用被删除；也不能在真实后端没有接好时显示可启动成功。
 
 Portal、手机作为出口、用户态子网代理、SOCKS5、端口转发分别建立能力验收：至少核对 Cargo features、实际监听地址、socket 保护、入站可达性、路由回程、权限和耗电。当前主干已有编译能力校验并可在构建缺少能力时报错，这只是核心构建事实；Android 实用能力仍需 P05 真机证明。[ET-11]
+
+### 7.2 正式原生入口与设备身份
+
+配置经 `features/configuration/lib/ConfigurationInput` 或唯一编辑器进入共享仓库；显式连接/应用经同一个客户端到 `com.github.zzwtsy.chuanmen.lib.vpn.NativeVpnService`。Manifest 组件为 `.lib.vpn.NativeVpnService`，权限、控制动作及同 UID 检查不变。
+
+JNI 类型为 `com.github.zzwtsy.chuanmen.lib.vpn.NativeBindings` 和同包 `ProtectorCallback`；导出符号为 `Java_com_github_zzwtsy_chuanmen_lib_vpn_NativeBindings_request`。Kotlin、Rust、keep rules、native 构建检查必须一致；只有旧基础包符号或相似前缀不能通过检查。应用 ID `com.github.zzwtsy.chuanmen`、`libchuanmen_core.so`、桥 JSON 版本 1 及保护回调签名保持不变。
+
+真实设备源码均位于 `androidTest/.../lib/vpn`，执行全类名以 `scripts/android/device_contracts.py` 的八类注册为准；短类名、十个测试方法、报告 schema 与 nonce 不变。当前 APK 使用新包名；从 P02 基线取回的对照必须保留其原源码、JNI 与设备工具身份。
 
 ## 8. 可观测性：流量、设备与日志
 
@@ -308,7 +324,7 @@ VPN 作为持续可感知的用户任务运行。Manifest 声明 VpnService、`B
 | 阶段 | 技术完成定义 |
 |---|---|
 | P00 | 选定唯一核心版本与 SHA；证明 ARM64 构建、最低系统 JNI 加载、protect 回执、TUN 借用/关闭方案与地址路由获取可行；冻结接口样本与 capability 初稿 |
-| P01 | 按实际建立的模块依赖与 fake engine 可运行；debug/demo 可以离线演示，真实变体不自动回退 fake；构建与检查命令在 CI 可重复 |
+| P01 | 历史工程基础验收；demo 已退役，当前使用统一正式入口、各功能状态投影与 JVM/Compose 测试，构建命令见开发环境 |
 | P02 | 真机免 Root VPN 建连、业务流量经过 TUN、撤销/停止/重复启动安全；fd、线程、回调和 runtime 不泄漏；16 KB 原生产物检查通过 |
 | P03 | 字段语义、默认值、三态、配置序列化与 codec 往返、localDisplayName 与三版本状态有自动化证据；用户级文件导入导出在 P05；保存不会偷偷重连，应用失败不丢数据 |
 | P04 | 当前原型交互转为真实 Compose；双来源日志、60 秒 TUN 趋势、设备字段和不可用状态来自真实 bridge；无伪造 0 或探测口径混淆 |

@@ -43,18 +43,9 @@ Draft 用于尚在开发或等待检查的 PR，不绕过 CI。完成代码复�
 
 ## CI 与必需检查
 
-[统一 CI](../../.github/workflows/ci.yml) 在 PR 的 `opened`、`synchronize`、`reopened` 和 `main` 推送时运行，不设置顶层路径过滤；手动运行执行全部检查。它复用 [验证工作流](../../.github/workflows/verification.yml) 和 [Android 工作流](../../.github/workflows/android.yml)，两者保留各自手动入口。
+[统一 CI](../../.github/workflows/ci.yml) 对所有 PR 与 main 推送执行相同的静态、JVM、lint、native、APK 和对齐检查，无路径分类或复用工作流。设备测试源码编译，真实设备回归按任务另行执行。
 
-| 路径变化 | Android 检查 |
-|---|---|
-| `app/`、`contracts/`、`gradle/`、根 Gradle 构建与配置、Wrapper、`scripts/android/`、`scripts/catalog/`、`docs/design/config/`、`ruff.toml`、`.github/` | 必须运行 |
-| P02 实际 CI 输入：`experiments/p02-vpn-core/`、`docs/verification/p02/native-review.json` 和 `native-review.md` | 必须运行，阶段工具与审查输入不能按一般实验或文档免检 |
-| 其余 `docs/`、`.agents/`、`prototype/`、`experiments/`，根 README、AGENTS、CONTRIBUTING | 可以省略 |
-| 未知路径 | 必须运行 |
-
-验证每次运行。PR 按分叉点到 head 的差异分类，主干推送按前后 SHA 分类；删除保留原路径，重命名同时检查原路径与目标路径。识别失败不能输出免检。分类与回归位于 [scripts/git](../../scripts/git/workflow_policy.py)，使用 Python 标准库；变更分类时同步脚本、回归和本表。
-
-固定必需检查为 `pr-policy` 和 `quality-gate`，绑定实际 GitHub Actions 来源。[PR 策略](../../.github/workflows/pr-policy.yml) 在创建、编辑、提交更新、重开和转 Ready 时验证标题及目标分支，元数据只从事件 JSON 读取。`quality-gate` 使用 `always()` 汇总：识别与验证必须成功；需要 Android 时必须成功，明确免检时只接受预期 `skipped`。失败、取消、缺失或意外跳过均不通过。
+固定必需检查仍为 `pr-policy` 和 `quality-gate`。[PR 策略](../../.github/workflows/pr-policy.yml) 只从事件 JSON 读取标题与目标分支，不把标题拼接到 shell。`quality-gate` 使用 `always()` 汇总，所有依赖任务必须 success；失败、取消、缺失或跳过均不通过。源码精简不修改远端规则。
 
 默认分支规则仅覆盖 `main`，要求 PR、上述检查、合并前更新主干、解决讨论和线性历史，禁止删除与非快进更新，无旁路身份。单维护者模式审批人数为 `0`，仍须维护者复核；增加协作者时再评审审批要求。首次启用必需检查前，先让引导 PR 实际产生这两个成功检查。
 

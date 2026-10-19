@@ -2,16 +2,5 @@ required-version = "==0.17.0"
 target-version = "py310"
 line-length = 88
 
-[per-file-target-version]
-"experiments/**/*.py" = "py311"
-
 [lint]
 extend-select = ["RUF100"]
-
-[lint.per-file-ignores]
-# 按路径运行的既有 CLI 入口；可导入模块仍遵守 Python 命名规则。
-"scripts/verification/check-evidence.py" = ["N999"]
-"scripts/verification/check-privacy.py" = ["N999"]
-"scripts/verification/cleanup-local.py" = ["N999"]
-"scripts/verification/publish-evidence.py" = ["N999"]
-"scripts/verification/test-evidence.py" = ["N999"]

@@ -6,17 +6,17 @@
 
 | 对象 | 维护来源 | 含义 |
 |---|---|---|
-| 应用版本、安装序号与 flavor 后缀 | [app/build.gradle.kts](../../app/build.gradle.kts) | `versionName` 与 `versionCode` |
+| 应用版本与安装序号 | [app/build.gradle.kts](../../app/build.gradle.kts) | `versionName` 与 `versionCode` |
 | Android/Kotlin/Compose 等依赖 | [版本目录](../../gradle/libs.versions.toml)及对应锁定配置 | 不随应用版本同步增长 |
 | Gradle、JDK 等工具链 | Wrapper、Daemon JVM 配置及 [开发环境](setup.md)所指向的配置 | 构建条件 |
-| EasyTier 原生候选及来源 | [native-candidate.json](../../gradle/native-candidate.json)及其冻结来源 | 上游核心身份，不等于应用版本或生产批准 |
+| EasyTier 核心及来源 | [app/native/inputs.json](../../app/native/inputs.json) 与 Cargo.lock | 上游核心身份，不等于应用版本或生产批准 |
 | 阶段状态 | [路线图](../plan/ROADMAP.md) | 开发与验收状态，不以版本号代替验收 |
 
-当前基础版本为 `0.1.0-dev`、`versionCode = 1`；demo 添加 `-demo`，实际为 `0.1.0-dev-demo`，独立包名为 `com.github.zzwtsy.chuanmen.demo`。这是开发版本，不表示真实 VPN、发布签名或分发已就绪。后续数值只在构建配置修改，入口文档不维护另一份版本清单。
+当前应用包名为 `com.github.zzwtsy.chuanmen`，`versionName = "0.1.0-dev"`、`versionCode = 1`；debug/release 共用真实配置入口与业务源码。这是开发版本，限定范围的 VPN 验证不代表发布签名与分发已就绪。后续数值只在构建配置修改，入口文档不维护另一份版本清单。
 
 ## versionName 与兼容性
 
-采用 SemVer 的 `MAJOR.MINOR.PATCH` 和预发布标识：开发使用 `-dev`，对外候选使用 `-alpha.N`、`-beta.N` 或 `-rc.N`，正式版无预发布后缀。demo 后缀区分演示变体，不进入产品发布 tag。
+采用 SemVer 的 `MAJOR.MINOR.PATCH` 和预发布标识：开发使用 `-dev`，对外候选使用 `-alpha.N`、`-beta.N` 或 `-rc.N`，正式版无预发布后缀。
 
 `0.x` 不承诺稳定公共契约，但必须说明不兼容变化与迁移。兼容修复递增 PATCH；新功能或不兼容的配置、导入导出格式、会话契约变化递增 MINOR，并说明影响。达到稳定产品与兼容承诺条件后单独评审 `1.0.0`；此后破坏已承诺兼容性的变化递增 MAJOR，兼容新增递增 MINOR，兼容修复递增 PATCH。
 
@@ -26,7 +26,7 @@ Conventional Commits 的 `feat`、`fix`、`!` 为发布评审提供线索，不�
 
 `versionCode` 是安装序号，与 SemVer 分别管理。相同 applicationId 的每个新分发候选都必须使用更大的正整数，包括 alpha、beta、rc 和转为正式版时重新构建的候选。正式版不能复用已分发预发布版的安装序号，不能靠 versionName 排序实现升级。
 
-日常本地构建和未分发的普通 PR 保持当前序号。已发布产物不重建、不替换；修复使用新版本与更大的序号。发布前核对实际 APK 的包名、版本、序号、签名身份、ABI 与源码 SHA，并评估安装和配置升级路径。demo 与正式包身份独立，demo 结果不继承为正式包验收。
+日常本地构建和未分发的普通 PR 保持当前序号。已发布产物不重建、不替换；修复使用新版本与更大的序号。发布前核对实际 APK 的包名、版本、序号、签名身份、ABI 与源码 SHA，并评估安装和配置升级路径。验收结论绑定对应 variant 与实际产物。
 
 ## 发布 PR、固定 SHA 与产物
 
@@ -34,8 +34,8 @@ Conventional Commits 的 `feat`、`fix`、`!` 为发布评审提供线索，不�
 
 1. 从最新 `main` 建发布任务分支，提交版本与安装序号、迁移说明、用户可读发布说明及必要的来源/许可更新，按正常 PR 检查与人工复核。
 2. 维护者手动 Squash 发布 PR，记录最终 `main` 提交的完整 SHA，并核对主干 CI。构建与 tag 使用这个 SHA，不用可移动的分支名作为发布身份。
-3. 从该 SHA 构建最终产物，记录工具链、variant、ABI、签名身份与 SHA-256，完成该候选的最终产物和升级验收。普通 CI、demo 或历史真机结果不能替代本次产物验收。
-4. 获得 tag 授权后创建附注 tag `v<versionName>`，指向上述 SHA，如 `v0.1.0-beta.1`、`v0.1.0`。`-dev` 与 `-demo` 不创建产品发布 tag；注释记录版本及发布说明定位，签名 tag 仅在签名身份和工具已经约定时使用。
+3. 从该 SHA 构建最终产物，记录工具链、variant、ABI、签名身份与 SHA-256，完成该候选的最终产物和升级验收。普通 CI 或历史真机结果不能替代本次产物验收。
+4. 获得 tag 授权后创建附注 tag `v<versionName>`，指向上述 SHA，如 `v0.1.0-beta.1`、`v0.1.0`。`-dev` 不创建产品发布 tag；注释记录版本及发布说明定位，签名 tag 仅在签名身份和工具已经约定时使用。
 5. 创建 Draft Release，使用已存在的 tag；核对解引用 SHA，上传已验收的同一批资产、校验和与说明。gh 创建时使用 `--verify-tag`，避免自动创建轻量 tag；候选标记 prerelease。
 6. 复核版本、源码、附件、升级说明和发布授权后正式发布。启用 Immutable Releases；发布后 tag 与附件保持固定，补充资产须在草稿阶段完成。
 

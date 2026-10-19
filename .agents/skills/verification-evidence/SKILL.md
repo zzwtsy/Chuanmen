@@ -5,14 +5,16 @@ description: 为本项目设计技术可行性或真机实验，筛选脱敏证�
 
 # 实验与证据治理
 
-先读 [验证规范](../../../docs/development/verification.md)，再读本次阶段报告及相关实验声明，不加载全部历史材料。
+先读 [验证规范](../../../docs/development/verification.md)，再读本次阶段报告及运行声明，不加载全部历史材料。
 
 - 判断问题是否需要专门实验；常规逻辑沿用正常测试。实验开始前声明结论、场景、判据、预算、停止条件和关闭安排。
-- 源码与 fixture 留在 experiments，临时输出放 build/experiments。设备操作、外部操作和发布仍受当前任务授权约束。
+- 可复用场景转 app 标准测试或 app/native/tests，真实设备/peer 输出放 app/build/device-tests；必要独立实验按问题建立，不恢复已退役框架。设备与外部操作仍受当前任务授权约束。
 - 以结论和判据筛选材料。保留负向结果、必要样本和被测产物身份，合并重复载荷与工具环境噪声；旧清单引用不构成永久保留理由。
 - 采集与发布分开：本地运行收据可能包含执行所需路径；先脱敏检查，再冻结发布字节。不能记录个人主目录、真实序列号或稳定序列号摘要。不要全局替换项目 namespace 或合成 hostname。
-- 使用 publish-evidence.py 默认预览，显式 --publish 后发布。真机记录选择对应构建；不得用新 APK 继承旧设备验收。遇到缺失精确输入，记录缺口，不补造通过。
-- 用 check-privacy.py、check-evidence.py 及相应测试检查工作树；交付前再检查暂存树。freeze_handoff.py 只刷新运输清单，不能掩盖冻结记录被改动。
+- 发布工具已退役。新证据先整理为可审阅材料并明确范围，按任务授权新增记录，不覆盖历史。真机记录绑定对应构建；不得用新 APK 继承旧设备验收，缺失精确输入时记录缺口。
+- 用 python3 scripts/check_privacy.py 检查工作树，交付前加 --tree index 检查暂存树。冻结报告、handoff.json 和 SHA256SUMS 字节保持不变，不刷新摘要掩盖修改；旧工具只从 Git 历史回溯。
 - 关闭实验时决定转正式测试、维护最小探针或退役。整理结束报告文件数/体积变化、保留结论、隐私检查与未执行项。
 
-P00 实例入口为 [阶段报告](../../../docs/verification/p00/report.md) 和 [探针说明](../../../experiments/android-vpn-smoke/README.md)。静态复核、独立复建和独立真机重跑分别报告；本 skill 不授予新设备操作、上传、提交或发行权限。
+P00 实例入口为 [阶段报告](../../../docs/verification/p00/report.md)；现行回归见 [开发环境](../../../docs/development/setup.md)。静态复核、独立复建和独立真机重跑分别报告；本 skill 不授予新设备操作、上传、提交或发行权限。
+
+历史源码从已签名 P02 基线 `872bea7e3898881e4787b0adb012726933cd8329` 导出至新目录，不以 P01 代替。现行设备入口为 `scripts/android/verify_device.py`，八个 instrumentation 类统一在 `com.github.zzwtsy.chuanmen.lib.vpn`；基线对照使用基线原有包名、JNI、工具和对端，不混用候选身份。

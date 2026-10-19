@@ -101,7 +101,7 @@ def main() -> int:
         build_native.inputs()
         build_native.verify_artifacts()
         report = json.loads(
-            (build_native.ROOT / "build/native/build-report.json").read_text()
+            (build_native.ROOT / "app/build/native/build-report.json").read_text()
         )
         libraries = packaged_libraries(args.apk, report)
         subprocess.run(
@@ -116,7 +116,7 @@ def main() -> int:
             check=True,
         )
         print(
-            f"LIVE_APK_OK: {len(libraries)} ABI 与本次 native 字节相同，ELF / APK 16 KB 对齐；不代表 16 KB runtime 验收"
+            f"APK_OK: {len(libraries)} ABI 与本次 native 字节相同，ELF / APK 16 KB 对齐；不代表 16 KB runtime 验收"
         )
     except (
         OSError,
@@ -125,7 +125,7 @@ def main() -> int:
         zipfile.BadZipFile,
         subprocess.SubprocessError,
     ) as error:
-        print(f"LIVE_APK_FAILED: {error}", file=sys.stderr)
+        print(f"APK_FAILED: {error}", file=sys.stderr)
         return 1
     return 0
 

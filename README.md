@@ -2,7 +2,7 @@
 
 串门（Chuanmen）是基于 EasyTier 的 Android 组网客户端，正在开发中。
 
-仓库已有可构建的 demo、纯领域契约、四页导航、交互原型、配置目录、工程工具和维护中的实验探针。正式 VPN/JNI、持久化配置闭环与真实运行数据尚待实施。P00 技术可行性已在限定设备和网络范围通过；阶段状态及剩余工作以 [路线图](docs/plan/ROADMAP.md) 为准。
+P02 已完成限定范围的真实 VPN/JNI 接入。当前暂停 P03–P07，先收敛为单个 app 模块、标准 source set 和必要工具。配置仍为受控内存输入，尚未完成持久化与完整配置闭环；阶段和验证边界以 [路线图](docs/plan/ROADMAP.md) 为准。
 
 ## 项目名称
 
@@ -24,35 +24,30 @@
 先按 [开发环境与验证命令](docs/development/setup.md) 配置 JDK、Android SDK、Python 和 uv。从仓库根运行：
 
 ```bash
-./scripts/android/doctor.sh
-./scripts/android/check-fast.sh
-./scripts/android/build-demo.sh
-python3 scripts/validate_handoff.py --strict
+./gradlew :app:testDebugUnitTest :app:lintDebug
+python3 scripts/check_privacy.py
+python3 scripts/catalog/audit_config_catalog.py
 ```
 
-当前提供独立包名的 `demoDebug`，本地领域/导航测试与 APK 构建已通过；首次构建需要获取依赖，缓存齐备后可使用 `--offline`。live 在缺少正式服务/桥接时明确失败；P01 已在限定 demo 范围通过工程基础验收，详见 [退出评审](docs/plan/p01-foundation.md#p01-退出评审2026-10-14)。
+首次打包需准备固定 native 工具链与依赖，再执行 `./gradlew :app:assembleDebug`；详情见开发环境。正式应用使用真实 Service/JNI，JVM 测试不需要实际组网。
 
-Python lint、格式检查、回归测试及设备入口见 [开发命令](docs/development/setup.md)。[统一 CI](.github/workflows/ci.yml) 复用 Python 与 Android 检查，PR 通过固定门禁后由维护者手动 Squash。已有主干远端检查成功的源码与运行定位见 [P01 CI 记录](docs/plan/p01-foundation.md#远端-ci-通过记录2026-10-14)。参与开发见 [CONTRIBUTING.md](CONTRIBUTING.md)。
+[CI](.github/workflows/ci.yml) 对所有 PR 执行相同检查，[PR policy](.github/workflows/pr-policy.yml) 保留标题及目标分支规则。参与开发见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 当前工程与目录
 
-Android 工程为 `:app -> :contracts`：`MainActivity` 处理 Activity 与窗口设置，`application` 装配四页导航与 ViewModel，配置切片维护草稿，`shared/designsystem` 保存公共组件和主题。模拟实现、fixture 与 Preview 只在 demo source set。边界见 [目录 ADR](docs/design/adr/0003-directory-boundaries.md)和[装配 ADR](docs/design/adr/0004-demo-assembly.md)。
+Android 工程仅 `:app`。Kotlin 在 `com.github.zzwtsy.chuanmen` 下按 `features/<功能>` 聚合，已有共享能力位于根 `lib`、`components`、`utils`，主题保留 `ui/theme`；Service 统一拥有真实会话。仅使用 main/test/androidTest；debug/release 共用正式配置入口，配置仅在内存保留，测试替身仅用于测试。现行决策见 [ADR 0005](docs/design/adr/0005-single-app.md)。
 
 | 路径 | 职责 |
 |---|---|
-| `app/` | Android 应用、组合入口、主题与标准测试 source set |
-| `contracts/` | 纯 Kotlin 配置、会话、仓库及带操作归属的引擎契约 |
-| `scripts/` | Android、catalog、git、prototype、verification 工具及交付结构校验入口 |
-| `experiments/` | 按问题和子场景维护的实验源码、声明、合成夹具及离线回归 |
-| `prototype/` | 模拟交互原型、可编辑源与固定的离线资源 |
-| `docs/design/` | 产品契约、目标架构、ADR 与配置目录 |
-| `docs/plan/` | 阶段状态、剩余工作和验收门槛 |
-| `docs/development/` | 环境、工程规范、任务模板及技能维护策略 |
-| `docs/research/` | 按核对日期保存的外部来源与研究结论 |
-| `docs/verification/` | 支撑明确结论的脱敏记录、必要输入与历史基线 |
-| `.agents/skills/` | 项目专用流程和通用技能；外部安装来源见 `skills-lock.json` |
+| `app/src/` | Android 应用、主题与标准测试 |
+| `app/native/` | 固定 EasyTier 来源、Rust 桥、补丁、锁文件与原生回归 |
+| `scripts/` | native、设备/peer、配置目录与隐私工具 |
+| `docs/design/`、`docs/plan/` | 产品契约、ADR、配置目录与阶段状态 |
+| `docs/development/`、`docs/research/` | 当前工程入口与按日期保存的研究 |
+| `docs/verification/` | 原字节保留的历史验证材料 |
+| `.agents/skills/` | 项目及已安装技能，来源见 skills-lock.json |
 
-构建、缓存和实验运行输出放在被忽略的目录。根 `handoff.json` 与 `SHA256SUMS` 只描述 P00 阶段材料的运输完整性，范围见文件中的声明。
+native 缓存和产物在 `app/build/native`，设备输出在 `app/build/device-tests`，均忽略入库。旧实验和证据发布框架已退役；冻结材料中的旧路径按记录时点解释。
 
 ## 按任务阅读
 
@@ -61,12 +56,11 @@ Android 工程为 `:app -> :contracts`：`MainActivity` 处理 Activity 与窗�
 | 搭建环境、构建、选择检查 | [setup.md](docs/development/setup.md) |
 | 分支、PR 与手动合并 | [Git 工作流](docs/development/git-workflow.md) |
 | 应用版本、tag 与 Release | [版本治理](docs/development/versioning.md) |
-| 开始下一阶段实施 | [P01 工程基础](docs/plan/p01-foundation.md)及[路线图](docs/plan/ROADMAP.md) |
+| 开始下一阶段实施 | [路线图](docs/plan/ROADMAP.md)（后续阶段暂停） |
 | 产品行为与 UI/UX | [总体设计](docs/design/overall-design.md) |
-| Android、会话和 JNI 边界 | [技术架构](docs/design/technical-architecture.md)与[ADR](docs/design/adr/0003-directory-boundaries.md) |
+| Android、会话和 JNI 边界 | [技术架构](docs/design/technical-architecture.md)与[ADR](docs/design/adr/0005-single-app.md) |
 | 配置来源、显隐与实施状态 | [配置目录](docs/design/config/README.md) |
-| 查看或修改交互原型 | [原型说明](prototype/README.md)，直接打开 [index.html](prototype/index.html) |
-| 设计实验、发布证据、关闭运行 | [验证规范](docs/development/verification.md)与[实验探针](experiments/android-vpn-smoke/README.md) |
+| 设计实验、发布证据、关闭运行 | [验证规范](docs/development/verification.md) |
 | 查看已验证范围及缺口 | [验证记录导航](docs/verification/README.md) |
 | 代理工作与技能选择 | [AGENTS.md](AGENTS.md)、[工程约定](docs/development/ai-friendly-android.md)及[技能策略](docs/development/agent-skills-strategy.md) |
 
@@ -76,12 +70,12 @@ Android 工程为 `:app -> :contracts`：`MainActivity` 处理 Activity 与窗�
 
 本地名称与核心身份分离，查看网络与运行网络分离，draft / saved / applied 分开建模；仅保存不改变运行配置，应用失败不伪报成功。首页使用固定 60 秒趋势，缺测值保持未知。完整约束见 [需求追踪](docs/design/requirements-traceability.md) 和总体设计。
 
-[P00 报告](docs/verification/p00/report.md) 支持固定核心、限定设备与受控网络下的技术结论。生产 bridge、其他设备/API/ABI、范围外网络能力和发行安排仍需各自验收。当前维护探针的静态检查与源码更新不继承历史 APK 的真机通过状态。
+[P00 报告](docs/verification/p00/report.md) 支持固定核心、限定设备与受控网络下的技术结论。正式接入范围见 [P02 报告](docs/verification/p02/report.md)；其他设备、范围外网络能力与发行安排仍需各自验收。结构精简后的 APK 不继承旧产物的真机通过状态。
 
-原型使用模拟数据。配置快照中的历史 `availability`、`apply` 与核心语义版本描述当时的研究；正式产品实施状态由 [能力台账](docs/design/config/android-capability-plan.json) 记录。外部资料的核对日期及限制见 [研究导航](docs/research/README.md)。
+HTML 交互原型及专用导出器已退役，历史源码和专属资源许可证可从 P02 基线 `872bea7e3898881e4787b0adb012726933cd8329` 取回。配置快照中的历史 `availability`、`apply` 与核心语义版本描述当时的研究；正式产品实施状态由 [能力台账](docs/design/config/android-capability-plan.json) 记录。外部资料的核对日期及限制见 [研究导航](docs/research/README.md)。
 
 ## 许可证
 
 除另有许可声明的第三方代码和资源外，串门（Chuanmen）第一方代码采用 **GNU Affero General Public License v3.0 only**（SPDX：`AGPL-3.0-only`），全文见 [LICENSE](LICENSE)。许可版本固定为第 3 版。
 
-EasyTier、Android 依赖及原型第三方资源保留各自的原始许可证和版权声明，使用与分发时须同时满足对应义务；固定 EasyTier 候选及依赖的来源与许可复核见 [P00 许可记录](docs/verification/p00/report.md)。正式发行的对应源码、通知及原生库许可安排仍按发布阶段验收。
+EasyTier 和 Android 依赖保留各自的原始许可证和版权声明，使用与分发时须同时满足对应义务；固定 EasyTier 候选及依赖的来源与许可复核见 [P00 许可记录](docs/verification/p00/report.md)。正式发行的对应源码、通知及原生库许可安排仍按发布阶段验收。

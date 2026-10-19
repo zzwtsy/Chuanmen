@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "protocol": 1,
+  "patch_id": "p02-session-host-v2",
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "rust_version": "1.99.0",
+  "rustc_commit": "b940084d7eb6a299eb4bfeb8e34901bc051e7ac4",
+  "ndk_revision": "30.0.16248370",
+  "cargo_ndk_version": "4.1.2",
+  "api": 24,
+  "abis": [
+    "arm64-v8a",
+    "x86_64"
+  ],
+  "features": "easytier defaults + tracing-log; core defaults; ffi no defaults",
+  "upstream_lock_sha256": "cd5a7951f897e45f1988b0a4896ab1f336e03e4cb6d70ca1db2a7b9b477d774b",
+  "upstream_files": {
+    "easytier-contrib/easytier-ffi/src/lib.rs": {
+      "original_sha256": "0b7003033974baa9108f9b09002e1c39dc2bd4ee96e4adcf667a7086e83b1c98",
+      "patched_sha256": "0351e97b487f0302190fcd03856fe3fd0a6aa8bd079f69912a0476d9041e9ef8"
+    },
+    "easytier-contrib/easytier-ffi/src/state.rs": {
+      "original_sha256": "7b29e7bd745012cd6a12edd50957108fb1c10319cbc772e227370d3d8fc9cf3e",
+      "patched_sha256": "e3a558989595814eb7db4e8e3cdb369bc57a09dd6fd77c2a73febbcd3b822b0d"
+    },
+    "easytier/src/instance/factory.rs": {
+      "original_sha256": "37a03edaf119520cc597e32dc5d7878e6ca573b74c5b131a0cb9487f0f929246",
+      "patched_sha256": "56ea15026ac55cb0f1fc5b115c5b94ec5594431314216acfaee3cb9b7df21fbf"
+    },
+    "easytier/src/instance/runtime_host.rs": {
+      "original_sha256": "ec499b01ad5d98e2d0b114c7cb88d3d65367764d4fb9b14a98ebb5a8cb74f6ed",
+      "patched_sha256": "7a687f13b80ba4153e6692eb0846752afb69a1e2879a0fb93fd9671e91dc36e2"
+    },
+    "easytier/src/instance/runtime_host/tun_common.rs": {
+      "original_sha256": "904500ad02acc6fdf6583f207b527e3bef251384217e95cc647b9e3e0de41924",
+      "patched_sha256": "9facabb04dde7dbdda191fea9c001aa1825ac658f8d8d2f3feed1c8f82ac3ef5"
+    },
+    "easytier/src/instance/runtime_host/tun_mobile.rs": {
+      "original_sha256": "bb60244dcb182c5263bf669ba4c9e28a23e68155d167633edcd99e81a4ed0c2b",
+      "patched_sha256": "d1a550c26dc148295c20e85a6dc05b47d64e79697766355d14534ee51be447d0"
+    },
+    "easytier/src/instance/virtual_nic.rs": {
+      "original_sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
+      "patched_sha256": "ff16995442c6289940c5cf210c0ccc77e024e7c385e83db74613af8094798e0f"
+    },
+    "easytier/src/lib.rs": {
+      "original_sha256": "f1d538cd0e48f0d780dfb5ddf4153a0284fb12d30feae5e71adc97755ee7587c",
+      "patched_sha256": "58df92ed4a39dcf42fdc256d0610c545dbc3889d7ba50b5e75578509ba8decbc"
+    }
+  }
+}

@@ -37,7 +37,7 @@ description: "审计本项目 EasyTier 配置目录、官网助手映射与 Andr
 
 ## 项目特有的误判防护
 
-- 原型 `profile.label` 只映射到原生 `ProfileMetadata.localDisplayName`，不能双写；不写核心 `instance_name`，不制造核心待应用。
+- 历史原型 `profile.label` 表达本地显示名语义；当前 `lib/profile/Profile.kt` 中的 `localDisplayName` 是本地元数据，不写核心 `instance_name`，不制造核心待应用。原型已退役，历史源码在 P02 基线 `872bea7e3898881e4787b0adb012726933cd8329`；配置目录与 Android 能力计划仍是现行消费者。
 - `availability=available` 和 `apply=core-hot` 是原型历史研究标签，不证明当前 JNI/二进制支持。
 - “Android 平台托管”“确实不适用”“暂未实现”分别判断。`ipv6_public_addr_auto` 的旧隐藏理由是尚未适配，不能据此永久删项。
 - 隐藏同时约束表单与搜索，但保存/导出不能无提示删除原始配置。保留原文也不等于无条件执行未支持参数。
