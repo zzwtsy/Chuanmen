@@ -19,7 +19,7 @@
 
 | 时间点 | 应具备的东西 | 明确边界 |
 |---|---|---|
-| 已有工程基础 | `:app -> :contracts`、demo 切片与共享主题、构建配置、设计/原型/配置目录、Python 与 Android 检查、CI 配置、代理规则 | 本地及远端通过的范围见 P01；首次 SDK 安装失败与后续成功分别保留 |
+| P01 工程基线 | `:app -> :contracts`、demo 切片与共享主题、构建配置、设计/原型/配置目录、Python 与 Android 检查、CI 配置、代理规则 | 本地及远端通过的历史范围见 P01；首次 SDK 安装失败与后续成功分别保留 |
 | P00 历史验收 | 固定核心来源、许可技术复核、限定场景的实验源码与冻结证据 | 结论以 [P00 报告](../verification/p00/report.md) 的制品和范围为准，维护后的探针不继承旧验收 |
 | P01 退出目标 | 干净环境构建、首条业务切片、demo 数据源、领域契约、导航、Android 快速检查和 CI | 复用已有基础，补齐剩余门槛；通用脚本须真正创建、运行后才进入可用命令列表 |
 | P02 | 真正的 VpnService/native 生命周期、数据路径、结构化诊断与故障夹具 | 获得这批证据后再提炼核心升级和 VPN 排障技能 |
@@ -48,17 +48,17 @@ P01 应维护一张很小的任务导航表，更新时与实际目录一致：
 
 ## 4. 模块边界以实际责任划分
 
-当前为 `:app -> :contracts`，已有 demo 配置编辑、四页导航与共享主题；`:vpn`、`:core-bridge` 按实际消费者和实现建立，目录与依赖见 [目录边界 ADR](../design/adr/0003-directory-boundaries.md)和[demo 装配](../design/adr/0004-demo-assembly.md)。
+当前已有 `:app`、`:contracts`、`:vpn`、`:core-bridge` 四个模块与 `native/`。demo 提供配置编辑、四页导航与共享主题；live 通过实际 Service 和桥接使用核心。目录与依赖见 [目录边界 ADR](../design/adr/0003-directory-boundaries.md)，阶段进度与验证范围见[路线图](../plan/ROADMAP.md)。
 
 配置编辑、改名、保存、应用，以及日志、设备、首页和偏好相关变更，先查所属能力和操作。状态、校验、持久化和测试聚合在切片；跨模块接口才进入 `:contracts`。根导航和 DI 归 application，公共视觉能力归 shared/designsystem。测试保留标准 source set，镜像被测包。
 
-正式服务应持有唯一真实会话，JNI 适配通过窄桥实现。当前模拟仓库由配置切片提供，经装配注入；业务 UI 不访问存储或引擎。Kotlin 包不是编译隔离边界；check-fast 已落实当前依赖/import 检查，有实际隔离或编译收益后再提取功能模块。
+正式服务持有唯一真实会话，JNI 适配通过窄桥实现。配置切片提供内存仓库，经 demo 或 liveDebug 受控入口装配注入；持久化接管归 P03，业务 UI 不直接访问存储或引擎。Kotlin 包不是编译隔离边界；check-fast 从 Gradle 模型检查直接依赖和配置归属，并单独检查源码 import，有实际隔离或编译收益后再提取功能模块。
 
 工程工具按任务聚合在 scripts；固定问题的实验、fixture 和探针归 experiments；输出归忽略的 build 目录。Android 通用工具已在 scripts/android 提供。实际复用后才提取共享支持，不提前生成空目录、页面模块或通用插件框架。[Android 模块化指南](https://developer.android.com/topic/modularization)
 
 ## 5. 构建环境必须能明确复现
 
-已有 JDK、Gradle Wrapper、AGP、Compose 编译插件、Compose BOM 和 SDK 声明以构建配置为准，位置与安装要求见 [开发环境](setup.md)。正式 native 工程接入时，再按验证结果锁定 NDK、Rust toolchain、目标 ABI 和核心来源；实验工具链只说明相应探针的构建条件。不要在 README、AGENTS.md 和阶段文件维护多套版本号。
+已有 JDK、Gradle Wrapper、AGP、Compose 编译插件、Compose BOM 和 SDK 声明以构建配置为准，位置与安装要求见 [开发环境](setup.md)。正式 native 输入已锁定 NDK、Rust toolchain、目标 ABI 和核心来源；实验工具链只说明相应探针的构建条件。不要在 README、AGENTS.md 和阶段文件维护多套版本号。
 
 Gradle Wrapper 能使用声明的 Gradle 版本；分发包校验和与 Wrapper JAR 完整性校验处理的是不同对象。版本目录集中管理依赖声明，依赖校验用于检查所取制品，二者也不可互相替代。[Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html)；[Version Catalogs](https://docs.gradle.org/current/userguide/version_catalogs.html)；[Dependency Verification](https://docs.gradle.org/current/userguide/dependency_verification.html)。
 

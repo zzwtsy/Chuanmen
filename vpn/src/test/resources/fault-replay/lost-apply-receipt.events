@@ -1,0 +1,17 @@
+p02-events-v1
+# 新安装未确认时保留旧运行历史；显式停止后恢复旧确认修订
+0 connected Running 1 Fresh 1
+1 apply Stopping 1 Stale 1
+2 stopped Connecting 1 Stale 0
+3 started AwaitingAddress 1 Stale 0
+4 address PreparingTun 1 Stale 1
+55 tick OutcomeUnknown 1 Stale 1
+56 query-unknown OutcomeUnknown 1 Stale 1
+57 stop Stopping 1 Stale 1
+58 stopped Idle - - 0
+59 restore Connecting - - 0
+60 started AwaitingAddress - - 0
+61 address PreparingTun - - 1
+62 installed Running 1 Fresh 1
+63 stop Stopping 1 Stale 1
+64 stopped Idle - - 0

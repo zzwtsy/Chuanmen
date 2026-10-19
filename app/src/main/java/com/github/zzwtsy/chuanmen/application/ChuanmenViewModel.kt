@@ -33,7 +33,12 @@ class ChuanmenViewModel(assemble: (CoroutineScope) -> AppDependencies) : ViewMod
     val state = combine(
         dependencies.profiles.profiles, dependencies.sessions.state, navigation, editor.drafts,
     ) { profiles, session, route, drafts ->
-        AppUiState(profiles, route, drafts[route.viewedProfileId], session, dependencies.readings)
+        val readings = if (dependencies.readings.simulated) dependencies.readings else AppReadings(
+            session.traffic.map { it.txBytesPerSecond }, session.traffic.map { it.rxBytesPerSecond },
+            session.lifecycle.map { "+${it.elapsedMillis} ms · 会话 ${it.token.sessionId.generation} · 操作 ${it.token.sequence} · 修订 ${it.savedRevision} · ${it.code}" } +
+                session.coreDiagnostics?.records.orEmpty().map { "+${it.elapsedMillis} ms · 核心进程 · ${it.level} · ${it.target} · ${it.code}" },
+        )
+        AppUiState(profiles, route, drafts[route.viewedProfileId], session, readings)
     }.combine(appearance) { ui, preferences -> ui.copy(appearance = preferences) }
         .combine(message) { ui, notice -> ui.copy(message = notice) }
         .stateIn(
@@ -67,6 +72,7 @@ class ChuanmenViewModel(assemble: (CoroutineScope) -> AppDependencies) : ViewMod
             AppAction.RestoreApplied -> dependencies.sessions.state.value.applied?.saved?.let {
                 if (it.profileId == id) editor.restore(it)
             }
+            AppAction.RestoreRunning -> report(dependencies.sessions.restoreRunning())
             AppAction.Connect -> id?.let { dependencies.profiles.findSaved(it) }?.let { report(dependencies.sessions.connect(it)) }
             AppAction.Disconnect -> report(dependencies.sessions.disconnect())
             AppAction.OpenSettings -> navigation.value = navigation.value.copy(settingsOpen = true)

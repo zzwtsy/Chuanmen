@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import com.github.zzwtsy.chuanmen.contracts.DataFreshness
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -81,7 +82,7 @@ fun ChuanmenScreen(state: AppUiState, onAction: (AppAction) -> Unit) {
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
                     ).padding(Dimensions.pagePadding),
                 ) {
-                    Text("演示 · 模拟数据", style = MaterialTheme.typography.labelLarge)
+                    Text(if (state.readings.simulated) "演示 · 模拟数据" else "串门", style = MaterialTheme.typography.labelLarge)
                     Row(horizontalArrangement = Arrangement.spacedBy(Dimensions.itemSpacing)) {
                         Column(Modifier.weight(1f)) {
                             Button(onClick = { selectorOpen = true }, enabled = state.profiles.isNotEmpty()) {
@@ -99,10 +100,14 @@ fun ChuanmenScreen(state: AppUiState, onAction: (AppAction) -> Unit) {
                         TextButton(onClick = { onAction(AppAction.OpenSettings) }) { Text("设置") }
                     }
                     val applied = state.session.applied
-                    if (applied != null && !state.viewingRunningProfile) {
+                    if (applied != null && applied.saved.profileId != state.navigation.viewedProfileId) {
                         val running = state.profiles.find { it.saved.profileId == applied.saved.profileId }
-                        Text("另一个网络正在运行：${running?.displayName ?: "未知配置"}")
-                        TextButton(onClick = { onAction(AppAction.ViewProfile(applied.saved.profileId)) }) { Text("查看运行网络") }
+                        val historical = applied.freshness == DataFreshness.Stale
+                        Text(if (historical) "另一个网络的运行结果未确认：${running?.displayName ?: "未知配置"}"
+                            else "另一个网络正在运行：${running?.displayName ?: "未知配置"}")
+                        TextButton(onClick = { onAction(AppAction.ViewProfile(applied.saved.profileId)) }) {
+                            Text(if (historical) "查看相关网络" else "查看运行网络")
+                        }
                     }
                 }
             }
@@ -127,25 +132,28 @@ fun ChuanmenScreen(state: AppUiState, onAction: (AppAction) -> Unit) {
             verticalArrangement = Arrangement.spacedBy(Dimensions.sectionSpacing),
         ) {
             if (state.navigation.settingsOpen) {
-                SettingsContent(state.appearance, state.viewed?.saved?.vpnPolicy) {
+                SettingsContent(state.appearance, state.viewed?.saved?.vpnPolicy, state.readings.simulated) {
                     onAction(AppAction.SetAppearance(it))
                 }
                 TextButton(onClick = { onAction(AppAction.Back) }) { Text("返回") }
             } else when (state.navigation.destination) {
                 Destination.Overview -> OverviewScreen(
                     OverviewUiState(state.session, state.navigation.viewedProfileId, state.viewed != null,
-                        state.readings.txBytesPerSecond, state.readings.rxBytesPerSecond),
+                        state.readings.txBytesPerSecond, state.readings.rxBytesPerSecond, state.readings.simulated),
                 ) { action ->
                     onAction(when (action) {
                         OverviewAction.Connect -> AppAction.Connect
                         OverviewAction.Disconnect -> AppAction.Disconnect
+                        OverviewAction.RestoreRunning -> AppAction.RestoreRunning
                         OverviewAction.ViewDevices -> AppAction.Navigate(Destination.Devices)
                     })
                 }
-                Destination.Devices -> DevicesScreen(state.session.applied.takeIf { state.viewingRunningProfile })
+                Destination.Devices -> DevicesScreen(state.session.applied.takeIf {
+                    it?.saved?.profileId == state.navigation.viewedProfileId
+                }, state.readings.simulated, state.session.core, state.session.buildInfo)
                 Destination.Configuration -> ConfigurationScreen(
                     state.draft, state.pendingApplication, state.session.pending != null,
-                    state.session.failure.takeIf { state.viewingRunningProfile },
+                    state.session.failure.takeIf { state.session.requestedProfileId == state.navigation.viewedProfileId },
                 ) { action ->
                     when (action) {
                         ConfigurationAction.Rename -> { renameRaw = state.viewed?.displayName.orEmpty(); renameOpen = true }
@@ -181,7 +189,7 @@ fun ChuanmenScreen(state: AppUiState, onAction: (AppAction) -> Unit) {
 
 @Composable
 private fun SettingsContent(
-    appearance: Appearance, policy: AndroidVpnPolicy?, onChange: (Appearance) -> Unit,
+    appearance: Appearance, policy: AndroidVpnPolicy?, simulated: Boolean, onChange: (Appearance) -> Unit,
 ) {
     Text("设置", style = MaterialTheme.typography.headlineSmall)
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -195,8 +203,8 @@ private fun SettingsContent(
     val dark = appearance.darkTheme ?: isSystemInDarkTheme()
     TextButton(onClick = { onChange(appearance.copy(darkTheme = !dark)) }) { Text("切换浅色 / 深色") }
     Text(when (policy?.includeInternet) {
-        true -> "互联网流量：已开启（模拟）"
-        false -> "互联网流量：未开启（模拟）"
+        true -> if (simulated) "互联网流量：已开启（模拟）" else "互联网流量：已开启"
+        false -> if (simulated) "互联网流量：未开启（模拟）" else "互联网流量：未开启"
         null -> "暂无网络策略"
     })
 }

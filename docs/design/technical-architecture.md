@@ -2,7 +2,7 @@
 
 架构设计基线 1.0 · 外部资料核对日期：2026-10-11（Asia/Shanghai）。文中的上游“当前/最新”按该日期理解，实际依赖以仓库配置为准。
 
-本文规定目标边界、状态归属、平台适配与验证门槛。现有 demo 与纯领域契约见 [开发环境](../development/setup.md)，目录演进见 [目录边界 ADR](adr/0003-directory-boundaries.md)，实施状态见 [路线图](../plan/ROADMAP.md)。正式 VPN/JNI 尚待实现；交互原型、demo 和 P00 探针分别支撑各自范围的验证。
+本文规定目标边界、状态归属、平台适配与验证门槛。现有 demo 与纯领域契约见 [开发环境](../development/setup.md)，目录演进见 [目录边界 ADR](adr/0003-directory-boundaries.md)，实施状态见 [路线图](../plan/ROADMAP.md)。正式 bridge 与 Service 已接入 P02；阶段退出仍须核对正式 APK 的设备证据。交互原型、demo 和 P00 探针分别支撑各自范围的验证。
 
 本文的证据等级为：**已证实**指研究时读取的一手文档或固定版本源码；**拟议**指本项目应建立的设计与接口；**待实测**指必须由所选构建产物与设备实验确认的行为。读取记录见 [Android 与核心证据](../research/android-core-evidence.md)，后续实测结果见 [P00 报告](../verification/p00/report.md)；源码事实不能代替产品验收。
 
@@ -24,7 +24,7 @@ P00 的固定核心来源、实验补丁决策与遗留限制以报告为准。�
 
 ## 2. 工程边界与依赖
 
-采用包级业务切片与独立运行模块。当前为 `:app -> :contracts`；`:vpn`、`:core-bridge` 在实际实现与消费者就绪后建立。详细目录约定见 [目录边界 ADR](adr/0003-directory-boundaries.md)，当前 demo 边界见 [装配 ADR](adr/0004-demo-assembly.md)。
+采用包级业务切片与独立运行模块。当前 app 依赖 contracts，live 经实际 vpn 与 core-bridge 模块访问原生；Service 唯一持有控制器、核心与 TUN。详细目录约定见 [目录边界 ADR](adr/0003-directory-boundaries.md)，当前 demo 边界见 [装配 ADR](adr/0004-demo-assembly.md)。
 
 | 模块 / 目录 | 唯一职责 | 不应承担的职责 |
 |---|---|---|
@@ -141,6 +141,11 @@ Android 默认让应用组件处于同一进程；Service 不自动拥有专用�
 | TUN 读取任务 | 单一 native 数据路径 | UI、Kotlin 图表和日志代码不得另开读取器 |
 | TUN 写入任务 | 同一 native 路径 | 只统计成功写入的数据；失败不计为接收完成 |
 | fd 替换 / 停止 | TunCoordinator 串行执行 | 停止旧读写并收到完成回执后，关闭旧 PFD；不得仅凭入队回执关闭 |
+| 待安装队列 | native 会话宿主 | 取消和停止排空本代队列；入队成功不是安装成功，排空前继续保留 PFD |
+| 外层传输 socket | native 创建和关闭；Service 只保护及绑定 | protect 和物理网络绑定均确认后才继续连接；旧会话回调拒绝放行 |
+| JNI global reference | bridge 的会话资源作用域 | 停止等待在途回调结束，确认不再借用 PFD 后才释放引用 |
+| 生命周期事件订阅 | Service 会话资源作用域 | 不随 Activity 关闭；停止超时仍保留终态订阅，确认收束后才取消 |
+| 进程共享 runtime | native 进程宿主 | 会话停止不重复销毁或创建共享 runtime；资源回归核对预热后的固定基线 |
 
 不要对 PFD 调用 `detachFd()` 后又继续按借用模型管理，也不要两边都 close。fd 是可复用整数；旧异步回调若在关闭后继续操作，可能误伤后来复用同一编号的资源。每次替换携带 sessionId、generation 和 attachmentId，完成回执只能匹配当前 attachment。
 
@@ -182,6 +187,8 @@ IPv6 必须有可验证的支持或阻断策略，不能只显示一个“启用
 | `observeCoreLogs()` | 有界日志事件流 | 背压、丢弃计数、脱敏、取消；不阻塞数据面 |
 
 上游 JSON/protobuf DTO 只出现在 bridge 内。外层使用领域类型，未知枚举保留原值与 Unknown 展示；64 位累计值不先转成 Float/Double 再存储。JNI 的线程附着、全局引用释放、异常到错误类型的映射、字符串编码与回调取消都要有契约测试。
+
+P02 批次 A 已在 `:contracts` 建立 `BridgeProtocol.VERSION=1`、`AttachmentId`、`VpnInterfaceSpec`、`TunInstalled`、`StopConfirmation`、`ConfirmationResult` 和 `RuntimeSnapshot`。`OperationResult.Accepted` 只表示命令受理；停止回执必须携带同会话的排空证明。`RuntimeSnapshot.lastOperation` 与实际修订共同核对丢失的应用回执，查询到旧修订或 Unknown 不解锁新的应用。`AppliedSessionSnapshot.freshness=Stale` 表示历史配置。当前消费者仍是 demo 和测试，不代表 JNI 已提供这些确认；正式版本握手、资源排空和 Service 仍按 P02 后续批次实现。
 
 在同一应用入口 `.so` 中保持一个受控 Rust runtime 和实例缓存。当前 FFI 使用进程静态上下文；构建脚本即使生成多个 `.so`，也不能无审计地同时加载出互不共享的单例。P00 检查最终依赖和动态符号，P02 证明 UI 重建不会重新初始化核心。[ET-10]
 

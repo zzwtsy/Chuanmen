@@ -22,11 +22,15 @@ from android_tools import (
     _OwnedProcess,
     device_test_results,
     doctor,
+    live_sources,
+    live_ui_ready,
     main,
     native_candidate,
     sdk_path,
     select_device,
+    select_live_device,
     verify_device,
+    verify_live_device,
     write_report,
 )
 from check_boundaries import violations
@@ -334,16 +338,8 @@ class AndroidToolsTest(unittest.TestCase):
         path.write_text(content)
 
     def baseline(self, root: Path) -> None:
-        self.write(
-            root,
-            "contracts/build.gradle.kts",
-            "dependencies {\n api(libs.kotlinx.coroutines.core)\n testImplementation(libs.junit)\n}\n",
-        )
-        self.write(
-            root,
-            "app/build.gradle.kts",
-            'implementation(project(":contracts"))\ndependsOn(verifyLiveEngine)\n// LIVE_ENGINE_MISSING\n',
-        )
+        for module in ("app", "contracts", "core-bridge", "vpn"):
+            (root / module / "src").mkdir(parents=True, exist_ok=True)
 
     def candidate(self, root: Path) -> dict:
         commit = "a" * 40
@@ -525,7 +521,7 @@ class AndroidToolsTest(unittest.TestCase):
                 doctor(runner, True, False)
             self.assertIn("rustc 诊断失败（demo 不要求）", output.getvalue())
             self.assertIn("rustup 诊断失败（demo 不要求）", output.getvalue())
-            self.assertIn("live 阻断原因", output.getvalue())
+            self.assertIn("P02 live 核对独立正式产物", output.getvalue())
             self.assertEqual(2, len(runner.records))
             for record in runner.records:
                 self.assertEqual("failed", record["status"])
@@ -640,6 +636,104 @@ class AndroidToolsTest(unittest.TestCase):
         """仅有一个已授权设备且 ID 匹配时选择目标，断言返回该合成设备 ID。"""
         self.assertEqual("fixture-a", select_device("fixture-a\tdevice\n", "fixture-a"))
 
+    def test_live_explicit_target_is_selected_without_changing_demo_guard(self):
+        """live 的 adb 均使用显式目标，多设备可选其中一个；未指定、离线或未授权仍阻塞。"""
+        devices = "fixture-a\tdevice\nfixture-b\tdevice\nfixture-c\tunauthorized\nfixture-d\toffline\n"
+        self.assertEqual("fixture-b", select_live_device(devices, "fixture-b"))
+        for target in (None, "fixture-c", "fixture-d", "fixture-missing"):
+            with self.subTest(target=target), self.assertRaises(ToolFailure):
+                select_live_device(devices, target)
+        with self.assertRaises(ToolFailure):
+            select_device(devices, "fixture-b")
+
+    def test_live_activity_requires_observable_awake_and_unlocked_state(self):
+        """亮屏且锁屏字段均为 false 才启动 Activity；锁定、息屏或缺测不会进入安装。"""
+        unlocked = "mInputRestricted=false\nmShowingLockscreen=false\nmDreamingLockscreen=false"
+        self.assertTrue(live_ui_ready("mWakefulness=Awake", unlocked))
+        for power, window in (
+            ("mWakefulness=Dozing", unlocked),
+            ("", unlocked),
+            ("mWakefulness=Awake", ""),
+            (
+                "mWakefulness=Awake",
+                unlocked.replace("mInputRestricted=false", "mInputRestricted=true"),
+            ),
+        ):
+            with self.subTest(power=power, window=window):
+                self.assertFalse(live_ui_ready(power, window))
+
+    def test_live_preflight_archives_old_result_logs_and_exact_sources(self):
+        """本轮缺受控对端时不调用设备，并隔离旧成功、日志和输入快照，避免误用旧结果。"""
+        from argparse import Namespace
+
+        with TemporaryDirectory() as directory:
+            output = Path(directory)
+            (output / "device-tests.json").write_text('{"status":"passed"}')
+            (output / "live-instrumentation.log").write_text("old successful output")
+            snapshot = output / "source-snapshot"
+            snapshot.mkdir()
+            (snapshot / "input.txt").write_text("old source")
+            runner = Runner(output, output, 1)
+            with self.assertRaises(ToolFailure) as failure:
+                verify_live_device(
+                    runner,
+                    Namespace(
+                        live_case="resources",
+                        peer_host=None,
+                        peer_run_id=None,
+                        peer_report=None,
+                    ),
+                )
+            self.assertEqual(3, failure.exception.code)
+            self.assertEqual([], runner.records)
+            self.assertFalse((output / "device-tests.json").exists())
+            self.assertFalse((output / "live-instrumentation.log").exists())
+            self.assertFalse(snapshot.exists())
+            previous = list(output.glob("previous-results-*"))
+            self.assertEqual(1, len(previous))
+            self.assertEqual(
+                "old source", (previous[0] / "source-snapshot/input.txt").read_text()
+            )
+
+    def test_live_source_identity_excludes_stage_review_but_tracks_application(
+        self,
+    ) -> None:
+        """阶段审查文件变化或缺失不改变编译身份；修改真实应用源码仍使身份发生变化。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in (
+                "build.gradle.kts",
+                "settings.gradle.kts",
+                "gradle/libs.versions.toml",
+                "gradle.properties",
+                "scripts/native/check_apk.py",
+                "scripts/android/android_tools.py",
+                "scripts/android/live_contract.py",
+                "app/src/live/java/Assembly.kt",
+                *(
+                    f"{module}/build.gradle.kts"
+                    for module in ("app", "contracts", "core-bridge", "vpn")
+                ),
+            ):
+                self.write(root, name, "synthetic-source")
+            self.write(root, "native/inputs.json", '{"files": {}}')
+            stage_files = (
+                "docs/verification/p02/native-review.json",
+                "docs/verification/p02/native-review.md",
+                "experiments/p02-vpn-core/check_review.py",
+            )
+            for name in stage_files:
+                self.write(root, name, "synthetic-stage-review")
+            original = live_sources(root)
+            self.assertIn("app/src/live/java/Assembly.kt", original)
+            for name in stage_files:
+                self.write(root, name, "changed-stage-review")
+                self.assertEqual(original, live_sources(root))
+                (root / name).unlink()
+                self.assertEqual(original, live_sources(root))
+            self.write(root, "app/src/live/java/Assembly.kt", "changed-source")
+            self.assertNotEqual(original, live_sources(root))
+
     def test_pure_contract_and_local_slice_are_allowed(self) -> None:
         """契约仅依赖协程且配置切片只导入公开契约时检查，断言没有边界违规。"""
         with TemporaryDirectory() as directory:
@@ -678,13 +772,15 @@ class AndroidToolsTest(unittest.TestCase):
             self.assertTrue(any("切片不能" in error for error in errors))
             self.assertTrue(any("页面不能" in error for error in errors))
 
-    def test_live_fake_and_reverse_module_dependency_are_rejected(self) -> None:
-        """live 入口引用 fake、contracts 反向依赖 app 时检查，断言两类违规均被发现。"""
+    def test_live_fake_and_reverse_source_dependency_are_rejected(self) -> None:
+        """live 入口引用 fake、contracts 源码导入 app 时检查，断言两类违规均被发现。"""
         with TemporaryDirectory() as directory:
             root = Path(directory)
             self.baseline(root)
             self.write(
-                root, "contracts/build.gradle.kts", 'implementation(project(":app"))'
+                root,
+                "contracts/src/main/kotlin/Bad.kt",
+                "import com.github.zzwtsy.chuanmen.application.AppState\n",
             )
             self.write(
                 root,
@@ -692,8 +788,25 @@ class AndroidToolsTest(unittest.TestCase):
                 "com.github.zzwtsy.chuanmen.application.demo.FakeEngine()",
             )
             errors = violations(root)
-            self.assertTrue(any("不能依赖业务模块" in error for error in errors))
+            self.assertTrue(
+                any("混入 Android、JNI 或业务实现" in error for error in errors)
+            )
             self.assertTrue(any("不能引用 demo" in error for error in errors))
+
+    def test_live_build_type_sources_cannot_import_demo(self) -> None:
+        """liveDebug/liveRelease 的新增源码引用 demo 时检查，断言不能绕过正式装配边界。"""
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            self.baseline(root)
+            for source_set in ("liveDebug", "liveRelease"):
+                self.write(
+                    root,
+                    f"app/src/{source_set}/java/Assembly.kt",
+                    "import com.github.zzwtsy.chuanmen.application.demo.FakeEngine\n",
+                )
+            errors = violations(root)
+            self.assertEqual(2, len(errors))
+            self.assertTrue(all("不能引用 demo" in error for error in errors))
 
     def test_failed_command_preserves_exit_and_log(self) -> None:
         """子命令返回 17 和错误输出时执行 runner，断言分类为任务失败并保留退出码及完整日志。"""

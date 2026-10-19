@@ -1,12 +1,14 @@
-"""P01 Android 命令实现：只调用已建立的任务，保留稳定退出码与本地报告。"""
+"""Android 命令实现：显式选择 demo/live，保留稳定退出码和本次实际结果。"""
 
 from __future__ import annotations
 
 import argparse
 import hashlib
+import ipaddress
 import json
 import os
 import re
+import shlex
 import shutil
 import signal
 import subprocess
@@ -290,6 +292,73 @@ def select_device(output: str, requested: str | None) -> str:
     return connected[0]
 
 
+def select_live_device(output: str, requested: str | None) -> str:
+    """live 显式设备可与模拟器共存；未指定目标时仍要求唯一在线设备。"""
+    if requested is None:
+        return select_device(output, None)
+    devices = {}
+    for line in output.splitlines():
+        fields = line.split()
+        if len(fields) == 2 and fields[0] != "List":
+            devices[fields[0]] = fields[1]
+    if devices.get(requested) != "device":
+        raise ToolFailure(5, "LIVE_NOT_EXECUTED: 指定设备未在线或未授权")
+    return requested
+
+
+def live_ui_ready(power: str, window: str) -> bool:
+    """需要可观察的亮屏和未锁定状态；无法核对时不启动依赖 Activity 的用例。"""
+    states = re.findall(
+        r"\bm(?:InputRestricted|ShowingLockscreen|DreamingLockscreen)=(true|false)\b",
+        window,
+    )
+    return "mWakefulness=Awake" in power and bool(states) and "true" not in states
+
+
+def live_sources(root: Path) -> dict[str, str]:
+    """收集本轮编译和执行输入，不采集个人 SDK 路径、设备标识或运行配置。"""
+    names = set()
+    for module in ("app", "contracts", "core-bridge", "vpn"):
+        for path in (root / module / "src").rglob("*"):
+            if path.is_file() and path.relative_to(root).parts[2] in {
+                "main",
+                "live",
+                "liveDebug",
+                "androidTestLive",
+            }:
+                names.add(str(path.relative_to(root)))
+    inputs = json.loads((root / "native/inputs.json").read_text())
+    names.update(inputs["files"])
+    names.update(
+        {
+            "native/inputs.json",
+            "build.gradle.kts",
+            "settings.gradle.kts",
+            "gradle/libs.versions.toml",
+            "gradle.properties",
+            "scripts/native/check_apk.py",
+            "scripts/android/android_tools.py",
+            "scripts/android/live_contract.py",
+        }
+    )
+    names.update(
+        f"{module}/build.gradle.kts"
+        for module in ("app", "contracts", "core-bridge", "vpn")
+    )
+    files = {}
+    for name in sorted(names):
+        path = root / name
+        if (
+            Path(name).is_absolute()
+            or ".." in Path(name).parts
+            or path.is_symlink()
+            or not path.resolve().is_relative_to(root.resolve())
+        ):
+            raise ValueError("设备编译输入引用越界或使用符号链接")
+        files[name] = hashlib.sha256(path.read_bytes()).hexdigest()
+    return files
+
+
 class Runner:
     """记录每个尝试，超时或中断时有界收束所属进程，再保留两路输出。"""
 
@@ -515,31 +584,63 @@ def doctor(runner: Runner, offline: bool, native: bool) -> None:
         else:
             print(f"{argv[0]} 未安装（demo 不要求）")
     print(
-        "demo 无真实核心依赖；live 阻断原因：正式服务/桥接未接入，P00 补丁 production_approved=false"
+        "demo 无真实核心依赖；P00 production_approved=false 保持冻结，P02 live 核对独立正式产物"
     )
     if native:
-        raise ToolFailure(
-            3,
-            "NATIVE_NOT_READY: 候选输入已固定，P02 的正式服务/桥接与生产补丁仍未批准",
+        runner.run(
+            "native-artifacts",
+            ["python3", "scripts/native/build_native.py", "verify-artifacts"],
         )
 
 
 def check_fast(runner: Runner, offline: bool) -> None:
     native_candidate(runner.root)
-    print("NATIVE_CANDIDATE_OK: 候选输入与冻结来源一致；live 仍阻断")
+    print("NATIVE_CANDIDATE_OK: P00 候选与冻结来源一致；不代替 P02 正式产物检查")
     uv = ["uv", "tool", "run", "--isolated", "--no-python-downloads"]
     if offline:
         uv.append("--offline")
     uv += ["--from", f"ruff=={RUFF}", "ruff"]
-    runner.run("ruff-lint", uv + ["check", "--no-cache", "scripts/android"])
     runner.run(
-        "ruff-format", uv + ["format", "--no-cache", "--check", "scripts/android"]
+        "ruff-lint", uv + ["check", "--no-cache", "scripts/android", "scripts/native"]
+    )
+    runner.run(
+        "ruff-format",
+        uv + ["format", "--no-cache", "--check", "scripts/android", "scripts/native"],
     )
     runner.run("tool-regression", ["python3", "scripts/android/test_android_tools.py"])
+    runner.run(
+        "live-contract-regression", ["python3", "scripts/android/test_live_contract.py"]
+    )
+    runner.run(
+        "native-tool-regression",
+        [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "scripts/native",
+            "-p",
+            "test_*.py",
+        ],
+    )
+    runner.run(
+        "module-boundary-regression",
+        ["python3", "scripts/android/test_module_boundaries.py"],
+    )
     runner.run("boundaries", ["python3", "scripts/android/check_boundaries.py"])
     runner.run("catalog", ["python3", "scripts/catalog/audit_config_catalog.py"])
     gradle(
-        runner, offline, "jvm-tests", ":contracts:test", ":app:testDemoDebugUnitTest"
+        runner,
+        offline,
+        "jvm-tests",
+        "--init-script",
+        "scripts/android/check_module_boundaries.init.gradle.kts",
+        "checkModuleBoundaries",
+        ":contracts:test",
+        ":core-bridge:test",
+        ":vpn:testDebugUnitTest",
+        ":app:testDemoDebugUnitTest",
     )
 
 
@@ -565,7 +666,9 @@ def build_demo(runner: Runner, offline: bool) -> None:
         print(f"APK: {apk.relative_to(runner.root)}\nSHA256: {digest}")
 
 
-def device_test_results(directory: Path) -> dict:
+def device_test_results(
+    directory: Path, expected: set[tuple[str, str]] = DEVICE_TEST_CASES
+) -> dict:
     """只接受完整且无失败、错误或跳过的本次 XML，不以退出码或总数代替用例身份。"""
     reports = sorted(directory.rglob("TEST-*.xml"))
     if not reports:
@@ -603,12 +706,12 @@ def device_test_results(directory: Path) -> dict:
                     observed.add(identity)
     except (ET.ParseError, ValueError, KeyError) as exc:
         raise ToolFailure(4, f"DEVICE_REPORT_INVALID: {exc}") from exc
-    if observed != DEVICE_TEST_CASES:
+    if observed != expected:
         raise ToolFailure(
             4,
             "DEVICE_TESTS_INCOMPLETE: "
-            f"缺少 {len(DEVICE_TEST_CASES - observed)} 项，"
-            f"非预期 {len(observed - DEVICE_TEST_CASES)} 项",
+            f"缺少 {len(expected - observed)} 项，"
+            f"非预期 {len(observed - expected)} 项",
         )
     return {
         "tests": len(observed),
@@ -661,6 +764,315 @@ def verify_device(runner: Runner, offline: bool, serial: str | None) -> None:
     print(f"DEVICE_TESTS_OK: {summary['tests']} 项完整通过；失败、错误、跳过均为 0")
 
 
+def verify_live_device(runner: Runner, args: argparse.Namespace) -> None:
+    """正式 APK 的显式设备入口；旧 APK、缺对端和缺本次结果均不能宣布通过。"""
+    from live_contract import (
+        CASES,
+        datapath_results,
+        dns_results,
+        instrumentation_results,
+        lifecycle_results,
+        network_results,
+        peer_input,
+        policy_results,
+        resource_results,
+        revoke_results,
+    )
+
+    # 前置失败也隔离旧成功，不能在缺对端或安装拒绝后仍留下似乎属于本次的摘要。
+    old = [
+        path
+        for path in runner.output.iterdir()
+        if path.is_file() or path.name == "source-snapshot"
+    ]
+    if old:
+        previous = Path(tempfile.mkdtemp(prefix="previous-results-", dir=runner.output))
+        for path in old:
+            path.rename(previous / path.name)
+
+    requires_peer = args.live_case in {
+        "datapath",
+        "resources",
+        "dns",
+        "policy",
+        "network",
+    }
+    if requires_peer:
+        if not all((args.peer_host, args.peer_run_id, args.peer_report)):
+            raise ToolFailure(
+                3,
+                "LIVE_NOT_EXECUTED: 数据通路缺少 --peer-host / --peer-run-id / --peer-report",
+            )
+        address = ipaddress.IPv4Address(args.peer_host)
+        if not address.is_private or address.is_loopback or address.is_unspecified:
+            raise ToolFailure(3, "LIVE_NOT_EXECUTED: 受控对端须是明确的私有 LAN IPv4")
+        try:
+            peer = peer_input(args.peer_report, args.peer_run_id)
+            if (
+                args.live_case in {"resources", "dns"}
+                and peer.get("peer_status_port") != 31274
+            ):
+                raise ValueError("缺少可核对旧连接与路由的受控对端状态入口")
+            if args.live_case == "dns" and (
+                peer.get("virtual_dns_port") != 53 or len(args.peer_run_id) > 39
+            ):
+                raise ValueError("DNS 需要虚拟 53 端口与适合唯一域名标签的运行身份")
+            if (
+                args.live_case == "network"
+                and not ipaddress.IPv6Address(
+                    peer.get("physical_ipv6_address", "")
+                ).is_global
+            ):
+                raise ValueError("切网/阻断场景缺少真实全局 IPv6 对端")
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            raise ToolFailure(3, f"LIVE_NOT_EXECUTED: {error}") from error
+    sdk = sdk_path(runner.root)
+    adb = shutil.which("adb") or str(sdk / "platform-tools/adb")
+    if not Path(adb).is_file():
+        raise ToolFailure(3, "ADB_MISSING: 安装官方 platform-tools")
+    selected = select_live_device(
+        runner.run("device-list", [adb, "devices"]), args.serial
+    )
+    if args.live_case == "revoke" and not selected.startswith("emulator-"):
+        raise ToolFailure(
+            5, "LIVE_NOT_EXECUTED: 系统 Forget 用例仅允许本任务测试模拟器"
+        )
+    api = runner.run(
+        "device-api", [adb, "-s", selected, "shell", "getprop", "ro.build.version.sdk"]
+    ).strip()
+    abi = runner.run(
+        "device-abi", [adb, "-s", selected, "shell", "getprop", "ro.product.cpu.abi"]
+    ).strip()
+    if not api.isdigit() or int(api) < 24 or abi not in {"arm64-v8a", "x86_64"}:
+        raise ToolFailure(
+            5, "LIVE_NOT_EXECUTED: 当前正式实现只支持 API 24+ / arm64-v8a / x86_64"
+        )
+    if args.live_case != "bridge":
+        power = runner.run(
+            "device-screen", [adb, "-s", selected, "shell", "dumpsys", "power"]
+        )
+        window = runner.run(
+            "device-keyguard", [adb, "-s", selected, "shell", "dumpsys", "window"]
+        )
+        if not live_ui_ready(power, window):
+            raise ToolFailure(
+                5,
+                "LIVE_NOT_EXECUTED: Activity 用例需要手机解锁并保持亮屏；尚未安装或启动测试",
+            )
+    print(
+        f"LIVE_DEVICE: API {api} / {abi}；范围 {args.live_case}，系统授权须正常确认",
+        flush=True,
+    )
+    sources = live_sources(runner.root)
+    gradle(
+        runner,
+        args.offline,
+        "assemble-live-device",
+        ":app:assembleLiveDebug",
+        ":app:assembleLiveDebugAndroidTest",
+    )
+    apk = runner.root / "app/build/outputs/apk/live/debug/app-live-debug.apk"
+    test_apk = (
+        runner.root
+        / "app/build/outputs/apk/androidTest/live/debug/app-live-debug-androidTest.apk"
+    )
+    runner.run(
+        "live-apk-identity",
+        ["python3", "scripts/native/check_apk.py", "--sdk", str(sdk), str(apk)],
+    )
+    artifacts = {}
+    for package, path in (
+        ("com.github.zzwtsy.chuanmen", apk),
+        ("com.github.zzwtsy.chuanmen.test", test_apk),
+    ):
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        artifacts[str(path.relative_to(runner.root))] = digest
+        role = "app" if package == "com.github.zzwtsy.chuanmen" else "test"
+        packages = runner.run(
+            f"installed-{role}-package",
+            [adb, "-s", selected, "shell", "pm", "list", "packages", package],
+        ).splitlines()
+        installed = (
+            runner.run(
+                f"installed-{role}-apk-path",
+                [adb, "-s", selected, "shell", "pm", "path", package],
+            ).strip()
+            if f"package:{package}" in packages
+            else ""
+        )
+        same = False
+        if installed.startswith("package:/") and "\n" not in installed:
+            remote = installed.removeprefix("package:")
+            remote_hash = runner.run(
+                f"installed-{role}-apk-identity",
+                [adb, "-s", selected, "shell", "sha256sum " + shlex.quote(remote)],
+            ).split()
+            same = bool(remote_hash) and remote_hash[0] == digest
+        if not same:
+            try:
+                runner.run(
+                    f"install-live-{role}-apk",
+                    [adb, "-s", selected, "install", "-r", str(path)],
+                )
+            except ToolFailure as error:
+                raise ToolFailure(
+                    5,
+                    "LIVE_NOT_EXECUTED: APK 安装失败；请核对本次手机提示和 USB 安装权限",
+                    error.record,
+                ) from error
+    summary_path = runner.output / "device-tests.json"
+    if sources != live_sources(runner.root):
+        raise ToolFailure(4, "LIVE_INPUT_CHANGED: 构建期间输入变化，本轮不执行设备测试")
+    source_path = runner.output / "source-inputs.json"
+    snapshot = runner.output / "source-snapshot"
+    for name, digest in sources.items():
+        data = (runner.root / name).read_bytes()
+        if hashlib.sha256(data).hexdigest() != digest:
+            raise ToolFailure(
+                4, "LIVE_INPUT_CHANGED: 保存输入快照期间源码变化，本轮不执行设备测试"
+            )
+        target = snapshot / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
+    write_report(
+        source_path,
+        {
+            "scope": "compile_and_executor_inputs_checked_before_and_after_build_and_device_execution",
+            "files": sources,
+            "snapshot": "source-snapshot",
+            "artifacts": artifacts,
+        },
+    )
+    command = [
+        adb,
+        "-s",
+        selected,
+        "shell",
+        "am",
+        "instrument",
+        "-w",
+        "-r",
+        "-e",
+        "class",
+        next(iter(CASES[args.live_case]))[0],
+    ]
+    report_file = {
+        "datapath": "p02-datapath-report.json",
+        "resources": "p02-resource-report.json",
+        "lifecycle": "p02-lifecycle-report.json",
+        "dns": "p02-dns-report.json",
+        "policy": "p02-policy-report.json",
+        "network": "p02-network-report.json",
+        "revoke": "p02-revoke-report.json",
+    }.get(args.live_case)
+    if report_file is not None:
+        runner.run(
+            "clear-live-report",
+            [
+                adb,
+                "-s",
+                selected,
+                "shell",
+                "run-as",
+                "com.github.zzwtsy.chuanmen",
+                "rm",
+                "-f",
+                f"files/{report_file}",
+            ],
+        )
+        if requires_peer:
+            command += [
+                "-e",
+                "peerHost",
+                args.peer_host,
+                "-e",
+                "runId",
+                args.peer_run_id,
+            ]
+            if args.live_case == "network":
+                command += ["-e", "peerIpv6", peer["physical_ipv6_address"]]
+        launch = runner.run(
+            "foreground-live-activity",
+            [
+                adb,
+                "-s",
+                selected,
+                "shell",
+                "am",
+                "start",
+                "-W",
+                "-n",
+                "com.github.zzwtsy.chuanmen/com.github.zzwtsy.chuanmen.MainActivity",
+            ],
+        )
+        if "Status: ok" not in launch:
+            raise ToolFailure(5, "LIVE_NOT_EXECUTED: 正式 Activity 未确认进入前台")
+    command.append(
+        "com.github.zzwtsy.chuanmen.test/androidx.test.runner.AndroidJUnitRunner"
+    )
+    output = runner.run("live-instrumentation", command)
+    if sources != live_sources(runner.root) or any(
+        hashlib.sha256((runner.root / name).read_bytes()).hexdigest() != digest
+        for name, digest in artifacts.items()
+    ):
+        raise ToolFailure(
+            4, "LIVE_INPUT_CHANGED: 设备执行期间输入或 APK 变化，不能绑定成功结论"
+        )
+    try:
+        report = None
+        if report_file is not None:
+            raw = runner.run(
+                "live-app-report",
+                [
+                    adb,
+                    "-s",
+                    selected,
+                    "exec-out",
+                    "run-as",
+                    "com.github.zzwtsy.chuanmen",
+                    "cat",
+                    f"files/{report_file}",
+                ],
+            )
+            report = json.loads(raw)
+        summary = instrumentation_results(output, CASES[args.live_case])
+        if report is not None:
+            if requires_peer:
+                records_name = "dns.jsonl" if args.live_case == "dns" else "echo.jsonl"
+                echoes = [
+                    json.loads(line)
+                    for line in (args.peer_report.parent / records_name)
+                    .read_text()
+                    .splitlines()
+                ]
+                checker = {
+                    "resources": resource_results,
+                    "datapath": datapath_results,
+                    "dns": dns_results,
+                    "policy": policy_results,
+                    "network": network_results,
+                }[args.live_case]
+                summary[args.live_case] = checker(report, echoes, args.peer_run_id)
+                summary["peer_report_sha256"] = hashlib.sha256(
+                    args.peer_report.read_bytes()
+                ).hexdigest()
+            else:
+                checker = (
+                    revoke_results if args.live_case == "revoke" else lifecycle_results
+                )
+                summary[args.live_case] = checker(report)
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        raise ToolFailure(4, f"LIVE_REPORT_INVALID: {error}") from error
+    summary.update(
+        mode="live", scope=args.live_case, api=int(api), abi=abi, artifacts=artifacts
+    )
+    summary["source_inputs_sha256"] = hashlib.sha256(
+        source_path.read_bytes()
+    ).hexdigest()
+    write_report(summary_path, summary)
+    print(f"LIVE_DEVICE_OK: {summary['tests']} 项完整通过；验收范围 {args.live_case}")
+
+
 def write_report(path: Path, report: dict) -> None:
     """同目录原子替换，写入失败时保留原报告且不遗留半份新报告。"""
     temporary = None
@@ -694,10 +1106,37 @@ def main() -> int:
     parser.add_argument(
         "--native",
         action="store_true",
-        help="doctor 检查正式 native 门槛；P01 会明确失败",
+        help="doctor 检查 P02 正式双 ABI 产物与当前输入身份",
     )
     parser.add_argument(
-        "--serial", help="verify-device 指定唯一在线设备，序列号只留在忽略目录"
+        "--serial",
+        help="verify-device 核对目标；demo 要求唯一设备，live 可显式选择，标识只留在忽略目录",
+    )
+    parser.add_argument(
+        "--mode",
+        choices=("demo", "live"),
+        default="demo",
+        help="设备模式默认 demo；live 不回退模拟",
+    )
+    parser.add_argument(
+        "--live-case",
+        choices=(
+            "bridge",
+            "datapath",
+            "resources",
+            "lifecycle",
+            "dns",
+            "policy",
+            "network",
+            "revoke",
+        ),
+        default="datapath",
+        help="live 范围：bridge JNI/pipe；lifecycle 正常授权；datapath 双外层业务；resources 50 轮；dns 系统 resolver；policy DHCP/默认路由/恢复；network 实际切网/IPv6 阻断",
+    )
+    parser.add_argument("--peer-host", help="受控开发主机私有 LAN IPv4")
+    parser.add_argument("--peer-run-id", help="本轮受控对端的 p02-* 请求身份")
+    parser.add_argument(
+        "--peer-report", type=Path, help="本轮受控对端 ready.json / report.json"
     )
     parser.add_argument(
         "--timeout", type=int, default=600, help="每条子命令的超时秒数，默认 600"
@@ -709,7 +1148,24 @@ def main() -> int:
         parser.error("--native 仅供 doctor")
     if args.serial and args.command != "verify-device":
         parser.error("--serial 仅供 verify-device")
+    if (
+        args.mode != "demo"
+        or args.peer_host
+        or args.peer_run_id
+        or args.peer_report
+        or args.live_case != "datapath"
+    ) and args.command != "verify-device":
+        parser.error("live 与对端参数仅供 verify-device")
+    if args.mode == "demo" and (
+        args.peer_host
+        or args.peer_run_id
+        or args.peer_report
+        or args.live_case != "datapath"
+    ):
+        parser.error("受控对端与 --live-case 需要 --mode live")
     output = ROOT / "build/android" / args.command
+    if args.mode == "live":
+        output = output / "live" / args.live_case
     interruption = Interruption()
     runner = Runner(ROOT, output, args.timeout, interruption)
     with cli_signals(interruption):
@@ -724,7 +1180,10 @@ def main() -> int:
             elif args.command == "build-demo":
                 build_demo(runner, args.offline)
             else:
-                verify_device(runner, args.offline, args.serial)
+                if args.mode == "live":
+                    verify_live_device(runner, args)
+                else:
+                    verify_device(runner, args.offline, args.serial)
         except ToolFailure as exc:
             failure = exc
         except (OSError, ValueError, KeyError, TypeError) as exc:

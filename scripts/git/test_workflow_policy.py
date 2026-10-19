@@ -98,6 +98,20 @@ class WorkflowPolicyTest(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertTrue(policy.android_required(["README.md", path]))
 
+    def test_p02_ci_inputs_cannot_skip_android(self):
+        """P02 阶段工具、对端或审查输入单独变化时分类，断言不能作为文档省略阶段 CI。"""
+        for path in (
+            "experiments/p02-vpn-core/check_review.py",
+            "experiments/p02-vpn-core/test_check_review.py",
+            "experiments/p02-vpn-core/review.py",
+            "experiments/p02-vpn-core/test_review.py",
+            "experiments/p02-vpn-core/native-peer/src/main.rs",
+            "docs/verification/p02/native-review.json",
+            "docs/verification/p02/native-review.md",
+        ):
+            with self.subTest(path=path):
+                self.assertTrue(policy.android_required(["README.md", path]))
+
     def test_gate_results(self):
         """完整成功或明确文档免检通过；失败、取消、缺失和意外跳过失败。"""
         for required, android_result in (("true", "success"), ("false", "skipped")):

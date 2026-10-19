@@ -22,9 +22,17 @@ ANDROID_PREFIXES = (
     "scripts/android/",
     "scripts/catalog/",
     "docs/design/config/",
+    "experiments/p02-vpn-core/",
     ".github/",
 )
-ANDROID_FILES = {"gradle.properties", "gradlew", "gradlew.bat", "ruff.toml"}
+ANDROID_FILES = {
+    "gradle.properties",
+    "gradlew",
+    "gradlew.bat",
+    "ruff.toml",
+    "docs/verification/p02/native-review.json",
+    "docs/verification/p02/native-review.md",
+}
 DOCUMENT_PREFIXES = ("docs/", ".agents/", "prototype/", "experiments/")
 DOCUMENT_FILES = {"README.md", "AGENTS.md", "CONTRIBUTING.md"}
 

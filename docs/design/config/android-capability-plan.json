@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "status": "planning-baseline",
-  "checkedDate": "2026-10-11",
+  "checkedDate": "2026-10-15",
   "scope": "与原型冻结目录一一对应；不等于原生接口已实现或永久功能上限",
   "catalogSha256": "eaac5fd840290719d0ad270ff4ed36730274d946166646824e4757bd05148e63",
   "authority": "以P00选定二进制与阶段实证更新，snapshot中的availability/apply不可作为完成凭据",
@@ -21,7 +21,10 @@
       "exportToCore": true,
       "applyPolicy": "verify-before-hot-apply",
       "evidence": [],
-      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
+      "controlledInputStage": "P02",
+      "implementationNote": "CoreConfig.networkName：正式桥编码并用于受控真实组网；完整编辑和身份变更矩阵仍属 P03",
+      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified"
     },
     {
       "key": "network_identity.network_secret",
@@ -31,7 +34,10 @@
       "exportToCore": true,
       "applyPolicy": "verify-before-hot-apply",
       "evidence": [],
-      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
+      "controlledInputStage": "P02",
+      "implementationNote": "CoreConfig.networkSecret / NetworkSecret：正式 TOML 编码和受控握手已接入，嵌套字符串脱敏；加密持久化与错误密码矩阵尚未验收",
+      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified"
     },
     {
       "key": "hostname",
@@ -51,7 +57,10 @@
       "exportToCore": true,
       "applyPolicy": "verify-before-hot-apply",
       "evidence": [],
-      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
+      "controlledInputStage": "P02",
+      "implementationNote": "Ipv4Assignment.Automatic：正式核心实际分配地址与 TUN 参数一致，policy-01 已取得 TCP/UDP 业务回包；冲突和完整地址变更矩阵仍属后续阶段",
+      "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified"
     },
     {
       "key": "ipv4",
@@ -61,7 +70,10 @@
       "exportToCore": true,
       "applyPolicy": "verify-before-hot-apply",
       "evidence": [],
-      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
+      "controlledInputStage": "P02",
+      "implementationNote": "Ipv4Assignment.Static：正式 Service 从核心实际 IPv4 建立 TUN；API36 受控静态10.222.0.2与业务回包已通过，地址冲突与完整矩阵待验收",
+      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified"
     },
     {
       "key": "flags.enable_ipv6",
@@ -91,7 +103,10 @@
       "exportToCore": true,
       "applyPolicy": "verify-before-hot-apply",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "controlledInputStage": "P02",
+      "implementationNote": "CoreConfig.peers / PeerEndpoint：正式 TCP/UDP 外层均已有受控业务回包；其他协议仍待实现",
+      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified"
     },
     {
       "key": "listeners",
@@ -411,7 +426,10 @@
       "exportToCore": false,
       "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
       "evidence": [],
-      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
+      "controlledInputStage": "P02",
+      "implementationNote": "AndroidVpnPolicy.includeInternet：policy-01 已核对平台 0.0.0.0/0、MTU 1400 与 TCP 外层真实双业务回包、保护失败为0；完整应用范围和默认路由组合仍待验证",
+      "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified"
     },
     {
       "key": "android.ipv6Policy",
@@ -421,7 +439,10 @@
       "exportToCore": false,
       "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
       "evidence": [],
-      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
+      "controlledInputStage": "P02",
+      "implementationNote": "Ipv6Policy.Block：Service 不开启 IPv6 family；network-03 在具备真实全局 IPv6 正向基线的 API36 真机验证 TCP/UDP 在 VPN 前后回包、VPN 内拒绝且对端无请求；其他 OEM 和完整双栈未验收",
+      "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified"
     },
     {
       "key": "android.dnsMode",
@@ -441,7 +462,10 @@
       "exportToCore": false,
       "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
       "evidence": [],
-      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
+      "controlledInputStage": "P02",
+      "implementationNote": "AndroidVpnPolicy.dnsServers：API36 正式 VPN Network 的系统 resolver 已在 TCP/UDP 外层得到受控虚拟53端口实际 A 回包；不覆盖 Private DNS 或完整 IPv6组合",
+      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified"
     },
     {
       "key": "android.autoReconnect",

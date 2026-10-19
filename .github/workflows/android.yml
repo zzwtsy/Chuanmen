@@ -1,4 +1,4 @@
-name: Android foundation
+name: Android and native
 
 on:
   workflow_call:
@@ -10,7 +10,7 @@ permissions:
 jobs:
   demo:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 60
     env:
       ANDROID_CLI_VERSION: '1.0.16500706'
     steps:
@@ -48,7 +48,7 @@ jobs:
             "ANDROID_CLI_DOWNLOAD_URL=$ANDROID_CLI_DOWNLOAD_URL" >> "$GITHUB_ENV"
           "$android_cli_dir/android" --no-metrics --version
           "$android_cli_dir/android" --no-metrics --sdk="$ANDROID_HOME" sdk install \
-            'platforms/android-37.0' 'build-tools/36.0.0' 'platform-tools'
+            'platforms/android-37.0' 'build-tools/36.0.0' 'platform-tools' 'ndk/30.0.16248370'
       - name: Diagnose toolchain
         run: ./scripts/android/doctor.sh
       - name: Check contracts and JVM behavior
@@ -57,3 +57,30 @@ jobs:
         run: ./scripts/android/build-demo.sh
       - name: Compile demo device tests
         run: ./gradlew --console=plain :app:assembleDemoDebugAndroidTest
+      - name: Install fixed native toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes protobuf-compiler libssl-dev pkg-config clang cmake
+          rustup toolchain install 1.99.0 --profile minimal --component rustfmt \
+            --target aarch64-linux-android --target x86_64-linux-android
+          printf '%s\n' 'RUSTUP_TOOLCHAIN=1.99.0' >> "$GITHUB_ENV"
+          rustup run 1.99.0 cargo install cargo-ndk --version 4.1.2 --locked
+      - name: Build fixed dual ABI native host
+        run: python3 scripts/native/build_native.py build --sdk "$ANDROID_HOME" --allow-download
+      - name: Verify native ownership and bridge contracts
+        env:
+          CARGO_BUILD_JOBS: '2'
+        run: |
+          python3 experiments/p02-vpn-core/check_review.py
+          python3 experiments/p02-vpn-core/test_check_review.py
+          python3 experiments/p02-vpn-core/test_review.py
+          cargo test --manifest-path native/Cargo.toml --locked
+          cargo test --manifest-path experiments/p02-vpn-core/native-peer/Cargo.toml --locked --target-dir native/target
+          python3 scripts/native/build_native.py verify-artifacts
+          ./scripts/android/doctor.sh --native
+      - name: Build formal live APK and compile device contracts
+        run: ./gradlew --console=plain :app:assembleLiveDebug :app:assembleLiveDebugAndroidTest :app:testLiveDebugUnitTest :app:testLiveReleaseUnitTest
+      - name: Verify packaged native identity and 16 KB alignment
+        run: python3 scripts/native/check_apk.py --sdk "$ANDROID_HOME" app/build/outputs/apk/live/debug/app-live-debug.apk

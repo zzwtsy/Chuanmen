@@ -16,23 +16,36 @@ import com.github.zzwtsy.chuanmen.contracts.SavedRevision
 import com.github.zzwtsy.chuanmen.contracts.SessionId
 import com.github.zzwtsy.chuanmen.contracts.SessionState
 import com.github.zzwtsy.chuanmen.contracts.UnavailableReason
+import com.github.zzwtsy.chuanmen.contracts.FailureDisposition
 
 /** 每条脚本的延时由注入作用域的调度器执行，Silent 用于精确复现超时。 */
 sealed interface ScriptReply {
     val delayMillis: Long
-    data class Ready(override val delayMillis: Long = 500) : ScriptReply
+    data class Ready(
+        override val delayMillis: Long = 500,
+        val progress: List<ScriptProgress> = emptyList(),
+        val deliverReceipt: Boolean = true,
+    ) : ScriptReply {
+        init { require(progress.all { it.atMillis in 0 until delayMillis }) }
+    }
     data class Failed(
         val reason: UnavailableReason = UnavailableReason.EngineRejected,
         override val delayMillis: Long = 500,
+        val disposition: FailureDisposition? = null,
     ) : ScriptReply
     data object Silent : ScriptReply { override val delayMillis = 0L }
+    data class Unknown(override val delayMillis: Long = 500) : ScriptReply
 }
+
+/** 从命令提交起计算的进度时间，最终 Ready 仍必须等待独立完成回执。 */
+data class ScriptProgress(val atMillis: Long, val phase: ConnectionPhase)
 
 /** 固定顺序的事件脚本；用完后重复最后一项，不依赖随机数或公网。 */
 data class EngineScript(
     val starts: List<ScriptReply> = listOf(ScriptReply.Ready()),
     val applies: List<ScriptReply> = listOf(ScriptReply.Ready()),
     val stopDelayMillis: Long = 100,
+    val stopConfirms: Boolean = true,
 ) {
     init {
         require(starts.isNotEmpty() && applies.isNotEmpty())
@@ -114,4 +127,15 @@ object DemoFixtures {
         ),
     )
     val all = listOf(emptyNetwork, disconnected, connected, connectionFailure, applyFailure, noSamples)
+
+    /** P02 的阶段脚本用于契约回归，不表示 demo 获得了真实 TUN 或授权能力。 */
+    val stagedConnection = disconnected.copy(
+        name = "P02 分阶段连接",
+        script = EngineScript(starts = listOf(ScriptReply.Ready(
+            500, listOf(
+                ScriptProgress(100, ConnectionPhase.AwaitingAddress),
+                ScriptProgress(300, ConnectionPhase.PreparingTun),
+            ),
+        ))),
+    )
 }

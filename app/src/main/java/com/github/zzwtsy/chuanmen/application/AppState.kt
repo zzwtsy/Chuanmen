@@ -1,6 +1,7 @@
 package com.github.zzwtsy.chuanmen.application
 
 import com.github.zzwtsy.chuanmen.contracts.LocalProfileId
+import com.github.zzwtsy.chuanmen.contracts.DataFreshness
 import com.github.zzwtsy.chuanmen.contracts.ProfileRepository
 import com.github.zzwtsy.chuanmen.contracts.ProfileSummary
 import com.github.zzwtsy.chuanmen.contracts.SessionController
@@ -25,6 +26,7 @@ data class AppReadings(
     val txBytesPerSecond: List<Double?> = emptyList(),
     val rxBytesPerSecond: List<Double?> = emptyList(),
     val logs: List<String> = emptyList(),
+    val simulated: Boolean = false,
 )
 
 /** 外观仅为 P01 内存演示偏好，不提供持久化保证。 */
@@ -42,7 +44,8 @@ data class AppUiState(
     val viewed: ProfileSummary?
         get() = profiles.find { it.saved.profileId == navigation.viewedProfileId }
     val viewingRunningProfile: Boolean
-        get() = session.applied?.saved?.profileId == navigation.viewedProfileId && viewed != null
+        get() = session.applied?.saved?.profileId == navigation.viewedProfileId && viewed != null &&
+            session.applied?.freshness == DataFreshness.Fresh
 
     /** 当前运行网络的已保存内容与实际配置不同时才待应用，修订号变化不代表内容变化。 */
     val pendingApplication: Boolean
@@ -68,6 +71,7 @@ sealed interface AppAction {
     data object Apply : AppAction
     data object Discard : AppAction
     data object RestoreApplied : AppAction
+    data object RestoreRunning : AppAction
     data object Connect : AppAction
     data object Disconnect : AppAction
     data object OpenSettings : AppAction

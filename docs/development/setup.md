@@ -1,12 +1,12 @@
 # 开发环境与验证命令
 
-本页说明实际构建和检查入口。阶段状态见 [路线图](../plan/ROADMAP.md)，边界见 [目录 ADR](../design/adr/0003-directory-boundaries.md)和[demo 装配 ADR](../design/adr/0004-demo-assembly.md)。当前提供 `demoDebug`、纯领域契约与 Android 脚本；正式 VPN/JNI 尚未接入，live 构建明确阻断。
+本页说明实际构建和检查入口。阶段状态见 [路线图](../plan/ROADMAP.md)，边界见 [目录 ADR](../design/adr/0003-directory-boundaries.md)和[demo 装配 ADR](../design/adr/0004-demo-assembly.md)。当前提供 demoDebug、领域契约、正式 bridge/VPN 模块与 liveDebug 构建。live 必须核对本次正式双 ABI 产物，不读取 P00 的生产批准标记；设备和数据通路结果见 P02 阶段记录。
 
 ## 环境与版本来源
 
 | 项目 | 权威配置 | 使用要求 |
 |---|---|---|
-| 已有模块 | [settings.gradle.kts](../../settings.gradle.kts) | `:app -> :contracts`；不预建 VPN/JNI 空模块 |
+| 已有模块 | [settings.gradle.kts](../../settings.gradle.kts) | `:app -> :contracts`；live 经 `:vpn -> :core-bridge -> :contracts` 使用实际 JNI，核心与 PFD 由 Service 持有 |
 | Gradle | [Wrapper 配置](../../gradle/wrapper/gradle-wrapper.properties) | 使用仓库的 `./gradlew` |
 | Gradle Daemon JDK | [Daemon JVM 配置](../../gradle/gradle-daemon-jvm.properties) | 按 `toolchainVersion` 准备 JDK；它与 Java 编译兼容级别分别配置 |
 | AGP、Kotlin、Compose 编译插件及 Android 依赖 | [版本目录](../../gradle/libs.versions.toml)和[根构建](../../build.gradle.kts) | Kotlin 与 Compose 编译插件使用同版；应用、JVM 和设备 UI 测试共用 Compose BOM |
@@ -56,7 +56,18 @@ export PATH="$ANDROID_HOME/platform-tools:$PATH"
 
 APK 为 `app/build/outputs/apk/demo/debug/app-demo-debug.apk`，包名后缀 `.demo`、名称“串门 · 演示”，常驻“模拟数据”标记。脚本核对产物元数据并输出路径和 SHA-256。签名沿用标准 debug 配置，正式 release 设置和签名配置未改动。
 
-快速检查核对原生候选输入，再执行固定 Ruff、Android 工具回归、模块/import 边界、配置目录审计，以及 `:contracts:test :app:testDemoDebugUnitTest`，不操作设备。JVM 报告在 `contracts/build/reports/tests/test/` 和 `app/build/reports/tests/testDemoDebugUnitTest/`；领域/状态与 Robolectric UI 测试分别覆盖业务不变量和真实 demo Activity 的界面绑定，测试计数以对应运行报告为准。UI 渲染图在 `app/build/p01-ui/`。JVM native Canvas 渲染不表示设备、系统栏或 TalkBack 已验收。
+快速检查核对原生候选输入，再执行固定 Ruff、Android/native 工具回归、模块边界的临时 Gradle 工程回归、源码 import 边界、配置目录审计，以及 `:contracts:test :core-bridge:test :vpn:testDebugUnitTest :app:testDemoDebugUnitTest`，不操作设备或构建 Rust。正式 Gradle 调用加载 `scripts/android/check_module_boundaries.init.gradle.kts`，同时执行 `checkModuleBoundaries`；配置阶段先通过 `incoming.dependencies` 执行全部延迟声明，再读取各配置的直接依赖，任务执行阶段只消费普通输入值，不解析依赖制品。自依赖豁免仅限 AGP 公共测试组件模型中的 compile/runtime 配置，手工可解析配置及仿测试名称均不获得豁免。
+
+JVM 报告在各模块 `build/reports/tests/` 下；领域/状态与 Robolectric UI 测试分别覆盖业务不变量和真实 demo Activity 的界面绑定，测试计数以对应运行报告为准。UI 渲染图在 `app/build/p01-ui/`。JVM native Canvas 渲染不表示设备、系统栏或 TalkBack 已验收。受控配置输入测试位于 `testLiveDebug`，由下文的正式 live JVM 检查执行，不属于 demo 快速检查。
+
+单独检查 Gradle 模型时运行：
+
+```bash
+./gradlew --offline --init-script scripts/android/check_module_boundaries.init.gradle.kts checkModuleBoundaries
+python3 scripts/android/test_module_boundaries.py
+```
+
+临时工程回归使用 Wrapper、内置 Java 插件和离线模式，验证合法设备测试依赖、延迟声明、跨配置回调、错误配置、反向/自依赖、缺失边、Android 平台依赖/插件及配置缓存复用；Android 插件身份使用合成 fixture，不需要 Android 编译或 native 产物。真实 AGP 测试组件的正常接线由正式工程检查验证。
 
 共享 UI 契约使用 [Compose v2 测试入口](https://developer.android.com/develop/ui/compose/testing/migrate-v2)，默认 `StandardTestDispatcher` 将组合协程排队；语义操作、`waitForIdle` 与 `runOnIdle` 负责断言前的同步。测试使用 JUnit 4 与既有 Robolectric / 设备入口。Lifecycle 的 KTX API 已移入 [`lifecycle-runtime`](https://developer.android.com/jetpack/androidx/releases/lifecycle#2.8.0)，工程直接依赖该模块。
 
@@ -79,6 +90,8 @@ Kotlin 版本须同时核对 [Gradle 兼容表](https://kotlinlang.org/docs/grad
 每次 POSIX 执行建立独立进程组，超时或中断先发送 SIGTERM 并等待最多 5 秒，仍有运行成员时发送 SIGKILL 并再等待最多 5 秒；直接子进程退出后仍检查衍生成员，Linux 排除已结束的僵尸进程。超过预算明确记录清理未完成，不无限等待。清理只操作本次创建的组，不能终止其他任务或组外的共享 Gradle daemon。非 POSIX 使用直接子进程清理，本轮进程组验收针对 Linux。SIGINT / SIGTERM 处理只在 CLI 调用期间安装，退出时恢复宿主处理器。
 
 ## demo fixture 与设备入口
+
+契约与 demo 行为回归使用 `:contracts:test :app:testDemoDebugUnitTest`，包括阶段进度、取消、停止未确认、应用回执丢失及整数计数。`app/src/liveDebug/.../configuration/controlled/ControlledProfileInput.kt` 是只接受显式参数的内存配置入口，对应测试位于标准源集 `testLiveDebug`，由 `:app:testLiveDebugUnitTest` 执行；demo 不挂载 liveDebug 源码，liveRelease 单测也不编译该调试测试。当前 AGP 默认仅启用 debug 主机测试，构建通过 `HostTestBuilder` 显式启用 liveRelease 单测以验证 release 隔离。真实密码和对端不写入源码、Gradle 参数或测试报告。liveDebug 的受控表单初始化内存仓库，正式 Service 只消费仓库中的已保存修订。`MemoryProfileRepository` 同时供 demo 与受控输入使用，不提供持久化；完整表单、加密保存及进程恢复仍属 P03。
 
 具名场景见 `app/src/demo/java/com/github/zzwtsy/chuanmen/application/demo/DemoFixtures.kt`：空网络、未连接、已连接、连接失败、应用失败、无采样。运行入口使用已连接 fixture；Preview 与 JVM 测试复用同一份数据。仓库和外观偏好只在内存保留；Apply 模拟回执，不承诺核心热应用或 VPN 重建。
 
@@ -121,14 +134,79 @@ adb shell am instrument -w -r \
 
 此入口的结果在 instrumentation 输出中，需核对 14 项开始、14 项通过以及失败、错误、跳过均为 0；不将其与 Gradle XML 报告混为一次运行。截图可通过 `adb exec-out run-as com.github.zzwtsy.chuanmen.demo cat cache/p01-ui/<文件名>.png` 导出到忽略目录。
 
-正式入口的负向验证命令：
+正式原生输入与构建入口：
 
 ```bash
-./gradlew --offline :app:assembleLiveDebug
+python3 scripts/native/build_native.py check-inputs
+python3 scripts/native/build_native.py prepare --allow-download
+python3 scripts/native/build_native.py build --sdk "$ANDROID_HOME"
+python3 scripts/native/build_native.py verify-artifacts
 ./scripts/android/doctor.sh --offline --native
+./gradlew --offline :app:assembleLiveDebug :app:assembleLiveDebugAndroidTest :app:testLiveDebugUnitTest :app:testLiveReleaseUnitTest
+python3 scripts/native/check_apk.py --sdk "$ANDROID_HOME" app/build/outputs/apk/live/debug/app-live-debug.apk
 ```
 
-P01 中分别预期返回 Gradle 1（`LIVE_ENGINE_MISSING`）和脚本 3（`NATIVE_NOT_READY`）。生产补丁仍未批准，不可用 fake 或 P00 实验制品绕过门槛。
+首次构建需要固定 Rust 1.99.0、cargo-ndk 4.1.2、NDK 30.0.16248370、Android Rust 双目标、libclang、protoc 及锁定依赖缓存；`--allow-download` 显式允许获取固定来源和依赖，后续默认离线。SDK 参数使用本机有效 SDK_ROOT，不能照抄不存在的目录。正式输入在 [native/inputs.json](../../native/inputs.json)，来源 checkout 位于忽略的 `build/native/upstream`，双 ABI 库及构建报告位于 `build/native/`。源码、补丁、锁文件或构建脚本变化使旧报告失效，须重新构建；不能用 P00 实验库解锁 live。
+
+liveDebug 仅交付 arm64-v8a、x86_64。APK 门槛同时核对实际打包库字节、ELF LOAD 对齐及 zipalign 16 KB 检查；这些静态检查不代表 16 KB runtime 通过。普通 live 构建只核对正式 native 输入与双 ABI 产物，服务和桥接接线由正式变体编译验证。正式桥的宿主测试入口为 `cargo test --manifest-path native/Cargo.toml --locked --offline`，原生工具回归为 `python3 -m unittest discover -s scripts/native -p 'test_*.py'`。
+
+P02 阶段补丁审查在实验目录独立执行，缺失、过期或范围不符均失败；普通构建和 live 编译输入快照不依赖阶段审查文件：
+
+```bash
+python3 experiments/p02-vpn-core/check_review.py
+python3 -m unittest discover -s experiments/p02-vpn-core -p 'test_*.py'
+```
+
+Android CI 显式执行这些阶段检查，并在同一必需工作流中执行 demo、桥/服务回归、固定 native 构建、liveDebug/liveRelease 单测、live APK 与 APK 对齐检查；任一失败使 quality-gate 失败。工程自审不代表独立审阅或公开发行批准，本地成功不代表远端已执行。固定历史运行的记录复核入口保留至 P02 退出，退出后连同其测试及 CI 调用退役，见 [P02 收尾安排](../plan/p02-vpn-core.md#53-结构收尾与退出准备)。
+
+变更分类将 `experiments/p02-vpn-core/` 及 `docs/verification/p02/native-review.json`、`native-review.md` 视为实际 CI 输入；这些路径单独变化也必须执行 Android/阶段检查，不随一般实验和文档省略。
+
+正式设备判据、预算与关闭安排见 [P02 设备验收](../../experiments/p02-vpn-core/README.md)。MIUI 上正式“串门”的后台弹出权限与“串门 · 演示”分别授予；未允许时 ActivityScenario 无法进入授权流程。JNI pipe 测试仅支持借用协议结论，不能当作系统 TUN 或业务连通通过。
+
+正式设备入口显式选择 live，默认 demo 行为不变：
+
+```bash
+./scripts/android/verify-device.sh --offline --mode live --live-case bridge
+./scripts/android/verify-device.sh --offline --mode live --live-case lifecycle --serial emulator-5580 --timeout 180
+./scripts/android/verify-device.sh --offline --mode live --live-case revoke --serial emulator-5580 --timeout 180
+./scripts/android/verify-device.sh --offline --mode live --live-case datapath \
+    --peer-host PEER_LAN_IPV4 --peer-run-id p02-UNIQUE_RUN \
+    --peer-report build/experiments/p02-vpn-core/UNIQUE_RUN/peer/ready.json
+./scripts/android/verify-device.sh --offline --mode live --live-case resources \
+    --peer-host PEER_LAN_IPV4 --peer-run-id p02-UNIQUE_RUN \
+    --peer-report build/experiments/p02-vpn-core/UNIQUE_RUN/peer/ready.json --timeout 960
+./scripts/android/verify-device.sh --offline --mode live --live-case dns \
+    --peer-host PEER_LAN_IPV4 --peer-run-id p02-UNIQUE_RUN \
+    --peer-report build/experiments/p02-vpn-core/UNIQUE_RUN/peer/ready.json
+./scripts/android/verify-device.sh --offline --mode live --live-case policy \
+    --peer-host PEER_LAN_IPV4 --peer-run-id p02-UNIQUE_RUN \
+    --peer-report build/experiments/p02-vpn-core/UNIQUE_RUN/peer/ready.json
+./scripts/android/verify-device.sh --offline --mode live --live-case network \
+    --peer-host PEER_LAN_IPV4 --peer-run-id p02-UNIQUE_RUN \
+    --peer-report build/experiments/p02-vpn-core/UNIQUE_RUN/peer/ready.json
+```
+
+对端由 [host_peer.py](../../experiments/p02-vpn-core/host_peer.py)启动，须提供匹配构建报告、已核验的私有 LAN 地址与独立运行目录。既有 datapath 可使用固定无补丁核心；resources、dns 使用正式来源的用户态 DNS/状态对端。network 另需 `--ipv6-address` 指定已核验的宿主全局 IPv6 高端口回显地址。占位符替换为本轮实际参数，不传真实网络密码；fixture 只使用源码中声明的公开合成网络身份。
+
+正式受控对端构建与身份检查：
+
+```bash
+python3 scripts/native/build_peer.py build
+python3 scripts/native/build_peer.py check
+python3 experiments/p02-vpn-core/host_peer.py \
+    --binary experiments/p02-vpn-core/native-peer/target/debug/chuanmen-controlled-peer \
+    --build-report build/native/controlled-peer/build-report.json \
+    --bind-ip PEER_LAN_IPV4 --out build/experiments/p02-vpn-core/UNIQUE_RUN/peer \
+    --run-id p02-UNIQUE_RUN --duration 1200 --dns-peer
+```
+
+对端默认不创建宿主 TUN 或修改系统路由；用户态虚拟 DNS 为 53，私有 LAN 状态入口为 31274。运行目录必须新建，待 ready 收据生成后执行设备入口；设备停止确认并归档结果后，在该 peer 目录创建 `stop.request`，核对 `report.json` 的核心、线程及 DNS socket 停止结果。
+
+`bridge` 验证三项 JNI/pipe 契约；`revoke` 只在本任务 API37 英文模拟器通过正常设置 Forget VPN 验证实际系统撤销，不操作个人真机；`lifecycle` 用新建、尚未授权的模拟器验证正常系统拒绝、取消、迟到授权、TUN 安装与停止，不要求业务对端。`datapath` 要求双外层双业务协议的本轮回包；`resources` 要求 4 轮预热、完整 50 轮和 108 次对端关联，并逐轮核对对端旧连接与路由收束。`dns` 核对正常系统 resolver 的双外层实际回答；`policy` 核对 DHCP、默认路由和配置失败后的显式恢复；`network` 短暂关闭并恢复原已启用的 Wi-Fi，以 IPv6 前后正向回包验证 VPN 内阻断。缺参数、报告或前置时登记未执行，失败不回退 demo。
+
+live 使用 adb 固定目标；多设备时可用 `--serial` 显式选择，未指定时仍要求唯一在线设备。Activity 场景先核对亮屏、解锁并启动正式界面；测试窗口保持亮屏，不绕过锁屏或系统授权。相同 APK 摘要跳过重复安装；变更 APK 使用 `install -r`。API 24/37 的自动点击只针对测试模拟器的系统授权按钮，不修改 AppOps。
+
+报告在 `build/android/verify-device/live/<case>/`；本轮开始先归档该目录中的旧文件，成功须同时核对实际用例和应用报告。`source-inputs.json` 在构建前后及设备执行后核对输入不变，并绑定 APK 摘要。CLI 超时只结束自己创建的 adb 进程，不等于设备上的 Service 已停止；未确认资源仍需保留并核对，不直接 force-stop。模拟器基本生命周期与真机数据通路分别登记。
 
 ## Python lint 与格式
 
@@ -157,7 +235,7 @@ python3 scripts/git/test_workflow_policy.py
 
 | 检查 | 命令 | 可支持的结论 |
 |---|---|---|
-| Android 边界 | `python3 scripts/android/check_boundaries.py` | 当前模块、切片和 demo/live 直接引用符合规则 |
+| Android 源码边界 | `python3 scripts/android/check_boundaries.py` | 仅检查源码 import、切片、页面和 demo/live 引用；完整模块依赖检查由 check-fast 加载 Gradle 任务执行 |
 | 配置映射与台账 | `python3 scripts/catalog/audit_config_catalog.py` | 冻结目录、来源覆盖与实施台账结构一致 |
 | 文档与交付结构 | `python3 scripts/validate_handoff.py --strict` | 所需文件、本地链接、配置和阶段运输摘要可检查 |
 | 隐私 | `python3 scripts/verification/check-privacy.py` | 选定文件集合未命中已实现的隐私规则 |

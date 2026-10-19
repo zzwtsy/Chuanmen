@@ -1,4 +1,7 @@
+import com.android.build.api.variant.HostTestBuilder
 import org.gradle.process.CommandLineArgumentProvider
+import org.gradle.process.ExecOperations
+import javax.inject.Inject
 
 plugins {
     alias(libs.plugins.android.application)
@@ -14,6 +17,25 @@ abstract class RobolectricSdkArguments : CommandLineArgumentProvider {
         "-Drobolectric.offline=true",
         "-Drobolectric.dependency.dir=${sdkFiles.singleFile.parentFile.absolutePath}",
     )
+}
+
+/** 执行期只使用显式目录和 Gradle 服务，不捕获脚本/Project 对象。 */
+abstract class VerifyLiveEngine : DefaultTask() {
+    @get:Internal
+    abstract val repository: DirectoryProperty
+    @get:Inject
+    abstract val execOperations: ExecOperations
+
+    @TaskAction
+    fun verify() {
+        val root = repository.get().asFile
+        val result = execOperations.exec {
+            workingDir(root)
+            commandLine("python3", "scripts/native/build_native.py", "verify-artifacts")
+            isIgnoreExitValue = true
+        }
+        if (result.exitValue != 0) throw GradleException("LIVE_ENGINE_MISSING: 正式双 ABI 产物或输入身份无效；先运行正式 native 构建。")
+    }
 }
 
 val robolectricSdk = configurations.create("robolectricSdk")
@@ -65,6 +87,7 @@ android {
     sourceSets {
         getByName("testDemo").kotlin.directories += "src/demoUiTest/java"
         getByName("androidTestDemo").kotlin.directories += "src/demoUiTest/java"
+        getByName("live").jniLibs.directories += rootProject.file("build/native/jni").absolutePath
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
@@ -92,22 +115,24 @@ tasks.withType<Test>().configureEach {
 
 // demo 仅供本地调试；保留 live 的原有 release 设置和签名约定。
 androidComponents {
+    finalizeDsl { extension ->
+        // live 只交付已构建核心的双 ABI，避免只有 Compose 平台库却无法加载核心的 APK。
+        extension.productFlavors.getByName("live").ndk.abiFilters += setOf("arm64-v8a", "x86_64")
+    }
     beforeVariants(selector().withBuildType("release")) { variant ->
         if (variant.productFlavors.any { it.second == "demo" }) {
             variant.enable = false
+        } else {
+            // AGP 默认只启用 debug 单测；显式验证 liveRelease 不依赖调试输入类型。
+            variant.hostTests.getValue(HostTestBuilder.UNIT_TEST_TYPE).enable = true
         }
     }
 }
 
-val verifyLiveEngine = tasks.register("verifyLiveEngine") {
+val verifyLiveEngine = tasks.register<VerifyLiveEngine>("verifyLiveEngine") {
     group = "verification"
-    description = "在正式服务和桥接未接入时阻止生成 live 产物"
-    doLast {
-        throw GradleException(
-            "LIVE_ENGINE_MISSING: P02 的正式 VpnService / CoreEngine 尚未接入；" +
-                "P00 实验补丁未获得生产批准。演示请显式构建 :app:assembleDemoDebug。"
-        )
-    }
+    description = "核对正式双 ABI 原生产物与构建输入身份"
+    repository.set(rootProject.layout.projectDirectory)
 }
 
 tasks.configureEach {
@@ -118,6 +143,8 @@ tasks.configureEach {
 
 dependencies {
     implementation(project(":contracts"))
+    "liveImplementation"(project(":vpn"))
+    "androidTestLiveImplementation"(project(":core-bridge"))
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)

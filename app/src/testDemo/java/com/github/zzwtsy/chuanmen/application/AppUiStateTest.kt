@@ -3,6 +3,8 @@ package com.github.zzwtsy.chuanmen.application
 import com.github.zzwtsy.chuanmen.application.demo.DemoFixtures
 import com.github.zzwtsy.chuanmen.contracts.SavedRevision
 import com.github.zzwtsy.chuanmen.contracts.SessionState
+import com.github.zzwtsy.chuanmen.contracts.ConnectionPhase
+import com.github.zzwtsy.chuanmen.contracts.DataFreshness
 import com.github.zzwtsy.chuanmen.feature.configuration.edit.Draft
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -61,6 +63,19 @@ class AppUiStateTest {
         val state = state().copy(draft = Draft(DemoFixtures.savedA, rawMtu = "1400"))
         assertTrue(state.draft!!.dirty)
         assertFalse(state.pendingApplication)
+    }
+
+    /** 应用结果未知时已应用配置仅为历史，即使保存内容不同也不宣称正在查看运行网络或允许待应用。 */
+    @Test
+    fun historicalApplied_doesNotClaimCurrentRunningConfiguration() {
+        val changed = DemoFixtures.savedA.copy(core = DemoFixtures.savedA.core.copy(mtu = 1400))
+        val current = state(changed)
+        val unknown = current.copy(session = current.session.copy(
+            phase = ConnectionPhase.OutcomeUnknown,
+            applied = current.session.applied!!.copy(freshness = DataFreshness.Stale),
+        ))
+        assertFalse(unknown.viewingRunningProfile)
+        assertFalse(unknown.pendingApplication)
     }
 
     private fun state(saved: SavedRevision = DemoFixtures.savedA) = AppUiState(

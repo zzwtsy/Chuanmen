@@ -11,6 +11,10 @@ import com.github.zzwtsy.chuanmen.feature.configuration.storage.DemoProfileRepos
 
 /** 只有 demo flavor 可以引用模拟实现，Activity 和主源码不选择 fake。 */
 object AppAssembly {
+    fun attach(activity: androidx.activity.ComponentActivity) = Unit
+    fun detach(activity: androidx.activity.ComponentActivity) = Unit
+    @androidx.compose.runtime.Composable
+    fun Content() { ChuanmenApp() }
     val factory = object : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             require(modelClass == ChuanmenViewModel::class.java)
@@ -20,7 +24,7 @@ object AppAssembly {
                 val engine = FakeEngine(MonotonicClock { DemoFixtures.fixtureTimeMillis }, ScheduledEngineEvents(scope), scenario.script)
                 AppDependencies(
                     DemoProfileRepository(scenario.profiles), DemoSessionController(engine, scope, scenario.initialSession),
-                    AppReadings(scenario.readings.txBytesPerSecond, scenario.readings.rxBytesPerSecond, scenario.readings.logs),
+                    AppReadings(scenario.readings.txBytesPerSecond, scenario.readings.rxBytesPerSecond, scenario.readings.logs, simulated = true),
                 )
             }
             @Suppress("UNCHECKED_CAST") // factory 已核对 modelClass，返回约定的 ViewModel 类型。

@@ -48,6 +48,7 @@ Draft 用于尚在开发或等待检查的 PR，不绕过 CI。完成代码复�
 | 路径变化 | Android 检查 |
 |---|---|
 | `app/`、`contracts/`、`gradle/`、根 Gradle 构建与配置、Wrapper、`scripts/android/`、`scripts/catalog/`、`docs/design/config/`、`ruff.toml`、`.github/` | 必须运行 |
+| P02 实际 CI 输入：`experiments/p02-vpn-core/`、`docs/verification/p02/native-review.json` 和 `native-review.md` | 必须运行，阶段工具与审查输入不能按一般实验或文档免检 |
 | 其余 `docs/`、`.agents/`、`prototype/`、`experiments/`，根 README、AGENTS、CONTRIBUTING | 可以省略 |
 | 未知路径 | 必须运行 |
 

@@ -18,7 +18,7 @@ fun DemoScenario.uiState(destination: Destination = Destination.Overview): AppUi
     val saved = profiles.firstOrNull()?.saved
     return AppUiState(
         profiles, AppNavigation(destination, saved?.profileId), saved?.let { Draft(it) }, initialSession,
-        AppReadings(readings.txBytesPerSecond, readings.rxBytesPerSecond, readings.logs),
+        AppReadings(readings.txBytesPerSecond, readings.rxBytesPerSecond, readings.logs, simulated = true),
     )
 }
 

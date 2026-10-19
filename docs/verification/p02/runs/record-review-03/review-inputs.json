@@ -1,0 +1,15 @@
+{
+  "experiments/p02-vpn-core/review.py": "ae8a59b39959c28ded42bb1174f980eeb6910c4d3e22d3d9a2a6cca18436acad",
+  "scripts/android/live_contract.py": "6f00c8617e1c4b4da8c6d8e7bcabf3c313c8cfb5a6d8dd482d57cf6a614ff23a",
+  "scripts/verification/evidence_io.py": "3a73e1f9a09efac8a23f0830c332f385592f38fd2dd7af9870216431ac699d5c",
+  "publication": {
+    "original_sha256": "67625aaa94d37c8f11fd1f5ee1543b3b669a650a4aa8d859d2d1df59e6de7597",
+    "experiment_id": "p02-vpn-core",
+    "actor": {
+      "role": "implementation_author",
+      "id": "executor-01"
+    },
+    "scope": "复核九份已关闭且绑定相同主 APK 的本地设备档案；不新增设备验收、不回填历史声明",
+    "form": "sanitized_selected_record"
+  }
+}

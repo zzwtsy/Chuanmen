@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "status": "reviewed",
+  "scope": "p02_controlled_single_process_single_vpn",
+  "protocol": 1,
+  "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "patch_id": "p02-session-host-v2",
+  "native_inputs_sha256": "a11088e971fad49d9f1f2add440c9e698f5fe50e1a0e361bc31d1eb0cf90064d",
+  "patch_sha256": "a7beb6d7ed90ee16aad1dba5ee295189ac5dba9eb882cfbeb5f06cd1150b95ab",
+  "reviewer_role": "implementation_author",
+  "independent_review": false,
+  "public_release_approval": false,
+  "review_items": [
+    "mandatory_protector",
+    "asynchronous_tun_confirmation",
+    "stop_drains_borrows_and_callbacks",
+    "separate_jni_release",
+    "session_and_attachment_identity",
+    "bounded_redacted_diagnostics"
+  ],
+  "report": "docs/verification/p02/native-review.md",
+  "limitations": [
+    "controlled_P02_scope",
+    "remote_CI_pending",
+    "other_OEM_not_verified",
+    "16KB_runtime_not_verified",
+    "rapid_UDP_peer_reuse_not_verified"
+  ]
+}

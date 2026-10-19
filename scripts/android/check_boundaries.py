@@ -1,4 +1,4 @@
-"""检查 P01 实际模块与 Kotlin import 边界，不替代编译或运行行为测试。"""
+"""检查源码 import、切片及 demo/live 边界；模块依赖由 Gradle 模型检查。"""
 
 from __future__ import annotations
 
@@ -10,40 +10,9 @@ PACKAGE = "com.github.zzwtsy.chuanmen"
 
 
 def violations(root: Path) -> list[str]:
-    """按当前模块图检查源码；新增模块必须同时显式调整允许依赖。"""
+    """检查源码直接引用，不解析构建脚本或替代编译、运行验证。"""
     errors: list[str] = []
-    contracts_build = root / "contracts/build.gradle.kts"
-    if not contracts_build.is_file():
-        errors.append("contracts/build.gradle.kts: 缺少实际契约模块")
-    else:
-        content = contracts_build.read_text()
-        if re.search(r"project\s*\(|android[.-]|libs\.androidx", content):
-            errors.append(
-                "contracts/build.gradle.kts: 契约模块不能依赖业务模块或 Android"
-            )
-        dependencies = re.findall(
-            r"^\s*(?:api|implementation|testImplementation)\(([^\n]+)\)",
-            content,
-            re.MULTILINE,
-        )
-        if any(
-            item not in {"libs.kotlinx.coroutines.core", "libs.junit"}
-            for item in dependencies
-        ):
-            errors.append("contracts/build.gradle.kts: 存在未声明的依赖")
-    app_build = root / "app/build.gradle.kts"
-    if app_build.is_file():
-        content = app_build.read_text()
-        modules = re.findall(r'project\("([^"]+)"\)', content)
-        if modules != [":contracts"]:
-            errors.append("app/build.gradle.kts: 当前只允许依赖实际存在的 :contracts")
-        if (
-            "dependsOn(verifyLiveEngine)" not in content
-            or "LIVE_ENGINE_MISSING" not in content
-        ):
-            errors.append("app/build.gradle.kts: 缺少 live 构建阻断")
-
-    for module in ("contracts", "app"):
+    for module in ("contracts", "app", "core-bridge", "vpn"):
         source = root / module / "src"
         for path in sorted(source.rglob("*")):
             if path.suffix not in {".kt", ".java"}:
@@ -51,6 +20,41 @@ def violations(root: Path) -> list[str]:
             relative = path.relative_to(root).as_posix()
             text = path.read_text()
             imports = re.findall(r"^import\s+([^\s;]+)", text, re.MULTILINE)
+            source_set = path.relative_to(root / module / "src").parts[0]
+            production = source_set in {"main", "live", "liveDebug", "liveRelease"}
+            if production and module in {"core-bridge", "vpn"}:
+                forbidden = [
+                    item
+                    for item in imports
+                    if item.startswith(PACKAGE + ".")
+                    and not item.startswith(
+                        (
+                            PACKAGE + ".contracts.",
+                            PACKAGE + ".bridge.",
+                            PACKAGE + ".vpn.",
+                        )
+                    )
+                ]
+                if forbidden:
+                    errors.append(f"{relative}: 服务/桥不能反向依赖应用 ({forbidden})")
+            if (
+                production
+                and module == "core-bridge"
+                and any(
+                    item.startswith(("android.", "androidx.", PACKAGE + ".vpn."))
+                    for item in imports
+                )
+            ):
+                errors.append(f"{relative}: 桥不能依赖平台或 Service")
+            if (
+                production
+                and module == "app"
+                and (
+                    any(item.startswith(PACKAGE + ".bridge.") for item in imports)
+                    or re.search(r"System\.loadLibrary|\bexternal\s+fun\b", text)
+                )
+            ):
+                errors.append(f"{relative}: 应用只能通过服务客户端访问真实核心")
             if module == "contracts":
                 forbidden = [
                     item
@@ -67,7 +71,7 @@ def violations(root: Path) -> list[str]:
                     errors.append(
                         f"{relative}: 纯 Kotlin 契约混入 Android、JNI 或业务实现"
                     )
-            if relative.startswith(("app/src/main/", "app/src/live/")) and re.search(
+            if re.match(r"app/src/(?:main|live[^/]*)/", relative) and re.search(
                 r"\bFakeEngine\b|\bDemoProfileRepository\b|\bDemoSessionController\b|application\.demo\.",
                 text,
             ):
@@ -112,7 +116,9 @@ def main() -> int:
     if errors:
         print(f"BOUNDARY_FAILED: {len(errors)} 项")
         return 1
-    print("BOUNDARY_OK: :app -> :contracts；切片、页面和 demo/live 源码边界通过")
+    print(
+        "BOUNDARY_OK: 源码 import、切片、页面和 demo/live 边界通过；模块依赖另由 Gradle 检查"
+    )
     return 0
 
 

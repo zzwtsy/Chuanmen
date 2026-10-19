@@ -4,14 +4,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.github.zzwtsy.chuanmen.application.ChuanmenApp
+import com.github.zzwtsy.chuanmen.application.AppAssembly
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppAssembly.attach(this)
         enableEdgeToEdge()
         setContent {
-            ChuanmenApp()
+            AppAssembly.Content()
         }
+    }
+
+    override fun onDestroy() {
+        AppAssembly.detach(this)
+        super.onDestroy()
     }
 }
