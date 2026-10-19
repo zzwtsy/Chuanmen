@@ -27,7 +27,9 @@ python3 scripts/native/build_native.py build --sdk SDK_ROOT --allow-download
 ./gradlew :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest
 ```
 
-Linux 宿主还需 protobuf-compiler、libssl-dev、pkg-config、clang、cmake。`--allow-download` 仅用于首次获取固定源码与依赖；日常 Gradle native 任务使用离线 Cargo。源码和输出分别为 `app/native` 与 `app/build/native`，Gradle 根据实际输入输出决定是否重建。修改 Kotlin 测试不会触发 Rust 构建；Rust 源码、补丁或锁文件变化会触发。构建前后动态指纹用于防止构建期间输入变化，无需手工登记自有源码摘要。复用上游缓存时还检查当前补丁与固定后像一致；相同 Android 适配内容不重写，避免准备对端使 Cargo 无谓重编译。
+Linux 宿主还需 Protobuf 编译器、标准 `.proto` 文件及 OpenSSL 开发依赖，以及 pkg-config、clang、cmake。Debian/Ubuntu 对应软件包为 `protobuf-compiler`、`libprotobuf-dev`、`libssl-dev`、`pkg-config`、`clang`、`cmake`。`libprotobuf-dev` 提供 `google/protobuf/*.proto`，使用 `--no-install-recommends` 时也须显式安装。
+
+`--allow-download` 仅用于首次获取固定源码与依赖；日常 Gradle native 任务使用离线 Cargo。源码和输出分别为 `app/native` 与 `app/build/native`，Gradle 根据实际输入输出决定是否重建。修改 Kotlin 测试不会触发 Rust 构建；Rust 源码、补丁或锁文件变化会触发。构建前后动态指纹用于防止构建期间输入变化，无需手工登记自有源码摘要。复用上游缓存时还检查当前补丁与固定后像一致；相同 Android 适配内容不重写，避免准备对端使 Cargo 无谓重编译。
 
 产物分别为 `app/build/outputs/apk/debug/app-debug.apk`、`app/build/outputs/apk/release/app-release-unsigned.apk`、`app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`。release 启用 AGP 默认全包 R8 优化，JNI 入口及回调由 keepRules 保持契约；不限定为只优化第三方包。release 不带签名密钥；debug/release 共用正式配置入口，只保留内存配置，退出进程即消失。
 

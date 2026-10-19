@@ -96,7 +96,8 @@ jobs:
           set -euo pipefail
           android --no-metrics --sdk="$ANDROID_HOME" sdk install 'ndk/30.0.16248370'
           sudo apt-get update
-          sudo apt-get install --no-install-recommends --yes protobuf-compiler libssl-dev pkg-config clang cmake
+          sudo apt-get install --no-install-recommends --yes \
+            protobuf-compiler libprotobuf-dev libssl-dev pkg-config clang cmake
           rustup toolchain install 1.99.0 --profile minimal --component rustfmt \
             --target aarch64-linux-android --target x86_64-linux-android
           printf '%s\n' 'RUSTUP_TOOLCHAIN=1.99.0' >> "$GITHUB_ENV"
@@ -106,7 +107,15 @@ jobs:
           fi
           test "$(rustup run 1.99.0 cargo ndk --version)" = 'cargo-ndk 4.1.2'
       - name: Prepare fixed native dependencies and libraries
-        run: python3 scripts/native/build_native.py build --sdk "$ANDROID_HOME" --allow-download
+        run: |
+          if ! python3 scripts/native/build_native.py build --sdk "$ANDROID_HOME" --allow-download; then
+            for log in app/build/native/build-*.log; do
+              if [[ -f "$log" ]]; then
+                tail -n 120 "$log"
+              fi
+            done
+            exit 1
+          fi
       - name: Check native and controlled peer contracts
         run: |
           cargo test --manifest-path app/native/Cargo.toml --locked --target-dir app/build/native/target
