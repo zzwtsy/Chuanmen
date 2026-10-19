@@ -36,7 +36,7 @@ description: 执行串门（Chuanmen）的 GitHub PR 工作流：核对任务分
 
 使用 `gh pr checks <PR> --required --watch` 跟踪最新 head 的必需检查，必要时查看关联的 workflow run 与日志。标题编辑和转 Ready 会重新运行 PR 策略；同名检查有历史记录时核对最新运行，不能任选旧结果。
 
-只有变更识别明确输出 `android_required=false` 且门禁成功，才能报告 Android 为预期跳过。失败、取消、缺失或意外跳过需要解决后再交付；检查结果与运行 SHA 不符时重新核对。
+统一 CI 对所有 PR 执行 static 和 android，quality-gate 要求两者均为 success；pr-policy 也必须成功。失败、取消、缺失或跳过均不能作为交付通过；检查结果与当前 head SHA 不符时重新核对。
 
 检查完成后更新正文中的实际验证结果与限制，执行 `gh pr ready`，等待新触发的 `pr-policy` 完成，并复核最终状态。
 

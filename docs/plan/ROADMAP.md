@@ -1,6 +1,6 @@
 # Chuanmen 路线图
 
-版本：2026-10-19。目标是在现有 Android 模板与交互原型基础上，实现可持续维护、基于 EasyTier 的原生 Android 客户端，并保留已经确认的简洁交互。本文统一维护阶段状态；现有环境与命令见 [开发环境](../development/setup.md)。
+版本：2026-10-20。目标是在现有 Android 模板与交互原型基础上，实现可持续维护、基于 EasyTier 的原生 Android 客户端，并保留已经确认的简洁交互。本文统一维护阶段状态；现有环境与命令见 [开发环境](../development/setup.md)。
 
 ## 1. 交付目标与阶段顺序
 
@@ -76,9 +76,11 @@
 - **P00 / M1**：限定 Xiaomi API 36、arm64、4096 字节页及受控 IPv4 场景已验证。历史独立复核完成第二主机空缓存复建与许可技术复核，没有重复真机实验；生产补丁尚未批准，范围外能力继续按后续阶段验收。具体结果、制品身份和缺口以 [P00 报告](../verification/p00/report.md)、[退出边界](../verification/p00/report.md#未验证项与停止条件) 和 [独立复核](../verification/p00/reviews/independent-review.json) 为准。
 - **P01**：原验收时采用 `:app -> :contracts`、demo 配置切片、四页导航、主题预览、Android 工具与远端 CI。当时的基础、评审门槛及验证范围集中在 [P01](p01-foundation.md#已有基础与剩余门槛)，运行记录保留执行时的日期和源码身份。[退出评审](p01-foundation.md#p01-退出评审2026-10-14)已通过新 checkout、真实设备入口及远端 CI 的工程门槛；第一方代码许可证已确定为 AGPL-3.0-only，阶段为 `verified`（工程基础与限定 demo 范围）。现行目录与装配以 ADR 0005 为准，正式 VPN/JNI 的限定验收见 P02。
 - **P02 / M2**：用户已确认阶段完成，状态为 `verified`（限定范围）。正式 bridge/Service、双 ABI、受控数据通路、DHCP/DNS、默认路由、恢复事务、切网/IPv6 阻断及 50 轮资源回归的原记录见 [P02 报告](../verification/p02/report.md)。历史报告中的待审状态保留原样，不补写远端 CI 事实。
-- **结构精简**：按 [ADR 0005](../design/adr/0005-single-app.md) 收敛到单 app、main/test/androidTest、features 垂直切片和必要工具。新 APK 须独立验证，不继承 P02 旧产物的设备通过。
-  上一轮工作树验证（2026-10-18）通过 93 项 JVM、63 项 Python、11 项 Rust 回归，以及 lint、双 ABI debug/release 构建与 APK 静态 16 KB 对齐。API 36 / arm64 真机通过 JNI/pipe、双外层 TCP/UDP 回包和系统 DNS；API 24 模拟器通过授权/停止及双外层回包，系统 DNS 解析失败；API 37 模拟器通过授权/停止和系统撤销，业务 TCP 回包超时。两项失败当时记为兼容性限制，本轮须经 P02 对照重新确定归因；不计为通过，不在结构任务中改动核心；未重新执行完整 50 轮资源、切网/IPv6、16 KB runtime 或远端 CI。原始输出仅留本机 `app/build/device-tests/`，不追加或改写冻结证据。
-- **当前重构（2026-10-19）**：`in_progress`，本地实现已完成；审查修复后通过 112 项 JVM、debug/release lint、工作树隐私及差异检查，尚未构建修复后的新 APK 或重跑设备矩阵，远端 CI 待执行。恢复入口按当前查看的历史运行配置判断，保留失败与观测的归属过滤；版本说明已同步为单一应用身份。P02 签名基线为 `872bea7e3898881e4787b0adb012726933cd8329`。单 app、main/test/androidTest、五个功能切片、统一真实输入及工具退役已实施，无生产样例、Preview 或变体业务入口。既有候选 v5 通过 110 项 JVM、双 lint、独立干净快速路径、三类 APK 与双 ABI/JNI/静态对齐检查；65 项 Python、11 项 Rust、固定 Ruff/actionlint、完整原生增量矩阵检查通过；对端修改后重跑 4 项 Rust 对端测试，其余检查绑定未变输入。v5 的 11 个必测设备场景及完整 release 入口/授权/真实连接/断开冒烟通过，此结论仅对应 v5 产物；API36 真机完成 4 轮预热 + 50 轮正式周期、108 次业务回包，停止后拥有资源归零。v3 API24 生命周期首轮失败与唯一补跑保留，v5 该场景首轮通过。v4 资源回归的 TCP reset 暴露受控对端 write_all 后过早释放 socket，已在调用方增加 flush，v5 完整重跑，失败记录保留。附加 API24 DNS 与 API37 TCP 失败在真实 P02 和 v5 同类复现，两版配套对端的公开协议正向检查通过，记为既有附加失败，两边均不计通过，Android 侧根因未知。真机原 Wi-Fi 恢复、无活动 VPN，本任务模拟器与对端关闭。冻结材料不改写，P03–P07 继续暂停；整体尚未验收闭合。
+- **结构精简**：`in_progress`。按 [ADR 0005](../design/adr/0005-single-app.md) 实施单 app、main/test/androidTest、五个功能切片、统一真实输入和工具退役；应用侧无样例、Preview 或变体业务入口。恢复入口按当前查看的历史运行配置判断，失败与观测仍按配置身份过滤。
+
+  源码 `8fd1f32e26109347f2fe570cc2f7018759c757ae` 的 [CI 运行 39260890259](https://github.com/zzwtsy/Chuanmen/actions/runs/39260890259) 已通过静态检查、JVM、双 lint、宿主 Rust、三类 APK 构建及双 ABI/JNI/16 KB 静态对齐检查。该程序版本尚未完成完整设备矩阵和 release 冒烟，整体验收未闭合；判据见 [结构精简验收](../development/setup.md#结构精简验收)。16 KB 页设备运行等范围外能力仍未验收。
+
+  API24 DNS 与 API37 TCP 两项附加失败已完成真实 P02 基线与历史重构候选的对照，两边同类复现且均不计通过，Android 侧根因未知。历史候选的产物身份、通过范围、失败及补跑记录集中在 [PR #7 的历史验证结果](https://github.com/zzwtsy/Chuanmen/pull/7)；旧 APK 的设备结论不继承为该程序版本通过，冻结材料保持原样。
 - **P03–P07**：`paused`。配置持久化、完整表单、监控页面、高级能力、可靠性与发布均不继续实施；恢复时先重新核对范围与验收。
 
 根 `handoff.json` 与 `SHA256SUMS` 只描述已冻结的 P00 运输范围。其 `p01_p02_started` 字段记录冻结时的状态，不作为当前仓库进度来源，也不随日常开发更新。
