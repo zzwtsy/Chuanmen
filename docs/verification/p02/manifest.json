@@ -1,0 +1,358 @@
+{
+  "schema_version": 3,
+  "stage": "p02",
+  "revision": 3,
+  "phase": {
+    "id": "P02",
+    "status": "in_progress"
+  },
+  "upstream": {
+    "candidate_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+    "patch_id": "p02-session-host-v2"
+  },
+  "claims": {
+    "P02-01": {
+      "status": "passed",
+      "scope": "当前固定正式主 APK 的本地实现、来源复核及 API36/arm64 限定设备行为；API24/37 仅基本生命周期；不含远端 CI 或公开发行",
+      "evidence": [
+        "docs/verification/p02/runs/record-review-03/review.json"
+      ],
+      "criteria": [
+        {
+          "id": "bound-record-review",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/status",
+          "operation": "equals",
+          "expected": "passed"
+        },
+        {
+          "id": "behavior-0",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/0/checks/tests",
+          "operation": "equals",
+          "expected": 3
+        }
+      ]
+    },
+    "P02-02": {
+      "status": "passed",
+      "scope": "当前固定正式主 APK 的本地实现、来源复核及 API36/arm64 限定设备行为；API24/37 仅基本生命周期；不含远端 CI 或公开发行",
+      "evidence": [
+        "docs/verification/p02/runs/record-review-03/review.json"
+      ],
+      "criteria": [
+        {
+          "id": "bound-record-review",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/status",
+          "operation": "equals",
+          "expected": "passed"
+        },
+        {
+          "id": "behavior-0",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/2/observations/verified_cycles",
+          "operation": "equals",
+          "expected": 50
+        },
+        {
+          "id": "behavior-1",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/2/observations/matched_roundtrips",
+          "operation": "equals",
+          "expected": 108
+        }
+      ]
+    },
+    "P02-03": {
+      "status": "passed",
+      "scope": "当前固定正式主 APK 的本地实现、来源复核及 API36/arm64 限定设备行为；API24/37 仅基本生命周期；不含远端 CI 或公开发行",
+      "evidence": [
+        "docs/verification/p02/runs/record-review-03/review.json"
+      ],
+      "criteria": [
+        {
+          "id": "bound-record-review",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/status",
+          "operation": "equals",
+          "expected": "passed"
+        },
+        {
+          "id": "behavior-0",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/1/observations/matched_roundtrips",
+          "operation": "equals",
+          "expected": 4
+        },
+        {
+          "id": "behavior-1",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/4/observations/matched_roundtrips",
+          "operation": "equals",
+          "expected": 6
+        },
+        {
+          "id": "behavior-2",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/5/observations/protection_failures",
+          "operation": "equals",
+          "expected": 0
+        }
+      ]
+    },
+    "P02-04": {
+      "status": "passed",
+      "scope": "当前固定正式主 APK 的本地实现、来源复核及 API36/arm64 限定设备行为；API24/37 仅基本生命周期；不含远端 CI 或公开发行",
+      "evidence": [
+        "docs/verification/p02/runs/record-review-03/review.json"
+      ],
+      "criteria": [
+        {
+          "id": "bound-record-review",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/status",
+          "operation": "equals",
+          "expected": "passed"
+        },
+        {
+          "id": "behavior-0",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/6/api",
+          "operation": "equals",
+          "expected": 24
+        },
+        {
+          "id": "behavior-1",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/7/api",
+          "operation": "equals",
+          "expected": 37
+        },
+        {
+          "id": "behavior-2",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/8/observations/service_revoked_confirmed",
+          "operation": "equals",
+          "expected": true
+        },
+        {
+          "id": "behavior-3",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/8/observations/foreground_notification_removed",
+          "operation": "equals",
+          "expected": true
+        }
+      ]
+    },
+    "P02-05": {
+      "status": "passed",
+      "scope": "当前固定正式主 APK 的本地实现、来源复核及 API36/arm64 限定设备行为；API24/37 仅基本生命周期；不含远端 CI 或公开发行",
+      "evidence": [
+        "docs/verification/p02/runs/record-review-03/review.json"
+      ],
+      "criteria": [
+        {
+          "id": "bound-record-review",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/status",
+          "operation": "equals",
+          "expected": "passed"
+        },
+        {
+          "id": "behavior-0",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/4/observations/steps/1/platform_default_route",
+          "operation": "equals",
+          "expected": true
+        },
+        {
+          "id": "behavior-1",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/5/observations/manual_stop_survives_wifi_recovery",
+          "operation": "equals",
+          "expected": true
+        }
+      ]
+    },
+    "P02-06": {
+      "status": "passed",
+      "scope": "当前固定正式主 APK 的本地实现、来源复核及 API36/arm64 限定设备行为；API24/37 仅基本生命周期；不含远端 CI 或公开发行",
+      "evidence": [
+        "docs/verification/p02/runs/record-review-03/review.json"
+      ],
+      "criteria": [
+        {
+          "id": "bound-record-review",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/status",
+          "operation": "equals",
+          "expected": "passed"
+        },
+        {
+          "id": "behavior-0",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/2/observations/baseline_shared_runtime_workers",
+          "operation": "equals",
+          "expected": 2
+        }
+      ]
+    },
+    "P02-07": {
+      "status": "passed",
+      "scope": "当前固定正式主 APK 的本地实现、来源复核及 API36/arm64 限定设备行为；API24/37 仅基本生命周期；不含远端 CI 或公开发行",
+      "evidence": [
+        "docs/verification/p02/runs/record-review-03/review.json"
+      ],
+      "criteria": [
+        {
+          "id": "bound-record-review",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/status",
+          "operation": "equals",
+          "expected": "passed"
+        },
+        {
+          "id": "behavior-0",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/4/observations/steps/3/saved_preserved",
+          "operation": "equals",
+          "expected": true
+        },
+        {
+          "id": "behavior-1",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/4/observations/steps/3/name_preserved",
+          "operation": "equals",
+          "expected": true
+        },
+        {
+          "id": "behavior-2",
+          "record": "docs/verification/p02/runs/record-review-03/review.json",
+          "pointer": "/records/4/observations/steps/3/draft_preserved",
+          "operation": "equals",
+          "expected": true
+        }
+      ]
+    },
+    "P02-08": {
+      "status": "pending",
+      "scope": "native/live 及记录复核回归已接入 quality-gate；本次远端 CI 和维护者退出评审尚待执行",
+      "evidence": [],
+      "criteria": []
+    }
+  },
+  "entries": [
+    {
+      "path": "docs/verification/p02/native-review.json",
+      "sha256": "3df7fc59851a6fd3e5afd5b71f98ca7601213b8d3633f584669566a5385ad89d",
+      "role": "implementation_review",
+      "claim_ids": [
+        "P02-01",
+        "P02-02",
+        "P02-03",
+        "P02-04",
+        "P02-05",
+        "P02-06",
+        "P02-07",
+        "P02-08"
+      ]
+    },
+    {
+      "path": "docs/verification/p02/native-review.md",
+      "sha256": "7be2e909b593725920b4e769342c26f332f5812020c8f6d451f723c56dc62a6f",
+      "role": "implementation_review",
+      "claim_ids": [
+        "P02-01",
+        "P02-02",
+        "P02-03",
+        "P02-04",
+        "P02-05",
+        "P02-06",
+        "P02-07",
+        "P02-08"
+      ]
+    },
+    {
+      "path": "docs/verification/p02/ownership.md",
+      "sha256": "764cc44458dae2526602486a4c596b310f84ad60bcb720a1841f9d8ad54c74dd",
+      "role": "implementation_review",
+      "claim_ids": [
+        "P02-01",
+        "P02-02",
+        "P02-03",
+        "P02-04",
+        "P02-05",
+        "P02-06",
+        "P02-07",
+        "P02-08"
+      ]
+    },
+    {
+      "path": "docs/verification/p02/report.md",
+      "sha256": "1fa94f67307f0081c0b0dc4aafcc96c68f76f01fea6f251b65ed37ad18b0ddac",
+      "role": "implementation_review",
+      "claim_ids": [
+        "P02-01",
+        "P02-02",
+        "P02-03",
+        "P02-04",
+        "P02-05",
+        "P02-06",
+        "P02-07",
+        "P02-08"
+      ]
+    },
+    {
+      "path": "docs/verification/p02/runs/record-review-03/publication.json",
+      "sha256": "b3e15be06867b8c19e54572b5e8a050169b4d94858e0665662488d3f6de64970",
+      "role": "publication",
+      "claim_ids": [
+        "P02-01",
+        "P02-02",
+        "P02-03",
+        "P02-04",
+        "P02-05",
+        "P02-06",
+        "P02-07",
+        "P02-08"
+      ]
+    },
+    {
+      "path": "docs/verification/p02/runs/record-review-03/review-inputs.json",
+      "sha256": "c5709c96e9665165c801c1cdab8e37b09ff91efa9ca0e1110e4c92caaac83331",
+      "role": "review_input_identity",
+      "claim_ids": [
+        "P02-01",
+        "P02-02",
+        "P02-03",
+        "P02-04",
+        "P02-05",
+        "P02-06",
+        "P02-07",
+        "P02-08"
+      ]
+    },
+    {
+      "path": "docs/verification/p02/runs/record-review-03/review.json",
+      "sha256": "9f446d8bcb39ef7626eae0376cf35cc8f5dcbd1b79f60d4da443efe290ffd95b",
+      "role": "record_review",
+      "claim_ids": [
+        "P02-01",
+        "P02-02",
+        "P02-03",
+        "P02-04",
+        "P02-05",
+        "P02-06",
+        "P02-07",
+        "P02-08"
+      ]
+    }
+  ],
+  "reproduction": {
+    "current_workflow": "experiments/p02-vpn-core",
+    "historical_apk_byte_reproduction": "not_claimed",
+    "device_reexecution_by_record_review": false,
+    "remote_ci": "not_executed"
+  }
+}

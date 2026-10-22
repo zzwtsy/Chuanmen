@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "experiment_id": "p02-vpn-core",
+  "run_id": "record-review-03",
+  "actor": {
+    "role": "implementation_author",
+    "id": "executor-01"
+  },
+  "scope": "复核九份已关闭且绑定相同主 APK 的本地设备档案；不新增设备验收、不回填历史声明",
+  "claim_ids": [
+    "P02-01",
+    "P02-02",
+    "P02-03",
+    "P02-04",
+    "P02-05",
+    "P02-06",
+    "P02-07",
+    "P02-08"
+  ],
+  "criteria": [
+    {
+      "record": "review.json",
+      "pointer": "/status",
+      "operation": "equals",
+      "expected": "passed"
+    },
+    {
+      "record": "review.json",
+      "pointer": "/records",
+      "operation": "length",
+      "expected": 9
+    },
+    {
+      "record": "review.json",
+      "pointer": "/device_reexecuted",
+      "operation": "equals",
+      "expected": false
+    },
+    {
+      "record": "review.json",
+      "pointer": "/historical_declarations_rewritten",
+      "operation": "equals",
+      "expected": false
+    }
+  ],
+  "original_bytes_retained": false,
+  "experiment_reexecuted_by_publisher": false
+}

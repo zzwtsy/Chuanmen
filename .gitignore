@@ -1,4 +1,4 @@
-# Gradle、Kotlin 和原生构建缓存；覆盖根工程与所有模块。
+# Gradle、Kotlin 和原生构建缓存。
 .gradle/
 .kotlin/
 build/
@@ -42,9 +42,6 @@ venv/
 .coverage
 .coverage.*
 htmlcov/
-
-# 实验输出统一放 build/experiments；兼容旧探针的本地输出目录。
-/experiments/**/.local/
 
 # 系统、编辑器临时文件和 JVM 崩溃诊断。
 .DS_Store

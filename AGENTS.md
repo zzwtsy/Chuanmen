@@ -2,7 +2,7 @@
 
 ## 当前状态与任务入口
 
-串门（Chuanmen）是基于 EasyTier 的 Android 客户端开发仓库，已有 `:app -> :contracts`、demo 配置切片、四页导航、原型、配置目录和工程校验工具。正式 VPN/JNI 接入仍待实施；阶段状态以 [路线图](docs/plan/ROADMAP.md) 为准，实验结论以对应报告的验证范围为准。
+串门（Chuanmen）是基于 EasyTier 的 Android 客户端，当前 P02 已完成限定范围实现，P03–P07 暂停。工程仅 `:app`，Kotlin 使用 `features/<功能>` 和根共享目录，主题保留 `ui/theme`，Rust 位于 `app/native`；正式应用始终通过 Service/JNI 使用真实核心。配置仍为受控内存输入。阶段状态以 [路线图](docs/plan/ROADMAP.md) 为准，设备结论绑定对应 APK 和报告范围。
 
 中文产品名使用“串门”，英文拼音写法为 Chuanmen；文档首次介绍产品时使用“串门（Chuanmen）”，现有工程与代码标识沿用 `Chuanmen` / `chuanmen`。名称含义与介绍文案见 [项目名称](README.md#项目名称)。EasyTier 保留用于上游核心、版本、配置语义和来源引用。
 
@@ -21,29 +21,29 @@
 
 查找先用 `rg` / `rg --files`。不要把阶段文档中的拟建模块、命令或 API 当成已经存在；实现后同步对应状态与验证记录。
 
-目录归属按 [目录边界 ADR](docs/design/adr/0003-directory-boundaries.md)：业务代码与测试聚合到所属切片，通用工具归 scripts，固定问题的探针归 experiments，运行输出归忽略目录。新建目录须有实际内容；跨切片通过公开契约协作，共享代码须有实际复用方。
+目录归属按 [ADR 0005](docs/design/adr/0005-single-app.md)：配置、总览、设备、日志、设置在 `features/<功能>` 聚合各自 Screen、UiState、ViewModel；功能组件和辅助逻辑留在功能内，测试镜像归属。根仅保留导航与装配，共享代码进入实际复用的 `lib`、`components`、`utils`。根/功能 ViewModel 使用同一 Activity owner 和稳定键，功能不相互注入；仓库、客户端与 Service 会话保持唯一。共享代码不依赖 features。只保留 main/test/androidTest；debug/release 共用真实配置入口，无应用侧样例、Preview 或演示实现。不得增加 data/domain/presentation、逐动作 UseCase、空目录或通用框架。工具须有实际使用场景，缓存和产物归忽略的 build。
 
 ## 现有检查入口
 
-从仓库根目录运行，依赖 Python 3.10 或更高版本的标准库：
+从仓库根运行：
 
 ```bash
+./gradlew :app:testDebugUnitTest :app:lintDebug
 python3 scripts/catalog/audit_config_catalog.py
-python3 scripts/validate_handoff.py
-python3 scripts/verification/check-privacy.py
-python3 scripts/verification/check-evidence.py --stage p00 --require-stage
-python3 scripts/validate_handoff.py --strict
+python3 scripts/check_privacy.py
 ```
 
-这些校验检查工作区结构、隐私、配置目录和既有门槛记录，不重复验证真实 VPN 行为。交付前需要检查暂存内容时，为支持该参数的检查添加 `--tree index`。Android 入口为 `scripts/android/doctor.sh`、`check-fast.sh`、`build-demo.sh` 和 `verify-device.sh`；参数、报告及当前设备验证范围见 [开发环境](docs/development/setup.md)。原型维护见 [原型说明](prototype/README.md)，实验流程见 [验证规范](docs/development/verification.md)。正式 native 命令须建立并实测后再登记。
+打包使用 `./gradlew :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest`，首次须准备固定 Rust/NDK 与依赖。native 源码和输出分别为 app/native、app/build/native，Gradle 追踪实际输入输出，JVM/lint 不构建 Rust。设备回归入口为 `python3 scripts/android/verify_device.py --help`，受控对端为 `scripts/android/peer.py`。完整准备、参数、报告和回归见 [开发环境](docs/development/setup.md)。
 
-Python 源码修改须运行 [开发环境](docs/development/setup.md) 中固定版本的 uv + Ruff lint 与格式检查，再运行受影响的回归。规则在 [ruff.toml](ruff.toml)；入口通过 `python3` 调用，局部规则例外须说明契约或测试意图，不全局忽略告警。
+Python 修改须运行固定 uv + Ruff lint/格式检查及受影响回归；规则见 [ruff.toml](ruff.toml)。隐私检查支持 `--tree index`，不借用未暂存字节。HTML 原型与专用导出器已退役，历史源码及许可证从 P02 基线 `872bea7e3898881e4787b0adb012726933cd8329` 回溯。
+
+P00/P02 一次性实验、模块边界扫描、证据发布/导出与 handoff 聚合工具已退役，日常构建不再运行。冻结 docs/verification、handoff.json、SHA256SUMS 保持原字节；旧路径按历史时点解释，历史源码从 Git 基线回溯。
 
 ## 实验与证据治理
 
 技术可行性调查、真机实验、证据整理和阶段冻结先读 [验证规范](docs/development/verification.md)，使用 [verification-evidence skill](.agents/skills/verification-evidence/SKILL.md)。普通开发使用正常测试，不自动生成证据包。
 
-- 运行前声明判据、预算、停止条件和关闭安排；源码/fixture 留在 experiments，临时输出放 build/experiments。
+- 运行前声明判据、预算、停止条件和关闭安排；可复用场景转正式测试，必要的独立实验按问题组织；设备/peer 输出放 app/build/device-tests。
 - 以结论筛选证据，保留必要样本和重要负向结果；先脱敏和检查，再冻结。个人主目录、设备序列号及稳定摘要不入库。
 - 静态、构建、模拟器、真机、独立复建分别声明；新产物不继承旧真机验收，实验补丁不获得生产批准。
 - 发布默认预览，已发布记录不覆盖；运输清单只覆盖所选阶段，不冻结当前工具或整个仓库。
@@ -57,7 +57,7 @@ Python 源码修改须运行 [开发环境](docs/development/setup.md) 中固定
 - 配置范围以冻结官网助手目录为准，原生实施能力以能力计划和实测证据为准；快照旧 `availability`/`apply` 不作原生承诺。经证实不适用/平台托管项不进表单和搜索，暂未实现要另列缺口，隐藏不等于删除已保存数据。新增能力先补映射和证据。
 - 首页流量是固定 60 秒趋势与上下行速率，不增加拖动取值、详情或时间范围切换；流量不替代连接成功判据。缺测数据不写成 0。
 - 流量范围在当前网络设置里；在线设备整合在虚拟网络卡片；设备页不增加“相关日志”；复制 IP 使用一致动作与短暂反馈。
-- 真实会话由服务统一拥有；demo 与 real 明确选择，real 失败不回退为模拟成功。
+- 真实会话由服务统一拥有；正式应用始终使用真实核心，失败如实呈现。
 
 ## 修改、验证与报告
 

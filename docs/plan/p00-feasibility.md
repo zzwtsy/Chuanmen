@@ -1,5 +1,7 @@
 # P00 · 证据冻结与真机可行性
 
+> 历史实施记录：旧模块、实验及工具源码从 P02 基线 `872bea7e3898881e4787b0adb012726933cd8329` 在独立目录取回。其中模块、demo、实验及旧命令按当时工程解释。现行结构见 [ADR 0005](../design/adr/0005-single-app.md)，当前命令见 [开发环境](../development/setup.md)。
+
 > 状态：verified（2026-10-12），M1 在约定范围通过。P00-01–08 已交付基线、固定版本与许可安排、配置解析、有限原生实验和真机度量；独立 AI 已在第二主机从空编译缓存完成记录中的构建流程，并复核既有真机证据，未重跑设备实验。范围仅当前 Xiaomi / Android 16 / arm64 / 4096 字节页、受控网络；其他能力继续按台账标为未验证。阶段退出记录已完成，P01/P02 尚未启动。实测边界见 [能力台账](../verification/p00/report.md)，结论见 [退出评审](../verification/p00/report.md#未验证项与停止条件)。
 
 当前子任务状态与缺口见 [能力台账](../verification/p00/report.md)，版本和哈希见 [证据清单](../verification/p00/manifest.json)，可执行实验入口见 [受控实验手册](../verification/p00/reproduce/README.md)。独立复核的执行身份、授权依据与退出建议见 [复核记录](../verification/p00/reviews/independent-review.json)；该记录未声称用户最终退出批准，也未授予生产或分发批准。

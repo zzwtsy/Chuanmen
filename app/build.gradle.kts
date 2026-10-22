@@ -1,4 +1,6 @@
 import org.gradle.process.CommandLineArgumentProvider
+import org.gradle.process.ExecOperations
+import javax.inject.Inject
 
 plugins {
     alias(libs.plugins.android.application)
@@ -16,6 +18,33 @@ abstract class RobolectricSdkArguments : CommandLineArgumentProvider {
     )
 }
 
+/** 只在消费 JNI 库时构建 Rust；输入输出由 Gradle 追踪，不拦截 JVM 测试或 lint。 */
+abstract class BuildNative : DefaultTask() {
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val sources: ConfigurableFileCollection
+    @get:Input
+    abstract val sdkPath: Property<String>
+    @get:OutputDirectory
+    abstract val jniDirectory: DirectoryProperty
+    @get:OutputFile
+    abstract val reportFile: RegularFileProperty
+    @get:Internal
+    abstract val repository: DirectoryProperty
+    @get:Inject
+    abstract val execOperations: ExecOperations
+
+    @TaskAction
+    fun build() {
+        val root = repository.get().asFile
+        val result = execOperations.exec {
+            workingDir(root)
+            commandLine("python3", "scripts/native/build_native.py", "build", "--sdk", sdkPath.get())
+        }
+        result.assertNormalExitValue()
+    }
+}
+
 val robolectricSdk = configurations.create("robolectricSdk")
 
 android {
@@ -31,27 +60,15 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "0.1.0-dev"
+        ndk.abiFilters += setOf("arm64-v8a", "x86_64")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    flavorDimensions += "engine"
-    productFlavors {
-        create("demo") {
-            dimension = "engine"
-            applicationIdSuffix = ".demo"
-            versionNameSuffix = "-demo"
-        }
-        create("live") {
-            dimension = "engine"
-        }
     }
 
     buildTypes {
         release {
             optimization {
                 enable = true
-                packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")
             }
         }
     }
@@ -61,10 +78,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    sourceSets {
-        getByName("testDemo").kotlin.directories += "src/demoUiTest/java"
-        getByName("androidTestDemo").kotlin.directories += "src/demoUiTest/java"
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
@@ -90,40 +103,30 @@ tasks.withType<Test>().configureEach {
     )
 }
 
-// demo 仅供本地调试；保留 live 的原有 release 设置和签名约定。
-androidComponents {
-    beforeVariants(selector().withBuildType("release")) { variant ->
-        if (variant.productFlavors.any { it.second == "demo" }) {
-            variant.enable = false
-        }
-    }
+val buildNative = tasks.register<BuildNative>("buildNative") {
+    group = "build"
+    description = "使用固定工具链构建双 ABI Rust 核心"
+    repository.set(rootProject.layout.projectDirectory)
+    sources.from(fileTree("native") {
+        include("src/**", "host/**", "patches/**", "Cargo.toml", "Cargo.lock", "inputs.json")
+    }, rootProject.file("scripts/native/build_native.py"))
+    sdkPath.set(androidComponents.sdkComponents.sdkDirectory.map { it.asFile.absolutePath })
+    jniDirectory.set(layout.buildDirectory.dir("native/jni"))
+    reportFile.set(layout.buildDirectory.file("native/build-report.json"))
 }
 
-val verifyLiveEngine = tasks.register("verifyLiveEngine") {
-    group = "verification"
-    description = "在正式服务和桥接未接入时阻止生成 live 产物"
-    doLast {
-        throw GradleException(
-            "LIVE_ENGINE_MISSING: P02 的正式 VpnService / CoreEngine 尚未接入；" +
-                "P00 实验补丁未获得生产批准。演示请显式构建 :app:assembleDemoDebug。"
-        )
-    }
-}
-
-tasks.configureEach {
-    if (name.startsWith("preLive") && name.endsWith("Build")) {
-        dependsOn(verifyLiveEngine)
-    }
+androidComponents.onVariants { variant ->
+    variant.sources.jniLibs?.addGeneratedSourceDirectory(buildNative, BuildNative::jniDirectory)
 }
 
 dependencies {
-    implementation(project(":contracts"))
+    implementation(libs.gson)
+    implementation(libs.kotlinx.coroutines.core)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.lifecycle.runtime.compose)
@@ -140,5 +143,4 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    debugImplementation(libs.androidx.compose.ui.tooling)
 }

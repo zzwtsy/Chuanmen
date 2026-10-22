@@ -1,0 +1,461 @@
+diff --git a/easytier-contrib/easytier-ffi/src/lib.rs b/easytier-contrib/easytier-ffi/src/lib.rs
+index 6c332c8..cb5e065 100644
+--- a/easytier-contrib/easytier-ffi/src/lib.rs
++++ b/easytier-contrib/easytier-ffi/src/lib.rs
+@@ -37,6 +37,7 @@ mod error;
+ mod instance_api;
+ mod json_rpc;
+ mod state;
++pub mod android_host;
+ mod strings;
+ mod types;
+ 
+diff --git a/easytier-contrib/easytier-ffi/src/state.rs b/easytier-contrib/easytier-ffi/src/state.rs
+index 749acea..8f125d5 100644
+--- a/easytier-contrib/easytier-ffi/src/state.rs
++++ b/easytier-contrib/easytier-ffi/src/state.rs
+@@ -1,7 +1,7 @@
+ use std::sync::Arc;
+ 
+ use easytier::instance::factory::{
+-    NativeInstanceManager, NativeProcessManagement, native_instance_manager_with_runtime,
++    NativeInstanceManager, NativeProcessManagement, native_android_instance_manager,
+     native_process_management,
+ };
+ use tokio::runtime::{Builder, Runtime};
+@@ -29,10 +29,13 @@ pub(crate) struct FfiContext {
+ impl FfiContext {
+     fn new() -> Self {
+         let runtime = Builder::new_multi_thread()
++            .worker_threads(2)
++            .on_thread_start(crate::android_host::thread_started)
++            .on_thread_stop(crate::android_host::thread_stopped)
+             .enable_all()
+             .build()
+             .expect("tokio runtime for easytier-ffi");
+-        let manager = Arc::new(native_instance_manager_with_runtime(
++        let manager = Arc::new(native_android_instance_manager(
+             runtime.handle().clone(),
+         ));
+         let process_management =
+diff --git a/easytier/src/instance/factory.rs b/easytier/src/instance/factory.rs
+index 71c341c..d900e7c 100644
+--- a/easytier/src/instance/factory.rs
++++ b/easytier/src/instance/factory.rs
+@@ -94,11 +94,40 @@ fn native_instance_manager_with_optional_runtime(
+     )
+ }
+ 
++/// Android 共享进程 runtime，保留完整原生宿主配置；不创建每会话驱动线程。
++#[cfg(feature = "management-rpc")]
++pub fn native_android_instance_manager(runtime: tokio::runtime::Handle) -> NativeInstanceManager {
++    let mut factory = NativeInstanceFactory::new(CoreProcessRuntime::new())
++        .with_runtime_handle(Some(runtime.clone()));
++    factory.shared_runtime = true;
++    InstanceManager::new(factory, Some(runtime))
++}
++
++/// 独立的安装确认入口；入队和实际安装分别表达。
++pub fn enqueue_android_tun(
++    instance: &NativeCoreInstance,
++    request: crate::android_tun::TunRequest,
++) -> Result<(), crate::android_tun::TunError> {
++    #[cfg(all(feature = "tun", mobile))]
++    {
++        let host = instance.runtime_host::<NativeInstanceRuntimeHost>()
++            .ok_or(crate::android_tun::TunError::QueueClosed)?;
++        host.enqueue_android_tun(request)
++    }
++    #[cfg(not(all(feature = "tun", mobile)))]
++    {
++        let _ = instance;
++        request.cancel();
++        Err(crate::android_tun::TunError::QueueClosed)
++    }
++}
++
+ /// Native construction Adapter for the canonical core InstanceManager.
+ pub struct NativeInstanceFactory {
+     process_runtime: Arc<CoreProcessRuntime>,
+     runtime_handle: Option<tokio::runtime::Handle>,
+     compact_runtime: bool,
++    shared_runtime: bool,
+     #[cfg(feature = "logging")]
+     log_cli_events: bool,
+ }
+@@ -109,6 +138,7 @@ impl NativeInstanceFactory {
+             process_runtime,
+             runtime_handle: None,
+             compact_runtime: false,
++            shared_runtime: false,
+             #[cfg(feature = "logging")]
+             log_cli_events: false,
+         }
+@@ -142,7 +172,7 @@ impl InstanceFactory for NativeInstanceFactory {
+         config: TomlConfig,
+         (): Self::CreateContext,
+     ) -> Result<Arc<Self::Instance>, Self::Error> {
+-        let executor = if self.compact_runtime {
++        let executor = if self.compact_runtime || self.shared_runtime {
+             None
+         } else {
+             let flags = config.get_flags();
+diff --git a/easytier/src/instance/runtime_host.rs b/easytier/src/instance/runtime_host.rs
+index aa22a70..54bfdb8 100644
+--- a/easytier/src/instance/runtime_host.rs
++++ b/easytier/src/instance/runtime_host.rs
+@@ -68,6 +68,9 @@ impl NativeInstanceRuntimeHost {
+         packet_plane: Arc<CorePacketPlane>,
+     ) -> anyhow::Result<Option<Arc<dyn DhcpIpv4Host>>> {
+         self.event_journal.start(self.cancel.clone()).await;
++        #[cfg(all(feature = "tun", mobile))]
++        self.tun.prepare(packet_plane.clone(), self.operation.clone()).await?;
++        #[cfg(not(all(feature = "tun", mobile)))]
+         self.tun.prepare(packet_plane.clone()).await?;
+         Ok(Some(
+             self.tun.dhcp_host(self.operation.clone(), packet_plane),
+@@ -128,6 +131,12 @@ impl NativeInstanceRuntimeHost {
+         self.global_ctx.subscribe()
+     }
+ 
++    #[cfg(all(feature = "tun", mobile))]
++    pub(crate) fn enqueue_android_tun(&self, request: crate::android_tun::TunRequest)
++        -> Result<(), crate::android_tun::TunError> {
++        self.tun.enqueue(request)
++    }
++
+     fn attach_runtime_tun_fd(&self, fd: i32) -> anyhow::Result<()> {
+         self.tun.attach_fd(fd)
+     }
+diff --git a/easytier/src/instance/runtime_host/tun_common.rs b/easytier/src/instance/runtime_host/tun_common.rs
+index a86aead..ce7da06 100644
+--- a/easytier/src/instance/runtime_host/tun_common.rs
++++ b/easytier/src/instance/runtime_host/tun_common.rs
+@@ -1,5 +1,4 @@
+ use std::{
+-    any::Any,
+     sync::{Arc, OnceLock},
+ };
+ 
+@@ -10,21 +9,24 @@ use super::MagicDnsRuntime;
+ use crate::instance::virtual_nic::NicCtx;
+ 
+ struct NicCtxContainer {
+-    _nic_ctx: Option<Box<dyn Any + Send>>,
++    nic_ctx: Option<NicCtx>,
++    drain_tasks: Option<JoinSet<()>>,
+     magic_dns: MagicDnsRuntime,
+ }
+ 
+ impl NicCtxContainer {
+     fn new(nic_ctx: NicCtx, magic_dns: MagicDnsRuntime) -> Self {
+         Self {
+-            _nic_ctx: Some(Box::new(nic_ctx)),
++            nic_ctx: Some(nic_ctx),
++            drain_tasks: None,
+             magic_dns,
+         }
+     }
+ 
+     fn packet_drain(tasks: JoinSet<()>) -> Self {
+         Self {
+-            _nic_ctx: Some(Box::new(tasks)),
++            nic_ctx: None,
++            drain_tasks: Some(tasks),
+             magic_dns: MagicDnsRuntime::default(),
+         }
+     }
+@@ -61,6 +63,8 @@ impl TunNicState {
+         let mut old = self.nic_ctx.lock().await.take();
+         if let Some(nic) = old.as_mut() {
+             nic.magic_dns.stop().await;
++            if let Some(ctx) = nic.nic_ctx.as_mut() { ctx.stop_io().await; }
++            if let Some(tasks) = nic.drain_tasks.as_mut() { tasks.shutdown().await; }
+         }
+         drop(old);
+     }
+diff --git a/easytier/src/instance/runtime_host/tun_mobile.rs b/easytier/src/instance/runtime_host/tun_mobile.rs
+index 4f45932..aacf6f6 100644
+--- a/easytier/src/instance/runtime_host/tun_mobile.rs
++++ b/easytier/src/instance/runtime_host/tun_mobile.rs
+@@ -21,8 +21,8 @@ pub(super) struct NativeTunRuntime {
+     global_ctx: ArcGlobalCtx,
+     cancel: CancellationToken,
+     nic: TunNicState,
+-    tun_fd: mpsc::Sender<i32>,
+-    tun_fd_receiver: Mutex<Option<mpsc::Receiver<i32>>>,
++    tun_fd: mpsc::Sender<crate::android_tun::TunRequest>,
++    tun_fd_receiver: Mutex<Option<mpsc::Receiver<crate::android_tun::TunRequest>>>,
+     task: Mutex<Option<tokio::task::JoinHandle<()>>>,
+ }
+ 
+@@ -47,71 +47,74 @@ impl NativeTunRuntime {
+     }
+ 
+     async fn install_mobile_tun(
+-        nic_state: TunNicState,
+-        global_ctx: ArcGlobalCtx,
+-        packet_plane: Arc<CorePacketPlane>,
+-        fd: i32,
++        nic_state: TunNicState, global_ctx: ArcGlobalCtx,
++        packet_plane: Arc<CorePacketPlane>, request: &crate::android_tun::TunRequest,
+     ) -> anyhow::Result<()> {
+         nic_state.drain().await;
+-        if fd <= 0 {
+-            return Ok(());
+-        }
++        let Some(fd) = request.fd else { return Ok(()); };
+         let closed = Arc::new(Notify::new());
+-        let mut nic = NicCtx::new(
+-            global_ctx.clone(),
+-            packet_plane.clone(),
+-            nic_state.receiver(),
+-            closed,
+-        );
+-        nic.run_for_mobile(fd).await.context("add ip failed")?;
+-        let magic_dns = global_ctx
+-            .get_ipv4()
+-            .map(|ip| MagicDnsRuntime::start(global_ctx, packet_plane, None, ip))
+-            .unwrap_or_default();
++        let mut nic = NicCtx::new(global_ctx.clone(), packet_plane.clone(), nic_state.receiver(), closed);
++        if let Err(error) = nic.run_for_mobile_with_attachment(fd, request.attachment.clone()).await {
++            nic.stop_io().await;
++            if let Some(attachment) = request.attachment.as_ref() { attachment.failed(); }
++            return Err(error).context("mobile TUN install failed");
++        }
++        let magic_dns = global_ctx.get_ipv4()
++            .map(|ip| MagicDnsRuntime::start(global_ctx, packet_plane, None, ip)).unwrap_or_default();
+         nic_state.install(nic, magic_dns).await;
++        if let Some(attachment) = request.attachment.as_ref() { attachment.installed(); }
+         Ok(())
+     }
+ 
+-    pub(super) async fn prepare(&self, packet_plane: Arc<CorePacketPlane>) -> anyhow::Result<()> {
++    pub(super) async fn prepare(&self, packet_plane: Arc<CorePacketPlane>, operation: Arc<Mutex<()>>) -> anyhow::Result<()> {
+         self.nic.drain().await;
+-        let Some(mut tun_fds) = self.tun_fd_receiver.lock().await.take() else {
+-            return Ok(());
+-        };
+-        let nic_state = self.nic.clone();
++        let Some(mut requests) = self.tun_fd_receiver.lock().await.take() else { return Ok(()); };
++        let nic = self.nic.clone();
+         let global_ctx = self.global_ctx.clone();
+         let cancel = self.cancel.clone();
+         self.task.lock().await.replace(tokio::spawn(async move {
+             loop {
+-                let fd = tokio::select! {
+-                    _ = cancel.cancelled() => return,
+-                    fd = tun_fds.recv() => match fd { Some(fd) => fd, None => return },
++                let request = tokio::select! {
++                    biased;
++                    _ = cancel.cancelled() => break,
++                    request = requests.recv() => match request { Some(request) => request, None => break },
++                };
++                let _operation = tokio::select! {
++                    biased;
++                    _ = cancel.cancelled() => { request.cancel(); break; },
++                    permit = operation.lock() => permit,
+                 };
+-                if let Err(error) = Self::install_mobile_tun(
+-                    nic_state.clone(),
+-                    global_ctx.clone(),
+-                    packet_plane.clone(),
+-                    fd,
+-                )
+-                .await
+-                {
+-                    tracing::error!(?error, "failed to attach mobile TUN fd");
+-                }
++                if cancel.is_cancelled() { request.cancel(); break; }
++                let result = Self::install_mobile_tun(nic.clone(), global_ctx.clone(), packet_plane.clone(), &request).await;
++                let _ = request.receipt.send(result.map_err(|_| crate::android_tun::TunError::InstallFailed));
+             }
++            requests.close();
++            while let Ok(request) = requests.try_recv() { request.cancel(); }
+         }));
+         Ok(())
+     }
+ 
+     pub(super) async fn shutdown(&self) {
+-        if let Some(task) = self.task.lock().await.take() {
+-            let _ = task.await;
++        self.cancel.cancel();
++        if let Some(task) = self.task.lock().await.take() { let _ = task.await; }
++        if let Some(mut requests) = self.tun_fd_receiver.lock().await.take() {
++            requests.close();
++            while let Ok(request) = requests.try_recv() { request.cancel(); }
+         }
+         self.nic.stop().await;
+     }
+ 
++    pub(super) fn enqueue(&self, request: crate::android_tun::TunRequest) -> Result<(), crate::android_tun::TunError> {
++        if self.cancel.is_cancelled() { request.cancel(); return Err(crate::android_tun::TunError::QueueClosed); }
++        self.tun_fd.try_send(request).map_err(|error| {
++            error.into_inner().cancel();
++            crate::android_tun::TunError::QueueClosed
++        })
++    }
++
+     pub(super) fn attach_fd(&self, fd: i32) -> anyhow::Result<()> {
+-        self.tun_fd
+-            .try_send(fd)
+-            .map_err(|error| anyhow::anyhow!("failed to send TUN fd: {error}"))
++        let (request, _receipt) = crate::android_tun::TunRequest::new(if fd > 0 { Some(fd) } else { None }, None);
++        self.enqueue(request).map_err(|error| anyhow::anyhow!("TUN enqueue failed: {error:?}"))
+     }
+ 
+     pub(super) fn dhcp_host(
+diff --git a/easytier/src/instance/virtual_nic.rs b/easytier/src/instance/virtual_nic.rs
+index 43c97aa..67a401c 100644
+--- a/easytier/src/instance/virtual_nic.rs
++++ b/easytier/src/instance/virtual_nic.rs
+@@ -50,6 +50,7 @@ pin_project! {
+         cur_buf: BytesMut,
+         has_packet_info: bool,
+         payload_offset: usize,
++        attachment: Option<Arc<crate::android_tun::TunAttachment>>,
+     }
+ }
+ 
+@@ -64,6 +65,7 @@ impl TunStream {
+             cur_buf: BytesMut::new(),
+             has_packet_info,
+             payload_offset,
++            attachment: None,
+         }
+     }
+ }
+@@ -86,6 +88,9 @@ impl Stream for TunStream {
+ 
+         let ret = ready!(g.as_pin_mut().poll_read(cx, &mut buf));
+         let len = buf.filled().len();
++        if ret.is_ok() && len > 0 {
++            if let Some(attachment) = self_mut.attachment.as_ref() { attachment.read_completed(len); }
++        }
+         if len == 0 {
+             return Poll::Ready(None);
+         }
+@@ -199,6 +204,7 @@ pin_project! {
+     pub struct TunAsyncWrite {
+         #[pin]
+         l: BiLock<AsyncDevice>,
++        attachment: Option<Arc<crate::android_tun::TunAttachment>>,
+     }
+ }
+ 
+@@ -210,7 +216,11 @@ impl AsyncWrite for TunAsyncWrite {
+     ) -> Poll<Result<usize, io::Error>> {
+         let self_mut = self.project();
+         let mut g = ready!(self_mut.l.poll_lock(cx));
+-        g.as_pin_mut().poll_write(cx, buf)
++        let result = g.as_pin_mut().poll_write(cx, buf);
++        if let Poll::Ready(Ok(bytes)) = &result {
++            if let Some(attachment) = self_mut.attachment.as_ref() { attachment.write_completed(*bytes); }
++        }
++        result
+     }
+ 
+     fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), io::Error>> {
+@@ -232,7 +242,11 @@ impl AsyncWrite for TunAsyncWrite {
+     ) -> Poll<Result<usize, io::Error>> {
+         let self_mut = self.project();
+         let mut g = ready!(self_mut.l.poll_lock(cx));
+-        g.as_pin_mut().poll_write_vectored(cx, bufs)
++        let result = g.as_pin_mut().poll_write_vectored(cx, bufs);
++        if let Poll::Ready(Ok(bytes)) = &result {
++            if let Some(attachment) = self_mut.attachment.as_ref() { attachment.write_completed(*bytes); }
++        }
++        result
+     }
+ 
+     fn is_write_vectored(&self) -> bool {
+@@ -578,6 +592,7 @@ impl VirtualNic {
+     pub async fn create_dev_for_mobile(
+         &mut self,
+         tun_fd: std::os::fd::RawFd,
++        attachment: Option<Arc<crate::android_tun::TunAttachment>>,
+     ) -> Result<Box<dyn Tunnel>, Error> {
+         tracing::debug!(%tun_fd);
+         let mut config = Configuration::default();
+@@ -600,10 +615,12 @@ impl VirtualNic {
+         let dev = tun::create(&config)?;
+         let dev = AsyncDevice::new(dev)?;
+         let (a, b) = BiLock::new(dev);
++        let mut stream = TunStream::new(a, has_packet_info);
++        stream.attachment = attachment.clone();
+         let ft = TunnelWrapper::new(
+-            TunStream::new(a, has_packet_info),
++            stream,
+             FramedWriter::new_with_converter(
+-                TunAsyncWrite { l: b },
++                TunAsyncWrite { l: b, attachment },
+                 TunZCPacketToBytes::new(has_packet_info),
+             ),
+             None,
+@@ -679,7 +696,7 @@ impl VirtualNic {
+         let ft = TunnelWrapper::new(
+             TunStream::new(a, has_packet_info),
+             FramedWriter::new_with_converter(
+-                TunAsyncWrite { l: b },
++                TunAsyncWrite { l: b, attachment: None },
+                 TunZCPacketToBytes::new(has_packet_info),
+             ),
+             None,
+@@ -798,6 +815,7 @@ pub struct NicCtx {
+ 
+     nic: Arc<Mutex<VirtualNic>>,
+     tasks: JoinSet<()>,
++    attachment: Option<Arc<crate::android_tun::TunAttachment>>,
+ 
+     #[cfg(target_os = "windows")]
+     windows_udp_broadcast_relay: Option<AbortOnDropHandle<()>>,
+@@ -819,12 +837,19 @@ impl NicCtx {
+ 
+             nic: Arc::new(Mutex::new(VirtualNic::new(global_ctx))),
+             tasks: JoinSet::new(),
++            attachment: None,
+ 
+             #[cfg(target_os = "windows")]
+             windows_udp_broadcast_relay: None,
+         }
+     }
+ 
++    /// 先等待全部 TUN I/O 退出，再确认平台可以关闭 PFD。
++    pub(super) async fn stop_io(&mut self) {
++        self.tasks.shutdown().await;
++        if let Some(attachment) = self.attachment.take() { attachment.released(); }
++    }
++
+     pub async fn ifname(&self) -> Option<String> {
+         let nic = self.nic.lock().await;
+         nic.ifname.as_ref().map(|s| s.to_owned())
+@@ -1299,9 +1324,16 @@ impl NicCtx {
+ 
+     #[cfg(mobile)]
+     pub async fn run_for_mobile(&mut self, tun_fd: std::os::fd::RawFd) -> Result<(), Error> {
++        self.run_for_mobile_with_attachment(tun_fd, None).await
++    }
++
++    #[cfg(mobile)]
++    pub async fn run_for_mobile_with_attachment(&mut self, tun_fd: std::os::fd::RawFd,
++        attachment: Option<Arc<crate::android_tun::TunAttachment>>) -> Result<(), Error> {
++        self.attachment = attachment.clone();
+         let tunnel = {
+             let mut nic = self.nic.lock().await;
+-            match nic.create_dev_for_mobile(tun_fd).await {
++            match nic.create_dev_for_mobile(tun_fd, attachment).await {
+                 Ok(ret) => {
+                     self.global_ctx
+                         .set_tun_device_ready(nic.ifname().to_string());
+diff --git a/easytier/src/lib.rs b/easytier/src/lib.rs
+index f782395..3dd93db 100644
+--- a/easytier/src/lib.rs
++++ b/easytier/src/lib.rs
+@@ -21,6 +21,7 @@ pub mod rpc_service;
+ pub mod service_manager;
+ pub(crate) mod socket;
+ pub mod socket_protector;
++pub mod android_tun;
+ pub mod tunnel;
+ pub mod utils;
+ #[cfg(feature = "web-client")]

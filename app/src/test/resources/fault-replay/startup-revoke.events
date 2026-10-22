@@ -1,0 +1,7 @@
+p02-events-v1
+# 相对毫秒 事件 预期阶段 已确认修订 新鲜度 持有TUN数
+0 start Connecting - - 0
+1 revoke Stopping - - 0
+2 started Stopping - - 0
+3 stopped Failed - - 0
+4 network Failed - - 0

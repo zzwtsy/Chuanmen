@@ -1,0 +1,13 @@
+p02-events-v1
+# 停止后旧回执不能污染新会话
+0 connected Running 1 Fresh 1
+1 stop Stopping 1 Stale 1
+2 stopped Idle - - 0
+3 start Connecting - - 0
+4 started AwaitingAddress - - 0
+5 address PreparingTun - - 1
+6 installed Running 1 Fresh 1
+7 late-error Running 1 Fresh 1
+8 late-install Running 1 Fresh 1
+9 stop Stopping 1 Stale 1
+10 stopped Idle - - 0

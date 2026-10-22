@@ -13,9 +13,15 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
-        with:
-          python-version: '3.11'
       - name: Validate PR metadata from event file
-        run: python3 scripts/git/workflow_policy.py pr
+        shell: bash
+        run: |
+          node <<'JS'
+          const fs = require('node:fs');
+          const pr = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8')).pull_request;
+          const titlePattern = /^(feat|fix|docs|refactor|perf|test|build|ci|style|chore|revert)(\([^\s()]+\))?!?: [^\s].*$/u;
+          if (!pr || pr.base.ref !== 'main' || typeof pr.title !== 'string' || !titlePattern.test(pr.title)) {
+            console.error('PR 必须以 main 为目标，并使用 Conventional Commits 标题。');
+            process.exit(1);
+          }
+          JS

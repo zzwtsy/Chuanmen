@@ -1,0 +1,7 @@
+# JNI 入口和反射回调保留名字与签名，不能依赖是否启用了项目包优化。
+-keep class com.github.zzwtsy.chuanmen.lib.vpn.NativeBindings {
+    public static native java.lang.String request(java.lang.String, com.github.zzwtsy.chuanmen.lib.vpn.ProtectorCallback);
+}
+-keepclassmembers class com.github.zzwtsy.chuanmen.lib.vpn.ProtectorCallback {
+    public boolean protectForNative(int, java.lang.String, long);
+}

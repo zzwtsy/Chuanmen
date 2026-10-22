@@ -1,6 +1,6 @@
 # ADR 0003：业务切片、工程工具与实验目录边界
 
-状态：已采纳。当前工程为 `:app -> :contracts`，已有 demo 配置切片与导航；后续模块按实际实现建立。demo 装配见 [ADR 0004](0004-demo-assembly.md)。
+状态：已被 [ADR 0005](0005-single-app.md) 取代。历史源码见 P02 基线 `872bea7e3898881e4787b0adb012726933cd8329`。以下保留当时的决策与路径，现行目录及命令以新 ADR 和开发环境为准。
 
 ## 决策依据
 
@@ -13,6 +13,8 @@
 源码保留 Android 标准 source set。下列路径相对于 `app/src/main/java/com/github/zzwtsy/chuanmen/`；测试在 `src/test`、`src/androidTest` 中镜像被测包。
 
 demo 的 JVM 测试在 `src/testDemo`，设备测试在 `src/androidTestDemo`。两者实际复用的 UI 渲染断言放 `src/demoUiTest/java`，通过 AGP 内置 Kotlin 的 `kotlin.directories` 加入这两个测试 source set；该目录不参与 demo/live 应用编译。
+
+live 的公共装配位于 `src/live`，调试受控表单和 release 占位分别位于 `src/liveDebug`、`src/liveRelease`。公共 live JVM 测试位于 `src/testLive`；只测试调试受控输入的用例位于 `src/testLiveDebug`，避免 release 单测引用不存在的调试类型。测试不跨 flavor 挂载生产源码。
 
 | 位置 | 职责与建立时机 |
 |---|---|
@@ -27,7 +29,7 @@ demo 的 JVM 测试在 `src/testDemo`，设备测试在 `src/androidTestDemo`。
 
 `feature` 目录在实际业务实现时创建。操作的状态、校验、业务逻辑和测试归操作；持久化与转换实现归所属能力，不建立横跨全部业务的 `domain`、`data` 或 `utils` 桶。UI 通过仓库或操作入口访问数据源；复杂组合操作再提取用例。
 
-未来 Gradle 边界为 `:app`、`:contracts`、`:vpn`、`:core-bridge`，Rust 放 `native/`。模块在出现对应实现和消费者时创建。
+现有 Gradle 边界为 `:app`、`:contracts`、`:vpn`、`:core-bridge`，Rust 放 `native/`。后续模块仍须有对应实现和消费者。
 
 - `:contracts` 只保存实际跨模块使用的纯 Kotlin 接口和不可变模型，例如 `ProfileRepository`、`SessionController`、`CoreEngine` 及必要快照；切片私有草稿和校验留在切片。
 - 业务切片只通过公开契约协作；共享代码须有至少两个实际消费者，不因名称相似就抽取。
@@ -35,7 +37,7 @@ demo 的 JVM 测试在 `src/testDemo`，设备测试在 `src/androidTestDemo`。
 - `:vpn` 依赖 `:contracts` 和 `:core-bridge`，拥有唯一真实会话、命令串行化、TUN 和资源生命周期；`:core-bridge` 依赖 `:contracts`，管理窄 JNI 适配。
 - 保存和改名归配置能力；实际应用与重连归会话服务。只有服务回执才能更新 applied 状态。
 
-同模块包目录提供组织边界；Kotlin `internal` 的可见范围仍是编译模块。[Kotlin 可见性](https://kotlinlang.org/docs/visibility-modifiers.html) 已建立的 [边界检查](../../../scripts/android/check_boundaries.py) 检查当前模块依赖、切片 import 和页面/fake 引用，由 check-fast 调用。只有实际隔离、交付或编译收益需要时，再提取功能模块。
+同模块包目录提供组织边界；Kotlin `internal` 的可见范围仍是编译模块。[Kotlin 可见性](https://kotlinlang.org/docs/visibility-modifiers.html) [源码检查](../../../scripts/android/check_boundaries.py)检查切片 import 和页面/fake 引用；[Gradle 模型检查](../../../scripts/android/check_module_boundaries.init.gradle.kts)检查直接项目依赖及配置归属。两者由 check-fast 执行，不通过匹配构建脚本文本判断模块边界。只有实际隔离、交付或编译收益需要时，再提取功能模块。
 
 ## 工程工具归属
 

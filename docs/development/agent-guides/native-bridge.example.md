@@ -1,10 +1,10 @@
 # Native 桥接局部 AGENTS.md 样板
 
-**状态：设计样板，不是活动指令。** P02 确认真实 JNI/TUN 集成后，再分别提炼到 `core-bridge/AGENTS.md` 或 `native/AGENTS.md`；不要整份同时复制到两处。边界归属以实际工程为准。
+**状态：参考样板，不是活动指令。** 当前工程仅使用根指令；`app/native` 确有独特约束需要局部说明时，再提炼必要差异。
 
 ## 适用责任
 
-桥接模块把固定版本的 EasyTier 能力转换为领域接口；native 目录记录源码 revision、构建与补丁。UI 不直接访问 native 句柄。局部规则重点是生命周期、版本与诊断证据，避免重复根文件的配置/UI 不变量。
+app 内的桥接文件将固定版本 EasyTier 能力转换为会话接口；`app/native` 记录源码 revision、构建与补丁。UI 不直接访问 native 句柄。局部规则重点是生命周期、版本与诊断证据，避免重复根文件的配置/UI 不变量。
 
 ## 必须能定位的契约
 
@@ -33,7 +33,7 @@ JNI 线程与引用管理有平台约束，不能把对象/环境句柄当成任
 
 ## VPN 联动
 
-外层 socket 的保护/底层网络绑定、TUN 建立和网络切换需与 `:vpn` 协调。修改 JNI 不应悄悄绕过系统 VPN 授权。测试用确定的设备和隔离拓扑，不以“native start 返回成功”代替 TUN 数据路径和 peer 连通验证。[Android VPN 文档](https://developer.android.com/develop/connectivity/vpn)。
+外层 socket 的保护/底层网络绑定、TUN 建立和网络切换需与 app 内的 `NativeVpnService`、`VpnSessionCoordinator` 协调。修改 JNI 不应悄悄绕过系统 VPN 授权。测试用确定的设备和隔离拓扑，不以“native start 返回成功”代替 TUN 数据路径和 peer 连通验证。[Android VPN 文档](https://developer.android.com/develop/connectivity/vpn)。
 
 ## 验证与提交内容
 
