@@ -38,4 +38,4 @@ protector 必须在核心启动前注册。外层 socket 只有完成 `VpnServic
 
 宿主回归验证队列取消、attachment 隔离、回调排空、诊断边界和实际线程计数；设备 JNI 用例使用 pipe 验证借用关闭顺序。它们不证明 VPN 业务连通。正式 Service 的业务回包、平台生命周期和 50 轮资源回归经设备入口分别执行，安排见 [开发环境](../../docs/development/setup.md)。
 
-P02 已完成限定范围验收，后续阶段暂停；当前重构 APK 不继承历史设备结论。范围见 [路线图](../../docs/plan/ROADMAP.md) 和 P02 报告。
+P02 已完成限定范围验收，P03–P07 已规划但尚未实施，本轮不执行设备补验；当前重构 APK 不继承历史设备结论。范围见 [路线图](../../docs/plan/ROADMAP.md) 和 P02 报告。

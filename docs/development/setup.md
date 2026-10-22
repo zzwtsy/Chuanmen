@@ -50,6 +50,8 @@ APK 检查核对双 ABI、实际库字节、每个 ELF LOAD 段和 ZIP 的 16 KB
 
 ## 真实设备回归
 
+以下保留已有工具的使用说明，不属于当前计划的执行步骤。结构精简补验与 P03–P07 全部设备执行已取消；仅维护/编译现有测试源码，未来如另行恢复实验再按验证规范制定范围。
+
 ```bash
 python3 scripts/android/verify_device.py --help
 python3 scripts/android/verify_device.py --offline --case bridge --serial DEVICE_SERIAL
@@ -94,50 +96,35 @@ peer 不创建宿主 TUN 或修改系统路由。虚拟 DNS 为 53，私有 LAN 
 
 ### 结构精简验收
 
-结构变化后的程序须完成 JVM、debug/release lint、Python、宿主 Rust、三类 APK 和双 ABI/JNI/16 KB 静态检查，并对实际 APK 独立执行以下 11 个设备场景及 release 冒烟。构建、静态对齐和历史 APK 的通过结果均不能替代新产物的设备验收。
+结构精简已随 PR #7 合并，基线工程 CI 通过。2026-10-23 已取消原 11 场景设备矩阵、release 冒烟和附加失败对照；本节不再列为执行清单。原安排可从 Git 历史读取，已有失败保留在 PR #7 记录，不能改记通过。当前产物设备效果未验证。
 
-`--timeout` 是每条子命令预算，外层总预算用 `timeout --signal=INT --kill-after=15s` 限制；预算耗尽算未通过，并须完成资源收尾。例如 API24 的 lifecycle 使用：
+## 工程阶段检查组合
+
+P03–P07 阶段退出使用以下顺序；日常小改只运行受影响检查。命令从仓库根执行，环境按本文准备，`SDK_ROOT` 替换为已安装 SDK 的实际路径。
+
+1. 执行 [Python 与常规检查](#python-与常规检查) 中的 Ruff lint、格式、隐私、目录审计及四组 Python 回归；不包含上节保留的设备命令。
+2. 执行 JVM/Compose 与两个 variant 的 lint：
 
 ```bash
-timeout --signal=INT --kill-after=15s 300s python3 scripts/android/verify_device.py --offline --case lifecycle --serial EMULATOR_SERIAL --timeout 180
+./gradlew :app:testDebugUnitTest :app:lintDebug :app:lintRelease
 ```
 
-| 设备 | `--case` | CLI 超时/外层总预算（秒） | 必须确认 |
-|---|---|---:|---|
-| API24/x86_64 模拟器 | bridge | 120 / 240 | 三项正式 JNI/pipe 契约完整执行 |
-| API24/x86_64 模拟器 | lifecycle | 180 / 300 | 拒绝、启动中取消、正常授权、真实 TUN、Activity 重建、停止 |
-| API37/x86_64 模拟器 | bridge | 120 / 240 | 三项正式 JNI/pipe 契约完整执行 |
-| API37/x86_64 模拟器 | lifecycle | 180 / 300 | 与 API24 相同的生命周期边界 |
-| API37/x86_64 模拟器 | revoke | 180 / 300 | 系统撤销、资源排空、用户停止/授权状态不被伪造 |
-| API36/arm64 真机 | bridge | 120 / 240 | 真机 JNI/pipe 与固定核心身份 |
-| API36/arm64 真机 | datapath | 240 / 360 | TCP/UDP 两种外层，各自 TCP/UDP 业务回包，共四组，均有对端关联 |
-| API36/arm64 真机 | dns | 240 / 360 | 系统 resolver 的本轮唯一域名查询与实际虚拟 DNS 回答，TCP/UDP 外层均覆盖 |
-| API36/arm64 真机 | policy | 480 / 600 | 实际 DHCP、默认路由、失败应用和显式恢复，保存/名称/草稿保留 |
-| API36/arm64 真机 | network | 480 / 600 | 真实切网恢复、物理 IPv6 可达而 VPN IPv6 被阻断、停止后不重连 |
-| API36/arm64 真机 | resources | 960 / 1200 | 4 轮预热 + 50 轮正式资源与真实业务回包 |
+3. 在固定 native 依赖已准备好后执行两个宿主测试入口：
 
-用例和 instrumentation 身份以 [CASES](../../scripts/android/device_contracts.py)为准。模拟器 lifecycle 不带可通信对端，不能计为数据通路通过；预期用例缺失、初始化错误、跳过、只返回 0 或缺报告均失败。每个需要对端的 case 使用独立的请求身份、peer 和新输出目录，按前述命令核对 ready.json 后执行；network 还须提供已核验全局 IPv6 对端。
+```bash
+cargo +1.99.0 test --manifest-path app/native/Cargo.toml --locked --offline --target-dir app/build/native/target
+cargo +1.99.0 test --manifest-path scripts/android/native-peer/Cargo.toml --locked --offline --target-dir app/build/device-tests/peer-target
+```
 
-资源回归严格沿用 [resource_results](../../scripts/android/device_contracts.py)的判据：
+4. 构建 APK 并检查双 ABI 与 16 KB 静态对齐：
 
-- 54 个完整周期包含 4 次预热与 50 次正式周期、108 个唯一关联的 TCP/UDP 业务回包，两种外层交替；第 4 次预热后的 FD 和共享 runtime worker 为固定基线，不滚动重设。
-- 正式周期 FD 不超过基线 +2；最初和最后 10 个正式 FD 样本各自排序取下标 5，后者不超过前者 +1。共享 runtime worker 基线至少 2，正式周期数量保持不变。
-- 每轮停止后 Idle，拥有资源、保护失败及对端连接/路由满足归零判据；共享 runtime 可继续存活，Service 保留一个作业和一个生命周期订阅。实际收发与 socket protect 必须发生，对端收束不超过 45000 ms。
-- 任一周期失败则整组失败并收尾；修正后用新运行重验完整 54 周期，不从失败位置续跑或删掉异常样本。
+```bash
+./gradlew :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest
+python3 scripts/native/check_apk.py --sdk SDK_ROOT app/build/outputs/apk/debug/app-debug.apk
+python3 scripts/native/check_apk.py --sdk SDK_ROOT app/build/outputs/apk/release/app-release-unsigned.apk
+```
 
-#### release 冒烟
-
-在专用 API37 模拟器完成 debug 和基线对照后，使用独立测试密钥签名 release APK 的副本，保留原 unsigned APK 和正式签名配置。核对副本的签名、核心库字节和对齐，保持 release 非 debuggable；签名冲突仅在该专用模拟器清理测试应用。
-
-从干净启动确认空输入及默认值、错误输入保留、保存不连接、拒绝授权如实显示、再次授权后真实核心 Running 和实际地址、显式断开及系统无活动 VPN。只在测试操作中输入公开合成参数，不写回应用初值。该冒烟验证入口、保存、授权、连接和断开；完整数据通路矩阵绑定 debug 与 androidTest，不能写成 release 完整网络回归。
-
-#### 失败、对照与收尾
-
-每个 case 首次执行一次。失败后先保留源码/APK 身份、失败点与输出并收尾；仅在前置条件或源码问题修复后，同一候选、同一环境最多补跑一次。仍失败则保留未通过状态，不扩大预算。输入身份变化、对端不受控、授权无法确认、资源未收束或影响其他网络应用时停止整组矩阵。
-
-API24 DNS 和 API37 TCP 属于矩阵之外的附加对照：真实 P02 基线和候选使用各自匹配的 APK、工具和对端，在同一模拟器、相同网络与参数下，以 240 秒子命令 / 360 秒总预算比较；必要时按各自公开协议核对对端。基线通过而候选失败或明显恶化时，按回归停止验收；两边同类失败且条件可比时，均不计通过，归因未证实时保留未知及待查范围，不降低必测矩阵要求。基线构建/安装/工具受阻，或身份与环境不可比时，归因未完成，不能宣布验收闭合；两边通过也不倒改旧失败记录。既有附加失败不作为顺带升级或改写核心的理由。
-
-正常或失败都显式断开应用并核对 Idle、会话与 PFD 释放；网络场景恢复原 Wi-Fi。请求 peer 停止，45 秒内核对 `peer_stopped`、`echo_threads_stopped`、`dns_socket_stopped` 均为 true 且进程退出成功。关闭未确认时不启动下一轮；结束时关闭本任务新建的模拟器与 peer。只处理本任务拥有的应用和进程，不重置个人真机网络或操作其他 VPN。原始输出留本机忽略目录，保留失败与补跑；证据整理遵循 [验证规范](verification.md)。
+对每条命令记录完整命令、源码 SHA/工作区差异、开始/结束时间、退出码和相对日志路径。未来阶段汇总复用这些字段，P07 使用该阶段定义的 checks.json；未运行填 not_run 并写原因，不能填 0。全部必需命令实际运行且退出 0 才算工程检查通过；缺失工具/依赖、未运行、失败分别记录，不能当成通过。报告绑定源码 SHA，保存命令与实际日志位置。androidTest 仅编译，不执行 connectedAndroidTest，不启动设备、peer 网络实验或 release 冒烟。上述结果不证明设备兼容性或真实网络效果。
 
 ## Python 与常规检查
 

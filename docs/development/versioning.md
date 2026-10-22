@@ -1,6 +1,8 @@
 # 版本与发布治理
 
-本文维护串门（Chuanmen）的应用版本、安装序号、tag 和 Release 规则。日常分支与 PR 见 [Git 工作流](git-workflow.md)，产品发布仍须完成 [P07 发布评审](../plan/p07-release.md)。
+本文维护串门（Chuanmen）的应用版本、安装序号、tag 和 Release 规则。日常分支与 PR 见 [Git 工作流](git-workflow.md)，当前计划只安排 [P07 发布准备](../plan/p07-release.md)。
+
+P07 只准备 GitHub APK，不包含 Play/AAB 或设备安装升级验收。下文 tag、签名、上传及正式发布流程仅在另行获得相应授权后执行；未授权时交付 unsigned APK 和待审材料，设备效果注明未验证。
 
 ## 版本各归一处
 
@@ -34,7 +36,7 @@ Conventional Commits 的 `feat`、`fix`、`!` 为发布评审提供线索，不�
 
 1. 从最新 `main` 建发布任务分支，提交版本与安装序号、迁移说明、用户可读发布说明及必要的来源/许可更新，按正常 PR 检查与人工复核。
 2. 维护者手动 Squash 发布 PR，记录最终 `main` 提交的完整 SHA，并核对主干 CI。构建与 tag 使用这个 SHA，不用可移动的分支名作为发布身份。
-3. 从该 SHA 构建最终产物，记录工具链、variant、ABI、签名身份与 SHA-256，完成该候选的最终产物和升级验收。普通 CI 或历史真机结果不能替代本次产物验收。
+3. 从该 SHA 构建 unsigned 候选，按 P07 的 candidate/checks/artifacts 结构记录身份、命令和摘要。先完成工程检查、APK 静态检查及真实存在格式的迁移/拒绝测试。取得签名授权后另行签名，检查签名并重新执行 APK 静态检查、计算最终摘要；unsigned 与 signed 不能复用摘要。没有签名授权时完成发布准备即可，不执行设备安装升级或 release 冒烟。
 4. 获得 tag 授权后创建附注 tag `v<versionName>`，指向上述 SHA，如 `v0.1.0-beta.1`、`v0.1.0`。`-dev` 不创建产品发布 tag；注释记录版本及发布说明定位，签名 tag 仅在签名身份和工具已经约定时使用。
 5. 创建 Draft Release，使用已存在的 tag；核对解引用 SHA，上传已验收的同一批资产、校验和与说明。gh 创建时使用 `--verify-tag`，避免自动创建轻量 tag；候选标记 prerelease。
 6. 复核版本、源码、附件、升级说明和发布授权后正式发布。启用 Immutable Releases；发布后 tag 与附件保持固定，补充资产须在草稿阶段完成。

@@ -22,56 +22,76 @@ P00 的解析与受控真机观察已在限定范围完成，见 [最终报告](
 
 `availability=available` 只记录原型编辑目录，`apply=core-hot` 等仅是早前语义研究标签。P00 已核对限定核心与实验配置路径；正式接入或升级仍须验证接口、字段默认值与效果，生产能力以台账中的产品证据为准。
 
+## 台账字段与状态的准确含义
+
+本次仅写入计划，不标记任何新增功能已实现。P02 的 controlledInputStage、implementationNote 与原运行证据保留；它们只能证明原限定范围。
+
+| 字段 | 填写和判断规则 |
+|---|---|
+| editorStage / implementationStage | 首次编辑器与生产接线交付阶段；P03 为 10 项，P05 为 34 项。P03 的 peer 与互联网/DNS/IPv6 仅交付该阶段明确的子集 |
+| implementationTask | 字段映射与接线的主责任务，不表示只完成这一任务就关闭整项 |
+| completionTasks | 首次交付范围必须全部完成的任务 ID，按该阶段执行顺序排列；P03 先 01/03 再 02。少一项都不能写 implemented |
+| engineeringStatus | planned=未开始；in_progress=已开始但未满足断言；implemented=completionTasks 均完成且工程证据可定位；blocked=已查明缺失接口/依赖等条件使当前实现无法继续。尚未写代码不是 blocked |
+| engineeringEvidence | 实施后填写代码路径/符号、测试路径/用例、检查对应源码 SHA 和结果定位；计划文件不算实现证据，当前为空 |
+| extensionTask / extensionEngineeringStatus / extensionEngineeringEvidence | 后续扩展独立记状态与证据；peer 复合成员/协议由 P05-02 扩展，P03 三项 Android 策略由 P05-06 扩展，autoReconnect 的有限退避由 P06-02 扩展。首次 implemented 不表示扩展也已完成 |
+| nativeStatus / evidence | 保留既有原生验收状态和证据；本轮工程通过不会改成运行 verified |
+| runtimeVerificationStage | null 表示本轮取消设备验证，没有未来补跑阶段；不表示“不适用”或“已通过” |
+| minimumValidation | 原运行验收判据保留用于理解 nativeStatus 尚未完成的范围；不是本轮执行清单，现行工程断言见责任任务 |
+| hiddenReview | 固定 8 条历史隐藏记录；productionDecision=requires_platform_review 表示调查尚未完成，不能按 reasonClass 推导已确认平台托管 |
+| nativeExtensions | 未来经适配交付的原生新增项；不放入历史 fields 的 44 项集合，不覆盖快照 |
+
+运行变更统一受控重连，applyPolicy=controlled-reconnect；本轮不建立热应用白名单。实施任务若缺少来源，先执行该任务明列的源码调查步骤，记录确切缺失入口；不能用“后续核对”作为完成说明。
+
 ## 可见目录
 
-下表描述正式产品的效果验收，阶段状态见路线图。P03 建立编辑和序列化闭环，P05 完成高级能力实证；“未验证”不否定 P00 已记录的限定解析或真机观察。
+下表描述首次工程接入阶段；设备效果均未验证，本轮不安排设备执行。P03 首批 10 项，P05 其余 34 项；三个 Android 策略在 P05-06 扩展。任务及工程状态见台账，逐项隐藏复审步骤见 [P05-01](../../plan/p05-advanced-networking.md#p05-01--将能力矩阵接入完整配置)。
 
-| 组 | 编辑单元 / 项目键 | 官网来源键 | 正式产品效果验收 |
+| 组 | 编辑单元 / 项目键 | 官网来源键 | 首次工程接入 / 设备效果 |
 |---|---|---|---|
-| 网络与地址 | 网络名称 · `network_identity.network_name` | `network_name` | P03，未验证 |
-| 网络与地址 | 网络密码 · `network_identity.network_secret` | `network_secret` | P03，未验证 |
-| 网络与地址 | 本设备名称 · `hostname` | `hostname` | P03，未验证 |
-| 网络与地址 | 自动分配 IPv4 · `dhcp` | `dhcp` | P03，未验证 |
-| 网络与地址 | 虚拟 IPv4 地址 · `ipv4` | `network_length, virtual_ipv4` | P03，未验证 |
-| 网络与地址 | 允许底层 IPv6 连接 · `flags.enable_ipv6` | `disable_ipv6` | P05，未验证 |
-| 网络与地址 | MagicDNS 组网域名 · `flags.accept_dns` | `enable_magic_dns` | P05，未验证 |
-| 节点与直连 | 连接节点 · `peer` | `peer_urls` | P03，未验证 |
-| 节点与直连 | 监听地址 · `listeners` | `listener_urls` | P05，未验证 |
-| 节点与直连 | 公布的外部地址 · `mapped_listeners` | `mapped_listeners` | P05，未验证 |
-| 节点与直连 | 普通自动 P2P · `flags.disable_p2p` | `disable_p2p` | P05，未验证 |
-| 节点与直连 | 仅与已直连节点通信 · `flags.p2p_only` | `p2p_only` | P05，未验证 |
-| 节点与直连 | 有流量时再建立 P2P · `flags.lazy_p2p` | `lazy_p2p` | P05，未验证 |
-| 节点与直连 | 要求对端主动建立 P2P · `flags.need_p2p` | `need_p2p` | P05，未验证 |
-| 节点与直连 | UDP 打洞 · `flags.disable_udp_hole_punching` | `disable_udp_hole_punching` | P05，未验证 |
-| 节点与直连 | TCP 打洞 · `flags.disable_tcp_hole_punching` | `disable_tcp_hole_punching` | P05，未验证 |
-| 节点与直连 | 对称 NAT 打洞 · `flags.disable_sym_hole_punching` | `disable_sym_hole_punching` | P05，未验证 |
-| 节点与直连 | 自动端口映射 · `flags.disable_upnp` | `disable_upnp` | P05，未验证 |
-| 路由与服务 | 路由接收方式 · `routes` | `enable_manual_routes, routes` | P05，未验证 |
-| 路由与服务 | 互联网出口节点 · `exit_nodes` | `exit_nodes` | P05，未验证 |
-| 路由与服务 | 分享本地子网 · `proxy_network` | `proxy_cidrs` | P05，未验证 |
-| 路由与服务 | SOCKS5 监听 · `socks5_proxy` | `enable_socks5, socks5_port` | P05，未验证 |
-| 路由与服务 | 端口转发 · `port_forward` | `port_forwards` | P05，未验证 |
-| 路由与服务 | WireGuard Portal · `vpn_portal_config` | `enable_vpn_portal, vpn_portal_client_network_addr, vpn_portal_client_network_len, vpn_portal_listen_port` | P05，未验证 |
-| 路由与服务 | 允许本机作为出口 · `flags.enable_exit_node` | `enable_exit_node` | P05，未验证 |
-| 安全与访问 | 通信加密 · `flags.enable_encryption` | `disable_encryption` | P05，未验证 |
-| 安全与访问 | 限制外部网络接入 · `flags.private_mode` | `enable_private_mode` | P05，未验证 |
-| 安全与访问 | 访问控制 ACL · `acl` | `acl` | P05，未验证 |
-| 中继与性能 | 优先低延迟路径 · `flags.latency_first` | `latency_first` | P05，未验证 |
-| 中继与性能 | 隧道 MTU · `flags.mtu` | `mtu` | P05，未验证 |
-| 中继与性能 | 本网络接收限速 · `flags.instance_recv_bps_limit` | `instance_recv_bps_limit` | P05，未验证 |
-| 中继与性能 | 允许中继的网络 · `flags.relay_network_whitelist` | `enable_relay_network_whitelist, relay_network_whitelist` | P05，未验证 |
-| 中继与性能 | 帮助其他网络交换建链信息 · `flags.relay_all_peer_rpc` | `relay_all_peer_rpc` | P05，未验证 |
-| 中继与性能 | KCP 代理 TCP 流 · `flags.enable_kcp_proxy` | `enable_kcp_proxy` | P05，未验证 |
-| 中继与性能 | 允许 KCP 代理接入 · `flags.disable_kcp_input` | `disable_kcp_input` | P05，未验证 |
-| 中继与性能 | QUIC 代理 TCP 流 · `flags.enable_quic_proxy` | `enable_quic_proxy` | P05，未验证 |
-| 中继与性能 | 允许 QUIC 代理接入 · `flags.disable_quic_input` | `disable_quic_input` | P05，未验证 |
-| Android 应用设置 | 应用范围 · `android.appRoutingMode` | `Android 自有设置，不写入核心 TOML` | P05，未验证 |
-| Android 应用设置 | 选中的应用 · `android.appPackages` | `Android 自有设置，不写入核心 TOML` | P05，未验证 |
-| Android 应用设置 | 互联网流量范围 · `android.internetRouting` | `Android 自有设置，不写入核心 TOML` | P05，未验证 |
-| Android 应用设置 | 非组网 IPv6 策略 · `android.ipv6Policy` | `Android 自有设置，不写入核心 TOML` | P05，未验证 |
-| Android 应用设置 | DNS 策略 · `android.dnsMode` | `Android 自有设置，不写入核心 TOML` | P05，未验证 |
-| Android 应用设置 | 自定义 DNS 地址 · `android.dnsServers` | `Android 自有设置，不写入核心 TOML` | P05，未验证 |
-| Android 应用设置 | 网络恢复后自动重连 · `android.autoReconnect` | `Android 自有设置，不写入核心 TOML` | P05，未验证 |
+| 网络与地址 | 网络名称 · `network_identity.network_name` | `network_name` | P03，设备未验证 |
+| 网络与地址 | 网络密码 · `network_identity.network_secret` | `network_secret` | P03，设备未验证 |
+| 网络与地址 | 本设备名称 · `hostname` | `hostname` | P03，设备未验证 |
+| 网络与地址 | 自动分配 IPv4 · `dhcp` | `dhcp` | P03，设备未验证 |
+| 网络与地址 | 虚拟 IPv4 地址 · `ipv4` | `network_length, virtual_ipv4` | P03，设备未验证 |
+| 网络与地址 | 允许底层 IPv6 连接 · `flags.enable_ipv6` | `disable_ipv6` | P05，设备未验证 |
+| 网络与地址 | MagicDNS 组网域名 · `flags.accept_dns` | `enable_magic_dns` | P05，设备未验证 |
+| 节点与直连 | 连接节点 · `peer` | `peer_urls` | P03（P05 扩展），设备未验证 |
+| 节点与直连 | 监听地址 · `listeners` | `listener_urls` | P05，设备未验证 |
+| 节点与直连 | 公布的外部地址 · `mapped_listeners` | `mapped_listeners` | P05，设备未验证 |
+| 节点与直连 | 普通自动 P2P · `flags.disable_p2p` | `disable_p2p` | P05，设备未验证 |
+| 节点与直连 | 仅与已直连节点通信 · `flags.p2p_only` | `p2p_only` | P05，设备未验证 |
+| 节点与直连 | 有流量时再建立 P2P · `flags.lazy_p2p` | `lazy_p2p` | P05，设备未验证 |
+| 节点与直连 | 要求对端主动建立 P2P · `flags.need_p2p` | `need_p2p` | P05，设备未验证 |
+| 节点与直连 | UDP 打洞 · `flags.disable_udp_hole_punching` | `disable_udp_hole_punching` | P05，设备未验证 |
+| 节点与直连 | TCP 打洞 · `flags.disable_tcp_hole_punching` | `disable_tcp_hole_punching` | P05，设备未验证 |
+| 节点与直连 | 对称 NAT 打洞 · `flags.disable_sym_hole_punching` | `disable_sym_hole_punching` | P05，设备未验证 |
+| 节点与直连 | 自动端口映射 · `flags.disable_upnp` | `disable_upnp` | P05，设备未验证 |
+| 路由与服务 | 路由接收方式 · `routes` | `enable_manual_routes, routes` | P05，设备未验证 |
+| 路由与服务 | 互联网出口节点 · `exit_nodes` | `exit_nodes` | P05，设备未验证 |
+| 路由与服务 | 分享本地子网 · `proxy_network` | `proxy_cidrs` | P05，设备未验证 |
+| 路由与服务 | SOCKS5 监听 · `socks5_proxy` | `enable_socks5, socks5_port` | P05，设备未验证 |
+| 路由与服务 | 端口转发 · `port_forward` | `port_forwards` | P05，设备未验证 |
+| 路由与服务 | WireGuard Portal · `vpn_portal_config` | `enable_vpn_portal, vpn_portal_client_network_addr, vpn_portal_client_network_len, vpn_portal_listen_port` | P05，设备未验证 |
+| 路由与服务 | 允许本机作为出口 · `flags.enable_exit_node` | `enable_exit_node` | P05，设备未验证 |
+| 安全与访问 | 通信加密 · `flags.enable_encryption` | `disable_encryption` | P05，设备未验证 |
+| 安全与访问 | 限制外部网络接入 · `flags.private_mode` | `enable_private_mode` | P05，设备未验证 |
+| 安全与访问 | 访问控制 ACL · `acl` | `acl` | P05，设备未验证 |
+| 中继与性能 | 优先低延迟路径 · `flags.latency_first` | `latency_first` | P05，设备未验证 |
+| 中继与性能 | 隧道 MTU · `flags.mtu` | `mtu` | P03，设备未验证 |
+| 中继与性能 | 本网络接收限速 · `flags.instance_recv_bps_limit` | `instance_recv_bps_limit` | P05，设备未验证 |
+| 中继与性能 | 允许中继的网络 · `flags.relay_network_whitelist` | `enable_relay_network_whitelist, relay_network_whitelist` | P05，设备未验证 |
+| 中继与性能 | 帮助其他网络交换建链信息 · `flags.relay_all_peer_rpc` | `relay_all_peer_rpc` | P05，设备未验证 |
+| 中继与性能 | KCP 代理 TCP 流 · `flags.enable_kcp_proxy` | `enable_kcp_proxy` | P05，设备未验证 |
+| 中继与性能 | 允许 KCP 代理接入 · `flags.disable_kcp_input` | `disable_kcp_input` | P05，设备未验证 |
+| 中继与性能 | QUIC 代理 TCP 流 · `flags.enable_quic_proxy` | `enable_quic_proxy` | P05，设备未验证 |
+| 中继与性能 | 允许 QUIC 代理接入 · `flags.disable_quic_input` | `disable_quic_input` | P05，设备未验证 |
+| Android 应用设置 | 应用范围 · `android.appRoutingMode` | `Android 自有设置，不写入核心 TOML` | P05，设备未验证 |
+| Android 应用设置 | 选中的应用 · `android.appPackages` | `Android 自有设置，不写入核心 TOML` | P05，设备未验证 |
+| Android 应用设置 | 互联网流量范围 · `android.internetRouting` | `Android 自有设置，不写入核心 TOML` | P03（P05 扩展），设备未验证 |
+| Android 应用设置 | 非组网 IPv6 策略 · `android.ipv6Policy` | `Android 自有设置，不写入核心 TOML` | P03（P05 扩展），设备未验证 |
+| Android 应用设置 | DNS 策略 · `android.dnsMode` | `Android 自有设置，不写入核心 TOML` | P05，设备未验证 |
+| Android 应用设置 | 自定义 DNS 地址 · `android.dnsServers` | `Android 自有设置，不写入核心 TOML` | P03（P05 扩展），设备未验证 |
+| Android 应用设置 | 网络恢复后自动重连 · `android.autoReconnect` | `Android 自有设置，不写入核心 TOML` | P05，设备未验证 |
 
 ## 基础配置与本地名称
 
@@ -81,18 +101,20 @@ P00 的解析与受控真机观察已在限定范围完成，见 [最终报告](
 
 ## 8 个历史隐藏项的复审
 
-| 键 | 原型理由 | P00/P05要求 |
-|---|---|---|
-| `flags.bind_device` | 当前 Android native host 设置 allow_interface_bind=false，物理网卡绑定由平台适配管理。 | 对选定版本重新举证，区分平台托管、当前实现限制与产品运行模式；保留已有保存数据 |
-| `flags.dev_name` | 本客户端采用免 Root VpnService；TUN 由 Android 创建，接口名称由平台管理。 | 对选定版本重新举证，区分平台托管、当前实现限制与产品运行模式；保留已有保存数据 |
-| `flags.enable_udp_broadcast_relay` | 此实现捕获物理网卡 UDP 广播的路径限定 Windows + tun；当前 Android 客户端不提供。 | 对选定版本重新举证，区分平台托管、当前实现限制与产品运行模式；保留已有保存数据 |
-| `ipv6_public_addr_auto` | 当前客户端尚未提供公网 IPv6 自动分配与 TUN 路由同步适配；保留来源映射但不展示为可操作选项。 | 尚未适配不等于不适用；先调查公网IPv6与TUN路由同步，可适用则恢复编辑并实现 |
-| `flags.multi_thread` | JNI 共享运行时由应用初始化，不作为单网络的可编辑开关。 | 对选定版本重新举证，区分平台托管、当前实现限制与产品运行模式；保留已有保存数据 |
-| `flags.no_tun` | 本客户端运行模式固定为免 Root VPN；不提供改变数据路径的 NO_TUN 模式开关。 | 对选定版本重新举证，区分平台托管、当前实现限制与产品运行模式；保留已有保存数据 |
-| `flags.proxy_forward_by_system` | 免 Root VpnService 不提供 Linux 内核转发管理；本客户端采用用户态代理。 | 对选定版本重新举证，区分平台托管、当前实现限制与产品运行模式；保留已有保存数据 |
-| `flags.use_smoltcp` | 当前 Android native host 要求用户态协议栈，属于宿主接管选项。 | 对选定版本重新举证，区分平台托管、当前实现限制与产品运行模式；保留已有保存数据 |
+以下是已分配的调查与实现任务，不是新的平台事实结论。具体调查入口、决定条件和断言以 [P05-01](../../plan/p05-advanced-networking.md#p05-01--将能力矩阵接入完整配置) 为唯一任务说明。
 
-隐藏项在表单与搜索中都不可出现，但导入/保存不能无提示删除它们。保留原始数据不等于把未验证字段直接交给运行核心；保留文档与生成有效运行配置是两个步骤。
+| key | 当前可确认的状态 | 调查任务 | 决定后的实现归属 |
+|---|---|---|---|
+| flags.bind_device | 仍需核对 Android interface bind/protect 调用链 | P05-01b | P05-06，宿主物理网络选择与运行覆盖 |
+| flags.dev_name | 仍需核对外部 fd 与核心创建 TUN 的分支 | P05-01b | P05-06，阻止通过名称创建第二 TUN |
+| flags.enable_udp_broadcast_relay | 历史理由为平台编译限制，当前决定尚未更新 | P05-01b | P05-03，按固定源码判断不适用或实施用户态适配 |
+| ipv6_public_addr_auto | 尚未适配，不能判为永久不适用 | P05-01c | P05-06，地址事件、读取、TUN 同步及失败处理 |
+| flags.multi_thread | 仍需核对共享 runtime 与配置读取时点 | P05-01b | P05-02 完成运行覆盖；P06-05 追加资源回归 |
+| flags.no_tun | 仍需核对外部 TUN 接入所需配置值 | P05-01b | P05-06，固定外部 TUN 接入模式 |
+| flags.proxy_forward_by_system | 仍需核对内核转发与用户态分支 | P05-01b | P05-03，免 Root 用户态代理接线 |
+| flags.use_smoltcp | 仍需核对 Android 编译 feature 和实际选择 | P05-01b | P05-03，宿主协议栈选择与运行覆盖 |
+
+仍属平台托管、不适用或未适配的项不进入可操作表单或搜索；ipv6_public_addr_auto 只有完成适配与工程断言后才能加入 nativeExtensions 并展示。保存原文不删除隐藏字段，运行投影仅使用已确认的宿主值；无法解释的字段阻止应用。当前八项调查均未开始，不能将本表的任务描述写成已完成平台支持。
 
 ## 审计命令
 

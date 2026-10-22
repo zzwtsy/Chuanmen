@@ -25,7 +25,7 @@ git switch -c feat/profile-import
 
 PR 标题为 `type(scope)!: 描述`，scope 和 `!` 可选，描述可以用中文，不设长度硬限制。类型沿用 `feat`、`fix`、`docs`、`refactor`、`perf`、`test`、`build`、`ci`、`style`、`chore`、`revert`。scope 指向稳定模块或能力，描述说明最终行为，例如 `fix(configuration): 保存失败时保留草稿`。不兼容变化使用 `!`，正文补充 `BREAKING CHANGE:`、受影响对象和迁移方法。
 
-PR 以 `main` 为目标，按 [PR 模板](../../.github/pull_request_template.md) 记录触发条件、原有问题、最终结果、实际验证命令与结果、未覆盖范围及兼容影响。静态、JVM、构建、模拟器和真机结果分别报告，运行链接对应具体 SHA。普通 CI 不构成真机、阶段退出或发布验收。
+PR 以 `main` 为目标，按 [PR 模板](../../.github/pull_request_template.md) 记录触发条件、原有问题、最终结果、实际验证命令与结果、未覆盖范围及兼容影响。静态、JVM、构建、模拟器和真机结果分别报告，运行链接对应具体 SHA。普通 CI 只说明该 SHA 的已运行检查通过；阶段退出还需对应任务全部断言和工程记录完成，发布准备还需 P07 候选材料与摘要核对。CI 不能证明设备效果或发布动作已执行。
 
 ## 使用 gh 交付
 
@@ -43,7 +43,7 @@ Draft 用于尚在开发或等待检查的 PR，不绕过 CI。完成代码复�
 
 ## CI 与必需检查
 
-[统一 CI](../../.github/workflows/ci.yml) 对所有 PR 与 main 推送执行相同的静态、JVM、lint、native、APK 和对齐检查，无路径分类或复用工作流。设备测试源码编译，真实设备回归按任务另行执行。
+[统一 CI](../../.github/workflows/ci.yml) 对所有 PR 与 main 推送执行相同的静态、JVM、lint、native、APK 和对齐检查，无路径分类或复用工作流。设备测试源码仅编译；按当前路线图，P03–P07 不执行模拟器、真机或 release 冒烟。
 
 固定必需检查仍为 `pr-policy` 和 `quality-gate`。[PR 策略](../../.github/workflows/pr-policy.yml) 只从事件 JSON 读取标题与目标分支，不把标题拼接到 shell。`quality-gate` 使用 `always()` 汇总，所有依赖任务必须 success；失败、取消、缺失或跳过均不通过。源码精简不修改远端规则。
 

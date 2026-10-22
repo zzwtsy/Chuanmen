@@ -2,11 +2,17 @@
 
 常规开发使用相关测试、构建与 lint；技术不确定性或只能由设备观察的行为才需要专门实验。当前命令见 [开发环境](setup.md)，目录见 [ADR 0005](../design/adr/0005-single-app.md)。
 
+## 当前计划的验证范围
+
+2026-10-23 起，结构精简设备补验和 P03–P07 全部设备验收取消，包括模拟器、真机、release 冒烟、安装升级、长时运行、耗电、TalkBack 与 16 KB runtime。现行阶段仅采用 [工程检查组合](setup.md#工程阶段检查组合)，androidTest 只编译。下文的设备实验规则保留用于理解历史记录；本轮不启动实验，不生成新冻结证据包。
+
+本轮报告使用三种独立字段：实施状态（未开始/进行中/已完成/有具体阻塞）、工程检查结果（passed/failed/not_run）和设备范围（not_planned，结果仍未验证）。取消设备执行只改变范围，不把设备结果改为 passed，也不把所有功能任务改为 blocked。
+
 ## 验证范围
 
 静态、JVM、native 宿主、APK 构建、模拟器和真机分别报告。JNI pipe 不能证明 VPN 业务连通，静态 16 KB 对齐不能证明 16 KB runtime，界面显示已连接不能证明 peer 回包。新 APK 不继承旧设备验收。
 
-可长期复用的行为放入 app 标准测试目录或 app/native/tests；真实设备回归与受控 peer 归 scripts/android。当前设备判据保留完整 instrumentation 身份、应用报告、实际 APK 摘要和 peer 的请求/响应关联。缺测为 null，缺报、跳过或只退出 0 均不算通过。
+可长期复用的行为放入 app 标准测试目录或 app/native/tests；真实设备回归与受控 peer 归 scripts/android。保留的历史设备判据包含完整 instrumentation 身份、应用报告、实际 APK 摘要和 peer 的请求/响应关联。缺测为 null，缺报、跳过或只退出 0 均不算通过。
 
 ## 实验只解决明确问题
 

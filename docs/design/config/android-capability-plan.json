@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "status": "planning-baseline",
-  "checkedDate": "2026-10-15",
+  "checkedDate": "2026-10-23",
   "scope": "与原型冻结目录一一对应；不等于原生接口已实现或永久功能上限",
   "catalogSha256": "eaac5fd840290719d0ad270ff4ed36730274d946166646824e4757bd05148e63",
   "authority": "以P00选定二进制与阶段实证更新，snapshot中的availability/apply不可作为完成凭据",
@@ -17,547 +17,973 @@
       "key": "network_identity.network_name",
       "nativeStatus": "not_verified",
       "editorStage": "P03",
-      "runtimeVerificationStage": "P03",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
       "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
       "controlledInputStage": "P02",
       "implementationNote": "CoreConfig.networkName：正式桥编码并用于受控真实组网；完整编辑和身份变更矩阵仍属 P03",
-      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified"
+      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified",
+      "implementationStage": "P03",
+      "implementationTask": "P03-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P03-01",
+        "P03-03",
+        "P03-02",
+        "P03-04",
+        "P03-05",
+        "P03-06",
+        "P03-08"
+      ]
     },
     {
       "key": "network_identity.network_secret",
       "nativeStatus": "not_verified",
       "editorStage": "P03",
-      "runtimeVerificationStage": "P03",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
       "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
       "controlledInputStage": "P02",
       "implementationNote": "CoreConfig.networkSecret / NetworkSecret：正式 TOML 编码和受控握手已接入，嵌套字符串脱敏；加密持久化与错误密码矩阵尚未验收",
-      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified"
+      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified",
+      "implementationStage": "P03",
+      "implementationTask": "P03-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P03-01",
+        "P03-03",
+        "P03-02",
+        "P03-04",
+        "P03-05",
+        "P03-06",
+        "P03-08"
+      ]
     },
     {
       "key": "hostname",
       "nativeStatus": "not_verified",
       "editorStage": "P03",
-      "runtimeVerificationStage": "P03",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
+      "implementationStage": "P03",
+      "implementationTask": "P03-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P03-01",
+        "P03-03",
+        "P03-02",
+        "P03-04",
+        "P03-05",
+        "P03-06",
+        "P03-08"
+      ]
     },
     {
       "key": "dhcp",
       "nativeStatus": "not_verified",
       "editorStage": "P03",
-      "runtimeVerificationStage": "P03",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
       "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
       "controlledInputStage": "P02",
       "implementationNote": "Ipv4Assignment.Automatic：正式核心实际分配地址与 TUN 参数一致，policy-01 已取得 TCP/UDP 业务回包；冲突和完整地址变更矩阵仍属后续阶段",
-      "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified"
+      "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified",
+      "implementationStage": "P03",
+      "implementationTask": "P03-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P03-01",
+        "P03-03",
+        "P03-02",
+        "P03-04",
+        "P03-05",
+        "P03-06",
+        "P03-08"
+      ]
     },
     {
       "key": "ipv4",
       "nativeStatus": "not_verified",
       "editorStage": "P03",
-      "runtimeVerificationStage": "P03",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
       "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
       "controlledInputStage": "P02",
       "implementationNote": "Ipv4Assignment.Static：正式 Service 从核心实际 IPv4 建立 TUN；API36 受控静态10.222.0.2与业务回包已通过，地址冲突与完整矩阵待验收",
-      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified"
+      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified",
+      "implementationStage": "P03",
+      "implementationTask": "P03-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P03-01",
+        "P03-03",
+        "P03-02",
+        "P03-04",
+        "P03-05",
+        "P03-06",
+        "P03-08"
+      ]
     },
     {
       "key": "flags.enable_ipv6",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
+      "implementationStage": "P05",
+      "implementationTask": "P05-06",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-06"
+      ]
     },
     {
       "key": "flags.accept_dns",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理"
+      "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
+      "implementationStage": "P05",
+      "implementationTask": "P05-06",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-06"
+      ]
     },
     {
       "key": "peer",
       "nativeStatus": "not_verified",
       "editorStage": "P03",
-      "runtimeVerificationStage": "P03",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
       "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
       "controlledInputStage": "P02",
       "implementationNote": "CoreConfig.peers / PeerEndpoint：正式 TCP/UDP 外层均已有受控业务回包；其他协议仍待实现",
-      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified"
+      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified",
+      "implementationStage": "P03",
+      "implementationTask": "P03-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P03-01",
+        "P03-03",
+        "P03-02",
+        "P03-04",
+        "P03-05",
+        "P03-06",
+        "P03-08"
+      ],
+      "extensionTask": "P05-02",
+      "extensionEngineeringStatus": "planned",
+      "extensionEngineeringEvidence": []
     },
     {
       "key": "listeners",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "implementationStage": "P05",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-02"
+      ]
     },
     {
       "key": "mapped_listeners",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "implementationStage": "P05",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-02"
+      ]
     },
     {
       "key": "flags.disable_p2p",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "implementationStage": "P05",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-02"
+      ]
     },
     {
       "key": "flags.p2p_only",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "implementationStage": "P05",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-02"
+      ]
     },
     {
       "key": "flags.lazy_p2p",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "implementationStage": "P05",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-02"
+      ]
     },
     {
       "key": "flags.need_p2p",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "implementationStage": "P05",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-02"
+      ]
     },
     {
       "key": "flags.disable_udp_hole_punching",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "implementationStage": "P05",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-02"
+      ]
     },
     {
       "key": "flags.disable_tcp_hole_punching",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "implementationStage": "P05",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-02"
+      ]
     },
     {
       "key": "flags.disable_sym_hole_punching",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "implementationStage": "P05",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-02"
+      ]
     },
     {
       "key": "flags.disable_upnp",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复"
+      "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
+      "implementationStage": "P05",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-02"
+      ]
     },
     {
       "key": "routes",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退",
+      "implementationStage": "P05",
+      "implementationTask": "P05-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-03"
+      ]
     },
     {
       "key": "exit_nodes",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退",
+      "implementationStage": "P05",
+      "implementationTask": "P05-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-03"
+      ]
     },
     {
       "key": "proxy_network",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退",
+      "implementationStage": "P05",
+      "implementationTask": "P05-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-03"
+      ]
     },
     {
       "key": "socks5_proxy",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退",
+      "implementationStage": "P05",
+      "implementationTask": "P05-04",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-04"
+      ]
     },
     {
       "key": "port_forward",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退",
+      "implementationStage": "P05",
+      "implementationTask": "P05-04",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-04"
+      ]
     },
     {
       "key": "vpn_portal_config",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退",
+      "implementationStage": "P05",
+      "implementationTask": "P05-04",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-04"
+      ]
     },
     {
       "key": "flags.enable_exit_node",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退"
+      "minimumValidation": "核心路由与Android路由/DNS协同、真实业务路径与失败回退",
+      "implementationStage": "P05",
+      "implementationTask": "P05-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-03"
+      ]
     },
     {
       "key": "flags.enable_encryption",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "允许与拒绝样例、秘密脱敏、对端互操作与冲突验证"
+      "minimumValidation": "允许与拒绝样例、秘密脱敏、对端互操作与冲突验证",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "flags.private_mode",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "允许与拒绝样例、秘密脱敏、对端互操作与冲突验证"
+      "minimumValidation": "允许与拒绝样例、秘密脱敏、对端互操作与冲突验证",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "acl",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "允许与拒绝样例、秘密脱敏、对端互操作与冲突验证"
+      "minimumValidation": "允许与拒绝样例、秘密脱敏、对端互操作与冲突验证",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "flags.latency_first",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "flags.mtu",
       "nativeStatus": "not_verified",
       "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果",
+      "implementationStage": "P03",
+      "implementationTask": "P03-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P03-01",
+        "P03-03",
+        "P03-02",
+        "P03-04",
+        "P03-05",
+        "P03-06",
+        "P03-08"
+      ]
     },
     {
       "key": "flags.instance_recv_bps_limit",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "flags.relay_network_whitelist",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "flags.relay_all_peer_rpc",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "flags.enable_kcp_proxy",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "flags.disable_kcp_input",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "flags.enable_quic_proxy",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "flags.disable_quic_input",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": true,
-      "applyPolicy": "verify-before-hot-apply",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果"
+      "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-05",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-05"
+      ]
     },
     {
       "key": "android.appRoutingMode",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": false,
-      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-06",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-06"
+      ]
     },
     {
       "key": "android.appPackages",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": false,
-      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-06",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-06"
+      ]
     },
     {
       "key": "android.internetRouting",
       "nativeStatus": "not_verified",
       "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": false,
-      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
       "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
       "controlledInputStage": "P02",
       "implementationNote": "AndroidVpnPolicy.includeInternet：policy-01 已核对平台 0.0.0.0/0、MTU 1400 与 TCP 外层真实双业务回包、保护失败为0；完整应用范围和默认路由组合仍待验证",
-      "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified"
+      "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified",
+      "implementationStage": "P03",
+      "implementationTask": "P03-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "extensionTask": "P05-06",
+      "completionTasks": [
+        "P03-01",
+        "P03-03",
+        "P03-02",
+        "P03-04",
+        "P03-05",
+        "P03-06",
+        "P03-07",
+        "P03-08"
+      ],
+      "extensionEngineeringStatus": "planned",
+      "extensionEngineeringEvidence": []
     },
     {
       "key": "android.ipv6Policy",
       "nativeStatus": "not_verified",
       "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": false,
-      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
       "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
       "controlledInputStage": "P02",
       "implementationNote": "Ipv6Policy.Block：Service 不开启 IPv6 family；network-03 在具备真实全局 IPv6 正向基线的 API36 真机验证 TCP/UDP 在 VPN 前后回包、VPN 内拒绝且对端无请求；其他 OEM 和完整双栈未验收",
-      "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified"
+      "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified",
+      "implementationStage": "P03",
+      "implementationTask": "P03-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "extensionTask": "P05-06",
+      "completionTasks": [
+        "P03-01",
+        "P03-03",
+        "P03-02",
+        "P03-04",
+        "P03-05",
+        "P03-06",
+        "P03-07",
+        "P03-08"
+      ],
+      "extensionEngineeringStatus": "planned",
+      "extensionEngineeringEvidence": []
     },
     {
       "key": "android.dnsMode",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": false,
-      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-06",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-06"
+      ]
     },
     {
       "key": "android.dnsServers",
       "nativeStatus": "not_verified",
       "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": false,
-      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
       "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
       "controlledInputStage": "P02",
       "implementationNote": "AndroidVpnPolicy.dnsServers：API36 正式 VPN Network 的系统 resolver 已在 TCP/UDP 外层得到受控虚拟53端口实际 A 回包；不覆盖 Private DNS 或完整 IPv6组合",
-      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified"
+      "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified",
+      "implementationStage": "P03",
+      "implementationTask": "P03-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "extensionTask": "P05-06",
+      "completionTasks": [
+        "P03-01",
+        "P03-03",
+        "P03-02",
+        "P03-04",
+        "P03-05",
+        "P03-06",
+        "P03-07",
+        "P03-08"
+      ],
+      "extensionEngineeringStatus": "planned",
+      "extensionEngineeringEvidence": []
     },
     {
       "key": "android.autoReconnect",
       "nativeStatus": "not_verified",
-      "editorStage": "P03",
-      "runtimeVerificationStage": "P05",
+      "editorStage": "P05",
+      "runtimeVerificationStage": null,
       "exportToCore": false,
-      "applyPolicy": "classify-app-immediate-or-rebuild-vpn",
+      "applyPolicy": "controlled-reconnect",
       "evidence": [],
-      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果"
+      "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
+      "implementationStage": "P05",
+      "implementationTask": "P05-06",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "completionTasks": [
+        "P05-06"
+      ],
+      "extensionTask": "P06-02",
+      "extensionEngineeringStatus": "planned",
+      "extensionEngineeringEvidence": []
     }
   ],
   "hiddenReview": [
     {
       "key": "flags.bind_device",
       "nativeStatus": "not_verified",
-      "reviewStage": "P00",
+      "reviewStage": "P05",
       "baselineDecision": "hidden-in-prototype",
       "reasonClass": "platform-managed-or-product-mode",
       "productionDecision": "requires_platform_review",
       "evidence": [],
-      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+      "note": "历史显隐理由不是当前源码结论。按 reviewTask 调查并记录固定 commit、相对路径、符号及运行覆盖；未开始为 planned，明确缺失接口导致无法继续才为 blocked。",
+      "reviewTask": "P05-01b",
+      "implementationTask": "P05-06",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": []
     },
     {
       "key": "flags.dev_name",
       "nativeStatus": "not_verified",
-      "reviewStage": "P00",
+      "reviewStage": "P05",
       "baselineDecision": "hidden-in-prototype",
       "reasonClass": "platform-managed-or-product-mode",
       "productionDecision": "requires_platform_review",
       "evidence": [],
-      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+      "note": "历史显隐理由不是当前源码结论。按 reviewTask 调查并记录固定 commit、相对路径、符号及运行覆盖；未开始为 planned，明确缺失接口导致无法继续才为 blocked。",
+      "reviewTask": "P05-01b",
+      "implementationTask": "P05-06",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": []
     },
     {
       "key": "flags.enable_udp_broadcast_relay",
       "nativeStatus": "not_verified",
-      "reviewStage": "P00",
+      "reviewStage": "P05",
       "baselineDecision": "hidden-in-prototype",
       "reasonClass": "current-platform-implementation-limited",
       "productionDecision": "requires_platform_review",
       "evidence": [],
-      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+      "note": "历史显隐理由不是当前源码结论。按 reviewTask 调查并记录固定 commit、相对路径、符号及运行覆盖；未开始为 planned，明确缺失接口导致无法继续才为 blocked。",
+      "reviewTask": "P05-01b",
+      "implementationTask": "P05-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": []
     },
     {
       "key": "ipv6_public_addr_auto",
       "nativeStatus": "not_verified",
-      "reviewStage": "P00",
+      "reviewStage": "P05",
       "baselineDecision": "hidden-in-prototype",
       "reasonClass": "unimplemented-not-proven-inapplicable",
       "productionDecision": "requires_platform_review",
       "evidence": [],
-      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+      "note": "历史显隐理由不是当前源码结论。按 reviewTask 调查并记录固定 commit、相对路径、符号及运行覆盖；未开始为 planned，明确缺失接口导致无法继续才为 blocked。",
+      "reviewTask": "P05-01c",
+      "implementationTask": "P05-06",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": []
     },
     {
       "key": "flags.multi_thread",
       "nativeStatus": "not_verified",
-      "reviewStage": "P00",
+      "reviewStage": "P05",
       "baselineDecision": "hidden-in-prototype",
       "reasonClass": "platform-managed-or-product-mode",
       "productionDecision": "requires_platform_review",
       "evidence": [],
-      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+      "note": "历史显隐理由不是当前源码结论。按 reviewTask 调查并记录固定 commit、相对路径、符号及运行覆盖；未开始为 planned，明确缺失接口导致无法继续才为 blocked。",
+      "reviewTask": "P05-01b",
+      "implementationTask": "P05-02",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": [],
+      "followupVerificationTask": "P06-05"
     },
     {
       "key": "flags.no_tun",
       "nativeStatus": "not_verified",
-      "reviewStage": "P00",
+      "reviewStage": "P05",
       "baselineDecision": "hidden-in-prototype",
       "reasonClass": "platform-managed-or-product-mode",
       "productionDecision": "requires_platform_review",
       "evidence": [],
-      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+      "note": "历史显隐理由不是当前源码结论。按 reviewTask 调查并记录固定 commit、相对路径、符号及运行覆盖；未开始为 planned，明确缺失接口导致无法继续才为 blocked。",
+      "reviewTask": "P05-01b",
+      "implementationTask": "P05-06",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": []
     },
     {
       "key": "flags.proxy_forward_by_system",
       "nativeStatus": "not_verified",
-      "reviewStage": "P00",
+      "reviewStage": "P05",
       "baselineDecision": "hidden-in-prototype",
       "reasonClass": "platform-managed-or-product-mode",
       "productionDecision": "requires_platform_review",
       "evidence": [],
-      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+      "note": "历史显隐理由不是当前源码结论。按 reviewTask 调查并记录固定 commit、相对路径、符号及运行覆盖；未开始为 planned，明确缺失接口导致无法继续才为 blocked。",
+      "reviewTask": "P05-01b",
+      "implementationTask": "P05-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": []
     },
     {
       "key": "flags.use_smoltcp",
       "nativeStatus": "not_verified",
-      "reviewStage": "P00",
+      "reviewStage": "P05",
       "baselineDecision": "hidden-in-prototype",
       "reasonClass": "platform-managed-or-product-mode",
       "productionDecision": "requires_platform_review",
       "evidence": [],
-      "note": "低频或暂未适配都不足以永久隐藏；适用能力在P05补齐或明确列为阻塞"
+      "note": "历史显隐理由不是当前源码结论。按 reviewTask 调查并记录固定 commit、相对路径、符号及运行覆盖；未开始为 planned，明确缺失接口导致无法继续才为 blocked。",
+      "reviewTask": "P05-01b",
+      "implementationTask": "P05-03",
+      "engineeringStatus": "planned",
+      "engineeringEvidence": []
     }
-  ]
+  ],
+  "verificationPolicy": {
+    "engineering": "engineeringStatus 只描述 implementationStage 首次交付范围；extensionEngineeringStatus 单独描述 extensionTask；各完成条件见本目录 README",
+    "deviceExecution": "cancelled",
+    "runtimeVerificationStage": null,
+    "nativeStatus": "保留历史状态；工程实现和检查不产生设备效果 verified"
+  },
+  "nativeExtensions": []
 }

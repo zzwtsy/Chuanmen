@@ -10,8 +10,8 @@
 |---|---|---|
 | 名称、保存、草稿与待应用 | lib/profile、features/configuration 的 ConfigurationEditor/UiState/ViewModel | 配置和 ViewModel 状态序列 |
 | 导航、复制、表单和主题 | ChuanmenApp、features/<功能>、components、ui/theme | 功能动作、Compose 语义断言与 Activity 重建 |
-| 连接、取消、撤销和资源释放 | lib/vpn 下的 NativeVpnService、VpnSessionCoordinator、VpnSessionClient | 正式协调器回执序列，必要设备回归 |
-| 核心编码或 JNI | lib/vpn 的编码器与引擎、app/native | codec/native 契约及对应设备场景 |
+| 连接、取消、撤销和资源释放 | lib/vpn 下的 NativeVpnService、VpnSessionCoordinator、VpnSessionClient | 正式协调器回执序列与资源所有权断言 |
+| 核心编码或 JNI | lib/vpn 的编码器与引擎、app/native | codec/native 宿主契约与 APK 静态检查 |
 | 配置范围和显隐 | 配置快照、能力台账、catalog 工具 | 来源映射与实际核心行为分别验证 |
 | 流量缺样本或计数重置 | lib/vpn 的 TunTrafficHistory、CoreSnapshot、Runtime；features/overview | 固定计数器与单调时间样本 |
 
@@ -40,8 +40,8 @@ scripts 仅维护仍有使用场景的 native、设备/peer、配置目录和隐
 | Python、JVM 与 native 宿主回归 | 输入校验、模型、序列化、并发和资源契约 |
 | Compose JVM | 固定状态下的界面语义与交互 |
 | APK 构建和对齐 | 编译、双 ABI 库身份和静态 16 KB 对齐 |
-| 模拟器 / 真机 / 受控网络 | 本次实际 APK 的平台行为、生命周期或业务回包 |
+| 模拟器 / 真机 / 受控网络（本轮不执行） | 仅历史对应 APK 的已记录结果；当前产物设备效果未验证 |
 
-按风险运行最小充分验证，报告实际命令、结果及未覆盖范围。测试注释用中文说明条件、动作和可观察结果。失败需解释，不能删断言、更新截图基线或关闭检查掩盖问题。
+功能变更先运行该任务“完成断言”对应的 JVM/Compose/native 回归；JSON/文档变更运行目录、隐私和链接检查；阶段退出执行 setup 的完整工程组合。报告实际命令、退出码、源码身份、日志位置及未覆盖范围。测试注释用中文说明条件、动作和可观察结果。失败需解释，不能删断言、更新截图基线或关闭检查掩盖问题。
 
 README 与 AGENTS 保留导航和关键约束；设计理由在架构/ADR，命令在 setup，阶段状态在路线图。历史研究与冻结证据保留原身份。Git/PR 流程见 [Git 工作流](git-workflow.md)，实验见 [验证规范](verification.md)。任务复杂时用 [任务模板](task-brief.md)，无需为普通修改建立额外流程。
