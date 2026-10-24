@@ -35,7 +35,7 @@ P00 的固定核心来源、实验补丁决策与遗留限制以报告为准。�
 | `features/logs` | 真实生命周期与核心诊断的完整来源、原有格式和顺序 |
 | `features/settings` | 更新共享外观偏好、只读展示当前查看配置的互联网范围 |
 | `components` | 多个功能使用的复制 IP、指标、分组卡片与条件操作区；不读取仓库或提交命令 |
-| `lib/profile` | 配置身份、核心输入、已保存修订、内存仓库及窄仓库所有者接口 |
+| `lib/profile` | 配置身份、原始 TOML 文档、已保存修订、加密持久仓库及窄仓库所有者接口 |
 | `lib/vpn` | 唯一真实会话、Service/JNI、TUN、授权、资源生命周期与真实采样 |
 | `lib/AppearancePreferences`、`utils/Ipv4` | 根与设置共享的外观对象；跨能力复用的纯 IPv4 校验 |
 | `app/native` | 固定上游来源、必要补丁、Rust 桥与原生回归 |
@@ -56,9 +56,9 @@ flowchart LR
 
 根与五个功能 ViewModel 在同一个 Activity owner 下以稳定键创建，不按查看身份重建。根仅向功能传只读查看身份流及必要的共享依赖，不注入其他 ViewModel。配置动作处理当下读取当前查看 ID，并确保编辑器已经打开该草稿；快速切换不会编辑旧对象。草稿按配置 ID 保留，页面/设置切换和配置重建不丢失原始输入或错误。
 
-Application 持有唯一仓库及 lazy 客户端。Service 通过 `ProfileRepositoryOwner` 核对保存修订，继续唯一拥有真实会话。主题和设置共享根 ViewModel 生命周期内的同一个外观对象；新 owner 恢复默认，不新增持久化。订阅展示状态不增加真实采样器，清理 ViewModel 不停止 Service。
+Application 持有唯一仓库及 lazy 客户端。Service 通过 `ProfileRepositoryOwner` 核对保存修订，继续唯一拥有真实会话。主题和设置共享 Application 的同一个外观偏好对象；外观与最后查看身份从非敏感 SharedPreferences 恢复。订阅展示状态不增加真实采样器，清理 ViewModel 不停止 Service。
 
-实体 source set 只有 main/test/androidTest；debug/release 共用正式内存输入，无应用侧演示数据或 Preview。初次保存不连接，显式连接才申请授权并进入真实核心；内存配置不获得 P03 持久化保证。
+实体 source set 只有 main/test/androidTest；debug/release 共用正式配置入口，无应用侧演示数据或 Preview。初次保存不连接，显式连接完成授权、校验与连接目标落盘后才进入真实核心；保存通过进程唯一仓库加密落盘，加载失败保留原文件。
 
 ### 2.1 为什么先单进程
 
@@ -73,13 +73,17 @@ Android 默认让应用组件处于同一进程；Service 不自动拥有专用�
 | 概念 | 建议模型 | 规则 |
 |---|---|---|
 | 本地配置 ID | `LocalProfileId`，随机 UUID | 永久主键；重命名不变 |
-| 本地配置名称 | `ProfileMetadata.localDisplayName` | 仅供本机识别；新建可空，留空使用网络名称；修改不触发重连 |
-| EasyTier 网络名称 | 当前 `CoreConfig.networkName`；P03 通过 `network_identity.network_name` 文档 key 投影 | 入网参数；与本地显示名独立 |
+| 本地配置名称 | `LocalProfileMetadata.localDisplayName` | 仅供本机识别；新建可空，留空使用网络名称；修改不触发重连 |
+| EasyTier 网络名称 | `CoreConfigDocument` 由 `network_identity.network_name` 解析出只读 `CoreConfig.networkName` | 入网参数；与本地显示名独立 |
 | 本设备名称 | `CoreConfig.hostname` | 对等设备看到的名称；本轮改变后通过受控重连应用 |
 | 核心实例标识 | `CoreInstanceId` / 内部实例名 | 由适配层管理且稳定映射 LocalProfileId，不使用用户可改显示名作为句柄 |
 | 运行会话 | `SessionId` + `generation` | 每次连接或受控重连换代；所有异步响应带代号 |
 
-原型 `profile.label` 在原生工程中只映射到 `ProfileMetadata.localDisplayName`，不同时保留 `displayName` 或 `label` 作为第二份可写字段。重命名只更新元数据事务。还原上次运行配置、导入核心 TOML、丢弃草稿，都不得覆盖用户自己起的本地名称。复制配置生成新的 LocalProfileId；导入时不能让文件中的 `instance_name` 直接接管内部句柄。
+原型 `profile.label` 在原生工程中只映射到 `LocalProfileMetadata.localDisplayName`，不同时保留 `displayName` 或 `label` 作为第二份可写字段。重命名只更新元数据事务。还原上次运行配置、导入核心 TOML、丢弃草稿，都不得覆盖用户自己起的本地名称。复制配置生成新的 LocalProfileId；导入时不能让文件中的 `instance_name` 直接接管内部句柄。
+
+创建和编辑共用 `RawConfigurationInput`、类型化字段目录与输入工厂。节点行的 `PeerRowId` 只存在于草稿，补丁以原数组索引明确保留、替换或插入，未引用的原节点才被删除。Rust 复制完整原节点以保留未知成员；未知成员仍阻止运行。
+
+保存提交以独立 `SaveToken` 识别请求，以草稿代次和编辑序号识别后续输入。保存中可继续编辑，丢弃/重载需等待回执；新建首次提交锁定表单。创建页与已有编辑页使用同一 Activity 配置 ViewModel，秘密不进入 Bundle、SavedStateHandle 或磁盘草稿。运行比较使用固定核心解析后的有效值，源语义比较仍保留缺省、空值和未知字段。
 
 ### 3.2 四类状态
 
@@ -90,7 +94,11 @@ Android 默认让应用组件处于同一进程；Service 不自动拥有专用�
 | `AppliedConfig(revision, sessionId)` | 服务确认当前会话实际使用的配置版本 | 用于比较“待应用”；断开或应用结果未知时不继续作为当前事实，确认规则见 §4.3 |
 | `SessionSnapshot` | 服务与核心回执、TUN 状态、采样时间、连接路径 | 首页连接状态与设备状态的唯一运行来源 |
 
-P03 待实施的存储方案固定采用 AtomicFile + 版本化 JSON + Keystore AES-GCM 保存配置，密文位于 noBackupFilesDir；不引入 Room/DataStore。元数据、原始核心文档、Android 策略和最后明确连接目标一起原子提交；提交成功才发布内存快照。非敏感外观偏好与最后查看 ID 使用 SharedPreferences，最后查看 ID 不能作为自动连接目标。完整接口和错误语义见 [P03](../plan/p03-configuration.md)。
+P03 存储采用 AtomicFile + 版本化 JSON + Keystore AES-GCM 保存配置，密文位于 noBackupFilesDir；不引入 Room/DataStore。元数据、原始核心文档、Android 策略和最后明确连接目标一起原子提交；提交成功才发布内存快照。非敏感外观偏好与最后查看 ID 使用 SharedPreferences，最后查看 ID 不能作为自动连接目标。已有密文只允许获取原密钥，密钥不可用时阻止写入并保留密文与最近成功快照。仓库以候选树生成编码字节，原子落盘成功才发布该候选快照；改名与连接目标更新不重新解析全部 TOML。codec 由 Application 显式装配，仓库接口不暴露 codec。完整接口和错误语义见 [P03](../plan/p03-configuration.md)。
+
+schemaVersion 为 1；完整 JSON 明文上限 8 MiB，单项 TOML 上限 128 KiB，JNI 编码后上限 256 KiB。AES-256-GCM 使用每次独立 12 字节 IV、128 位认证标签和版本头 AAD。读取只使用已有 Keystore 密钥，密钥缺失不重建覆盖；AtomicFile 提交成功后才发布 Ready/最新快照。写接口使用 suspend、明确 WriteResult 与 expectedRevision 比较；元数据合并，相同解析值不增加修订，排版变化仍保存原文。没有生产旧磁盘格式，不实现 schema 0 迁移。
+
+原始 TOML 是唯一可保存源，字段投影只读；parse/patch/runtime 编码共用唯一 .so 和固定核心解析器。未知字段、日期、u64、显式 false/空列表保留，未接入项阻止运行；u64 以十进制字符串穿过 JNI。托管字段只在运行输出覆盖并提供脱敏 key 预览。宿主补丁 `p03-config-host-v1` 保留显式 IPv4 前缀（含 /32），裸地址沿用 /24；来源 commit 未升级，补丁前后摘要见 app/native/inputs.json。运行比较排除排版、本地名称、托管参数及来源身份字段。
 
 仅保存已保存版本；草稿在切页和旋转时保留，进程退出后丢弃。秘密不进入 SavedStateHandle、Bundle、日志或测试真实凭据。密钥失效、认证失败、损坏及未来 schema 保留原文件并报告读取失败，不能自动初始化为空。配置与日志从系统备份和设备迁移中排除；用户显式备份由 P05 的 age 口令加密导出提供。[A-15]
 
@@ -102,7 +110,7 @@ P03 待实施的存储方案固定采用 AtomicFile + 版本化 JSON + Keystore 
 
 会话控制器按命令串行执行 `Connect(profileId)`、`Disconnect`、`Apply(savedRevision)`、`UnderlyingNetworkChanged`、`Revoke`，每条命令具有操作 ID。反复点击连接合并为同一操作；过期的启动回执、指标和日志不能覆盖新会话。
 
-P03–P06 对恢复目标使用以下约束：持久化的 lastExplicitConnectTarget 与 UI viewedProfileId、进程内 desired 分开。用户授权且连接校验通过后，先原子保存目标再发 Start；目标写失败不启动。普通停止清除 desired 和重试，不删除 lastExplicitConnectTarget；删除配置时同时删除目标引用。新的系统 Always-on 启动属于新的明确系统意图，可以读取该目标，但普通 App/Service 重建不能自行恢复。
+P03–P06 对恢复目标使用以下约束：持久化的 lastConnectionTarget 与 UI viewedProfileId、进程内 desired 分开。用户授权且连接校验通过后，先原子保存目标再发 Start；目标写失败不启动。普通停止清除 desired 和重试，不删除 lastConnectionTarget；删除配置时同时删除目标引用。新的系统 Always-on 启动属于新的明确系统意图，可以读取该目标，但普通 App/Service 重建不能自行恢复。
 
 ### 4.1 连接事务
 

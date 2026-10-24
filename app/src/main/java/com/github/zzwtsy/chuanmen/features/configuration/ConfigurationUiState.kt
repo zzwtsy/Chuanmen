@@ -17,6 +17,9 @@ data class ConfigurationUiState(
     val operationPending: Boolean = false,
     val failure: OperationFailure? = null,
     val message: String? = null,
+    val outcomeUnknown: Boolean = false,
+    val holdingProfile: Boolean = false,
+    val canRestore: Boolean = false,
 ) {
     companion object {
         internal fun project(
@@ -28,10 +31,13 @@ data class ConfigurationUiState(
             val running = applied?.freshness == DataFreshness.Fresh &&
                 applied.sessionId == session.sessionId && session.phase != ConnectionPhase.OutcomeUnknown
             val pending = running && profile != null && applied != null &&
-                (profile.saved.core != applied.saved.core || profile.saved.vpnPolicy != applied.saved.vpnPolicy)
+                (!profile.saved.document.sameRuntimeValues(applied.saved.document) || profile.saved.vpnPolicy != applied.saved.vpnPolicy)
             return ConfigurationUiState(
                 profile, draft, running, pending, session.pending != null,
                 session.failure.takeIf { session.requestedProfileId == viewedId && profile != null }, message,
+                outcomeUnknown = session.phase == ConnectionPhase.OutcomeUnknown && session.requestedProfileId == viewedId,
+                holdingProfile = session.requestedProfileId == viewedId && session.phase !in setOf(ConnectionPhase.Idle, ConnectionPhase.Failed),
+                canRestore = applied != null && (pending || session.failure != null),
             )
         }
     }

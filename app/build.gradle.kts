@@ -45,6 +45,35 @@ abstract class BuildNative : DefaultTask() {
     }
 }
 
+/** 独立宿主回归只构建当前主机库；普通 JVM/lint 不依赖此任务。 */
+abstract class BuildHostNativeCodec : DefaultTask() {
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val sources: ConfigurableFileCollection
+    @get:OutputFile
+    abstract val library: RegularFileProperty
+    @get:Internal
+    abstract val repository: DirectoryProperty
+    @get:Inject
+    abstract val execOperations: ExecOperations
+
+    @TaskAction
+    fun build() {
+        val root = repository.get().asFile
+        execOperations.exec {
+            workingDir(root)
+            commandLine("python3", "scripts/native/build_native.py", "check")
+        }.assertNormalExitValue()
+        execOperations.exec {
+            workingDir(root)
+            environment("CARGO_BUILD_JOBS", "2")
+            commandLine("cargo", "+1.99.0", "build", "--manifest-path", "app/native/Cargo.toml", "--lib",
+                "--locked", "--offline", "--target-dir", "app/build/native/target")
+        }.assertNormalExitValue()
+        check(library.get().asFile.isFile) { "宿主 JNI 库未生成" }
+    }
+}
+
 val robolectricSdk = configurations.create("robolectricSdk")
 
 android {
@@ -133,6 +162,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     testImplementation(platform(libs.androidx.compose.bom))
     testImplementation(libs.junit)
+    testImplementation(libs.tomlkt)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.compose.ui.test.junit4)
@@ -143,4 +173,27 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+}
+
+val buildHostNativeCodec = tasks.register<BuildHostNativeCodec>("buildHostNativeCodec") {
+    group = "verification"
+    description = "构建固定依赖的宿主配置 JNI 库"
+    repository.set(rootProject.layout.projectDirectory)
+    sources.from(buildNative.flatMap { it.sources.elements })
+    library.set(layout.buildDirectory.file("native/target/debug/${System.mapLibraryName("chuanmen_core")}"))
+}
+
+afterEvaluate {
+    val debugTests = tasks.named<Test>("testDebugUnitTest").get()
+    debugTests.exclude("**/NativeCoreConfigCodecHostTest*")
+    tasks.register<Test>("testHostNativeCodec") {
+        group = "verification"
+        description = "通过真实宿主 JNI 验证配置编解码契约"
+        testClassesDirs = debugTests.testClassesDirs
+        classpath = debugTests.classpath
+        dependsOn(debugTests.testClassesDirs, debugTests.classpath, buildHostNativeCodec)
+        filter { includeTestsMatching("com.github.zzwtsy.chuanmen.lib.vpn.NativeCoreConfigCodecHostTest") }
+        systemProperty("java.library.path", layout.buildDirectory.dir("native/target/debug").get().asFile.absolutePath)
+        inputs.file(buildHostNativeCodec.flatMap { it.library })
+    }
 }

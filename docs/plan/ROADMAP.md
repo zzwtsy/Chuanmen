@@ -1,10 +1,10 @@
 # Chuanmen 路线图
 
-版本：2026-10-23。本文是阶段状态、实施顺序和验收范围的唯一维护来源。目标是基于 EasyTier 的原生 Android 客户端；目录以 [ADR 0005](../design/adr/0005-single-app.md) 为准，命令以 [开发环境](../development/setup.md) 为准。
+版本：2026-10-24。本文是阶段状态、实施顺序和验收范围的唯一维护来源。目标是基于 EasyTier 的原生 Android 客户端；目录以 [ADR 0005](../design/adr/0005-single-app.md) 为准，命令以 [开发环境](../development/setup.md) 为准。
 
 ## 1. 交付目标与阶段顺序
 
-实施基线为 `main` 的 `8d4ade327963f4eed34a315dd735953d63d63dff`；[CI 39802191239](https://github.com/zzwtsy/Chuanmen/actions/runs/39802191239) 的 static、android 和 quality-gate 均通过。当前代码仍使用受控内存配置；本文中的持久化、完整编辑和新增系统能力是待实施交付物。
+实施基线为 `main` 的 `8d4ade327963f4eed34a315dd735953d63d63dff`；[CI 39802191239](https://github.com/zzwtsy/Chuanmen/actions/runs/39802191239) 的 static、android 和 quality-gate 均通过。P03 已交付加密持久化、多配置和首批 10 项编辑；其余高级编辑与新增系统能力按后续阶段实施。
 
 2026-10-23 范围决定：取消结构精简的设备补验及 P03–P07 全部设备验收。取消范围包括模拟器/真机执行、完整设备矩阵、release 冒烟、设备安装升级、长时运行、实测功耗、TalkBack 人工操作和 16 KB runtime。既有设备测试源码、工具和历史结果保留；androidTest APK 继续编译，不安装或执行。取消的项目不列为待补任务，也不改记通过。
 
@@ -13,13 +13,13 @@
 | P00 可行性与证据冻结 | verified（历史限定范围） | 固定上游与实验边界 | 原有设备证据及未覆盖范围保持不变 | [P00](p00-feasibility.md) |
 | P01 工程基础 | verified（历史限定范围） | 历史工程基础 | 原始退出记录保持不变，现行装配遵循 ADR 0005 | [P01](p01-foundation.md) |
 | P02 核心与 VPN | verified（历史限定范围） | 正式 Service/JNI 与受控连接 | 原有阶段结果保持，不迁移为新 APK 的设备通过 | [P02](p02-vpn-core.md) |
-| P03 配置闭环 | planned | 加密持久化、多配置、统一草稿和基础编辑 | 保存可跨进程读取；保存/应用隔离；codec 与失败回归通过 | [P03](p03-configuration.md) |
+| P03 配置闭环 | verified（工程范围） | 加密持久化、多配置、统一草稿和基础编辑 | 保存可跨进程读取；保存/应用隔离；复审修复及真实宿主 JNI 回归通过 | [P03](p03-configuration.md#7-复审修复记录2026-10-24) |
 | P04 可观测性与页面 | planned | 补齐设备详情、探测、日志与日常页面 | 正式数据接线完整，缺失/过期可辨，工程交互测试通过 | [P04](p04-observability-ui.md) |
 | P05 高级网络能力 | planned | 分批完成高级字段、运行接线和导入导出 | 44 项归属闭合，适用能力完成工程实现，阻塞不冒充完成 | [P05](p05-advanced-networking.md) |
 | P06 系统集成与工程加固 | planned | 通知、Tile、Always-on、恢复与适配 | 系统入口及资源契约工程测试通过，设备行为未验证 | [P06](p06-hardening.md) |
 | P07 GitHub APK 发布准备 | planned | 候选、来源、许可、用户资料和发布步骤 | 可审阅的 GitHub APK 发布准备包；不等于已分发 | [P07](p07-release.md) |
 
-执行顺序固定为：计划与台账更新 → P03 → P04 → P05 各批及导入导出 → P06 → P07。文档改写不启动产品代码任务。后续首次代码任务为 P03-01，开始实际实现后才更新阶段状态。
+执行顺序固定为：计划与台账更新 → P03 → P04 → P05 各批及导入导出 → P06 → P07。文档改写不启动产品代码任务。P03 工程检查已通过，下一阶段为 P04；后续阶段尚未开始。
 
 原八阶段 15–22 工程周、含缓冲 18–27 自然周是历史估算，不再作为剩余排期。新计划按任务依赖和退出条件推进；任务开始时根据实际差异估算工程时间，外部签名/发布等待单列，不填写没有依据的固定总工期。
 
@@ -82,6 +82,7 @@ P0 为正确性：保存不暗中应用、本地名称独立、用户意图与�
 - **P02 / M2**：历史限定验收保持。正式 bridge/Service、双 ABI、受控数据通路、DHCP/DNS、恢复事务及资源回归见 [P02 报告](../verification/p02/report.md)。冻结报告的待审措辞不补写。
 - **结构精简**：已通过 [PR #7](https://github.com/zzwtsy/Chuanmen/pull/7) 合并，当前基线工程 CI 通过；专项设备矩阵及 release 冒烟已取消，当前 APK 的设备效果未验证，不标成全量验收通过。
 - **既有附加失败**：API24 DNS 与 API37 TCP 在历史 P02 和重构候选同类复现，均不计通过，Android 根因未知。结果继续定位于 PR #7 历史记录，不作为本轮补验任务。
-- **P03–P07**：`planned`。已有身份/草稿/观测基础在各阶段列明，磁盘持久化、完整表单、高级能力及系统扩展尚未实现。计划更新不改变这一事实。
+- **P03**：`verified（工程范围）`。2026-10-24 复审修复已通过完整工程检查：保存并发和创建草稿重建、原密钥保护、节点未知成员保留、固定核心运行语义及候选快照提交均有正式回归；新增真实宿主 JNI 检查。分项断言、实现摘要、命令与结果见 [P03 复审修复记录](p03-configuration.md#7-复审修复记录2026-10-24)，此前实现记录保留。设备运行未验证。
+- **P04–P07**：`planned`，尚未实施。
 
 `docs/verification/**`、根 handoff.json、SHA256SUMS 和官网目录快照保持原字节。运输清单只说明原冻结范围。需求映射见 [requirements-traceability.md](../design/requirements-traceability.md)，任务细化格式见 [task-brief.md](../development/task-brief.md)。

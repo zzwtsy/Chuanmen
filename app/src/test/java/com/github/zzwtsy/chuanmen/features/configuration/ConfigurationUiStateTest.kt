@@ -1,5 +1,7 @@
 package com.github.zzwtsy.chuanmen.features.configuration
 
+import com.github.zzwtsy.chuanmen.lib.profile.testDocument
+
 import com.github.zzwtsy.chuanmen.features.configuration.lib.Draft
 import com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId
 import com.github.zzwtsy.chuanmen.lib.profile.ProfileSummary
@@ -33,7 +35,7 @@ class ConfigurationUiStateTest {
     /** A 正在运行时保存不同 MTU，断言核心内容变化仍待应用。 */
     @Test
     fun changedCore_isPending() {
-        val saved = savedA.copy(core = savedA.core.copy(mtu = 1400))
+        val saved = savedA.copy(document = savedA.core.copy(mtu = 1400).testDocument())
         assertTrue(state(saved).pendingApplication)
     }
 
@@ -47,14 +49,14 @@ class ConfigurationUiStateTest {
     /** 没有实际会话时保存不同 MTU，断言离线配置不显示待应用。 */
     @Test
     fun disconnectedProfile_isNotPending() {
-        val saved = savedA.copy(core = savedA.core.copy(mtu = 1400))
+        val saved = savedA.copy(document = savedA.core.copy(mtu = 1400).testDocument())
         assertFalse(state(saved, session = SessionState()).pendingApplication)
     }
 
     /** A 正在运行且有待应用内容时切换查看 B，断言另一网络不继承 A 的待应用提示。 */
     @Test
     fun viewingAnotherProfile_isNotPending() {
-        val saved = savedA.copy(core = savedA.core.copy(mtu = 1400))
+        val saved = savedA.copy(document = savedA.core.copy(mtu = 1400).testDocument())
         assertFalse(state(saved, viewedId = savedB.profileId).pendingApplication)
     }
 
@@ -70,7 +72,7 @@ class ConfigurationUiStateTest {
     /** A 正在运行时只编辑未保存的 MTU 草稿，断言草稿为脏且已保存配置不待应用。 */
     @Test
     fun unsavedDraft_isNotPending() {
-        val state = state().copy(draft = Draft(savedA, rawMtu = "1400"))
+        val state = state().copy(draft = Draft(savedA, input = com.github.zzwtsy.chuanmen.features.configuration.lib.ConfigurationInputFactory.fromSaved(savedA).copy(rawMtu = "1400")))
         assertTrue(state.draft!!.dirty)
         assertFalse(state.pendingApplication)
     }
@@ -78,7 +80,7 @@ class ConfigurationUiStateTest {
     /** 应用结果未知时已应用配置仅为历史，即使保存内容不同也不宣称正在查看运行网络或允许待应用。 */
     @Test
     fun historicalApplied_doesNotClaimCurrentRunningConfiguration() {
-        val changed = savedA.copy(core = savedA.core.copy(mtu = 1400))
+        val changed = savedA.copy(document = savedA.core.copy(mtu = 1400).testDocument())
         val unknown = state(changed, session = running.copy(
             phase = ConnectionPhase.OutcomeUnknown,
             applied = running.applied!!.copy(freshness = DataFreshness.Stale),

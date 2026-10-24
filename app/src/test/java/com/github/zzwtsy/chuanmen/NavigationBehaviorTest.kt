@@ -34,6 +34,7 @@ class NavigationBehaviorTest {
         withModel { model, configuration, engine ->
             val original = engine.state.value
             model.act(AppAction.ViewProfile(profileB))
+            runCurrent()
             configuration.act(ConfigurationAction.Edit(DraftField.Mtu, "invalid"))
             configuration.act(ConfigurationAction.ChangeMode(EditorMode.Full))
             model.act(AppAction.Navigate(Destination.Logs))
@@ -61,47 +62,32 @@ class NavigationBehaviorTest {
             runCurrent()
             assertFalse(model.state.value.navigation.settingsOpen)
             assertEquals(Destination.Configuration, model.state.value.navigation.destination)
-            assertEquals("unsaved-network", configuration.state.value.draft!!.rawNetworkName)
+            assertEquals("unsaved-network", configuration.state.value.draft!!.input.rawNetworkName)
             assertTrue(configuration.state.value.draft!!.dirty)
             assertTrue(engine.requests.isEmpty())
         }
     }
 
-    /**
-     * A 正在运行且已本地改名时保存新 MTU，再恢复运行配置；断言待应用从真变假、修订递增，
-     * 本地名称和原 applied 保留、草稿恢复原 MTU，整个流程不提交引擎命令。
-     */
-    @Test
-    fun restoreApplied_clearsPendingWithoutChangingSession() = runTest {
-        withModel { model, configuration, engine ->
+    /** 已保存新 MTU 后请求恢复历史运行版本；恢复交给 Service，拒绝回执不得改写 saved 或清除待应用。 */
+    @Test fun restoreApplied_requiresServiceReceiptAndPreservesSaved() = runTest {
+        withModel { _, configuration, engine ->
             val originalSession = engine.state.value
-            val originalSaved = configuration.state.value.profile!!.saved
             configuration.act(ConfigurationAction.Rename("家里的网络"))
-            model.act(AppAction.Navigate(Destination.Configuration))
             configuration.act(ConfigurationAction.Edit(DraftField.Mtu, "1400"))
             configuration.act(ConfigurationAction.Save)
             runCurrent()
-
-            val changedSaved = configuration.state.value.profile!!.saved
+            val changed = configuration.state.value.profile!!.saved
             assertTrue(configuration.state.value.pendingApplication)
-            assertEquals(1400, changedSaved.core.mtu)
-            assertEquals(originalSaved.revision + 1, changedSaved.revision)
-            assertEquals(originalSession, engine.state.value)
-            assertTrue(engine.requests.isEmpty())
-
+            assertEquals(1400, changed.core.mtu)
             configuration.act(ConfigurationAction.Restore)
             runCurrent()
-
-            val restored = configuration.state.value
-            assertFalse(restored.pendingApplication)
-            assertEquals(changedSaved.revision + 1, restored.profile!!.saved.revision)
-            assertEquals(originalSession.applied!!.saved.core, restored.profile!!.saved.core)
-            assertEquals(originalSession.applied!!.saved.vpnPolicy, restored.profile!!.saved.vpnPolicy)
-            assertEquals("家里的网络", restored.profile!!.displayName)
-            assertEquals(originalSession.applied, engine.state.value.applied)
+            assertEquals(1, engine.restoreRequests)
+            assertEquals(changed, configuration.state.value.profile!!.saved)
+            assertEquals("家里的网络", configuration.state.value.profile!!.displayName)
             assertEquals(originalSession, engine.state.value)
-            assertEquals(originalSaved.core.mtu.toString(), restored.draft!!.rawMtu)
-            assertFalse(restored.draft.dirty)
+            assertTrue(configuration.state.value.pendingApplication)
+            assertEquals("1400", configuration.state.value.draft!!.rawMtu)
+            assertFalse(configuration.state.value.draft!!.dirty)
             assertTrue(engine.requests.isEmpty())
         }
     }
@@ -119,9 +105,9 @@ class NavigationBehaviorTest {
             val repository = MemoryProfileRepository(listOf(
                 ProfileSummary(saved, "网络 A"), ProfileSummary(testSavedRevision(profileB), "网络 B"),
             ))
-            val model = ChuanmenViewModel(repository.profiles, engine.state)
+            val model = ChuanmenViewModel(repository.profiles, engine.state, com.github.zzwtsy.chuanmen.testPreferences())
             store.put("test", model)
-            val configuration = ConfigurationViewModel(repository, engine, model.viewedProfileId)
+            val configuration = ConfigurationViewModel(repository, engine, model.viewedProfileId, com.github.zzwtsy.chuanmen.lib.profile.TestCoreConfigCodec(), StandardTestDispatcher(testScheduler))
             store.put("configuration", configuration)
             backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { configuration.state.collect {} }
             // 保持订阅以启动 WhileSubscribed 的状态组合；测试结束由 backgroundScope 取消收集。

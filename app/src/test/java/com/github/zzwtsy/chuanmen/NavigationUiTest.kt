@@ -3,6 +3,7 @@ package com.github.zzwtsy.chuanmen
 import android.content.ClipboardManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasClickAction
@@ -22,6 +23,7 @@ import com.github.zzwtsy.chuanmen.lib.Appearance
 import com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId
 import com.github.zzwtsy.chuanmen.lib.profile.MemoryProfileRepository
 import com.github.zzwtsy.chuanmen.lib.profile.ProfileSummary
+import com.github.zzwtsy.chuanmen.lib.profile.testDocument
 import com.github.zzwtsy.chuanmen.lib.vpn.ConnectionPhase
 import com.github.zzwtsy.chuanmen.lib.vpn.DataFreshness
 import com.github.zzwtsy.chuanmen.lib.vpn.RecordingSessions
@@ -64,12 +66,12 @@ class NavigationUiTest {
             requestedProfileId = saved.profileId, applied = applied,
         ))
         repository = MemoryProfileRepository(profiles)
-        model = ChuanmenViewModel(repository.profiles, sessions.state)
+        model = ChuanmenViewModel(repository.profiles, sessions.state, com.github.zzwtsy.chuanmen.testPreferences())
         factory = object : ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
                 creations[modelClass] = (creations[modelClass] ?: 0) + 1
                 val feature = when (modelClass) {
-                    ConfigurationViewModel::class.java -> ConfigurationViewModel(repository, sessions, model.viewedProfileId)
+                    ConfigurationViewModel::class.java -> ConfigurationViewModel(repository, sessions, model.viewedProfileId, com.github.zzwtsy.chuanmen.lib.profile.TestCoreConfigCodec(), kotlinx.coroutines.Dispatchers.Main.immediate)
                     DevicesViewModel::class.java -> DevicesViewModel(sessions.state, model.viewedProfileId)
                     LogsViewModel::class.java -> LogsViewModel(sessions.state)
                     SettingsViewModel::class.java -> SettingsViewModel(repository, model.viewedProfileId, model.appearancePreferences)
@@ -97,6 +99,84 @@ class NavigationUiTest {
         compose.onNodeWithText("invalid").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("MTU 请输入 576–9000 的整数").assertIsDisplayed()
         compose.onNodeWithText("仅保存").performScrollTo().assertIsNotEnabled()
+    }
+
+    /** 完整表单输入非法静态地址后搜索 DNS，再清搜索和切标签，地址原文及错误始终保留。 */
+    @Test fun fieldSearch_preservesAddressAndErrorsAcrossTabs() {
+        compose.onNode(hasText("配置") and hasClickAction()).performClick()
+        compose.onNodeWithText("完整配置").performClick()
+        compose.onNodeWithText("自动分配 IPv4").performScrollTo().performClick()
+        compose.onNodeWithText("静态 IPv4").performScrollTo().performTextReplacement("10.42.0.1/33")
+        compose.onNodeWithText("搜索配置项").performScrollTo().performTextReplacement("  DNS  ")
+        compose.onNodeWithText("DNS IPv4").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("静态 IPv4").assertDoesNotExist()
+        compose.onNodeWithText("清空").performScrollTo().performClick()
+        compose.onNodeWithText("10.42.0.1/33").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("基础配置").performScrollTo().performClick()
+        compose.onNodeWithText("完整配置").performScrollTo().performClick()
+        compose.onNodeWithText("10.42.0.1/33").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("仅保存").performScrollTo().assertIsNotEnabled()
+        compose.runOnIdle { assertTrue(sessions.requests.isEmpty()) }
+    }
+
+    /** A 运行但查看 B，从设置编辑 B 策略后返回，saved 摘要不变；再次进入仍使用原 dirty 草稿。 */
+    @Test fun settingsPolicyEntry_targetsViewedDraftAndDoesNotSaveOnReturn() {
+        compose.onNodeWithText("网络 A").performClick()
+        compose.onNodeWithText("网络 B").performClick()
+        compose.onNode(hasText("设置") and hasClickAction()).performClick()
+        compose.onNodeWithText("编辑当前网络策略").performScrollTo().performClick()
+        compose.onNodeWithText("包含互联网流量").performScrollTo().performClick()
+        compose.onNodeWithText("DNS IPv4").performScrollTo().performTextReplacement("10.42.0.53")
+        compose.onNode(hasText("设置") and hasClickAction()).performClick()
+        compose.onNodeWithText("互联网流量：未开启").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("当前网络有未保存的策略或配置更改").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("编辑当前网络策略").performScrollTo().performClick()
+        compose.onNodeWithText("包含互联网流量").performScrollTo().assertIsOn()
+        compose.onNodeWithText("10.42.0.53").performScrollTo().assertIsDisplayed()
+        compose.runOnIdle {
+            assertTrue(repository.profiles.value.all { !it.saved.vpnPolicy.includeInternet })
+            assertTrue(sessions.requests.isEmpty())
+        }
+    }
+
+    /** 从共享配置选择区创建后取消，不留下空配置，也不改变当前查看或会话。 */
+    @Test fun creationCancel_doesNotWriteOrConnect() {
+        val original = repository.profiles.value
+        compose.onNodeWithText("网络 A").performClick()
+        compose.onNodeWithText("新建配置").performClick()
+        compose.onNodeWithText("网络名称").performScrollTo().performTextReplacement("unsaved-create")
+        compose.onNodeWithText("取消创建").performScrollTo().performClick()
+        compose.runOnIdle {
+            assertEquals(original, repository.profiles.value)
+            assertEquals(original.first().saved.profileId, model.viewedProfileId.value)
+            assertTrue(sessions.requests.isEmpty())
+        }
+    }
+
+    /** 外部保存导致冲突时，保留动作不换基准；重新载入必须确认，取消保留草稿，确认后才使用新版本。 */
+    @Test fun conflictReload_requiresConfirmationAndKeepDoesNotOverwrite() {
+        compose.onNode(hasText("配置") and hasClickAction()).performClick()
+        compose.onNodeWithText("完整配置").performClick()
+        compose.onNodeWithText("MTU").performScrollTo().performTextReplacement("1400")
+        compose.runOnIdle {
+            val saved = repository.profiles.value.first().saved
+            kotlinx.coroutines.runBlocking { repository.save(saved.profileId, saved.core.copy(mtu = 1450).testDocument(), saved.vpnPolicy, saved.revision) }
+        }
+        compose.onNodeWithText("仅保存").performScrollTo().performClick()
+        compose.onNodeWithText("保留当前草稿").performScrollTo().performClick()
+        compose.onNodeWithText("1400").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("仅保存").performScrollTo().assertIsNotEnabled()
+        compose.onNodeWithText("重新载入已保存版本").performScrollTo().performClick()
+        compose.onNodeWithText("取消").performClick()
+        compose.onNodeWithText("1400").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("重新载入已保存版本").performScrollTo().performClick()
+        compose.onNodeWithText("确认").performClick()
+        compose.onNodeWithText("1450").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("仅保存").assertDoesNotExist()
+        compose.runOnIdle {
+            assertEquals(1450, repository.profiles.value.first().saved.core.mtu)
+            assertTrue(sessions.requests.isEmpty())
+        }
     }
 
     /** 固定已连接快照进入设备页并复制，断言产品名可见且剪贴板写入合成 IP。 */
@@ -128,20 +208,20 @@ class NavigationUiTest {
 
     /**
      * 已连接快照的 MTU 为 1380；保存 1400 后断言待应用提示和 Apply 按钮可见，
-     * 再恢复运行配置，断言字段回到 1380，待应用提示和 Apply 按钮消失。
+     * 再请求恢复运行版本，拒绝回执后断言 saved 与待应用提示保留，不伪报恢复成功。
      */
     @Test
-    fun restoreRunningConfiguration_clearsPendingActions() {
+    fun restoreRunningConfiguration_waitsForServiceReceipt() {
         compose.onNode(hasText("配置") and hasClickAction()).performClick()
         compose.onNodeWithText("完整配置").performClick()
         compose.onNodeWithText("MTU").performScrollTo().performTextReplacement("1400")
         compose.onNodeWithText("仅保存").performScrollTo().performClick()
         compose.onNodeWithText("更改待应用").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("应用已保存配置").performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("恢复运行配置到已保存").performScrollTo().performClick()
-        compose.onNodeWithText("1380").performScrollTo().assertIsDisplayed()
-        compose.onNodeWithText("更改待应用").assertDoesNotExist()
-        compose.onNodeWithText("应用已保存配置").assertDoesNotExist()
+        compose.onNodeWithText("恢复上次运行版本").performScrollTo().performClick()
+        compose.onNodeWithText("1400").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("更改待应用").performScrollTo().assertIsDisplayed()
+        compose.runOnIdle { assertEquals(1, sessions.restoreRequests) }
     }
     /** 配置页确认本地改名只更新名称；保存修订、applied 与会话请求保持不变。 */
     @Test fun rename_keepsSavedAndAppliedIdentity() {

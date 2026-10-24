@@ -1,4 +1,5 @@
 //! 串门的唯一 cdylib 入口；公开 JSON 协议隔离 JNI、FFI 和核心内部类型。
+mod config_codec;
 mod diagnostics;
 mod protector;
 mod protocol;

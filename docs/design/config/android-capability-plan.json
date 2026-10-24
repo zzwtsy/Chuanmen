@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "planning-baseline",
-  "checkedDate": "2026-10-23",
+  "status": "implementation-tracking",
+  "checkedDate": "2026-10-24",
   "scope": "与原型冻结目录一一对应；不等于原生接口已实现或永久功能上限",
   "catalogSha256": "eaac5fd840290719d0ad270ff4ed36730274d946166646824e4757bd05148e63",
   "authority": "以P00选定二进制与阶段实证更新，snapshot中的availability/apply不可作为完成凭据",
@@ -10,7 +10,7 @@
     "exportToCore": false,
     "affectsCoreRevision": false,
     "note": "原型profile.label只映射到这一份原生元数据，禁止并行label/displayName双写",
-    "nativeKey": "ProfileMetadata.localDisplayName"
+    "nativeKey": "LocalProfileMetadata.localDisplayName"
   },
   "fields": [
     {
@@ -23,12 +23,18 @@
       "evidence": [],
       "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
       "controlledInputStage": "P02",
-      "implementationNote": "CoreConfig.networkName：正式桥编码并用于受控真实组网；完整编辑和身份变更矩阵仍属 P03",
+      "implementationNote": "统一文档 codec、基础/完整共享草稿与加密存储；修改后通过现有受控重连事务应用。",
       "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified",
       "implementationStage": "P03",
       "implementationTask": "P03-03",
-      "engineeringStatus": "planned",
-      "engineeringEvidence": [],
+      "engineeringStatus": "implemented",
+      "engineeringEvidence": [
+        "docs/plan/p03-configuration.md#6-实施记录",
+        "app/src/test/resources/profiles/p03-fields.json",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/native/src/config_codec.rs",
+        "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
+      ],
       "completionTasks": [
         "P03-01",
         "P03-03",
@@ -37,7 +43,14 @@
         "P03-05",
         "P03-06",
         "P03-08"
-      ]
+      ],
+      "sourceMapping": {
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+        "path": "easytier-core/src/config/toml.rs",
+        "symbol": "NetworkIdentity.network_name",
+        "member": "network_identity.network_name"
+      },
+      "engineeringScope": "P03 首次交付子集及复审修复；工程检查通过，设备运行未验证；详见 docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
     },
     {
       "key": "network_identity.network_secret",
@@ -49,12 +62,18 @@
       "evidence": [],
       "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
       "controlledInputStage": "P02",
-      "implementationNote": "CoreConfig.networkSecret / NetworkSecret：正式 TOML 编码和受控握手已接入，嵌套字符串脱敏；加密持久化与错误密码矩阵尚未验收",
+      "implementationNote": "固定核心接受缺省与显式空密码，文档分别保留；输入、文档和命令的普通字符串输出脱敏，秘密只写认证密文。",
       "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified",
       "implementationStage": "P03",
       "implementationTask": "P03-03",
-      "engineeringStatus": "planned",
-      "engineeringEvidence": [],
+      "engineeringStatus": "implemented",
+      "engineeringEvidence": [
+        "docs/plan/p03-configuration.md#6-实施记录",
+        "app/src/test/resources/profiles/p03-fields.json",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/native/src/config_codec.rs",
+        "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
+      ],
       "completionTasks": [
         "P03-01",
         "P03-03",
@@ -63,7 +82,14 @@
         "P03-05",
         "P03-06",
         "P03-08"
-      ]
+      ],
+      "sourceMapping": {
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+        "path": "easytier-core/src/config/toml.rs",
+        "symbol": "NetworkIdentity.network_secret",
+        "member": "network_identity.network_secret"
+      },
+      "engineeringScope": "P03 首次交付子集及复审修复；工程检查通过，设备运行未验证；详见 docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
     },
     {
       "key": "hostname",
@@ -76,8 +102,14 @@
       "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
       "implementationStage": "P03",
       "implementationTask": "P03-03",
-      "engineeringStatus": "planned",
-      "engineeringEvidence": [],
+      "engineeringStatus": "implemented",
+      "engineeringEvidence": [
+        "docs/plan/p03-configuration.md#6-实施记录",
+        "app/src/test/resources/profiles/p03-fields.json",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/native/src/config_codec.rs",
+        "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
+      ],
       "completionTasks": [
         "P03-01",
         "P03-03",
@@ -86,7 +118,15 @@
         "P03-05",
         "P03-06",
         "P03-08"
-      ]
+      ],
+      "implementationNote": "完整表单编辑 hostname，缺省与显式值由原始 TOML 保留，运行经固定核心解析。",
+      "sourceMapping": {
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+        "path": "easytier-core/src/config/toml.rs",
+        "symbol": "Config.hostname / ConfigLoader::get_hostname",
+        "member": "hostname"
+      },
+      "engineeringScope": "P03 首次交付子集及复审修复；工程检查通过，设备运行未验证；详见 docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
     },
     {
       "key": "dhcp",
@@ -98,12 +138,18 @@
       "evidence": [],
       "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
       "controlledInputStage": "P02",
-      "implementationNote": "Ipv4Assignment.Automatic：正式核心实际分配地址与 TUN 参数一致，policy-01 已取得 TCP/UDP 业务回包；冲突和完整地址变更矩阵仍属后续阶段",
+      "implementationNote": "新建默认自动分配；现有缺省或 false 不被新建默认覆盖；自动与静态切换保留源静态地址。",
       "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified",
       "implementationStage": "P03",
       "implementationTask": "P03-03",
-      "engineeringStatus": "planned",
-      "engineeringEvidence": [],
+      "engineeringStatus": "implemented",
+      "engineeringEvidence": [
+        "docs/plan/p03-configuration.md#6-实施记录",
+        "app/src/test/resources/profiles/p03-fields.json",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/native/src/config_codec.rs",
+        "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
+      ],
       "completionTasks": [
         "P03-01",
         "P03-03",
@@ -112,7 +158,15 @@
         "P03-05",
         "P03-06",
         "P03-08"
-      ]
+      ],
+      "sourceMapping": {
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+        "path": "easytier-core/src/config/toml.rs",
+        "symbol": "Config.dhcp / ConfigLoader::get_dhcp",
+        "member": "dhcp"
+      },
+      "androidNewDefault": true,
+      "engineeringScope": "P03 首次交付子集及复审修复；工程检查通过，设备运行未验证；详见 docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
     },
     {
       "key": "ipv4",
@@ -124,12 +178,18 @@
       "evidence": [],
       "minimumValidation": "核心解析往返、身份或地址实际变化、失败与旧会话处理",
       "controlledInputStage": "P02",
-      "implementationNote": "Ipv4Assignment.Static：正式 Service 从核心实际 IPv4 建立 TUN；API36 受控静态10.222.0.2与业务回包已通过，地址冲突与完整矩阵待验收",
+      "implementationNote": "输入支持 IPv4 和 /0–32；p03-config-host-v1 区分裸地址的历史 /24 与显式 /32，来源及前后摘要由 inputs.json 固定。",
       "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified",
       "implementationStage": "P03",
       "implementationTask": "P03-03",
-      "engineeringStatus": "planned",
-      "engineeringEvidence": [],
+      "engineeringStatus": "implemented",
+      "engineeringEvidence": [
+        "docs/plan/p03-configuration.md#6-实施记录",
+        "app/src/test/resources/profiles/p03-fields.json",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/native/src/config_codec.rs",
+        "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
+      ],
       "completionTasks": [
         "P03-01",
         "P03-03",
@@ -138,7 +198,14 @@
         "P03-05",
         "P03-06",
         "P03-08"
-      ]
+      ],
+      "sourceMapping": {
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+        "path": "easytier-core/src/config/toml.rs",
+        "symbol": "Config.ipv4 / ConfigLoader::get_ipv4",
+        "member": "ipv4"
+      },
+      "engineeringScope": "P03 首次交付子集及复审修复；工程检查通过，设备运行未验证；详见 docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
     },
     {
       "key": "flags.enable_ipv6",
@@ -184,12 +251,18 @@
       "evidence": [],
       "minimumValidation": "URI/flag映射、socket protect、真实对端建链与失败恢复",
       "controlledInputStage": "P02",
-      "implementationNote": "CoreConfig.peers / PeerEndpoint：正式 TCP/UDP 外层均已有受控业务回包；其他协议仍待实现",
+      "implementationNote": "首批仅编辑 TCP/UDP URL 列表；URL patch 保留原节点其他成员；其他成员和协议仍阻止运行，扩展属于 P05-02。",
       "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified",
       "implementationStage": "P03",
       "implementationTask": "P03-03",
-      "engineeringStatus": "planned",
-      "engineeringEvidence": [],
+      "engineeringStatus": "implemented",
+      "engineeringEvidence": [
+        "docs/plan/p03-configuration.md#6-实施记录",
+        "app/src/test/resources/profiles/p03-fields.json",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/native/src/config_codec.rs",
+        "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
+      ],
       "completionTasks": [
         "P03-01",
         "P03-03",
@@ -201,7 +274,21 @@
       ],
       "extensionTask": "P05-02",
       "extensionEngineeringStatus": "planned",
-      "extensionEngineeringEvidence": []
+      "extensionEngineeringEvidence": [],
+      "sourceMapping": {
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+        "path": "easytier-core/src/config/toml.rs",
+        "symbol": "PeerConfig.uri",
+        "member": "peer[].uri"
+      },
+      "firstBatchMembers": [
+        "uri"
+      ],
+      "firstBatchProtocols": [
+        "tcp",
+        "udp"
+      ],
+      "engineeringScope": "P03 首次交付子集及复审修复；工程检查通过，设备运行未验证；详见 docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
     },
     {
       "key": "listeners",
@@ -571,8 +658,14 @@
       "minimumValidation": "计量单位、协议能力及资源影响、明确的成功/失败结果",
       "implementationStage": "P03",
       "implementationTask": "P03-03",
-      "engineeringStatus": "planned",
-      "engineeringEvidence": [],
+      "engineeringStatus": "implemented",
+      "engineeringEvidence": [
+        "docs/plan/p03-configuration.md#6-实施记录",
+        "app/src/test/resources/profiles/p03-fields.json",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/native/src/config_codec.rs",
+        "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
+      ],
       "completionTasks": [
         "P03-01",
         "P03-03",
@@ -581,7 +674,16 @@
         "P03-05",
         "P03-06",
         "P03-08"
-      ]
+      ],
+      "implementationNote": "完整表单校验 576–9000，新建 1380；统一 codec 和 TunPlatform.interfaceSpec 消费，保存不自动重连。",
+      "sourceMapping": {
+        "commit": "7592951b808c4839cb9d77cc4bc642f124915951",
+        "path": "easytier-proto/proto/common.proto",
+        "symbol": "Flags.mtu",
+        "member": "flags.mtu"
+      },
+      "androidNewDefault": 1380,
+      "engineeringScope": "P03 首次交付子集及复审修复；工程检查通过，设备运行未验证；详见 docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
     },
     {
       "key": "flags.instance_recv_bps_limit",
@@ -746,12 +848,18 @@
       "evidence": [],
       "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
       "controlledInputStage": "P02",
-      "implementationNote": "AndroidVpnPolicy.includeInternet：policy-01 已核对平台 0.0.0.0/0、MTU 1400 与 TCP 外层真实双业务回包、保护失败为0；完整应用范围和默认路由组合仍待验证",
+      "implementationNote": "配置与设置共享同一草稿；保存为 includeInternet，平台路由消费者继续由唯一 Service 拥有；应用名单等扩展归 P05-06。",
       "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified",
       "implementationStage": "P03",
       "implementationTask": "P03-03",
-      "engineeringStatus": "planned",
-      "engineeringEvidence": [],
+      "engineeringStatus": "implemented",
+      "engineeringEvidence": [
+        "docs/plan/p03-configuration.md#6-实施记录",
+        "app/src/test/resources/profiles/p03-fields.json",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/lib/vpn/VpnSessionCoordinatorTest.kt",
+        "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
+      ],
       "extensionTask": "P05-06",
       "completionTasks": [
         "P03-01",
@@ -764,7 +872,16 @@
         "P03-08"
       ],
       "extensionEngineeringStatus": "planned",
-      "extensionEngineeringEvidence": []
+      "extensionEngineeringEvidence": [],
+      "sourceMapping": {
+        "commit": "9a54bb73d3a7ae58fcbb738cb789565cc6fe633a",
+        "path": "app/src/main/java/com/github/zzwtsy/chuanmen/lib/vpn/TunPlatform.kt",
+        "symbol": "interfaceSpec / AndroidVpnPolicy.includeInternet",
+        "member": "includeInternet",
+        "revisionScope": "baseline plus uncommitted P03 implementation; exact file hashes in app/build/p03/implementation-manifest.json"
+      },
+      "androidNewDefault": false,
+      "engineeringScope": "P03 首次交付子集及复审修复；工程检查通过，设备运行未验证；详见 docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
     },
     {
       "key": "android.ipv6Policy",
@@ -776,12 +893,18 @@
       "evidence": [],
       "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
       "controlledInputStage": "P02",
-      "implementationNote": "Ipv6Policy.Block：Service 不开启 IPv6 family；network-03 在具备真实全局 IPv6 正向基线的 API36 真机验证 TCP/UDP 在 VPN 前后回包、VPN 内拒绝且对端无请求；其他 OEM 和完整双栈未验收",
+      "implementationNote": "首批只读固定 Block；配置与设置显示同一策略；bypass/tunnel 仍属 P05-06。",
       "controlledInputVerification": "限定实际结果见 docs/verification/p02/report.md；完整 minimumValidation 矩阵仍未完成，nativeStatus 保持 not_verified",
       "implementationStage": "P03",
       "implementationTask": "P03-03",
-      "engineeringStatus": "planned",
-      "engineeringEvidence": [],
+      "engineeringStatus": "implemented",
+      "engineeringEvidence": [
+        "docs/plan/p03-configuration.md#6-实施记录",
+        "app/src/test/resources/profiles/p03-fields.json",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/lib/vpn/VpnSessionCoordinatorTest.kt",
+        "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
+      ],
       "extensionTask": "P05-06",
       "completionTasks": [
         "P03-01",
@@ -794,7 +917,18 @@
         "P03-08"
       ],
       "extensionEngineeringStatus": "planned",
-      "extensionEngineeringEvidence": []
+      "extensionEngineeringEvidence": [],
+      "sourceMapping": {
+        "commit": "9a54bb73d3a7ae58fcbb738cb789565cc6fe633a",
+        "path": "app/src/main/java/com/github/zzwtsy/chuanmen/lib/vpn/NativeVpnService.kt",
+        "symbol": "establish / Ipv6Policy.Block",
+        "member": "ipv6",
+        "revisionScope": "baseline plus uncommitted P03 implementation; exact file hashes in app/build/p03/implementation-manifest.json"
+      },
+      "firstBatchModes": [
+        "Block"
+      ],
+      "engineeringScope": "P03 首次交付子集及复审修复；工程检查通过，设备运行未验证；详见 docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
     },
     {
       "key": "android.dnsMode",
@@ -823,12 +957,18 @@
       "evidence": [],
       "minimumValidation": "VpnService Builder和系统行为、应用范围/DNS/IPv6策略与重建结果",
       "controlledInputStage": "P02",
-      "implementationNote": "AndroidVpnPolicy.dnsServers：API36 正式 VPN Network 的系统 resolver 已在 TCP/UDP 外层得到受控虚拟53端口实际 A 回包；不覆盖 Private DNS 或完整 IPv6组合",
+      "implementationNote": "首批编辑自定义 IPv4 列表；保存、运行和 Builder 路径共用 AndroidVpnPolicy；system DNS 等扩展归 P05-06。",
       "controlledInputVerification": "P02 限定范围实施与测试记录见 docs/plan/p02-vpn-core.md；尚未完成该字段 minimumValidation 的完整矩阵，nativeStatus 保持 not_verified",
       "implementationStage": "P03",
       "implementationTask": "P03-03",
-      "engineeringStatus": "planned",
-      "engineeringEvidence": [],
+      "engineeringStatus": "implemented",
+      "engineeringEvidence": [
+        "docs/plan/p03-configuration.md#6-实施记录",
+        "app/src/test/resources/profiles/p03-fields.json",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/lib/vpn/VpnSessionCoordinatorTest.kt",
+        "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
+      ],
       "extensionTask": "P05-06",
       "completionTasks": [
         "P03-01",
@@ -841,7 +981,18 @@
         "P03-08"
       ],
       "extensionEngineeringStatus": "planned",
-      "extensionEngineeringEvidence": []
+      "extensionEngineeringEvidence": [],
+      "sourceMapping": {
+        "commit": "9a54bb73d3a7ae58fcbb738cb789565cc6fe633a",
+        "path": "app/src/main/java/com/github/zzwtsy/chuanmen/lib/vpn/NativeVpnService.kt",
+        "symbol": "establish / AndroidVpnPolicy.dnsServers",
+        "member": "dnsServers",
+        "revisionScope": "baseline plus uncommitted P03 implementation; exact file hashes in app/build/p03/implementation-manifest.json"
+      },
+      "firstBatchModes": [
+        "custom-ipv4"
+      ],
+      "engineeringScope": "P03 首次交付子集及复审修复；工程检查通过，设备运行未验证；详见 docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
     },
     {
       "key": "android.autoReconnect",

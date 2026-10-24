@@ -14,7 +14,6 @@ import com.github.zzwtsy.chuanmen.ChuanmenViewModel
 import com.github.zzwtsy.chuanmen.MainActivity
 import com.github.zzwtsy.chuanmen.features.configuration.ConfigurationAction
 import com.github.zzwtsy.chuanmen.features.configuration.ConfigurationViewModel
-import com.github.zzwtsy.chuanmen.features.configuration.lib.ConfigurationInput
 import com.github.zzwtsy.chuanmen.features.configuration.lib.DraftField
 import com.github.zzwtsy.chuanmen.lib.profile.CoreInstanceId
 import com.github.zzwtsy.chuanmen.lib.profile.Ipv4Assignment
@@ -39,11 +38,11 @@ class LivePolicyRecoveryTest {
         val runId = requireNotNull(arguments.getString("runId"))
         require(runId.startsWith("p02-"))
         val app = instrumentation.targetContext.applicationContext as ChuanmenApplication
-        val id = LocalProfileId("00000000-0000-4000-8000-000000000254")
-        val repository = ConfigurationInput.create(id, CoreInstanceId("p02-policy-android"), "策略回归",
-            "chuanmen-p02-controlled", NetworkSecret.of("p02-synthetic-public-test-only"),
-            listOf(PeerEndpoint("tcp://$host:31270")), Ipv4Assignment.Automatic, emptyList())
-        withContext(Dispatchers.Main) { app.setRepository(repository) }
+        val repository = app.profiles
+        repository.load()
+        val creation = controlledInput(CoreInstanceId("p02-policy-android"), "chuanmen-p02-controlled", NetworkSecret.of("p02-synthetic-public-test-only"), listOf(PeerEndpoint("tcp://$host:31270")), Ipv4Assignment.Automatic, emptyList())
+        val initialProfile = repository.create(creation.first.controlledDocument(), creation.second, "策略回归").requireSuccess()
+        val id = initialProfile.profileId
         val requests = JSONArray()
         val steps = JSONArray()
         val report = JSONObject().put("run_id", runId).put("status", "failed").put("steps", steps).put("requests", requests)
@@ -72,7 +71,7 @@ class LivePolicyRecoveryTest {
             steps.put(JSONObject().put("step", "dhcp").put("actual_ipv4", dhcp.applied!!.virtualIpv4.value)
                 .put("generation", dhcp.sessionId!!.generation).put("revision", initial.revision))
 
-            val target = repository.save(id, initial.core.copy(mtu = 1400), initial.vpnPolicy.copy(includeInternet = true))!!
+            val target = repository.save(id, initial.core.copy(mtu = 1400).controlledDocument(), initial.vpnPolicy.copy(includeInternet = true), initial.revision).requireSuccess()
             assertEquals(initial.revision, app.sessions.state.value.applied!!.saved.revision)
             assertTrue(withContext(Dispatchers.Main) { app.sessions.apply(target) } is OperationResult.Accepted)
             val applied = await(app) { it.phase == ConnectionPhase.Running && it.applied?.saved == target && it.runtime?.value?.interfaceSpec?.value != null && it.core?.value?.peers?.any { peer -> peer.connections > 0 } == true }
@@ -92,7 +91,7 @@ class LivePolicyRecoveryTest {
                 .put("generation", measured.sessionId!!.generation).put("revision", target.revision).put("mtu", platform.mtu)
                 .put("platform_default_route", true).put("protection_failures", measured.core!!.value!!.protectionFailures))
 
-            val invalid = repository.save(id, target.core.copy(ipv4 = Ipv4Assignment.Static("0.0.0.0")), target.vpnPolicy)!!
+            val invalid = repository.save(id, target.core.copy(ipv4 = Ipv4Assignment.Static("0.0.0.0")).controlledDocument(), target.vpnPolicy, target.revision).requireSuccess()
             withContext(Dispatchers.Main) {
                 model.act(ConfigurationAction.Rename("保留的本地名称"))
                 model.act(ConfigurationAction.Edit(DraftField.Mtu, "1450"))

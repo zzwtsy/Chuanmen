@@ -1,5 +1,7 @@
 package com.github.zzwtsy.chuanmen
 
+import com.github.zzwtsy.chuanmen.lib.profile.testDocument
+
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -146,7 +148,7 @@ internal class PresentationTest(private val case: PresentationCase) {
                 traffic = listOf(null, 0.0, 120.0, 80.0, null, 0.0, 32.0).mapIndexed { index, tx ->
                     TrafficPoint(index.toLong(), tx, tx?.times(2))
                 })
-            val changed = saved.copy(revision = 2, core = saved.core.copy(mtu = 1400))
+            val changed = saved.copy(revision = 2, document = saved.core.copy(mtu = 1400).testDocument())
             fun input(
                 id: String, expected: String, session: SessionState = SessionState(), inputs: List<ProfileSummary> = profiles,
                 dark: Boolean = false, fontScale: Float = 1f, dynamicColor: Boolean = false, highContrast: Boolean = false,

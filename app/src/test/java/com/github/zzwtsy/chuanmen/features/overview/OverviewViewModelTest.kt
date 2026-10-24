@@ -1,5 +1,7 @@
 package com.github.zzwtsy.chuanmen.features.overview
 
+import com.github.zzwtsy.chuanmen.lib.profile.testDocument
+
 import androidx.lifecycle.ViewModelStore
 import com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId
 import com.github.zzwtsy.chuanmen.lib.profile.MemoryProfileRepository
@@ -105,7 +107,7 @@ class OverviewViewModelTest {
         val store = ViewModelStore()
         try {
             val appliedSaved = testSavedRevision()
-            val saved = appliedSaved.copy(revision = 2, core = appliedSaved.core.copy(hostname = "saved-host"))
+            val saved = appliedSaved.copy(revision = 2, document = appliedSaved.core.copy(hostname = "saved-host").testDocument())
             val other = testSavedRevision(LocalProfileId("00000000-0000-4000-8000-000000000002"))
             val repository = MemoryProfileRepository(listOf(ProfileSummary(saved, "本地 A"), ProfileSummary(other, "本地 B")))
             val before = repository.profiles.value

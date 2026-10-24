@@ -86,6 +86,12 @@ class VpnSessionClient(context: Context) : SessionController {
     }
 
     override fun apply(saved: SavedRevision): OperationResult = binder?.apply(saved) ?: OperationResult.Rejected(UnavailableReason.NotRunning)
+    override fun query(): OperationResult = binder?.query() ?: OperationResult.Rejected(UnavailableReason.NotRunning)
+    override suspend fun deleteProfile(id: com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId): com.github.zzwtsy.chuanmen.lib.profile.WriteResult<Unit> {
+        if (queued?.profileId == id) queued = null
+        if (awaitingPermission?.profileId == id) { awaitingPermission = null; mutableState.value = SessionState() }
+        return binder?.deleteProfile(id) ?: com.github.zzwtsy.chuanmen.lib.profile.WriteResult.Failure(com.github.zzwtsy.chuanmen.lib.profile.WriteError.ReadUnavailable)
+    }
     override fun restoreRunning(): OperationResult = binder?.restoreRunning() ?: OperationResult.Rejected(UnavailableReason.NotRunning)
     /** 诊断读取也经同 UID Binder 核对，客户端不直接查看或拥有核心资源。 */
     fun resources(): ServiceResourceCounts? = binder?.resources()

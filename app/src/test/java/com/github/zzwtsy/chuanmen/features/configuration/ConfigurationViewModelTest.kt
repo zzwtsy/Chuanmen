@@ -72,7 +72,7 @@ class ConfigurationViewModelTest {
             val repository = MemoryProfileRepository(listOf(ProfileSummary(first, "A"), ProfileSummary(second, "B")))
             val viewed = MutableStateFlow<LocalProfileId?>(first.profileId)
             val sessions = RecordingSessions(SessionState())
-            val model = ConfigurationViewModel(repository, sessions, viewed)
+            val model = ConfigurationViewModel(repository, sessions, viewed, com.github.zzwtsy.chuanmen.lib.profile.TestCoreConfigCodec(), StandardTestDispatcher(testScheduler))
             store.put("configuration", model)
             backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { model.state.collect {} }
             runCurrent()

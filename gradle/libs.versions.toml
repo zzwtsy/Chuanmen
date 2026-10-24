@@ -12,8 +12,10 @@ coroutines = "1.10.2"
 robolectric = "4.17"
 robolectricAndroid = "17-robolectric-15733970-i7"
 gson = "2.11.0"
+tomlkt = "0.6.0"
 
 [libraries]
+tomlkt = { group = "dev.eav.tomlkt", name = "tomlkt-jvm", version.ref = "tomlkt" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

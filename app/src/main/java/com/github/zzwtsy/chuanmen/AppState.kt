@@ -13,6 +13,7 @@ data class AppNavigation(
     val destination: Destination = Destination.Overview,
     val viewedProfileId: LocalProfileId? = null,
     val settingsOpen: Boolean = false,
+    val creating: Boolean = false,
 )
 
 data class ProfileChoice(val profileId: LocalProfileId, val displayName: String)
@@ -31,6 +32,9 @@ data class AppUiState(
 sealed interface AppAction {
     data class Navigate(val destination: Destination) : AppAction
     data class ViewProfile(val profileId: LocalProfileId) : AppAction
+    data object CreateProfile : AppAction
+    data object CancelCreation : AppAction
+    data class FinishCreation(val profileId: LocalProfileId) : AppAction
     data object OpenSettings : AppAction
     data object Back : AppAction
 }

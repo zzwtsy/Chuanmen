@@ -15,10 +15,10 @@
 - 根 `components` 仅收纳多个功能实际使用的 UI；根 `lib/profile` 保留配置身份和仓库，`lib/vpn` 保留会话、Service 与原生适配；`lib/AppearancePreferences` 供根主题和设置共享；纯 IPv4 字面量校验在 `utils/Ipv4`。主题保留 `ui/theme`。
 - 功能不互相引用内部实现。共享代码不依赖功能。Service 通过 `ProfileRepositoryOwner` 读取唯一仓库，不依赖根 Application 具体类型。单模块 `internal` 不提供包隔离；以明确导入、职责和行为测试核对边界，不新增扫描框架。
 - 根 ViewModel 仅拥有导航、查看身份、共享外观对象与顶栏摘要；五个功能分别投影真实数据并处理自己的动作。配置独占编辑器。根与五个功能 ViewModel 使用同一 Activity 的稳定 ViewModelStore，不互相注入，不按 profileId 创建实例。
-- Application 持有唯一内存仓库和一个 `VpnSessionClient`；Service 继续唯一拥有真实会话。页面离开、Activity 配置重建或功能 ViewModel 清理均不停止 VPN，也不新增真实采样器。
+- Application 持有唯一配置仓库（P03 使用持久仓库及其内存快照）和一个 `VpnSessionClient`；Service 继续唯一拥有真实会话。页面离开、Activity 配置重建或功能 ViewModel 清理均不停止 VPN，也不新增真实采样器。
 - 实体源码目录仅 `main`、`test`、`androidTest`。保留 Android 标准 debug/release 构建类型，两种构建共用正式配置入口和 Service/JNI；无应用侧样例、Preview、演示状态机或变体业务入口。测试合成输入与替身仅在测试中。
-- 首次入口不预填网络、节点或地址；本地名称可选，空白回退网络名称；自动分配 IPv4 默认开启，互联网流量默认关闭。保存只初始化内存配置，不连接。未保存输入仅驻留组件内存，已保存配置与草稿不获得磁盘或进程恢复保证。
-- Rust 自有源码、补丁、来源与锁文件在 `app/native`，固定上游 checkout、Cargo target、双 ABI 库及报告在 `app/build/native`。Gradle 声明实际输入输出，只在消费 JNI 时构建；JVM/lint 不要求 native 产物。
+- 首次入口不预填网络、节点或地址；本地名称可选，空白回退网络名称；自动分配 IPv4 默认开启，互联网流量默认关闭。保存不连接。P03 将已保存配置认证加密落盘；未保存输入由 Activity 配置 ViewModel 持有，配置重建保留草稿，进程重新创建只恢复 saved。
+- Rust 自有源码、补丁、来源与锁文件在 `app/native`，固定上游 checkout、Cargo target、双 ABI 库及报告在 `app/build/native`。Gradle 声明实际输入输出，只在消费 JNI 时构建；普通 JVM/lint 不要求 native 产物；独立 `testHostNativeCodec` 任务显式构建宿主库验证 JNI 契约。
 - scripts 仅保留 native 构建/APK 检查、真实设备回归与受控对端、配置目录审计、隐私扫描及其有效回归，共 14 个 Python 文件。HTML 原型与专用导出器退役，配置目录及能力映射继续维护。
 - CI 仅 `ci.yml` 与 `pr-policy.yml`；所有 PR 执行同一套静态与 Android/native 检查。`quality-gate` 和 `pr-policy` 名称保持，远端规则不随源码自动修改。
 

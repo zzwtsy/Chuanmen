@@ -2,7 +2,7 @@
 
 串门（Chuanmen）是基于 EasyTier 的 Android 组网客户端，正在开发中。
 
-P02 已完成限定范围的真实 VPN/JNI 接入。单 app 结构精简已合并，P03–P07 已重新规划，尚未开始功能实施。配置仍为受控内存输入，尚未完成持久化与完整配置闭环；阶段和验证边界以 [路线图](docs/plan/ROADMAP.md) 为准。
+P02 已完成限定范围的真实 VPN/JNI 接入。单 app 结构精简已合并，P03 配置闭环已完成工程验收，包含加密持久化、多配置与首批 10 项编辑；P04–P07 待实施。当前 APK 的设备运行未验证；阶段和验证边界以 [路线图](docs/plan/ROADMAP.md) 为准。
 
 ## 项目名称
 
@@ -35,7 +35,7 @@ python3 scripts/catalog/audit_config_catalog.py
 
 ## 当前工程与目录
 
-Android 工程仅 `:app`。Kotlin 在 `com.github.zzwtsy.chuanmen` 下按 `features/<功能>` 聚合，已有共享能力位于根 `lib`、`components`、`utils`，主题保留 `ui/theme`；Service 统一拥有真实会话。仅使用 main/test/androidTest；debug/release 共用正式配置入口，配置仅在内存保留，测试替身仅用于测试。现行决策见 [ADR 0005](docs/design/adr/0005-single-app.md)。
+Android 工程仅 `:app`。Kotlin 在 `com.github.zzwtsy.chuanmen` 下按 `features/<功能>` 聚合，已有共享能力位于根 `lib`、`components`、`utils`，主题保留 `ui/theme`；Service 统一拥有真实会话。仅使用 main/test/androidTest；debug/release 共用正式配置入口，配置通过 AtomicFile 与 Android Keystore/AES-GCM 加密保存在本机，测试替身仅用于测试。现行决策见 [ADR 0005](docs/design/adr/0005-single-app.md)。
 
 | 路径 | 职责 |
 |---|---|
@@ -56,7 +56,7 @@ native 缓存和产物在 `app/build/native`，设备输出在 `app/build/device
 | 搭建环境、构建、选择检查 | [setup.md](docs/development/setup.md) |
 | 分支、PR 与手动合并 | [Git 工作流](docs/development/git-workflow.md) |
 | 应用版本、tag 与 Release | [版本治理](docs/development/versioning.md) |
-| 开始下一阶段实施 | [路线图](docs/plan/ROADMAP.md)（P03–P07 待实施） |
+| 开始下一阶段实施 | [路线图](docs/plan/ROADMAP.md)（P03 工程检查通过；P04–P07 待实施） |
 | 产品行为与 UI/UX | [总体设计](docs/design/overall-design.md) |
 | Android、会话和 JNI 边界 | [技术架构](docs/design/technical-architecture.md)与[ADR](docs/design/adr/0005-single-app.md) |
 | 配置来源、显隐与实施状态 | [配置目录](docs/design/config/README.md) |

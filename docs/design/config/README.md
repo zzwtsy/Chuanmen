@@ -9,7 +9,7 @@ P00 的解析与受控真机观察已在限定范围完成，见 [最终报告](
 | 文件 | 用途 |
 |---|---|
 | [assistant-catalog.snapshot.json](assistant-catalog.snapshot.json) | 原型使用的来源、字段、默认值、分组及历史显隐理由；按原样冻结 |
-| [android-capability-plan.json](android-capability-plan.json) | 正式产品能力尚未验收；记录阶段、平台决定与后续产品证据入口，不汇总实验探针的通过状态 |
+| [android-capability-plan.json](android-capability-plan.json) | 记录阶段、平台决定与工程实现证据；工程实现和设备效果分别维护，不汇总实验探针的通过状态 |
 
 来源：[官网配置助手](https://easytier.cn/assistant/)。入口抓取时间：`2026-10-10T21:57:46.170012+00:00`。部署 commit 未公开，以资源 SHA-256 定位观察版本。
 
@@ -24,7 +24,7 @@ P00 的解析与受控真机观察已在限定范围完成，见 [最终报告](
 
 ## 台账字段与状态的准确含义
 
-本次仅写入计划，不标记任何新增功能已实现。P02 的 controlledInputStage、implementationNote 与原运行证据保留；它们只能证明原限定范围。
+P03 首批 10 项的工程实现及复审修复已通过检查，engineeringStatus 为 implemented；接口、测试、实现摘要与检查结果见 [P03 复审修复记录](../../plan/p03-configuration.md#7-复审修复记录2026-10-24)。P05 其余 34 项及后续扩展保持 planned。P02 的 controlledInputStage 与原运行证据保留；它们只能证明原限定范围，当前设备效果未验证。
 
 | 字段 | 填写和判断规则 |
 |---|---|
@@ -32,7 +32,7 @@ P00 的解析与受控真机观察已在限定范围完成，见 [最终报告](
 | implementationTask | 字段映射与接线的主责任务，不表示只完成这一任务就关闭整项 |
 | completionTasks | 首次交付范围必须全部完成的任务 ID，按该阶段执行顺序排列；P03 先 01/03 再 02。少一项都不能写 implemented |
 | engineeringStatus | planned=未开始；in_progress=已开始但未满足断言；implemented=completionTasks 均完成且工程证据可定位；blocked=已查明缺失接口/依赖等条件使当前实现无法继续。尚未写代码不是 blocked |
-| engineeringEvidence | 实施后填写代码路径/符号、测试路径/用例、检查对应源码 SHA 和结果定位；计划文件不算实现证据，当前为空 |
+| engineeringEvidence | 实施后填写代码路径/符号、测试路径/用例、检查对应源码 SHA 和结果定位；计划本身不算实现证据；实施记录须绑定实际代码、用例及命令结果 |
 | extensionTask / extensionEngineeringStatus / extensionEngineeringEvidence | 后续扩展独立记状态与证据；peer 复合成员/协议由 P05-02 扩展，P03 三项 Android 策略由 P05-06 扩展，autoReconnect 的有限退避由 P06-02 扩展。首次 implemented 不表示扩展也已完成 |
 | nativeStatus / evidence | 保留既有原生验收状态和证据；本轮工程通过不会改成运行 verified |
 | runtimeVerificationStage | null 表示本轮取消设备验证，没有未来补跑阶段；不表示“不适用”或“已通过” |

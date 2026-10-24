@@ -49,7 +49,7 @@ open class NativeVpnService : VpnService(), TunPlatform {
         connectivity = getSystemService(ConnectivityManager::class.java)
         engine = createEngine(scope)
         coordinator = VpnSessionCoordinator(engine, this, scope, MonotonicClock(SystemClock::elapsedRealtime),
-            onQuiescent = { if (destroyed) scope.cancel() })
+            onQuiescent = { if (destroyed) scope.cancel() }, profiles = (application as ProfileRepositoryOwner).profiles)
         connectivity.registerNetworkCallback(NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN).build(), networkCallback)
@@ -64,6 +64,11 @@ open class NativeVpnService : VpnService(), TunPlatform {
             ACTION_FOREGROUND -> if (coordinator.state.value.phase in setOf(ConnectionPhase.Idle, ConnectionPhase.Failed)) stopSelf()
                 else if (!foreground()) coordinator.revoke()
             ACTION_STOP -> coordinator.disconnect()
+            SERVICE_INTERFACE -> scope.launch {
+                val repository = (application as ProfileRepositoryOwner).profiles
+                repository.load()
+                repository.lastConnectionTarget?.let(repository::findSaved)?.let { coordinator.restoreSystemTarget(it) }
+            }
         }
         return START_NOT_STICKY
     }
@@ -107,6 +112,8 @@ open class NativeVpnService : VpnService(), TunPlatform {
             return if (savedRevision(saved)) coordinator.apply(saved) else OperationResult.Rejected(UnavailableReason.InvalidConfig)
         }
         fun disconnect(): OperationResult { checkCaller(); return coordinator.disconnect() }
+        fun query(): OperationResult { checkCaller(); return coordinator.query() }
+        suspend fun deleteProfile(id: com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId): com.github.zzwtsy.chuanmen.lib.profile.WriteResult<Unit> { checkCaller(); return coordinator.deleteProfile(id) }
         fun restoreRunning(): OperationResult { checkCaller(); return coordinator.restoreRunning() }
     }
 

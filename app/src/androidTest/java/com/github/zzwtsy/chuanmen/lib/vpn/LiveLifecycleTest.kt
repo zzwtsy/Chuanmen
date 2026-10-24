@@ -12,7 +12,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.zzwtsy.chuanmen.ChuanmenApplication
 import com.github.zzwtsy.chuanmen.MainActivity
-import com.github.zzwtsy.chuanmen.features.configuration.lib.ConfigurationInput
 import com.github.zzwtsy.chuanmen.lib.profile.CoreInstanceId
 import com.github.zzwtsy.chuanmen.lib.profile.Ipv4Assignment
 import com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId
@@ -31,12 +30,11 @@ class LiveLifecycleTest {
     @Test fun permissionAndServiceLifecycleAreConfirmed() = runBlocking<Unit> {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val app = instrumentation.targetContext.applicationContext as ChuanmenApplication
-        val repository = ConfigurationInput.create(
-            LocalProfileId("00000000-0000-4000-8000-000000000224"), CoreInstanceId("p02-lifecycle"),
-            "平台生命周期", "chuanmen-p02-controlled", NetworkSecret.of("p02-synthetic-public-test-only"),
-            listOf(PeerEndpoint("tcp://127.0.0.1:9")), Ipv4Assignment.Static("10.222.0.2"), emptyList())
-        val saved = repository.profiles.value.single().saved
-        withContext(Dispatchers.Main) { app.setRepository(repository) }
+        val repository = app.profiles
+        repository.load()
+        val creation = controlledInput(CoreInstanceId("p02-lifecycle"), "chuanmen-p02-controlled", NetworkSecret.of("p02-synthetic-public-test-only"), listOf(PeerEndpoint("tcp://127.0.0.1:9")), Ipv4Assignment.Static("10.222.0.2"), emptyList())
+        val initialProfile = repository.create(creation.first.controlledDocument(), creation.second, "平台生命周期").requireSuccess()
+        val saved = initialProfile
         val report = JSONObject().put("status", "failed").put("scope", "platform_lifecycle_without_peer")
         var activity: ActivityScenario<MainActivity>? = null
         try {

@@ -120,6 +120,8 @@ jobs:
         run: |
           cargo test --manifest-path app/native/Cargo.toml --locked --target-dir app/build/native/target
           cargo test --manifest-path scripts/android/native-peer/Cargo.toml --locked --target-dir app/build/device-tests/peer-target
+      - name: Check configuration codec through host JNI
+        run: ./gradlew --console=plain :app:testHostNativeCodec --offline
       - name: Build debug, release and device tests
         run: ./gradlew --console=plain :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest
       - name: Verify packaged dual ABI libraries and 16 KB alignment

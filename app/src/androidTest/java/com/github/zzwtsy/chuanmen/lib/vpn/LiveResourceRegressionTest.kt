@@ -6,7 +6,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.zzwtsy.chuanmen.ChuanmenApplication
 import com.github.zzwtsy.chuanmen.MainActivity
-import com.github.zzwtsy.chuanmen.features.configuration.lib.ConfigurationInput
 import com.github.zzwtsy.chuanmen.lib.profile.CoreInstanceId
 import com.github.zzwtsy.chuanmen.lib.profile.Ipv4Assignment
 import com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId
@@ -33,11 +32,11 @@ class LiveResourceRegressionTest {
         val runId = requireNotNull(arguments.getString("runId")) { "RUN_ID_MISSING" }
         require(runId.startsWith("p02-"))
         val app = instrumentation.targetContext.applicationContext as ChuanmenApplication
-        val id = LocalProfileId("00000000-0000-4000-8000-000000000250")
-        val repository = ConfigurationInput.create(id, CoreInstanceId("p02-resources-android"), "资源回归",
-            "chuanmen-p02-controlled", NetworkSecret.of("p02-synthetic-public-test-only"),
-            listOf(PeerEndpoint("tcp://$host:31270")), Ipv4Assignment.Static("10.222.0.2"), emptyList())
-        withContext(Dispatchers.Main) { app.setRepository(repository) }
+        val repository = app.profiles
+        repository.load()
+        val creation = controlledInput(CoreInstanceId("p02-resources-android"), "chuanmen-p02-controlled", NetworkSecret.of("p02-synthetic-public-test-only"), listOf(PeerEndpoint("tcp://$host:31270")), Ipv4Assignment.Static("10.222.0.2"), emptyList())
+        val initialProfile = repository.create(creation.first.controlledDocument(), creation.second, "资源回归").requireSuccess()
+        val id = initialProfile.profileId
         val observerScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         val observer = NativeCoreEngine(observerScope)
         val cycles = JSONArray()
@@ -56,8 +55,7 @@ class LiveResourceRegressionTest {
                 repeat(54) { index ->
                     val outer = if (index % 2 == 0) "tcp" else "udp"
                     val old = repository.findSaved(id)!!
-                    val saved = if (index == 0) old else repository.save(id,
-                        old.core.copy(peers = listOf(PeerEndpoint("$outer://$host:31270"))), old.vpnPolicy)!!
+                    val saved = if (index == 0) old else repository.save(id, old.core.copy(peers = listOf(PeerEndpoint("$outer://$host:31270"))).controlledDocument(), old.vpnPolicy, old.revision).requireSuccess()
                     assertTrue(withContext(Dispatchers.Main) { app.sessions.connect(saved) } is OperationResult.Accepted)
                     withTimeout(90_000) { while (VpnService.prepare(app) != null) delay(250) }
                     val running = await(app) { it.phase == ConnectionPhase.Running && it.core?.value?.peers?.any { p -> p.connections > 0 } == true }

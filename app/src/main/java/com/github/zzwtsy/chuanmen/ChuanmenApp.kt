@@ -29,6 +29,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.LaunchedEffect
+import com.github.zzwtsy.chuanmen.features.configuration.lib.CreationAction
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +41,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.github.zzwtsy.chuanmen.features.configuration.ConfigurationEntry
 import com.github.zzwtsy.chuanmen.features.configuration.ConfigurationRoute
 import com.github.zzwtsy.chuanmen.features.configuration.ConfigurationViewModel
 import com.github.zzwtsy.chuanmen.features.devices.DevicesRoute
@@ -66,13 +69,38 @@ fun ChuanmenApp(
     val logs: LogsViewModel = viewModel(owner, key = "logs", factory = featureFactory)
     val settings: SettingsViewModel = viewModel(owner, key = "settings", factory = featureFactory)
     val state by model.state.collectAsStateWithLifecycle()
+    val configurationState by configuration.state.collectAsStateWithLifecycle()
+    val creation by configuration.creation.collectAsStateWithLifecycle()
+    val creating = state.navigation.creating || state.profiles.isEmpty()
+    var androidGroup by remember { mutableStateOf(false) }
+    var policyTarget by remember { mutableStateOf<com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId?>(null) }
+    fun cancelCreation() {
+        if (creation?.let { it.saving || it.createdId != null } == true) return
+        configuration.actCreation(CreationAction.Cancel)
+        if (state.profiles.isEmpty()) owner.finish() else model.act(AppAction.CancelCreation)
+    }
+    BackHandler(creating) { cancelCreation() }
+    LaunchedEffect(creating) { if (creating) configuration.actCreation(CreationAction.Begin) }
+    LaunchedEffect(creation?.createdId, creation?.token) {
+        creation?.let { draft -> draft.createdId?.let { id ->
+            model.act(AppAction.FinishCreation(id))
+            configuration.actCreation(CreationAction.Acknowledge(requireNotNull(draft.token)))
+        } }
+    }
     ChuanmenTheme(
         darkTheme = state.appearance.darkTheme ?: isSystemInDarkTheme(),
         dynamicColor = state.appearance.dynamicColor,
     ) {
-        ChuanmenScreen(state, model::act) { destination, settingsOpen ->
-            if (settingsOpen) SettingsRoute(settings) else when (destination) {
-                Destination.Configuration -> ConfigurationRoute(configuration)
+        if (creating) {
+            creation?.let { ConfigurationEntry(it, configuration::actCreation, if (state.profiles.isEmpty()) null else ::cancelCreation) }
+        } else ChuanmenScreen(state, { action ->
+            if (action == AppAction.CreateProfile) configuration.actCreation(CreationAction.Begin)
+            if (action is AppAction.Navigate) androidGroup = false
+            model.act(action)
+        }) { destination, settingsOpen ->
+            if (settingsOpen) SettingsRoute(settings, { policyTarget = state.navigation.viewedProfileId; androidGroup = true; model.act(AppAction.Navigate(Destination.Configuration)) }, configurationState.draft?.dirty == true)
+            else when (destination) {
+                Destination.Configuration -> ConfigurationRoute(configuration, androidGroup, policyTarget)
                 Destination.Overview -> OverviewRoute(overview) { model.act(AppAction.Navigate(Destination.Devices)) }
                 Destination.Devices -> DevicesRoute(devices)
                 Destination.Logs -> LogsRoute(logs)
@@ -104,6 +132,7 @@ fun ChuanmenScreen(state: AppUiState, onAction: (AppAction) -> Unit, content: @C
                                 Text(state.viewed?.displayName ?: "没有网络配置")
                             }
                             DropdownMenu(selectorOpen, onDismissRequest = { selectorOpen = false }) {
+                                DropdownMenuItem(text = { Text("新建配置") }, onClick = { selectorOpen = false; onAction(AppAction.CreateProfile) })
                                 state.profiles.forEach { profile ->
                                     DropdownMenuItem(
                                         text = { Text(profile.displayName) },
