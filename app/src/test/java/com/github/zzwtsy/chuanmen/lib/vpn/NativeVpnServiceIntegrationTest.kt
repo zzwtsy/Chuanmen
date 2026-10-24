@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.os.Process
 import com.github.zzwtsy.chuanmen.ChuanmenApplication
+import com.github.zzwtsy.chuanmen.TestChuanmenApplication
 import com.github.zzwtsy.chuanmen.lib.profile.AndroidVpnPolicy
 import com.github.zzwtsy.chuanmen.lib.profile.CoreConfig
 import com.github.zzwtsy.chuanmen.lib.profile.CoreInstanceId
@@ -40,7 +41,7 @@ import org.robolectric.shadows.ShadowVpnService
 
 /** 保留正式 Service 和协调器，只替换 CoreEngine；Android 平台由 Robolectric 提供。 */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [37], application = ChuanmenApplication::class)
+@Config(sdk = [37], application = TestChuanmenApplication::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class NativeVpnServiceIntegrationTest {
     class RecordingCore : CoreEngine {
@@ -49,6 +50,7 @@ class NativeVpnServiceIntegrationTest {
         val receipts = Channel<EngineEvent>(Channel.UNLIMITED)
         override val events = receipts.receiveAsFlow()
         var releases = 0
+        override suspend fun validate(saved: SavedRevision): ConfirmationResult<Unit> = ConfirmationResult.Confirmed(Unit)
         override fun submit(command: EngineCommand) { commands += command }
         override suspend fun releaseSession(token: OperationToken): ConfirmationResult<Unit> { releases++; return ConfirmationResult.Confirmed(Unit) }
     }
@@ -59,7 +61,7 @@ class NativeVpnServiceIntegrationTest {
 
     private fun setup(): Pair<org.robolectric.android.controller.ServiceController<ServiceWithCore>, NativeVpnService.ControlBinder> {
         val app = RuntimeEnvironment.getApplication() as ChuanmenApplication
-        app.setRepository(MemoryProfileRepository(listOf(ProfileSummary(saved(), "本地名称"))))
+        (app as TestChuanmenApplication).profiles = MemoryProfileRepository(listOf(ProfileSummary(saved(), "本地名称")))
         ShadowBinder.setCallingUid(Process.myUid())
         ShadowVpnService.setPrepareResult(null)
         val connectivity = app.getSystemService(ConnectivityManager::class.java)
@@ -97,6 +99,22 @@ class NativeVpnServiceIntegrationTest {
             ShadowVpnService.setPrepareResult(Intent("synthetic-permission"))
             assertEquals(OperationResult.Rejected(UnavailableReason.PermissionDenied), binder.connect(saved()))
             assertTrue(ServiceWithCore.core.commands.isEmpty())
+        } finally { controller.destroy(); runCurrent(); Dispatchers.resetMain() }
+    }
+
+    /** 普通 Service 空 Intent 重建不恢复连接；新的系统 VPN 动作才读取明确目标并经校验启动。 */
+    @Test fun serviceRecreation_doesNotTreatNullIntentAsAlwaysOnRequest() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        val (controller, binder) = setup()
+        try {
+            val profiles = (RuntimeEnvironment.getApplication() as ChuanmenApplication).profiles
+            profiles.rememberConnection(saved())
+            controller.get().onStartCommand(null, 0, 1); runCurrent()
+            assertTrue(ServiceWithCore.core.commands.isEmpty())
+            assertEquals(ConnectionPhase.Idle, binder.state().value.phase)
+            controller.get().onStartCommand(Intent(android.net.VpnService.SERVICE_INTERFACE), 0, 2); runCurrent()
+            assertEquals(saved(), (ServiceWithCore.core.commands.single() as EngineCommand.Start).saved)
+            assertEquals(saved().profileId, profiles.lastConnectionTarget)
         } finally { controller.destroy(); runCurrent(); Dispatchers.resetMain() }
     }
 

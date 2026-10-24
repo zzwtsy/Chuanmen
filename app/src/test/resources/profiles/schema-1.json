@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "7592951b808c4839cb9d77cc4bc642f124915951",
+  "futureCounter": 18446744073709551615,
+  "profiles": [
+    {
+      "profileId": "00000000-0000-4000-8000-000000000031",
+      "configRevision": 7,
+      "unknownKey": "保留原值",
+      "policy": {
+        "includeInternet": false,
+        "dnsServers": [],
+        "ipv6": "Block"
+      },
+      "metadata": {
+        "localDisplayName": "旧的中文名称",
+        "sortOrder": 0,
+        "createdAtMillis": 0,
+        "updatedAtMillis": 0
+      },
+      "coreInstanceId": "synthetic-legacy-instance",
+      "sourceVersion": "7592951b808c4839cb9d77cc4bc642f124915951",
+      "coreToml": "dhcp = true\nlisteners = []\n[network_identity]\nnetwork_name = \"旧版本网络 🌏\"\nnetwork_secret = \"synthetic-legacy-public-test\"\n[flags]\nmtu = 1380\nfuture_flag = false\n"
+    }
+  ]
+}

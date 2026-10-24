@@ -99,6 +99,9 @@ interface SessionController {
     val state: StateFlow<SessionState>
     fun connect(saved: SavedRevision): OperationResult
     fun apply(saved: SavedRevision): OperationResult
+    fun query(): OperationResult = OperationResult.Rejected(UnavailableReason.NotImplemented)
+    suspend fun deleteProfile(id: com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId): com.github.zzwtsy.chuanmen.lib.profile.WriteResult<Unit> =
+        com.github.zzwtsy.chuanmen.lib.profile.WriteResult.Failure(com.github.zzwtsy.chuanmen.lib.profile.WriteError.WriteFailed)
     fun disconnect(): OperationResult
     /** 恢复最后确认运行的内容；不覆盖已保存修订、本地名称或编辑草稿。 */
     fun restoreRunning(): OperationResult = OperationResult.Rejected(UnavailableReason.NotImplemented)

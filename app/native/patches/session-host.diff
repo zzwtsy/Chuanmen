@@ -459,3 +459,18 @@ index f782395..3dd93db 100644
  pub mod tunnel;
  pub mod utils;
  #[cfg(feature = "web-client")]
+diff --git a/easytier-core/src/config/toml.rs b/easytier-core/src/config/toml.rs
+--- a/easytier-core/src/config/toml.rs
++++ b/easytier-core/src/config/toml.rs
+@@ -667,7 +667,10 @@
+             .as_ref()
+             .and_then(|s| s.parse().ok())
+             .map(|c: cidr::Ipv4Inet| {
+-                if c.network_length() == 32 {
++                // 裸地址沿用宿主历史 /24；显式前缀（包括 /32）保留用户意图。
++                if c.network_length() == 32
++                    && locked_config.ipv4.as_deref().is_some_and(|raw| !raw.contains('/'))
++                {
+                     cidr::Ipv4Inet::new(c.address(), 24).unwrap()
+                 } else {
+                     c

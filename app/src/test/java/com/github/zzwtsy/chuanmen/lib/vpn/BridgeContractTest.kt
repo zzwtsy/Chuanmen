@@ -1,5 +1,7 @@
 package com.github.zzwtsy.chuanmen.lib.vpn
 
+import com.github.zzwtsy.chuanmen.lib.profile.testDocument
+
 import com.github.zzwtsy.chuanmen.lib.profile.AndroidVpnPolicy
 import com.github.zzwtsy.chuanmen.lib.profile.CoreConfig
 import com.github.zzwtsy.chuanmen.lib.profile.CoreInstanceId
@@ -129,15 +131,21 @@ class BridgeContractTest {
         assertEquals(token.sessionId, seen)
     }
 
-    /** 名称和引号转义不能注入 TOML 表；本地名称不进入核心，秘密只存在显式编码结果。 */
-    @Test fun controlledConfigEscapesWithoutIdentityCoupling() {
-        val saved = saved().let { it.copy(core = it.core.copy(networkName = "synthetic\"\n[flags]")) }
-        val encoded = CoreConfigEncoder.encode(saved)
-        assertTrue(encoded.contains("network_name = \"synthetic\\\"\\n[flags]\""))
-        assertTrue(encoded.contains("network_secret = \"synthetic-public-test-only\""))
+    /** 运行编码只经统一 codec；请求内的秘密不进入文档或快照的字符串输出。 */
+    @Test fun controlledConfigUsesDocumentCodec() = runTest {
+        val saved = saved()
+        var request: com.google.gson.JsonObject? = null
+        val codec = NativeCoreConfigCodec(EnginePort { json, _ ->
+            request = JsonParser.parseString(json).asJsonObject
+            """{"protocol":1,"status":"confirmed","result":{"codec_version":2,"runnable":true,"raw":"synthetic-approved-toml","overrides":["flags.no_tun"]}}"""
+        }, StandardTestDispatcher(testScheduler))
+        val encoded = codec.encodeForRuntime(saved.document) as com.github.zzwtsy.chuanmen.lib.profile.ConfigResult.Success
+        assertEquals("config_runtime", request!!["action"].asString)
+        assertTrue(request!!["config"].asString.contains("synthetic-public-test-only"))
+        assertEquals("synthetic-approved-toml", encoded.value.toml)
+        assertEquals(listOf("flags.no_tun"), encoded.value.overriddenFields)
         assertFalse(saved.toString().contains("synthetic-public-test-only"))
-        assertFalse(encoded.contains("localDisplayName"))
-        assertTrue(encoded.contains("no_tun = false"))
+        assertFalse(encoded.toString().contains("synthetic-public-test-only"))
     }
 
     /** 停止确认之后的引用释放必须独立核对 released 与引用计数，不能继承停止回执。 */

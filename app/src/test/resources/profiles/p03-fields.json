@@ -1,0 +1,48 @@
+[
+  {
+    "key": "network_identity.network_name",
+    "value": "合成网络 🌏"
+  },
+  {
+    "key": "network_identity.network_secret",
+    "value": ""
+  },
+  {
+    "key": "hostname",
+    "value": "合成主机"
+  },
+  {
+    "key": "dhcp",
+    "value": false
+  },
+  {
+    "key": "ipv4",
+    "value": "10.42.8.9/20"
+  },
+  {
+    "key": "peer",
+    "value": [
+      {
+        "uri": "udp://192.0.2.10:11010"
+      }
+    ]
+  },
+  {
+    "key": "flags.mtu",
+    "value": 1400
+  },
+  {
+    "key": "android.internetRouting",
+    "value": true
+  },
+  {
+    "key": "android.dnsServers",
+    "value": [
+      "10.42.0.53"
+    ]
+  },
+  {
+    "key": "android.ipv6Policy",
+    "value": "Block"
+  }
+]

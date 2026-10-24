@@ -24,6 +24,12 @@ python3 scripts/native/check_apk.py --sdk SDK_ROOT app/build/outputs/apk/debug/a
 
 自有 Rust、overlay、diff 与构建脚本由动态指纹和 Gradle 输入追踪，不手工登记文件摘要；上游原文件与补丁身份仍由 inputs.json 固定。修改后重新构建。旧报告不能放行新输入。设备结果必须绑定实际安装的 APK 和测试 APK，不从上一个版本继承。
 
+## 配置转换
+
+P03 增加 `config_parse`、`config_patch` 和 `config_runtime`，能力标识 `config-codec-v1`。这些动作不创建 runtime 会话或 TUN；错误仅带 key、UTF-8 位置和代码。原始 TOML 保留未知项，未知或未接入参数可以保存但不能运行；数值通过带类型的十进制文本投影跨 JNI。运行输出独立覆盖 listeners、no_tun、enable_ipv6 与稳定实例身份，原件不变，预览仅列覆盖 key。
+
+正式补丁身份为 `p03-config-host-v1`，核心 commit 和工具链保持不变。新增 `ConfigLoader::get_ipv4` 适配：裸地址继续解释为 /24，显式 /0–32 保留原前缀；原文件及后像摘要集中在 inputs.json。宿主回归不构成设备网络效果结论。
+
 ## 生命周期边界
 
 JNI 接口使用协议版本、会话 generation、操作序号与 attachment 身份。核心启动与 TUN 实际安装分别确认，Service 完成平台参数准备后才发布 Running。安装入队没有完成回执；整数 fd 可以复用，不能用于会话归属判断。
@@ -38,4 +44,10 @@ protector 必须在核心启动前注册。外层 socket 只有完成 `VpnServic
 
 宿主回归验证队列取消、attachment 隔离、回调排空、诊断边界和实际线程计数；设备 JNI 用例使用 pipe 验证借用关闭顺序。它们不证明 VPN 业务连通。正式 Service 的业务回包、平台生命周期和 50 轮资源回归经设备入口分别执行，安排见 [开发环境](../../docs/development/setup.md)。
 
-P02 已完成限定范围验收，P03–P07 已规划但尚未实施，本轮不执行设备补验；当前重构 APK 不继承历史设备结论。范围见 [路线图](../../docs/plan/ROADMAP.md) 和 P02 报告。
+当前阶段由路线图维护，P03–P07 只执行工程验证，本轮不执行设备补验；当前重构 APK 不继承历史设备结论。范围见 [路线图](../../docs/plan/ROADMAP.md) 和 P02 报告。
+
+## 配置 codec
+
+`config_parse`、`config_patch`、`config_runtime` 不创建会话。配置回执声明 `codec_version=2`，能力标记为 `config-codec-v2`，Kotlin/Rust 同批更新；既有会话协议仍为 1。`peer_edits` 是补丁命令，不是核心 TOML 字段：按结果顺序传入 `keep(source_index)`、`replace_uri(source_index, uri)`、`insert(uri)`，每个旧索引最多引用一次，未引用的节点删除。原节点的其他成员完整保留，旧的整表 `peer` 补丁拒绝执行。
+
+源语义保留未知、缺省和空值；运行语义使用固定核心 getter 的有效值，托管覆盖不参与比较。未接入字段保持不可运行。宿主 JNI 回归使用 `./gradlew :app:testHostNativeCodec --offline`；普通 JVM/lint 不依赖此任务。

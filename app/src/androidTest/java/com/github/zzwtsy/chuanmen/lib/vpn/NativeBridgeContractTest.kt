@@ -189,7 +189,6 @@ class NativeBridgeContractTest {
         // 未确认借用终止时保留强引用；测试失败不能借助 GC 提前关闭 native 仍可能使用的 fd。
         private val retained = mutableListOf<Lease>()
     }
-    private fun saved() = SavedRevision(LocalProfileId("00000000-0000-4000-8000-000000000002"), 1,
-        CoreConfig(CoreInstanceId("synthetic-native-core"), "synthetic-native-network", null, Ipv4Assignment.Static("10.222.0.2"),
-            networkSecret = NetworkSecret.of("synthetic-public-test-only"), peers = listOf(PeerEndpoint("tcp://127.0.0.1:9"))), AndroidVpnPolicy())
+    private suspend fun saved() = SavedRevision(LocalProfileId("00000000-0000-4000-8000-000000000002"), 1, CoreConfig(CoreInstanceId("synthetic-native-core"), "synthetic-native-network", null, Ipv4Assignment.Static("10.222.0.2"),
+            networkSecret = NetworkSecret.of("synthetic-public-test-only"), peers = listOf(PeerEndpoint("tcp://127.0.0.1:9"))).controlledDocument(), AndroidVpnPolicy())
 }

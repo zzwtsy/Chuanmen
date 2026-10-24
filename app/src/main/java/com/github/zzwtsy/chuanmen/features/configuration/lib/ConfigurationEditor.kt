@@ -1,92 +1,106 @@
 package com.github.zzwtsy.chuanmen.features.configuration.lib
 
-import com.github.zzwtsy.chuanmen.lib.profile.CoreConfig
-import com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId
-import com.github.zzwtsy.chuanmen.lib.profile.ProfileRepository
-import com.github.zzwtsy.chuanmen.lib.profile.SavedRevision
+import com.github.zzwtsy.chuanmen.lib.profile.*
+import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-enum class EditorMode { Basic, Full }
-enum class DraftField { NetworkName, Mtu }
-
-/** 无效输入仍保留 raw 值；模式和错误属于同一份按配置隔离的草稿。 */
-data class Draft(
-    val base: SavedRevision,
-    val rawNetworkName: String = base.core.networkName,
-    val rawMtu: String = base.core.mtu.toString(),
-    val mode: EditorMode = EditorMode.Basic,
-    val errors: Map<DraftField, String> = emptyMap(),
-) {
-    val dirty: Boolean
-        get() = rawNetworkName != base.core.networkName || rawMtu != base.core.mtu.toString()
-
-    /** 校验 P01 的最小字段；不声称完成 EasyTier 核心解析或全部配置校验。 */
-    fun validate(): Draft = copy(errors = buildMap {
-        if (rawNetworkName.isBlank()) put(DraftField.NetworkName, "请输入网络名称")
-        if (rawMtu.toIntOrNull() !in 576..9000) put(DraftField.Mtu, "MTU 请输入 576–9000 的整数")
-    })
-
-    fun validatedCore(): CoreConfig? {
-        if (validate().errors.isNotEmpty()) return null
-        return base.core.copy(networkName = rawNetworkName.trim(), mtu = rawMtu.toInt())
-    }
+@JvmInline value class DraftEpoch(val value: UUID = UUID.randomUUID())
+@JvmInline value class SaveToken(val value: UUID = UUID.randomUUID())
+sealed interface DraftSaveState {
+    data object Idle : DraftSaveState
+    data class Saving(val token: SaveToken) : DraftSaveState
+    data object Conflict : DraftSaveState
 }
 
-/**
- * 编辑状态只调用仓库；保存、丢弃和恢复实际配置不会发出任何会话动作。
- *
- * 基础/完整共用 [drafts]，已有静态地址与平台策略通过 base 保留。
- */
-class ConfigurationEditor(private val repository: ProfileRepository) {
+/** 草稿只在 Activity 内存中保存；状态与原始输入分别建模，不承载磁盘或会话操作。 */
+data class Draft(
+    val base: SavedRevision,
+    val input: RawConfigurationInput = ConfigurationInputFactory.fromSaved(base),
+    val mode: EditorMode = EditorMode.Basic,
+    val search: String = "",
+    val epoch: DraftEpoch = DraftEpoch(),
+    val editSequence: Long = 0,
+    val saveState: DraftSaveState = DraftSaveState.Idle,
+    val unacknowledgedEdit: Boolean = false,
+    val validation: InputValidation = ConfigurationInputFactory.validate(input, base),
+) {
+    val dirty get() = unacknowledgedEdit || ConfigurationInputFactory.changed(input, base)
+    val saving get() = saveState is DraftSaveState.Saving
+    val conflict get() = saveState == DraftSaveState.Conflict
+    val errors get() = validation.errors
+    val rawMtu get() = input.rawMtu
+    val rawIpv4 get() = input.rawIpv4
+    fun validate() = copy(validation = ConfigurationInputFactory.validate(input, base))
+    override fun toString() = "Draft(<redacted>, editSequence=$editSequence)"
+}
+
+/** 保存命令捕获完整基准和有效输入；令牌识别请求，代次与序号识别后续编辑。 */
+class SaveSubmission internal constructor(val token: SaveToken, val draft: Draft, val value: ValidatedConfigurationInput) {
+    val profileId get() = draft.base.profileId
+    override fun toString() = "SaveSubmission(<redacted>)"
+}
+
+/** 主线程局部归约器；生产 I/O 只有 ViewModel 的保存入口，不存在第二条测试专用保存路径。 */
+class ConfigurationEditor {
     private val mutableDrafts = MutableStateFlow<Map<LocalProfileId, Draft>>(emptyMap())
     val drafts = mutableDrafts.asStateFlow()
+    fun open(saved: SavedRevision) {
+        if (saved.profileId !in mutableDrafts.value) mutableDrafts.value += saved.profileId to Draft(saved)
+    }
+    fun edit(id: LocalProfileId, field: DraftField, raw: String) = editInput(id) { it.edit(field, raw) }
+    fun peer(id: LocalProfileId, action: PeerAction) = editInput(id) { it.editPeer(action) }
+    private fun editInput(id: LocalProfileId, transform: (RawConfigurationInput) -> RawConfigurationInput) = update(id) { old ->
+        val input = transform(old.input)
+        if (input == old.input) old else old.copy(input = input,
+            epoch = if (old.editSequence == Long.MAX_VALUE) DraftEpoch() else old.epoch,
+            editSequence = if (old.editSequence == Long.MAX_VALUE) 0 else old.editSequence + 1).validate()
+    }
+    fun mode(id: LocalProfileId, mode: EditorMode) = update(id) { it.copy(mode = mode) }
+    fun search(id: LocalProfileId, raw: String) = update(id) { it.copy(search = raw) }
+    fun forget(id: LocalProfileId) { mutableDrafts.value -= id }
+    private fun update(id: LocalProfileId, transform: (Draft) -> Draft) {
+        mutableDrafts.value[id]?.let { mutableDrafts.value += id to transform(it) }
+    }
+    fun beginSave(id: LocalProfileId): SaveSubmission? {
+        val current = mutableDrafts.value[id] ?: return null
+        if (current.saveState != DraftSaveState.Idle) return null
+        val checked = current.validate()
+        mutableDrafts.value += id to checked
+        val value = checked.validation.value ?: return null
+        val submission = SaveSubmission(SaveToken(), checked, value)
+        update(id) { it.copy(saveState = DraftSaveState.Saving(submission.token)) }
+        return submission
+    }
+    private fun matches(current: Draft, submission: SaveSubmission) =
+        (current.saveState as? DraftSaveState.Saving)?.token == submission.token
 
-    fun open(profileId: LocalProfileId) {
-        if (profileId in mutableDrafts.value) return
-        repository.findSaved(profileId)?.let { saved ->
-            mutableDrafts.value += profileId to Draft(saved)
+    fun acceptSaved(submission: SaveSubmission, saved: SavedRevision) = update(submission.profileId) { current ->
+        if (saved.profileId != submission.profileId || !matches(current, submission)) return@update current
+        if (current.epoch == submission.draft.epoch && current.editSequence == submission.draft.editSequence) {
+            val clean = ConfigurationInputFactory.fromSaved(saved)
+            val peers = clean.peers.mapIndexed { index, row -> row.copy(id = current.input.peers[index].id) }
+            Draft(saved, input = clean.copy(peers = peers).frozen(), mode = current.mode, search = current.search,
+                epoch = current.epoch, editSequence = current.editSequence)
+        } else {
+            val indices = submission.value.input.peers.mapIndexed { index, row -> row.id to index }.toMap()
+            current.copy(base = saved, input = current.input.copy(peers = current.input.peers.map { row ->
+                row.copy(sourceIndex = indices[row.id])
+            }).frozen(), saveState = DraftSaveState.Idle, unacknowledgedEdit = true).validate()
         }
     }
-
-    fun edit(profileId: LocalProfileId, field: DraftField, raw: String) {
-        val old = mutableDrafts.value[profileId] ?: return
-        val next = when (field) {
-            DraftField.NetworkName -> old.copy(rawNetworkName = raw)
-            DraftField.Mtu -> old.copy(rawMtu = raw)
-        }.validate()
-        mutableDrafts.value += profileId to next
+    fun reject(submission: SaveSubmission, error: WriteError) = update(submission.profileId) { current ->
+        if (!matches(current, submission)) current else current.copy(saveState =
+            if (error == WriteError.Conflict) DraftSaveState.Conflict else DraftSaveState.Idle)
     }
-
-    fun mode(profileId: LocalProfileId, mode: EditorMode) {
-        val old = mutableDrafts.value[profileId] ?: return
-        mutableDrafts.value += profileId to old.copy(mode = mode)
+    fun finish(submission: SaveSubmission) = update(submission.profileId) { current ->
+        if (matches(current, submission)) current.copy(saveState = DraftSaveState.Idle) else current
     }
-
-    fun save(profileId: LocalProfileId): SavedRevision? {
-        val draft = mutableDrafts.value[profileId]?.validate() ?: return null
-        mutableDrafts.value += profileId to draft
-        val core = draft.validatedCore() ?: return null
-        val saved = repository.save(profileId, core, draft.base.vpnPolicy) ?: return null
-        mutableDrafts.value += profileId to Draft(saved, mode = draft.mode)
-        return saved
-    }
-
-    /** 丢弃必须由显式动作调用；不会修改本地名称。 */
-    fun discard(profileId: LocalProfileId) {
-        val saved = repository.findSaved(profileId) ?: return
-        val mode = mutableDrafts.value[profileId]?.mode ?: EditorMode.Basic
-        mutableDrafts.value += profileId to Draft(saved, mode = mode)
-    }
-
-    /**
-     * 将实际会话配置另存为新修订，保留本地名称，不更新 applied 或发出会话动作。
-     * 恢复后是否待应用由已保存内容与实际配置的差异决定，不由修订号决定。
-     */
-    fun restore(applied: SavedRevision): SavedRevision? {
-        val saved = repository.save(applied.profileId, applied.core, applied.vpnPolicy) ?: return null
-        val mode = mutableDrafts.value[applied.profileId]?.mode ?: EditorMode.Basic
-        mutableDrafts.value += applied.profileId to Draft(saved, mode = mode)
-        return saved
+    /** 保存中拒绝重置；重置后的新代次不能接受之前请求的回执。 */
+    fun discard(saved: SavedRevision): Boolean {
+        val current = mutableDrafts.value[saved.profileId] ?: return false
+        if (current.saving) return false
+        mutableDrafts.value += saved.profileId to Draft(saved, mode = current.mode, search = current.search)
+        return true
     }
 }

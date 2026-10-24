@@ -1,6 +1,6 @@
 package com.github.zzwtsy.chuanmen.lib.vpn
 
-import com.github.zzwtsy.chuanmen.lib.profile.SavedRevision
+import com.github.zzwtsy.chuanmen.lib.profile.*
 import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -9,6 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -24,8 +25,10 @@ internal class VpnSessionCoordinator(
     private val timeouts: SessionTimeouts = SessionTimeouts(),
     private val io: CoroutineDispatcher = Dispatchers.IO,
     private val onQuiescent: () -> Unit = {},
+    private val profiles: ProfileRepository,
 ) : SessionController {
     private class Run(val id: SessionId, val saved: SavedRevision, val kind: OperationKind) {
+        var started = false
         var sequence = 0L
         var attachmentSequence = 0L
         var pending: EngineCommand? = null
@@ -49,6 +52,7 @@ internal class VpnSessionCoordinator(
     private var deadline: Job? = null
     private var poll: Job? = null
     private var validating = false
+    private val deleting = mutableSetOf<LocalProfileId>()
     private val traffic = TunTrafficHistory()
     private val lifecycle = ArrayDeque<LifecycleDiagnostic>()
     private val startedAt = clock.nowMillis()
@@ -59,17 +63,22 @@ internal class VpnSessionCoordinator(
 
     init { scope.launch { engine.events.collect(::receive) } }
 
-    override fun connect(saved: SavedRevision): OperationResult {
-        if (run != null || validating) return OperationResult.Rejected(UnavailableReason.Busy)
+    override fun connect(saved: SavedRevision): OperationResult = connectRequested(saved, remember = true)
+
+    private fun connectRequested(saved: SavedRevision, remember: Boolean): OperationResult {
+        if (saved.profileId in deleting || run != null || validating) return OperationResult.Rejected(UnavailableReason.Busy)
         if (!platform.authorized) return OperationResult.Rejected(UnavailableReason.PermissionDenied)
         if (!platform.networkAvailable) return OperationResult.Rejected(UnavailableReason.NoMeasurement)
         if (!platform.foreground()) return OperationResult.Rejected(UnavailableReason.EngineRejected)
         desired = saved
         afterStopFailure = null
-        return begin(saved, OperationKind.Connect)
+        return begin(saved, OperationKind.Connect, explicit = true, remember = remember)
     }
 
-    private fun begin(saved: SavedRevision, kind: OperationKind): OperationResult {
+    /** 系统恢复只使用已保存的明确目标，校验仍走正常启动路径。 */
+    fun restoreSystemTarget(saved: SavedRevision) { connectRequested(saved, remember = false) }
+
+    private fun begin(saved: SavedRevision, kind: OperationKind, explicit: Boolean = false, remember: Boolean = true): OperationResult {
         val current = Run(SessionId(UUID.randomUUID().toString(), ++generation), saved, kind)
         run = current
         traffic.reset()
@@ -78,7 +87,27 @@ internal class VpnSessionCoordinator(
         mutableState.value = SessionState(ConnectionPhase.Connecting, current.id, saved.profileId,
             pending = kind, applied = state.value.applied?.copy(freshness = DataFreshness.Stale),
             buildInfo = state.value.buildInfo, lifecycle = lifecycle.toList(), coreDiagnostics = processDiagnostics)
-        dispatch(current, EngineCommand.Start(token, saved, platform.protector), timeouts.startMillis)
+        if (explicit) validating = true
+        scope.launch {
+            if (run !== current) return@launch
+            if (explicit) {
+                val valid = engine.validate(saved)
+                if (run !== current || !validating) return@launch
+                val persisted = if (valid is ConfirmationResult.Confirmed) { if (remember) profiles.rememberConnection(saved) else WriteResult.Success(Unit) }
+                    else WriteResult.Failure(WriteError.ValidationError)
+                if (run !== current || !validating) return@launch
+                validating = false
+                if (persisted !is WriteResult.Success || !platform.authorized || !platform.networkAvailable || saved.profileId in deleting) {
+                    run = null; desired = null; platform.denyProtection(); platform.leaveForeground()
+                    mutableState.value = state.value.copy(phase = ConnectionPhase.Failed, pending = null,
+                        failure = OperationFailure(kind, if (valid !is ConfirmationResult.Confirmed) UnavailableReason.InvalidConfig else UnavailableReason.EngineRejected))
+                    return@launch
+                }
+            }
+            if (run !== current) return@launch
+            current.started = true
+            dispatch(current, EngineCommand.Start(token, saved, platform.protector), timeouts.startMillis)
+        }
         scope.launch {
             val result = engine.buildInfo()
             if (run !== current) return@launch
@@ -92,9 +121,9 @@ internal class VpnSessionCoordinator(
 
     override fun apply(saved: SavedRevision): OperationResult {
         val current = run ?: return OperationResult.Rejected(UnavailableReason.NotRunning)
-        if (state.value.phase != ConnectionPhase.Running || validating) return OperationResult.Rejected(UnavailableReason.Busy)
+        if (saved.profileId in deleting || state.value.phase != ConnectionPhase.Running || validating) return OperationResult.Rejected(UnavailableReason.Busy)
         if (current.saved.profileId != saved.profileId) return OperationResult.Rejected(UnavailableReason.DifferentRunningProfile)
-        if (current.saved.core == saved.core && current.saved.vpnPolicy == saved.vpnPolicy) return OperationResult.Unchanged
+        if (current.saved.document.sameRuntimeValues(saved.document) && current.saved.vpnPolicy == saved.vpnPolicy) return OperationResult.Unchanged
         val token = current.token()
         validating = true
         mutableState.value = state.value.copy(pending = OperationKind.Apply, failure = null)
@@ -121,14 +150,49 @@ internal class VpnSessionCoordinator(
             platform.leaveForeground()
             return OperationResult.Unchanged
         }
+        if (!current.started) {
+            run = null; platform.denyProtection(); platform.leaveForeground(); mutableState.value = SessionState()
+            return OperationResult.Unchanged
+        }
         if (current.pending is EngineCommand.Stop && state.value.phase == ConnectionPhase.Stopping) return OperationResult.Unchanged
         return stop(current, null, keepIntent = false)
+    }
+
+    /** 删除锁覆盖停止确认和磁盘提交；未知状态保持配置，取消等待也不会绕过资源所有权。 */
+    override suspend fun deleteProfile(id: LocalProfileId): WriteResult<Unit> {
+        val repository = profiles
+        if (!deleting.add(id)) return WriteResult.Failure(WriteError.Conflict)
+        try {
+            if (desired?.profileId == id || run?.saved?.profileId == id) {
+                disconnect()
+                state.first { run?.saved?.profileId != id || it.phase == ConnectionPhase.OutcomeUnknown }
+            }
+            if (run?.saved?.profileId == id || desired?.profileId == id) return WriteResult.Failure(WriteError.Conflict)
+            val deleted = repository.delete(id)
+            if (deleted is WriteResult.Success) {
+                if (lastConfirmed?.profileId == id) lastConfirmed = null
+                if (run == null && state.value.requestedProfileId == id) mutableState.value = SessionState(
+                    buildInfo = state.value.buildInfo, lifecycle = lifecycle.toList(), coreDiagnostics = processDiagnostics)
+            }
+            return deleted
+        } finally { deleting -= id }
+    }
+    override fun query(): OperationResult {
+        val current = run ?: return OperationResult.Rejected(UnavailableReason.NotRunning)
+        if (current.pending is EngineCommand.Stop || current.releasing) return stop(current, afterStopFailure, false)
+        query(current)
+        return OperationResult.Unchanged
     }
 
     fun revoke() {
         validating = false
         desired = null
         platform.denyProtection()
+        if (run?.started == false) {
+            disconnect()
+            mutableState.value = state.value.copy(phase = ConnectionPhase.Failed, failure = OperationFailure(OperationKind.Connect, UnavailableReason.ServiceRevoked))
+            return
+        }
         run?.let { stop(it, OperationFailure(it.kind, UnavailableReason.ServiceRevoked), false) }
             ?: run { platform.leaveForeground(); onQuiescent() }
     }
@@ -136,6 +200,7 @@ internal class VpnSessionCoordinator(
     /** 外层网络变化先撤销旧保护能力；旧会话清理确认后才允许新代次使用新网络。 */
     fun networkChanged() {
         val current = run
+        if (current != null && !current.started) { disconnect(); return }
         if (current != null && current.pending !is EngineCommand.Stop && !current.releasing) {
             stop(current, null, keepIntent = true)
         } else if (current == null && desired != null && platform.networkAvailable && platform.authorized) {
@@ -146,7 +211,7 @@ internal class VpnSessionCoordinator(
     /** 显式恢复上次确认运行内容，不写仓库、名称或编辑草稿。 */
     override fun restoreRunning(): OperationResult {
         val previous = lastConfirmed ?: return OperationResult.Rejected(UnavailableReason.NotRunning)
-        return if (run == null) connect(previous) else apply(previous)
+        return if (run == null) connectRequested(previous, remember = false) else apply(previous)
     }
 
     private fun dispatch(current: Run, command: EngineCommand, budget: Long) {

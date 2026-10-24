@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "protocol": 1,
-  "patch_id": "p02-session-host-v2",
+  "patch_id": "p03-config-host-v1",
   "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
   "rust_version": "1.99.0",
   "rustc_commit": "b940084d7eb6a299eb4bfeb8e34901bc051e7ac4",
@@ -46,6 +46,10 @@
     "easytier/src/lib.rs": {
       "original_sha256": "f1d538cd0e48f0d780dfb5ddf4153a0284fb12d30feae5e71adc97755ee7587c",
       "patched_sha256": "58df92ed4a39dcf42fdc256d0610c545dbc3889d7ba50b5e75578509ba8decbc"
+    },
+    "easytier-core/src/config/toml.rs": {
+      "original_sha256": "4c748a4faea9a0cad68d9495b311f1c57736873d8f9b2cc3acbe2c0d5db21311",
+      "patched_sha256": "26524abf443fb052c68192497601aa730b9a5960e623331e1f2f9e90cba453f2"
     }
   }
 }

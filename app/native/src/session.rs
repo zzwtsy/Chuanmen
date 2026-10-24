@@ -38,6 +38,14 @@ struct Session {
 
 static CURRENT: LazyLock<Mutex<Option<Arc<Session>>>> = LazyLock::new(|| Mutex::new(None));
 
+#[cfg(test)]
+static CREATIONS: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+
+#[cfg(test)]
+pub(crate) fn creation_count() -> u64 {
+    CREATIONS.load(std::sync::atomic::Ordering::SeqCst)
+}
+
 struct CommandGuard(Arc<Session>);
 impl Drop for CommandGuard {
     fn drop(&mut self) {
@@ -113,6 +121,8 @@ pub fn start(env: &mut JNIEnv<'_>, callback: &JObject<'_>, request: &Request) ->
         Ok(protector) => Arc::new(protector),
         Err(_) => return failure(request, "failed", "jni_error"),
     };
+    #[cfg(test)]
+    CREATIONS.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
     let session = Arc::new(Session {
         id,
         generation,

@@ -17,6 +17,7 @@ pub struct Request {
     pub saved_revision: Option<u64>,
     pub fd: Option<i32>,
     pub config: Option<String>,
+    pub patch: Option<Value>,
 }
 
 impl Request {
@@ -71,7 +72,7 @@ pub fn execute(env: &mut JNIEnv<'_>, callback: &JObject<'_>, text: &str) -> Valu
             json!({"core_revision": CORE_REVISION,
             "core_version": easytier::VERSION, "bridge_version": env!("CARGO_PKG_VERSION"),
             "abi": if cfg!(target_arch = "aarch64") { "arm64-v8a" } else { "x86_64" },
-            "platform": std::env::consts::OS, "features": ["upstream-default", "session-confirmations", "tun-counters"]}),
+            "platform": std::env::consts::OS, "features": ["upstream-default", "session-confirmations", "tun-counters", "config-codec-v2"]}),
         ),
         "validate" => match request.config.as_deref().and_then(|config| {
             easytier::common::config::TomlConfigLoader::new_from_str(config).ok()
@@ -79,6 +80,20 @@ pub fn execute(env: &mut JNIEnv<'_>, callback: &JObject<'_>, text: &str) -> Valu
             Some(_) => reply(&request, "confirmed", json!({"valid": true})),
             None => failure(&request, "failed", "invalid_config"),
         },
+        "config_parse" | "config_patch" | "config_runtime" => {
+            match crate::config_codec::execute(
+                &request.action,
+                request.config.as_deref().unwrap_or(""),
+                request.patch.as_ref(),
+            ) {
+                Ok(value) => reply(&request, "confirmed", value),
+                Err(error) => {
+                    let mut response = failure(&request, "failed", error.code);
+                    response["result"] = json!({"key": error.key, "offset": error.offset});
+                    response
+                }
+            }
+        }
         "start" => crate::session::start(env, callback, &request),
         "attach" => crate::session::attach(&request, false),
         "detach" => crate::session::attach(&request, true),

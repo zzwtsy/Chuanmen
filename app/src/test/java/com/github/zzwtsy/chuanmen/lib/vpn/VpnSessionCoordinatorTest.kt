@@ -1,5 +1,9 @@
 package com.github.zzwtsy.chuanmen.lib.vpn
 
+import com.github.zzwtsy.chuanmen.lib.profile.*
+import kotlinx.coroutines.async
+import kotlinx.coroutines.CompletableDeferred
+
 import com.github.zzwtsy.chuanmen.lib.profile.AndroidVpnPolicy
 import com.github.zzwtsy.chuanmen.lib.profile.CoreConfig
 import com.github.zzwtsy.chuanmen.lib.profile.CoreInstanceId
@@ -64,12 +68,12 @@ class VpnSessionCoordinatorTest {
         override fun dispatch(context: CoroutineContext, block: Runnable) { tasks += block }
         fun drain() { while (tasks.isNotEmpty()) tasks.removeFirst().run() }
     }
-    private inner class Harness(val test: TestScope, io: CoroutineDispatcher = StandardTestDispatcher(test.testScheduler)) {
+    private inner class Harness(val test: TestScope, io: CoroutineDispatcher = StandardTestDispatcher(test.testScheduler), repository: ProfileRepository = MemoryProfileRepository(listOf(ProfileSummary(saved(), "A")))) {
         val order = mutableListOf<String>()
         val engine = TestEngine(order)
         val platform = TestPlatform(order)
         val coordinator = VpnSessionCoordinator(engine, platform, test.backgroundScope,
-            MonotonicClock { test.testScheduler.currentTime }, SessionTimeouts(300, 300, 50, 100), io)
+            MonotonicClock { test.testScheduler.currentTime }, SessionTimeouts(300, 300, 50, 100), io, profiles = repository)
         val state get() = coordinator.state.value
         fun start(): EngineCommand.Start {
             assertTrue(coordinator.connect(saved()) is OperationResult.Accepted)
@@ -228,7 +232,7 @@ class VpnSessionCoordinatorTest {
         h.platform.networkAvailable = false; h.coordinator.networkChanged()
         h.stopConfirmed()
         assertEquals(ConnectionPhase.Reconnecting, h.state.phase)
-        h.platform.networkAvailable = true; h.coordinator.networkChanged()
+        h.platform.networkAvailable = true; h.coordinator.networkChanged(); runCurrent()
         val next = h.engine.commands.last() as EngineCommand.Start
         assertTrue(next.token.sessionId.generation > install.token.sessionId.generation)
     }
@@ -260,7 +264,7 @@ class VpnSessionCoordinatorTest {
     @Test fun invalidApplyKeepsPreviousRuntime() = runTest {
         val h = Harness(this); h.connected()
         h.engine.valid = ConfirmationResult.Failed(CoreFailure(CoreErrorCode.InvalidConfig))
-        h.coordinator.apply(saved().copy(revision = 2, core = saved().core.copy(mtu = 1400))); runCurrent()
+        h.coordinator.apply(saved().copy(revision = 2, document = saved().core.copy(mtu = 1400).testDocument())); runCurrent()
         assertEquals(ConnectionPhase.Running, h.state.phase)
         assertEquals(1, h.state.applied!!.saved.revision)
         assertEquals(OperationKind.Apply, h.state.failure!!.kind)
@@ -298,7 +302,7 @@ class VpnSessionCoordinatorTest {
         assertEquals(ConnectionPhase.Stopping, h.state.phase)
         h.stopConfirmed()
         assertEquals(ConnectionPhase.Reconnecting, h.state.phase)
-        h.platform.networkAvailable = true; h.coordinator.networkChanged()
+        h.platform.networkAvailable = true; h.coordinator.networkChanged(); runCurrent()
         val next = h.engine.commands.last() as EngineCommand.Start
         assertTrue(next.token.sessionId.generation > installed.token.sessionId.generation)
     }
@@ -340,7 +344,7 @@ class VpnSessionCoordinatorTest {
     /** 应用已保存修订必须先排空旧会话；新安装确认前旧运行快照只作为历史。 */
     @Test fun savedRevisionIsAppliedOnlyAfterNewTunConfirmation() = runTest {
         val h = Harness(this); val old = h.connected()
-        val next = saved().copy(revision = 2, core = saved().core.copy(mtu = 1400))
+        val next = saved().copy(revision = 2, document = saved().core.copy(mtu = 1400).testDocument())
         assertTrue(h.coordinator.apply(next) is OperationResult.Accepted); runCurrent()
         assertEquals(ConnectionPhase.Stopping, h.state.phase)
         assertEquals(1, h.state.applied!!.saved.revision)
@@ -359,10 +363,29 @@ class VpnSessionCoordinatorTest {
         assertEquals(DataFreshness.Fresh, h.state.applied!!.freshness)
     }
 
+    /** 应用修订 2 期间又保存修订 3；新 TUN 确认只能发布实际启动的 2，保存值继续为 3 并待应用。 */
+    @Test fun savingDuringApply_doesNotChangeCapturedRevision() = runTest {
+        val memory = MemoryProfileRepository(listOf(ProfileSummary(saved(), "A")))
+        val h = Harness(this, repository = memory); h.connected()
+        val second = memory.save(saved().profileId, saved().core.copy(mtu = 1400).testDocument(), saved().vpnPolicy, 1).requireSuccess()
+        h.coordinator.apply(second); runCurrent()
+        val third = memory.save(saved().profileId, saved().core.copy(mtu = 1450).testDocument(), saved().vpnPolicy, 2).requireSuccess()
+        h.stopConfirmed()
+        val start = h.engine.commands.last() as EngineCommand.Start
+        assertEquals(second, start.saved)
+        h.coreStarted(start); h.query(); h.attach()
+        assertEquals(second, h.state.applied!!.saved)
+        assertEquals(third, memory.findSaved(saved().profileId))
+        val ui = com.github.zzwtsy.chuanmen.features.configuration.ConfigurationUiState.project(memory.profiles.value,
+            h.state, saved().profileId, null)
+        assertTrue(ui.pendingApplication)
+        assertEquals(1400, h.platform.specs.last().mtu)
+    }
+
     /** 新修订启动失败如实停止；显式恢复使用上次确认的修订，不改传入的新保存内容。 */
     @Test fun failedApplyRestoresLastConfirmedRevisionExplicitly() = runTest {
         val h = Harness(this); h.connected()
-        val next = saved().copy(revision = 2, core = saved().core.copy(mtu = 1400))
+        val next = saved().copy(revision = 2, document = saved().core.copy(mtu = 1400).testDocument())
         h.coordinator.apply(next); runCurrent(); h.stopConfirmed()
         val failed = h.engine.commands.last() as EngineCommand.Start
         h.engine.emit(EngineEvent.Failed(failed.token,
@@ -409,6 +432,96 @@ class VpnSessionCoordinatorTest {
         assertFalse(h.platform.descriptors.last().closed)
     }
 
+    /** 明确连接已校验但目标尚未落盘时禁止 Start；提交成功后目标与 Start 捕获同一修订。 */
+    @Test fun explicitConnection_waitsForTargetCommit() = runTest {
+        val memory = MemoryProfileRepository(listOf(ProfileSummary(saved(), "A")))
+        val gate = CompletableDeferred<Unit>()
+        val repository = object : ProfileRepository by memory {
+            override suspend fun rememberConnection(saved: SavedRevision): WriteResult<Unit> {
+                gate.await(); return memory.rememberConnection(saved)
+            }
+        }
+        val h = Harness(this, repository = repository)
+        h.coordinator.connect(saved()); runCurrent()
+        assertTrue(h.engine.commands.isEmpty()); assertNull(memory.lastConnectionTarget)
+        gate.complete(Unit); runCurrent()
+        assertEquals(saved().profileId, memory.lastConnectionTarget)
+        assertEquals(saved(), (h.engine.commands.single() as EngineCommand.Start).saved)
+        h.coordinator.disconnect(); h.stopConfirmed()
+        assertEquals(saved().profileId, memory.lastConnectionTarget)
+    }
+
+    /** 校验失败和目标写失败均不启动；等待目标写入期间显式停止后，迟到成功也不能启动。 */
+    @Test fun failedOrCancelledPreflight_neverStartsCore() = runTest {
+        val memory = MemoryProfileRepository(listOf(ProfileSummary(saved(), "A")))
+        val failing = object : ProfileRepository by memory {
+            override suspend fun rememberConnection(saved: SavedRevision): WriteResult<Unit> = WriteResult.Failure(WriteError.WriteFailed)
+        }
+        val h = Harness(this, repository = failing)
+        h.coordinator.connect(saved()); runCurrent()
+        assertTrue(h.engine.commands.isEmpty()); assertNull(memory.lastConnectionTarget)
+        assertEquals(ConnectionPhase.Failed, h.state.phase)
+        h.engine.valid = ConfirmationResult.Failed(CoreFailure(CoreErrorCode.InvalidConfig))
+        h.coordinator.connect(saved()); runCurrent()
+        assertTrue(h.engine.commands.isEmpty()); assertNull(memory.lastConnectionTarget)
+        val gate = CompletableDeferred<Unit>()
+        val delayed = object : ProfileRepository by memory {
+            override suspend fun rememberConnection(saved: SavedRevision): WriteResult<Unit> { gate.await(); return memory.rememberConnection(saved) }
+        }
+        val cancelled = Harness(this, repository = delayed)
+        cancelled.coordinator.connect(saved()); runCurrent()
+        cancelled.coordinator.disconnect(); gate.complete(Unit); runCurrent()
+        assertEquals(ConnectionPhase.Idle, cancelled.state.phase)
+        assertTrue(cancelled.engine.commands.isEmpty())
+    }
+
+    /** 删除运行配置先锁定目标，停止并释放 PFD/JNI 确认后才提交；等待期间连接和应用都拒绝。 */
+    @Test fun deleteRunning_waitsForStopAndReleaseBeforeCommit() = runTest {
+        val memory = MemoryProfileRepository(listOf(ProfileSummary(saved(), "A")))
+        memory.rememberConnection(saved()).requireSuccess()
+        val h = Harness(this, repository = memory); h.connected()
+        val deletion = backgroundScope.async { h.coordinator.deleteProfile(saved().profileId) }
+        runCurrent()
+        assertEquals(ConnectionPhase.Stopping, h.state.phase)
+        assertNotNull(memory.findSaved(saved().profileId)); assertFalse(deletion.isCompleted)
+        assertEquals(OperationResult.Rejected(UnavailableReason.Busy), h.coordinator.connect(saved()))
+        assertEquals(OperationResult.Rejected(UnavailableReason.Busy), h.coordinator.apply(saved()))
+        h.stopConfirmed()
+        assertEquals(WriteResult.Success(Unit), deletion.await())
+        assertTrue(h.platform.descriptors.single().closed)
+        assertTrue(h.order.indexOf("pfd-close") < h.order.indexOf("jni-release"))
+        assertNull(memory.findSaved(saved().profileId)); assertNull(memory.lastConnectionTarget)
+        assertEquals(OperationResult.Rejected(UnavailableReason.NotRunning), h.coordinator.restoreRunning())
+    }
+
+    /** 停止超时不视为资源释放；删除返回失败并保留配置、目标和 PFD，迟到停止不能自动续删。 */
+    @Test fun deleteUnknown_preservesProfileAndDoesNotResumeDeletion() = runTest {
+        val memory = MemoryProfileRepository(listOf(ProfileSummary(saved(), "A")))
+        memory.rememberConnection(saved()).requireSuccess()
+        val h = Harness(this, repository = memory); h.connected()
+        val deletion = backgroundScope.async { h.coordinator.deleteProfile(saved().profileId) }; runCurrent()
+        advanceTimeBy(301); runCurrent()
+        assertEquals(ConnectionPhase.OutcomeUnknown, h.state.phase)
+        assertEquals(WriteResult.Failure(WriteError.Conflict), deletion.await())
+        assertNotNull(memory.findSaved(saved().profileId)); assertEquals(saved().profileId, memory.lastConnectionTarget)
+        assertFalse(h.platform.descriptors.single().closed)
+        h.stopConfirmed()
+        assertNotNull(memory.findSaved(saved().profileId))
+    }
+
+    /** A 运行时删除 B 只更改 B 的存储，不停止 A，也不改写 A 的明确连接目标。 */
+    @Test fun deleteOtherProfile_doesNotStopRunningSession() = runTest {
+        val b = saved().copy(profileId = LocalProfileId("00000000-0000-4000-8000-000000000009"))
+        val memory = MemoryProfileRepository(listOf(ProfileSummary(saved(), "A"), ProfileSummary(b, "A")))
+        val h = Harness(this, repository = memory); h.connected()
+        val commands = h.engine.commands.toList()
+        h.coordinator.deleteProfile(b.profileId).requireSuccess()
+        assertEquals(commands, h.engine.commands)
+        assertEquals(ConnectionPhase.Running, h.state.phase)
+        assertNull(memory.findSaved(b.profileId)); assertNotNull(memory.findSaved(saved().profileId))
+        assertEquals(saved().profileId, memory.lastConnectionTarget)
+    }
+
     /** 启动中的系统撤销和迟到启动按固定时间重放，最终失败且不恢复运行意图。 */
     @Test fun replayRevocationDuringStartup() = runTest { replay("startup-revoke") }
 
@@ -445,7 +558,7 @@ class VpnSessionCoordinatorTest {
                 "network" -> h.coordinator.networkChanged()
                 "restore" -> { assertTrue(h.coordinator.restoreRunning() is OperationResult.Accepted); runCurrent() }
                 "apply" -> {
-                    assertTrue(h.coordinator.apply(saved().copy(revision = 2, core = saved().core.copy(mtu = 1400))) is OperationResult.Accepted)
+                    assertTrue(h.coordinator.apply(saved().copy(revision = 2, document = saved().core.copy(mtu = 1400).testDocument())) is OperationResult.Accepted)
                     runCurrent()
                 }
                 "late-error" -> {

@@ -1,6 +1,7 @@
 package com.github.zzwtsy.chuanmen.lib.vpn
 
 import com.github.zzwtsy.chuanmen.lib.profile.SavedRevision
+import com.github.zzwtsy.chuanmen.lib.profile.ConfigResult
 import com.github.zzwtsy.chuanmen.lib.vpn.BridgeProtocolCodec.bool
 import com.github.zzwtsy.chuanmen.lib.vpn.BridgeProtocolCodec.long
 import com.github.zzwtsy.chuanmen.lib.vpn.BridgeProtocolCodec.string
@@ -29,6 +30,8 @@ class NativeCoreEngine internal constructor(
     private val requireAndroid: Boolean,
 ) : CoreEngine {
     constructor(scope: CoroutineScope) : this(scope, JniEnginePort, Dispatchers.IO, true)
+
+    private val configCodec = NativeCoreConfigCodec(port, dispatcher)
 
     // 原生不提供热应用；Service 通过验证、完整停止和重连实现 ApplySavedRevision。
     override val capabilities = setOf(Capability.Connect, Capability.TunCounters)
@@ -81,8 +84,9 @@ class NativeCoreEngine internal constructor(
         if (build !is ConfirmationResult.Confirmed || (requireAndroid && build.value.platform != "android")) {
             return beforeNativeFailure(command.token, UnavailableReason.ProtocolMismatch)
         }
-        val config = try { CoreConfigEncoder.encode(command.saved) } catch (_: IllegalArgumentException) {
-            return beforeNativeFailure(command.token, UnavailableReason.InvalidConfig)
+        val config = when (val encoded = configCodec.encodeForRuntime(command.saved.document)) {
+            is ConfigResult.Success -> encoded.value.toml
+            is ConfigResult.Failure -> return beforeNativeFailure(command.token, UnavailableReason.InvalidConfig)
         }
         val request = BridgeProtocolCodec.request("start", command.token).apply {
             addProperty("saved_revision", command.saved.revision)
@@ -115,8 +119,9 @@ class NativeCoreEngine internal constructor(
     }
 
     override suspend fun validate(saved: SavedRevision): ConfirmationResult<Unit> {
-        val config = try { CoreConfigEncoder.encode(saved) } catch (_: IllegalArgumentException) {
-            return ConfirmationResult.Failed(CoreFailure(CoreErrorCode.InvalidConfig))
+        val config = when (val encoded = configCodec.encodeForRuntime(saved.document)) {
+            is ConfigResult.Success -> encoded.value.toml
+            is ConfigResult.Failure -> return ConfirmationResult.Failed(CoreFailure(CoreErrorCode.InvalidConfig))
         }
         return decodeResult(call(BridgeProtocolCodec.request("validate").apply { addProperty("config", config) })) { root ->
             require(root.getAsJsonObject("result").bool("valid"))

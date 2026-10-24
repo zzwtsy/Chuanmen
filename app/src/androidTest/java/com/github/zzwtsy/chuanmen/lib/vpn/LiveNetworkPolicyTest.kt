@@ -11,7 +11,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.zzwtsy.chuanmen.ChuanmenApplication
 import com.github.zzwtsy.chuanmen.MainActivity
-import com.github.zzwtsy.chuanmen.features.configuration.lib.ConfigurationInput
 import com.github.zzwtsy.chuanmen.lib.profile.CoreInstanceId
 import com.github.zzwtsy.chuanmen.lib.profile.Ipv4Assignment
 import com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId
@@ -45,11 +44,11 @@ class LiveNetworkPolicyTest {
         val originalWifi = requireNotNull(wifi()) { "PHYSICAL_WIFI_BASELINE_MISSING" }
         check(VpnService.prepare(app) == null) { "VPN_PERMISSION_REQUIRED_BEFORE_NETWORK_CASE" }
         check(!app.getSystemService(android.app.KeyguardManager::class.java).isKeyguardLocked)
-        val id = LocalProfileId("00000000-0000-4000-8000-000000000255")
-        val repository = ConfigurationInput.create(id, CoreInstanceId("p02-network-android"), "物理网络回归",
-            "chuanmen-p02-controlled", NetworkSecret.of("p02-synthetic-public-test-only"),
-            listOf(PeerEndpoint("tcp://$host:31270")), Ipv4Assignment.Static("10.222.0.2"), emptyList())
-        withContext(Dispatchers.Main) { app.setRepository(repository) }
+        val repository = app.profiles
+        repository.load()
+        val creation = controlledInput(CoreInstanceId("p02-network-android"), "chuanmen-p02-controlled", NetworkSecret.of("p02-synthetic-public-test-only"), listOf(PeerEndpoint("tcp://$host:31270")), Ipv4Assignment.Static("10.222.0.2"), emptyList())
+        val initialProfile = repository.create(creation.first.controlledDocument(), creation.second, "物理网络回归").requireSuccess()
+        val id = initialProfile.profileId
         val requests = JSONArray()
         val blocked = JSONArray()
         val report = JSONObject().put("run_id", runId).put("status", "failed").put("requests", requests).put("blocked_requests", blocked)

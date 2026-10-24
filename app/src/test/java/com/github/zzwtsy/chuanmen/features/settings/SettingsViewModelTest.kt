@@ -28,7 +28,7 @@ class SettingsViewModelTest {
             val repository = MemoryProfileRepository(listOf(ProfileSummary(first, "A"), ProfileSummary(second, "B")))
             val original = repository.profiles.value
             val sessions = RecordingSessions(SessionState())
-            val root = ChuanmenViewModel(repository.profiles, sessions.state)
+            val root = ChuanmenViewModel(repository.profiles, sessions.state, com.github.zzwtsy.chuanmen.testPreferences())
             val settings = SettingsViewModel(repository, root.viewedProfileId, root.appearancePreferences)
             store.put("app", root); store.put("settings", settings)
             backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { root.state.collect {} }
@@ -48,7 +48,7 @@ class SettingsViewModelTest {
             assertEquals(original, repository.profiles.value)
             assertTrue(sessions.requests.isEmpty())
             store.clear(); runCurrent()
-            val next = ChuanmenViewModel(repository.profiles, sessions.state)
+            val next = ChuanmenViewModel(repository.profiles, sessions.state, com.github.zzwtsy.chuanmen.testPreferences())
             store.put("app", next)
             val nextSettings = SettingsViewModel(repository, next.viewedProfileId, next.appearancePreferences)
             store.put("settings", nextSettings)

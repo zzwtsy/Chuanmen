@@ -7,7 +7,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.github.zzwtsy.chuanmen.ChuanmenApplication
 import com.github.zzwtsy.chuanmen.MainActivity
-import com.github.zzwtsy.chuanmen.features.configuration.lib.ConfigurationInput
 import com.github.zzwtsy.chuanmen.lib.profile.CoreInstanceId
 import com.github.zzwtsy.chuanmen.lib.profile.Ipv4Assignment
 import com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId
@@ -36,11 +35,11 @@ class LiveDatapathTest {
         val runId = requireNotNull(args.getString("runId")) { "RUN_ID_MISSING" }
         require(runId.startsWith("p02-"))
         val app = instrumentation.targetContext.applicationContext as ChuanmenApplication
-        val profile = LocalProfileId("00000000-0000-4000-8000-000000000202")
-        val repository = ConfigurationInput.create(profile, CoreInstanceId("p02-controlled-android"),
-            "受控真机", "chuanmen-p02-controlled", NetworkSecret.of("p02-synthetic-public-test-only"),
-            listOf(PeerEndpoint("tcp://$host:31270")), Ipv4Assignment.Static("10.222.0.2"), emptyList())
-        withContext(Dispatchers.Main) { app.setRepository(repository) }
+        val repository = app.profiles
+        repository.load()
+        val creation = controlledInput(CoreInstanceId("p02-controlled-android"), "chuanmen-p02-controlled", NetworkSecret.of("p02-synthetic-public-test-only"), listOf(PeerEndpoint("tcp://$host:31270")), Ipv4Assignment.Static("10.222.0.2"), emptyList())
+        val initialProfile = repository.create(creation.first.controlledDocument(), creation.second, "受控真机").requireSuccess()
+        val profile = initialProfile.profileId
         val requests = JSONArray()
         val scenarios = JSONArray()
         val report = JSONObject().put("run_id", runId).put("status", "failed").put("requests", requests).put("scenarios", scenarios)
@@ -51,8 +50,7 @@ class LiveDatapathTest {
             activity.onActivity { it.window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
             for (outer in listOf("tcp", "udp")) {
                 val previous = repository.findSaved(profile)!!
-                val saved = if (outer == "tcp") previous else repository.save(profile,
-                    previous.core.copy(peers = listOf(PeerEndpoint("udp://$host:31270"))), previous.vpnPolicy)!!
+                val saved = if (outer == "tcp") previous else repository.save(profile, previous.core.copy(peers = listOf(PeerEndpoint("udp://$host:31270"))).controlledDocument(), previous.vpnPolicy, previous.revision).requireSuccess()
                 val result = withContext(Dispatchers.Main) { app.sessions.connect(saved) }
                 assertTrue("CONNECT_NOT_ACCEPTED: $result", result is OperationResult.Accepted)
                 // 系统授权走真实 Activity 回调；人工确认的预算独立于核心启动预算。

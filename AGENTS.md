@@ -2,7 +2,7 @@
 
 ## 当前状态与任务入口
 
-串门（Chuanmen）是基于 EasyTier 的 Android 客户端，当前 P02 已完成限定范围实现，P03–P07 已规划、尚未实施。工程仅 `:app`，Kotlin 使用 `features/<功能>` 和根共享目录，主题保留 `ui/theme`，Rust 位于 `app/native`；正式应用始终通过 Service/JNI 使用真实核心。配置仍为受控内存输入。阶段状态以 [路线图](docs/plan/ROADMAP.md) 为准，设备结论绑定对应 APK 和报告范围。
+串门（Chuanmen）是基于 EasyTier 的 Android 客户端，P02 保留限定范围结论，后续阶段的实施与工程验收状态统一见路线图。工程仅 `:app`，Kotlin 使用 `features/<功能>` 和根共享目录，主题保留 `ui/theme`，Rust 位于 `app/native`；正式应用始终通过 Service/JNI 使用真实核心。配置由进程唯一持久仓库持有，原始 TOML 经统一 codec 解析，认证加密后落盘。阶段状态以 [路线图](docs/plan/ROADMAP.md) 为准，设备结论绑定对应 APK 和报告范围。
 
 中文产品名使用“串门”，英文拼音写法为 Chuanmen；文档首次介绍产品时使用“串门（Chuanmen）”，现有工程与代码标识沿用 `Chuanmen` / `chuanmen`。名称含义与介绍文案见 [项目名称](README.md#项目名称)。EasyTier 保留用于上游核心、版本、配置语义和来源引用。
 
@@ -33,7 +33,7 @@ python3 scripts/catalog/audit_config_catalog.py
 python3 scripts/check_privacy.py
 ```
 
-打包使用 `./gradlew :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest`，首次须准备固定 Rust/NDK 与依赖。native 源码和输出分别为 app/native、app/build/native，Gradle 追踪实际输入输出，JVM/lint 不构建 Rust。本轮取消全部设备执行与 release 冒烟，androidTest 仅编译。保留的设备回归入口为 `python3 scripts/android/verify_device.py --help`，受控对端为 `scripts/android/peer.py`。完整准备、参数、报告和回归见 [开发环境](docs/development/setup.md)。
+打包使用 `./gradlew :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest`，首次须准备固定 Rust/NDK 与依赖。native 源码和输出分别为 app/native、app/build/native，Gradle 追踪实际输入输出，普通 JVM/lint 不构建 Rust；真实配置 JNI 回归使用独立 `./gradlew :app:testHostNativeCodec --offline`。本轮取消全部设备执行与 release 冒烟，androidTest 仅编译。保留的设备回归入口为 `python3 scripts/android/verify_device.py --help`，受控对端为 `scripts/android/peer.py`。完整准备、参数、报告和回归见 [开发环境](docs/development/setup.md)。
 
 Python 修改须运行固定 uv + Ruff lint/格式检查及受影响回归；规则见 [ruff.toml](ruff.toml)。隐私检查支持 `--tree index`，不借用未暂存字节。HTML 原型与专用导出器已退役，历史源码及许可证从 P02 基线 `872bea7e3898881e4787b0adb012726933cd8329` 回溯。
 

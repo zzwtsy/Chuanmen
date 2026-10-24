@@ -31,7 +31,7 @@ Linux 宿主还需 Protobuf 编译器、标准 `.proto` 文件及 OpenSSL 开发
 
 `--allow-download` 仅用于首次获取固定源码与依赖；日常 Gradle native 任务使用离线 Cargo。源码和输出分别为 `app/native` 与 `app/build/native`，Gradle 根据实际输入输出决定是否重建。修改 Kotlin 测试不会触发 Rust 构建；Rust 源码、补丁或锁文件变化会触发。构建前后动态指纹用于防止构建期间输入变化，无需手工登记自有源码摘要。复用上游缓存时还检查当前补丁与固定后像一致；相同 Android 适配内容不重写，避免准备对端使 Cargo 无谓重编译。
 
-产物分别为 `app/build/outputs/apk/debug/app-debug.apk`、`app/build/outputs/apk/release/app-release-unsigned.apk`、`app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`。release 启用 AGP 默认全包 R8 优化，JNI 入口及回调由 keepRules 保持契约；不限定为只优化第三方包。release 不带签名密钥；debug/release 共用正式配置入口，只保留内存配置，退出进程即消失。
+产物分别为 `app/build/outputs/apk/debug/app-debug.apk`、`app/build/outputs/apk/release/app-release-unsigned.apk`、`app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk`。release 启用 AGP 默认全包 R8 优化，JNI 入口及回调由 keepRules 保持契约；不限定为只优化第三方包。release 不带签名密钥；debug/release 共用正式配置入口。已保存配置经 Keystore/AES-GCM 加密后写入 noBackupFilesDir；未保存草稿只驻留 Activity ViewModel，进程重新创建不恢复草稿。
 
 ```bash
 python3 scripts/native/check_apk.py --sdk SDK_ROOT app/build/outputs/apk/debug/app-debug.apk
@@ -44,7 +44,7 @@ APK 检查核对双 ABI、实际库字节、每个 ELF LOAD 段和 ZIP 的 16 KB
 
 ## 配置入口与测试数据
 
-`main/.../features/configuration/ConfigurationEntry.kt` 提供唯一真实输入入口，debug/release 共用业务源码。首次启动不提供示例参数；自动分配 IPv4 默认开启，互联网路由默认关闭。保存只初始化内存仓库，不申请 VPN 授权或启动核心。配置不持久化，进程退出即消失。
+`main/.../features/configuration/ConfigurationEntry.kt` 提供唯一真实输入入口，debug/release 共用业务源码。首次启动不提供示例参数；自动分配 IPv4 默认开启，互联网路由默认关闭。创建与编辑共享输入工厂，保存通过进程唯一持久仓库原子落盘，不申请 VPN 授权或启动核心。创建草稿与已有草稿均由同一 Activity 的配置 ViewModel 持有，Activity 配置重建保留输入和错误。
 
 应用侧无 Preview、演示状态或样例数据。测试记录器和合成输入仅存在 `test`/`androidTest`；入口测试位于 `test/.../features/configuration/ConfigurationEntryUiTest.kt`。仅保留 main/test/androidTest 三类实体源码目录。配置、总览、设备、日志、设置在 `main/.../features/<功能>` 聚合，JVM 测试按功能与 `lib` 镜像归属，真实设备用例统一在 `androidTest/.../lib/vpn`。
 
@@ -116,7 +116,15 @@ cargo +1.99.0 test --manifest-path app/native/Cargo.toml --locked --offline --ta
 cargo +1.99.0 test --manifest-path scripts/android/native-peer/Cargo.toml --locked --offline --target-dir app/build/device-tests/peer-target
 ```
 
-4. 构建 APK 并检查双 ABI 与 16 KB 静态对齐：
+4. 执行真实宿主 JNI 配置回归：
+
+```bash
+./gradlew :app:testHostNativeCodec --offline
+```
+
+此任务通过 `buildHostNativeCodec` 检查固定上游并构建主机库，复用 debug 单测编译产物。`NativeCoreConfigCodecHostTest` 只在此任务运行，库缺失或不兼容直接失败；普通 `testDebugUnitTest` 与 lint 不构建 Rust。宿主测试不创建 VPN 会话，不证明 Android Keystore 或设备网络行为。
+
+5. 构建 APK 并检查双 ABI 与 16 KB 静态对齐：
 
 ```bash
 ./gradlew :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest
