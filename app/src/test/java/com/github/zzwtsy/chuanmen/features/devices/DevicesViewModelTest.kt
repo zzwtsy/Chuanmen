@@ -16,6 +16,10 @@ import com.github.zzwtsy.chuanmen.testAppliedSnapshot
 import com.github.zzwtsy.chuanmen.testSavedRevision
 import org.junit.Assert.*
 import org.junit.Test
+import androidx.lifecycle.ViewModelStore
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.*
 
 class DevicesViewModelTest {
     private val saved = testSavedRevision()
@@ -33,19 +37,22 @@ class DevicesViewModelTest {
     private fun session() = SessionState(ConnectionPhase.Running, applied.sessionId, saved.profileId, applied,
         core = Observation(snapshot(), 1000, DataFreshness.Fresh))
 
-    /** 同代 Fresh 观测只生成在线 peer；按 peerId 关联路由，未知 NAT 编号与缺失版本如实显示。 */
+    /** 同代 Fresh 观测包含路由远端和邻居；按 peerId 关联，未知 NAT 与缺失版本如实显示。 */
     @Test fun onlinePeers_useMatchingRoutesAndExplicitUnknownValues() {
         val state = DevicesViewModel.project(session(), saved.profileId)
         assertNull(state.notice)
         assertEquals("未知类型 (123)", state.local!!.udpNat)
         assertEquals("未知 / 尚未探测", state.local.tcpNat)
         assertEquals("未报告", state.local.version)
-        val peer = state.peers.single()
+        assertEquals(2, state.peers.size)
+        val peer = state.peers.single { it.identity!!.peerId == 2L }
         assertEquals("设备 2", peer.title)
         assertEquals("10.42.0.2", peer.ip)
         assertEquals("2.7.0", peer.version)
         assertEquals("8", peer.routeCost)
         assertEquals(listOf("路由 192.0.2.0/24"), peer.routes)
+        assertEquals("不支持", peer.udpNat)
+        assertTrue(peer.statistics.single().contains("端到端收发：不支持"))
     }
 
     /** 查看其他网络或历史 applied 不生成本机/peer；旧代或 Stale 核心不生成在线设备和 NAT 事实。 */
@@ -72,5 +79,33 @@ class DevicesViewModelTest {
         val empty = DevicesViewModel.project(SessionState(), saved.profileId)
         assertNull(empty.local)
         assertTrue(empty.peers.isEmpty())
+    }
+
+    /** 打开详情后 peer 消失保留其身份并禁用探测/复制；切换会话关闭旧详情且清除展开身份。 */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test fun detailsSurvivePeerRemovalButNotSessionChanges() = runTest {
+        Dispatchers.setMain(StandardTestDispatcher(testScheduler))
+        val store = ViewModelStore()
+        try {
+            val sessions = MutableStateFlow(session())
+            val viewed = MutableStateFlow<LocalProfileId?>(saved.profileId)
+            val model = DevicesViewModel(sessions, viewed)
+            store.put("devices", model)
+            backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { model.state.collect {} }
+            runCurrent()
+            val identity = model.state.value.peers.first { it.identity!!.peerId == 2L }.identity!!
+            model.act(DeviceAction.Expand(identity)); model.act(DeviceAction.Details(identity)); runCurrent()
+            assertEquals(identity, model.state.value.detail!!.identity)
+            assertTrue(identity in model.state.value.expanded)
+            sessions.value = sessions.value.copy(core = Observation(snapshot().copy(peers = emptyList(), routes = emptyList()), 2000, DataFreshness.Fresh))
+            runCurrent()
+            assertEquals(identity, model.state.value.detail!!.identity)
+            assertFalse(model.state.value.detail!!.online)
+            assertNull(model.state.value.detail!!.probeTarget)
+            sessions.value = sessions.value.copy(sessionId = SessionId("replacement", 2))
+            runCurrent()
+            assertNull(model.state.value.detail)
+            assertTrue(model.state.value.expanded.isEmpty())
+        } finally { store.clear(); runCurrent(); Dispatchers.resetMain() }
     }
 }

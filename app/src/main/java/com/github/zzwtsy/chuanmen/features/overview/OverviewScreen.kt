@@ -26,13 +26,15 @@ internal fun OverviewRoute(model: OverviewViewModel, onViewDevices: () -> Unit) 
 @Composable
 fun OverviewScreen(state: OverviewUiState, onAction: (OverviewAction) -> Unit) {
     SectionCard("虚拟网络") {
+        state.profileName?.let { Text("当前查看：$it") }
         Text(state.status)
         state.ip?.let { ip ->
             if (state.historicalAddress) Text("上次确认的地址（历史）")
             Text(ip, style = MaterialTheme.typography.titleMedium)
-            CopyIpButton(ip)
+            CopyIpButton(ip, enabled = !state.historicalAddress)
         }
         DeviceStatistic("在线设备", state.onlineDevices)
+        Text(state.pathSummary)
         if (state.waitingForPeers) Text("等待其他设备加入")
         if (state.showDevices) Button(onClick = { onAction(OverviewAction.ViewDevices) }) { Text("查看设备") }
         if (state.showDisconnect) Button(onClick = { onAction(OverviewAction.Disconnect) }, enabled = state.disconnectEnabled) { Text(state.disconnectLabel) }
@@ -44,7 +46,7 @@ fun OverviewScreen(state: OverviewUiState, onAction: (OverviewAction) -> Unit) {
         DeviceStatistic("上传", state.upload)
         DeviceStatistic("下载", state.download)
         Text("最近 60 秒")
-        TrafficTrend(state.tx, state.rx)
+        TrafficTrend(state.points, state.upperBound, "上传 ${state.upload}，下载 ${state.download}")
     }
     state.message?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
 }

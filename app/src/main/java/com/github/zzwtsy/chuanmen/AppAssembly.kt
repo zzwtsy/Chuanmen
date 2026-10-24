@@ -78,8 +78,8 @@ object AppAssembly {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             val model = when (modelClass) {
                 OverviewViewModel::class.java -> OverviewViewModel(application.profiles, application.sessions, viewedProfileId)
-                DevicesViewModel::class.java -> DevicesViewModel(application.sessions.state, viewedProfileId)
-                LogsViewModel::class.java -> LogsViewModel(application.sessions.state)
+                DevicesViewModel::class.java -> DevicesViewModel(application.sessions.state, viewedProfileId, application.probes)
+                LogsViewModel::class.java -> LogsViewModel(application.logs)
                 SettingsViewModel::class.java -> SettingsViewModel(application.profiles, viewedProfileId, preferences)
                 ConfigurationViewModel::class.java -> ConfigurationViewModel(application.profiles, application.sessions, viewedProfileId, application.configCodec)
                 else -> error("未知功能 ViewModel")

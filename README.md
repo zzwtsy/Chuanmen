@@ -2,7 +2,7 @@
 
 串门（Chuanmen）是基于 EasyTier 的 Android 组网客户端，正在开发中。
 
-P02 已完成限定范围的真实 VPN/JNI 接入。单 app 结构精简已合并，P03 配置闭环已完成工程验收，包含加密持久化、多配置与首批 10 项编辑；P04–P07 待实施。当前 APK 的设备运行未验证；阶段和验证边界以 [路线图](docs/plan/ROADMAP.md) 为准。
+应用采用单 app 工程结构，通过真实 Service/JNI 接入 EasyTier 核心，提供加密持久化、多配置、首批 10 项配置编辑，以及总览、设备详情、流量趋势和双来源日志。当前 APK 的设备运行未验证；阶段状态和验收范围以 [路线图](docs/plan/ROADMAP.md) 为准。
 
 ## 项目名称
 
@@ -56,7 +56,7 @@ native 缓存和产物在 `app/build/native`，设备输出在 `app/build/device
 | 搭建环境、构建、选择检查 | [setup.md](docs/development/setup.md) |
 | 分支、PR 与手动合并 | [Git 工作流](docs/development/git-workflow.md) |
 | 应用版本、tag 与 Release | [版本治理](docs/development/versioning.md) |
-| 开始下一阶段实施 | [路线图](docs/plan/ROADMAP.md)（P03 工程检查通过；P04–P07 待实施） |
+| 开始下一阶段实施 | [路线图](docs/plan/ROADMAP.md) |
 | 产品行为与 UI/UX | [总体设计](docs/design/overall-design.md) |
 | Android、会话和 JNI 边界 | [技术架构](docs/design/technical-architecture.md)与[ADR](docs/design/adr/0005-single-app.md) |
 | 配置来源、显隐与实施状态 | [配置目录](docs/design/config/README.md) |

@@ -28,7 +28,9 @@ python3 scripts/native/check_apk.py --sdk SDK_ROOT app/build/outputs/apk/debug/a
 
 P03 增加 `config_parse`、`config_patch` 和 `config_runtime`，能力标识 `config-codec-v1`。这些动作不创建 runtime 会话或 TUN；错误仅带 key、UTF-8 位置和代码。原始 TOML 保留未知项，未知或未接入参数可以保存但不能运行；数值通过带类型的十进制文本投影跨 JNI。运行输出独立覆盖 listeners、no_tun、enable_ipv6 与稳定实例身份，原件不变，预览仅列覆盖 key。
 
-正式补丁身份为 `p03-config-host-v1`，核心 commit 和工具链保持不变。新增 `ConfigLoader::get_ipv4` 适配：裸地址继续解释为 /24，显式 /0–32 保留原前缀；原文件及后像摘要集中在 inputs.json。宿主回归不构成设备网络效果结论。
+## 可观测性与宿主补丁
+
+正式补丁身份为 `p04-observability-host-v2`，核心 commit 和工具链保持不变。保留 P03 的 `ConfigLoader::get_ipv4` 适配：裸地址继续解释为 /24，显式 /0–32 保留原前缀。P04 将 TUN 成功/失败的计量判断集中到 `TunAttachment::read_result / write_result`，普通与向量写入共用入口，失败或 Pending 不计量；原文件及后像摘要集中在 inputs.json。设备观测保留 `observability-v1` 并增加 `observability-v2` capability：活动邻居按核心网络身份分类，仅角色跨 JNI；RTT 的 `latency_valid` 来自完整样本发布，初始化零不作测量。两份 PeerConnStats protobuf 追加 optional 字段 6，经核心与 API 转换贯通；旧数据缺少标志时不推测 RTT。u64 计数继续以十进制字符串穿过 JNI。结构化事件订阅与通用 tracing 共用有界 sink，只允许静态模块/code 和事件白名单数字。宿主回归不构成设备网络效果结论。
 
 ## 生命周期边界
 
@@ -39,6 +41,8 @@ Kotlin 持有 PFD，native 只借用。停止先拒绝新命令与保护回调�
 protector 必须在核心启动前注册。外层 socket 只有完成 `VpnService.protect`、物理网络绑定及回调归属复核才能继续连接；旧代次和撤销回调拒绝放行。共享 runtime 线程数量来自实际线程生命周期钩子，不能用配置线程数替代资源测量。
 
 诊断只保留有界的静态 target、level 和 code，不读取日志消息或字段，不回显配置和密码。快照的累计计数使用精确整数；流量窗口由 Service 按 attachment 计算，缺测不补零。
+
+`diagnostics_debug` 显式调整安全 sink 的 Debug 采集，默认关闭；页面过滤不调用此动作。诊断 drain 带捕获时刻供 Kotlin 校正事件时间。`probe_nonblocking` 仅借用 Kotlin 临时 dup 的 ICMP socket fd，同步设置 `O_NONBLOCK` 后返回，不创建 runtime、不取得关闭所有权、不改变 TUN 或路由，供最低 API 24 的 Android 适配器使用。
 
 ## 验证范围
 

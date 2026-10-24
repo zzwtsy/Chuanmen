@@ -36,5 +36,6 @@ sealed interface AppAction {
     data object CancelCreation : AppAction
     data class FinishCreation(val profileId: LocalProfileId) : AppAction
     data object OpenSettings : AppAction
+    data object EditPolicy : AppAction
     data object Back : AppAction
 }

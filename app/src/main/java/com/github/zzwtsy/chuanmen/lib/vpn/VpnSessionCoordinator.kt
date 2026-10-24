@@ -4,6 +4,7 @@ import com.github.zzwtsy.chuanmen.lib.profile.*
 import java.util.UUID
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -26,13 +27,23 @@ internal class VpnSessionCoordinator(
     private val io: CoroutineDispatcher = Dispatchers.IO,
     private val onQuiescent: () -> Unit = {},
     private val profiles: ProfileRepository,
+    private val onLifecycle: (LifecycleDiagnostic) -> Unit = {},
+    private val onDiagnostics: (CoreDiagnostics) -> Unit = {},
 ) : SessionController {
+    /** 超时仍属于在途，直到终态或停止才释放查询资格。 */
+    private sealed interface ObservationQueryState {
+        data object Idle : ObservationQueryState
+        data class InFlight(val token: OperationToken, val startedAtMillis: Long, val watchdog: Job) : ObservationQueryState {
+            fun expired(nowMillis: Long) = nowMillis - startedAtMillis >= 2000
+        }
+    }
+
     private class Run(val id: SessionId, val saved: SavedRevision, val kind: OperationKind) {
         var started = false
         var sequence = 0L
         var attachmentSequence = 0L
         var pending: EngineCommand? = null
-        var query: OperationToken? = null
+        var observationQuery: ObservationQueryState = ObservationQueryState.Idle
         var tun: OwnedTun? = null
         var spec: VpnInterfaceSpec? = null
         var attachment: AttachmentId? = null
@@ -41,6 +52,10 @@ internal class VpnSessionCoordinator(
         var releasing = false
         var replacement: VpnInterfaceSpec? = null
         fun token() = OperationToken(id, ++sequence)
+        fun clearQuery() {
+            (observationQuery as? ObservationQueryState.InFlight)?.watchdog?.cancel()
+            observationQuery = ObservationQueryState.Idle
+        }
     }
     private val mutableState = MutableStateFlow(SessionState())
     override val state: StateFlow<SessionState> = mutableState
@@ -245,7 +260,7 @@ internal class VpnSessionCoordinator(
         afterStopFailure = failure
         platform.denyProtection()
         poll?.cancel(); poll = null
-        current.query = null
+        current.clearQuery()
         val token = current.token()
         mutableState.value = state.value.copy(phase = ConnectionPhase.Stopping, pending = OperationKind.Stop,
             applied = state.value.applied?.copy(freshness = DataFreshness.Stale), runtime = state.value.runtime?.asHistorical(),
@@ -274,14 +289,14 @@ internal class VpnSessionCoordinator(
         if (event.token != current.pending?.token && current.pending is EngineCommand.Stop && !current.drained &&
             (event is EngineEvent.CoreStarted || event is EngineEvent.Failed)
         ) { stop(current, afterStopFailure, keepIntent = desired != null); return }
-        if (event is EngineEvent.CoreObserved && current.query == event.token) {
-            current.query = null
-            observed(current, event.snapshot)
-            return
-        }
-        if (event.token == current.query) {
-            current.query = null
-            if (state.value.phase != ConnectionPhase.Stopping) scheduleQuery(current)
+        val query = current.observationQuery as? ObservationQueryState.InFlight
+        if (event.token == query?.token) {
+            current.clearQuery()
+            if (event is EngineEvent.CoreObserved && !query.expired(clock.nowMillis())) observed(current, event.snapshot)
+            else {
+                observationMissed(current)
+                if (state.value.phase != ConnectionPhase.Stopping) scheduleQuery(current)
+            }
             return
         }
         if (event.token != current.pending?.token) return
@@ -329,9 +344,18 @@ internal class VpnSessionCoordinator(
     }
 
     private fun query(current: Run) {
-        if (run !== current || current.query != null || current.pending is EngineCommand.Stop || current.releasing) return
+        if (run !== current || current.observationQuery != ObservationQueryState.Idle || current.pending is EngineCommand.Stop || current.releasing) return
         val token = current.token()
-        current.query = token
+        val watchdog = scope.launch(start = CoroutineStart.LAZY) {
+            delay(2000)
+            // JNI 尚未回执时只推进缺测窗口，不并行提交第二个查询。
+            while (run === current && (current.observationQuery as? ObservationQueryState.InFlight)?.token == token) {
+                observationMissed(current)
+                delay(1000)
+            }
+        }
+        current.observationQuery = ObservationQueryState.InFlight(token, clock.nowMillis(), watchdog)
+        watchdog.start()
         engine.submit(EngineCommand.QueryRuntime(token))
     }
     private fun scheduleQuery(current: Run, delayMillis: Long = 1_000) {
@@ -341,6 +365,11 @@ internal class VpnSessionCoordinator(
 
     private fun observed(current: Run, snapshot: CoreSnapshot) {
         if (snapshot.savedRevision != current.saved.revision) { unknown(current, false); return }
+        if (state.value.phase == ConnectionPhase.Running && snapshot.attachmentId != current.attachment) {
+            observationMissed(current)
+            scheduleQuery(current)
+            return
+        }
         mutableState.value = state.value.copy(core = Observation(snapshot, clock.nowMillis(), DataFreshness.Fresh))
         if (snapshot.protectionFailures > 0) {
             // 物理网络先失效、回调后到时仍保留运行意图；可用网络上的保护错误进入失败。
@@ -386,10 +415,19 @@ internal class VpnSessionCoordinator(
                 snapshot.counters?.let { Observation(it, clock.nowMillis(), DataFreshness.Fresh) }
                     ?: Observation(null, null, DataFreshness.Unavailable, UnavailableReason.NoMeasurement))
             mutableState.value = state.value.copy(runtime = Observation(runtime, clock.nowMillis(), DataFreshness.Fresh),
-                traffic = traffic.observe(requireNotNull(current.attachment), clock.nowMillis(), snapshot.counters))
+                traffic = traffic.observe(requireNotNull(current.attachment), clock.nowMillis(), snapshot.counters),
+                trafficUpperBound = traffic.upperBound)
             readDiagnostics(current)
         }
         scheduleQuery(current)
+    }
+
+    private fun observationMissed(current: Run) {
+        val points = current.attachment?.let { traffic.observe(it, clock.nowMillis(), null) } ?: state.value.traffic
+        mutableState.value = state.value.copy(
+            core = state.value.core?.let { if (it.value == null) it else it.copy(freshness = DataFreshness.Stale) },
+            runtime = state.value.runtime?.asHistorical(), traffic = points, trafficUpperBound = traffic.upperBound,
+        )
     }
 
     private fun establish(current: Run, spec: VpnInterfaceSpec) {
@@ -458,7 +496,10 @@ internal class VpnSessionCoordinator(
 
     private fun record(current: Run, token: OperationToken, code: String) {
         if (lifecycle.size == 128) lifecycle.removeFirst()
-        lifecycle.add(LifecycleDiagnostic((clock.nowMillis() - startedAt).coerceAtLeast(0), token, current.saved.revision, code))
+        val event = LifecycleDiagnostic((clock.nowMillis() - startedAt).coerceAtLeast(0), token, current.saved.revision, code)
+        lifecycle.add(event)
+        onLifecycle(event)
+        readDiagnostics(current)
         mutableState.value = state.value.copy(lifecycle = lifecycle.toList())
     }
 
@@ -470,6 +511,7 @@ internal class VpnSessionCoordinator(
                 val diagnostics = engine.diagnostics()
                 if (diagnostics is ConfirmationResult.Confirmed) {
                     val value = diagnostics.value
+                    onDiagnostics(value)
                     processDiagnostics = value.copy(records = (processDiagnostics?.records.orEmpty() + value.records).takeLast(128))
                     if (run === current) mutableState.value = state.value.copy(coreDiagnostics = processDiagnostics)
                 }

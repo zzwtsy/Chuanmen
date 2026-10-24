@@ -86,7 +86,28 @@ data class SessionState(
     val traffic: List<TrafficPoint> = emptyList(),
     val lifecycle: List<LifecycleDiagnostic> = emptyList(),
     val coreDiagnostics: CoreDiagnostics? = null,
+    val trafficUpperBound: Double = 1.0,
 )
+
+/** 页面共享同一有效性判断；Service 已判旧的数据不能由页面延长有效期。 */
+fun SessionState.currentCore(viewedId: LocalProfileId?): CoreSnapshot? {
+    val active = applied?.takeIf {
+        it.saved.profileId == viewedId && it.sessionId == sessionId && it.freshness == DataFreshness.Fresh &&
+            phase == ConnectionPhase.Running
+    } ?: return null
+    val measured = core?.takeIf { it.freshness == DataFreshness.Fresh }?.value ?: return null
+    if (measured.sessionId != active.sessionId || measured.status != RuntimeStatus.Running) return null
+    val attachment = runtime?.value?.attachmentId
+    if (attachment != null && measured.attachmentId != attachment) return null
+    return measured
+}
+
+/** 建立 TUN 后即可复制地址；后续平台观测被 Service 标旧时只保留历史展示。 */
+fun SessionState.hasCurrentAddress(viewedId: LocalProfileId?): Boolean = applied?.let {
+    it.saved.profileId == viewedId && it.sessionId == sessionId && phase == ConnectionPhase.Running &&
+        it.freshness == DataFreshness.Fresh && it.virtualIpv4.freshness == DataFreshness.Fresh &&
+        it.virtualIpv4.value != null && (runtime == null || runtime.freshness == DataFreshness.Fresh)
+} == true
 
 sealed interface OperationResult {
     data class Accepted(val token: OperationToken) : OperationResult
@@ -172,6 +193,7 @@ interface CoreEngine {
     /** 仅在停止确认且 Service 已关闭 PFD 后释放 JNI 引用；失败时仍阻止再次启动。 */
     suspend fun releaseSession(token: OperationToken): ConfirmationResult<Unit> = ConfirmationResult.Confirmed(Unit)
     suspend fun diagnostics(): ConfirmationResult<CoreDiagnostics> = ConfirmationResult.Failed(CoreFailure(CoreErrorCode.NotImplemented))
+    suspend fun setDiagnosticDebug(enabled: Boolean): ConfirmationResult<Unit> = ConfirmationResult.Failed(CoreFailure(CoreErrorCode.NotImplemented))
 }
 
 /** 注入单调时钟，使 fixture 和测试不依赖墙钟时间。 */

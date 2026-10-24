@@ -73,7 +73,7 @@ class NavigationUiTest {
                 val feature = when (modelClass) {
                     ConfigurationViewModel::class.java -> ConfigurationViewModel(repository, sessions, model.viewedProfileId, com.github.zzwtsy.chuanmen.lib.profile.TestCoreConfigCodec(), kotlinx.coroutines.Dispatchers.Main.immediate)
                     DevicesViewModel::class.java -> DevicesViewModel(sessions.state, model.viewedProfileId)
-                    LogsViewModel::class.java -> LogsViewModel(sessions.state)
+                    LogsViewModel::class.java -> LogsViewModel((compose.activity.application as ChuanmenApplication).logs)
                     SettingsViewModel::class.java -> SettingsViewModel(repository, model.viewedProfileId, model.appearancePreferences)
                     OverviewViewModel::class.java -> OverviewViewModel(repository, sessions, model.viewedProfileId)
                     else -> error("未知测试功能")

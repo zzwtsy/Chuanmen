@@ -36,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.lifecycle.ViewModelProvider
@@ -98,7 +99,7 @@ fun ChuanmenApp(
             if (action is AppAction.Navigate) androidGroup = false
             model.act(action)
         }) { destination, settingsOpen ->
-            if (settingsOpen) SettingsRoute(settings, { policyTarget = state.navigation.viewedProfileId; androidGroup = true; model.act(AppAction.Navigate(Destination.Configuration)) }, configurationState.draft?.dirty == true)
+            if (settingsOpen) SettingsRoute(settings, { policyTarget = state.navigation.viewedProfileId; androidGroup = true; model.act(AppAction.EditPolicy) }, configurationState.draft?.dirty == true)
             else when (destination) {
                 Destination.Configuration -> ConfigurationRoute(configuration, androidGroup, policyTarget)
                 Destination.Overview -> OverviewRoute(overview) { model.act(AppAction.Navigate(Destination.Devices)) }
@@ -113,6 +114,7 @@ fun ChuanmenApp(
 @Composable
 fun ChuanmenScreen(state: AppUiState, onAction: (AppAction) -> Unit, content: @Composable (Destination, Boolean) -> Unit) {
     var selectorOpen by remember { mutableStateOf(false) }
+    val pageStates = rememberSaveableStateHolder()
     BackHandler(state.navigation.settingsOpen || state.navigation.destination != Destination.Overview) {
         onAction(AppAction.Back)
     }
@@ -126,6 +128,7 @@ fun ChuanmenScreen(state: AppUiState, onAction: (AppAction) -> Unit, content: @C
                     ).padding(Dimensions.pagePadding),
                 ) {
                     Text("串门", style = MaterialTheme.typography.labelLarge)
+                    Text("当前查看", style = MaterialTheme.typography.labelSmall)
                     Row(horizontalArrangement = Arrangement.spacedBy(Dimensions.itemSpacing)) {
                         Column(Modifier.weight(1f)) {
                             Button(onClick = { selectorOpen = true }, enabled = state.profiles.isNotEmpty()) {
@@ -144,6 +147,9 @@ fun ChuanmenScreen(state: AppUiState, onAction: (AppAction) -> Unit, content: @C
                         TextButton(onClick = { onAction(AppAction.OpenSettings) }) { Text("设置") }
                     }
                     val running = state.running
+                    if (running != null && running.profileId == state.navigation.viewedProfileId && running.freshness == DataFreshness.Fresh) {
+                        Text("正在运行：${running.displayName}")
+                    }
                     if (running != null && running.profileId != state.navigation.viewedProfileId) {
                         val historical = running.freshness != DataFreshness.Fresh
                         Text(if (historical) "另一个网络的运行结果未确认：${running.displayName}"
@@ -169,13 +175,17 @@ fun ChuanmenScreen(state: AppUiState, onAction: (AppAction) -> Unit, content: @C
             }
         },
     ) { innerPadding ->
+        pageStates.SaveableStateProvider("${state.navigation.destination}:${state.navigation.settingsOpen}:${state.navigation.viewedProfileId}") {
+        val pageScroll = if (state.navigation.destination == Destination.Logs && !state.navigation.settingsOpen) Modifier
+            else Modifier.verticalScroll(rememberScrollState())
         Column(
             Modifier.fillMaxSize().padding(innerPadding).consumeWindowInsets(innerPadding).imePadding()
-                .verticalScroll(rememberScrollState()).padding(Dimensions.pagePadding),
+                .then(pageScroll).padding(Dimensions.pagePadding),
             verticalArrangement = Arrangement.spacedBy(Dimensions.sectionSpacing),
         ) {
             content(state.navigation.destination, state.navigation.settingsOpen)
             if (state.navigation.settingsOpen) TextButton(onClick = { onAction(AppAction.Back) }) { Text("返回") }
+        }
         }
     }
 }

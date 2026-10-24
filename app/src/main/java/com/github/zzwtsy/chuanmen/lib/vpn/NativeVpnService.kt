@@ -48,8 +48,10 @@ open class NativeVpnService : VpnService(), TunPlatform {
         super.onCreate()
         connectivity = getSystemService(ConnectivityManager::class.java)
         engine = createEngine(scope)
+        val logs = (application as com.github.zzwtsy.chuanmen.ChuanmenApplication).logs
         coordinator = VpnSessionCoordinator(engine, this, scope, MonotonicClock(SystemClock::elapsedRealtime),
-            onQuiescent = { if (destroyed) scope.cancel() }, profiles = (application as ProfileRepositoryOwner).profiles)
+            onQuiescent = { if (destroyed) scope.cancel() }, profiles = (application as ProfileRepositoryOwner).profiles,
+            onLifecycle = logs::lifecycle, onDiagnostics = logs::diagnostics)
         connectivity.registerNetworkCallback(NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN).build(), networkCallback)
@@ -115,6 +117,10 @@ open class NativeVpnService : VpnService(), TunPlatform {
         fun query(): OperationResult { checkCaller(); return coordinator.query() }
         suspend fun deleteProfile(id: com.github.zzwtsy.chuanmen.lib.profile.LocalProfileId): com.github.zzwtsy.chuanmen.lib.profile.WriteResult<Unit> { checkCaller(); return coordinator.deleteProfile(id) }
         fun restoreRunning(): OperationResult { checkCaller(); return coordinator.restoreRunning() }
+        suspend fun setDiagnosticDebug(enabled: Boolean): Boolean {
+            checkCaller()
+            return engine.setDiagnosticDebug(enabled) is ConfirmationResult.Confirmed
+        }
     }
 
     override val authorized: Boolean get() = !destroyed && prepare(this) == null

@@ -95,6 +95,7 @@ class VpnSessionClient(context: Context) : SessionController {
     override fun restoreRunning(): OperationResult = binder?.restoreRunning() ?: OperationResult.Rejected(UnavailableReason.NotRunning)
     /** 诊断读取也经同 UID Binder 核对，客户端不直接查看或拥有核心资源。 */
     fun resources(): ServiceResourceCounts? = binder?.resources()
+    suspend fun setDiagnosticDebug(enabled: Boolean): Boolean = binder?.setDiagnosticDebug(enabled) ?: false
     override fun disconnect(): OperationResult {
         awaitingPermission = null; queued = null
         val result = binder?.disconnect() ?: OperationResult.Unchanged

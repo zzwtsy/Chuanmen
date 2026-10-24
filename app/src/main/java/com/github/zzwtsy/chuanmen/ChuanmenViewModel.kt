@@ -19,6 +19,7 @@ class ChuanmenViewModel(
     private val destination = MutableStateFlow(Destination.Overview)
     private val creating = MutableStateFlow(false)
     private val settingsOpen = MutableStateFlow(false)
+    private var policyReturnDestination: Destination? = null
     private val mutableViewedProfileId = MutableStateFlow(appearancePreferences.lastViewed.value?.takeIf { id -> profiles.value.any { it.saved.profileId == id } } ?: profiles.value.firstOrNull()?.saved?.profileId)
     val viewedProfileId = mutableViewedProfileId.asStateFlow()
     init {
@@ -39,20 +40,29 @@ class ChuanmenViewModel(
 
     fun act(action: AppAction) {
         when (action) {
-            is AppAction.Navigate -> { destination.value = action.destination; settingsOpen.value = false }
+            is AppAction.Navigate -> { policyReturnDestination = null; destination.value = action.destination; settingsOpen.value = false }
             is AppAction.ViewProfile -> if (profiles.value.any { it.saved.profileId == action.profileId }) viewModelScope.launch {
                 if (appearancePreferences.view(action.profileId) && profiles.value.any { it.saved.profileId == action.profileId }) mutableViewedProfileId.value = action.profileId
             }
             AppAction.CreateProfile -> creating.value = true
             AppAction.CancelCreation -> creating.value = false
             is AppAction.FinishCreation -> {
+                policyReturnDestination = null
                 creating.value = false
                 destination.value = Destination.Configuration
                 settingsOpen.value = false
                 act(AppAction.ViewProfile(action.profileId))
             }
             AppAction.OpenSettings -> settingsOpen.value = true
-            AppAction.Back -> if (settingsOpen.value) settingsOpen.value = false else destination.value = Destination.Overview
+            AppAction.EditPolicy -> {
+                policyReturnDestination = destination.value
+                settingsOpen.value = false
+                destination.value = Destination.Configuration
+            }
+            AppAction.Back -> if (settingsOpen.value) settingsOpen.value = false
+                else policyReturnDestination?.let { previous ->
+                    destination.value = previous; settingsOpen.value = true; policyReturnDestination = null
+                } ?: run { destination.value = Destination.Overview }
         }
     }
 

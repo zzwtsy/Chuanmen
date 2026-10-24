@@ -10,6 +10,7 @@ import com.github.zzwtsy.chuanmen.lib.vpn.OperationResult
 import com.github.zzwtsy.chuanmen.lib.vpn.SessionController
 import com.github.zzwtsy.chuanmen.lib.vpn.SessionState
 import com.github.zzwtsy.chuanmen.lib.vpn.userMessage
+import com.github.zzwtsy.chuanmen.lib.vpn.SessionObservation
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,7 @@ class OverviewViewModel(
 
     val state = combine(profiles.profiles, sessions.state, viewedProfileId, message) { saved, session, id, notice ->
         project(session, id, saved.any { it.saved.profileId == id }, notice.takeIf { id == activeId })
+            .copy(profileName = saved.firstOrNull { it.saved.profileId == id }?.displayName)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), project(
         sessions.state.value, viewedProfileId.value, profiles.profiles.value.any { it.saved.profileId == viewedProfileId.value },
     ))
@@ -49,22 +51,22 @@ class OverviewViewModel(
 
     companion object {
         internal fun project(session: SessionState, viewedId: LocalProfileId?, exists: Boolean, message: String? = null): OverviewUiState {
-            val applied = session.applied?.takeIf { exists && it.saved.profileId == viewedId }
+            val observation = SessionObservation.from(session, viewedId.takeIf { exists })
+            val applied = observation.applied
             val ownsOperation = exists && session.requestedProfileId == viewedId
-            val current = applied != null && applied.freshness == DataFreshness.Fresh &&
-                applied.sessionId == session.sessionId && session.phase != ConnectionPhase.OutcomeUnknown
-            val core = session.core?.value?.takeIf {
-                current && session.core.freshness == DataFreshness.Fresh && it.sessionId == applied?.sessionId
-            }
+            val current = observation.confirmed
+            val index = observation.index
             val tx = if (current) session.traffic.takeLast(60).map { it.txBytesPerSecond } else emptyList()
             val rx = if (current) session.traffic.takeLast(60).map { it.rxBytesPerSecond } else emptyList()
             val disconnect = (ownsOperation && session.phase !in listOf(ConnectionPhase.Idle, ConnectionPhase.Failed)) || current
             return OverviewUiState(
                 status = if (ownsOperation || current) session.phase.label() else "未连接",
                 ip = applied?.virtualIpv4?.value,
-                historicalAddress = applied != null && !current,
-                onlineDevices = if (applied == null) "暂无数据" else core?.peers?.count { it.connections > 0 }?.toString() ?: "未采样",
-                waitingForPeers = core?.peers?.none { it.connections > 0 } == true,
+                historicalAddress = applied?.virtualIpv4?.value != null && !observation.addressIsCurrent,
+                onlineDevices = if (applied == null) "暂无数据" else index?.let {
+                    if (it.unknown.isEmpty()) it.members.size.toString() else "${it.members.size}（已确认）"
+                } ?: "未采样",
+                waitingForPeers = index?.members?.isEmpty() == true,
                 showDevices = applied != null,
                 showDisconnect = disconnect,
                 disconnectLabel = if (session.phase in listOf(ConnectionPhase.Preparing, ConnectionPhase.AwaitingPermission,
@@ -75,12 +77,29 @@ class OverviewViewModel(
                 canRestore = applied != null && !current && session.phase == ConnectionPhase.Failed,
                 failure = session.failure?.takeIf { ownsOperation }?.userMessage(), message = message,
                 tx = tx, rx = rx, upload = rate(tx.lastOrNull()), download = rate(rx.lastOrNull()),
+                pathSummary = index?.let { snapshot ->
+                    val paths = snapshot.members.map { id ->
+                        snapshot.routes[id]?.nextHopPeerId?.value?.let { hop ->
+                            if (hop == id) "直连" else "中继"
+                        } ?: "未知"
+                    }
+                    if (paths.isEmpty()) "路径未知" else "直连 ${paths.count { it == "直连" }} · 中继 ${paths.count { it == "中继" }} · 未知 ${paths.count { it == "未知" }}"
+                } ?: "路径未知",
+                points = if (current) session.traffic else emptyList(),
+                upperBound = session.trafficUpperBound,
             )
         }
     }
 }
 
-private fun rate(value: Double?) = value?.let { "${it.toLong()} B/s" } ?: "暂无数据"
+internal fun rate(value: Double?): String {
+    if (value == null || !value.isFinite() || value < 0) return "暂无数据"
+    return when {
+        value >= 1_048_576 -> String.format(java.util.Locale.ROOT, "%.1f MiB/s", value / 1_048_576)
+        value >= 1_024 -> String.format(java.util.Locale.ROOT, "%.1f KiB/s", value / 1_024)
+        else -> "${value.toLong()} B/s"
+    }
+}
 private fun ConnectionPhase.label() = when (this) {
     ConnectionPhase.Idle -> "未连接"
     ConnectionPhase.Preparing -> "准备中"

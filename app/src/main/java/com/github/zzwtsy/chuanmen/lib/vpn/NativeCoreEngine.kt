@@ -143,11 +143,17 @@ class NativeCoreEngine internal constructor(
         val result = root.getAsJsonObject("result")
         val capacity = result.long("capacity").also { require(it in 1..1024) }.toInt()
         val records = result.getAsJsonArray("records").map { it.asJsonObject.let { record ->
-            CoreDiagnostic(record.long("elapsed_millis"), record.string("scope"), record.string("level"), record.string("target"), record.string("code"))
+            BridgeProtocolCodec.diagnostic(record)
         } }
         require(records.size <= capacity)
-        CoreDiagnostics(records, result.long("dropped"), capacity)
+        CoreDiagnostics(records, result.long("dropped"), capacity,
+            if (result.has("captured_elapsed_millis")) result.long("captured_elapsed_millis") else null)
     }
+
+    override suspend fun setDiagnosticDebug(enabled: Boolean): ConfirmationResult<Unit> =
+        decodeResult(call(BridgeProtocolCodec.request("diagnostics_debug").apply { addProperty("debug", enabled) })) { root ->
+            require(root.getAsJsonObject("result").bool("enabled") == enabled)
+        }
 
     private suspend fun mutate(
         action: String, token: OperationToken, attachment: AttachmentId? = null,

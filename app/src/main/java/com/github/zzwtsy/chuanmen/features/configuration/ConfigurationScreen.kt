@@ -57,7 +57,10 @@ fun ConfigurationScreen(state: ConfigurationUiState, initialSearch: String = "",
     LaunchedEffect(id, initialSearch) { if (initialSearch.isNotEmpty()) onAction(ConfigurationAction.Search(initialSearch)) }
     val snackbar = remember { SnackbarHostState() }
     LaunchedEffect(state.message) {
-        state.message?.let { snackbar.showSnackbar(it); onAction(ConfigurationAction.ClearMessage) }
+        state.message?.let {
+            if (it != state.draft?.saveFailure) snackbar.showSnackbar(it)
+            onAction(ConfigurationAction.ClearMessage)
+        }
     }
     if (renameOpen) RenameProfileDialog(renameRaw, { renameRaw = it }, {
         onAction(ConfigurationAction.Rename(renameRaw)); renameOpen = false
@@ -91,6 +94,7 @@ fun ConfigurationScreen(state: ConfigurationUiState, initialSearch: String = "",
         TextButton(onClick = { confirm = ConfigurationAction.Reload }, enabled = !draft.saving) { Text("重新载入已保存版本") }
         TextButton(onClick = { onAction(ConfigurationAction.KeepDraft) }) { Text("保留当前草稿") }
     }
+    draft.saveFailure?.let { Text(it, color = MaterialTheme.colorScheme.error) }
     ConditionalActionArea(draft.dirty || state.pendingApplication || state.failure != null || state.outcomeUnknown) {
         if (draft.dirty) {
             Text("有未保存的更改")

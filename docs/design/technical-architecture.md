@@ -98,7 +98,7 @@ P03 存储采用 AtomicFile + 版本化 JSON + Keystore AES-GCM 保存配置，�
 
 schemaVersion 为 1；完整 JSON 明文上限 8 MiB，单项 TOML 上限 128 KiB，JNI 编码后上限 256 KiB。AES-256-GCM 使用每次独立 12 字节 IV、128 位认证标签和版本头 AAD。读取只使用已有 Keystore 密钥，密钥缺失不重建覆盖；AtomicFile 提交成功后才发布 Ready/最新快照。写接口使用 suspend、明确 WriteResult 与 expectedRevision 比较；元数据合并，相同解析值不增加修订，排版变化仍保存原文。没有生产旧磁盘格式，不实现 schema 0 迁移。
 
-原始 TOML 是唯一可保存源，字段投影只读；parse/patch/runtime 编码共用唯一 .so 和固定核心解析器。未知字段、日期、u64、显式 false/空列表保留，未接入项阻止运行；u64 以十进制字符串穿过 JNI。托管字段只在运行输出覆盖并提供脱敏 key 预览。宿主补丁 `p03-config-host-v1` 保留显式 IPv4 前缀（含 /32），裸地址沿用 /24；来源 commit 未升级，补丁前后摘要见 app/native/inputs.json。运行比较排除排版、本地名称、托管参数及来源身份字段。
+原始 TOML 是唯一可保存源，字段投影只读；parse/patch/runtime 编码共用唯一 .so 和固定核心解析器。未知字段、日期、u64、显式 false/空列表保留，未接入项阻止运行；u64 以十进制字符串穿过 JNI。托管字段只在运行输出覆盖并提供脱敏 key 预览。当前宿主补丁 `p04-observability-host-v1` 保留 P03 的显式 IPv4 前缀适配（含 /32，裸地址沿用 /24），将 TUN 成功/失败计量判断统一到可回归入口；来源 commit 未升级，补丁前后摘要见 app/native/inputs.json。运行比较排除排版、本地名称、托管参数及来源身份字段。
 
 仅保存已保存版本；草稿在切页和旋转时保留，进程退出后丢弃。秘密不进入 SavedStateHandle、Bundle、日志或测试真实凭据。密钥失效、认证失败、损坏及未来 schema 保留原文件并报告读取失败，不能自动初始化为空。配置与日志从系统备份和设备迁移中排除；用户显式备份由 P05 的 age 口令加密导出提供。[A-15]
 
@@ -257,35 +257,54 @@ JNI 类型为 `com.github.zzwtsy.chuanmen.lib.vpn.NativeBindings` 和同包 `Pro
 
 ### 8.1 首页固定 60 秒趋势
 
-首页图表统计口径固定为**本机 VPN/TUN 成功传输的 IP 数据**，两条曲线与当前上下行速率，最近 60 秒，初始候选采样周期 1 秒。无拖动取值、悬浮读数、详情页、时间选择或图例开关。
+首页图表统计口径固定为**本机 VPN/TUN 成功传输的 IP 数据**，两条曲线与当前上下行速率，最近 60 秒，Service 查询周期为 1 秒。无拖动取值、悬浮读数、详情页、时间选择或图例开关。
 
-计数放在现有 native TUN I/O 成功路径中：从 TUN 读出为本机上行，写回 TUN 成功为本机下行。不要为画图在 Kotlin 第二次读取同一个 fd，这会与核心争抢报文。对同一 fd `dup()` 也不会产生独立的报文镜像。当前已读上游 mobile TUN 路径可定位 I/O 包装点，但未证实有可直接供本项目调用的完整 TUN 计数 API，需 P02/P04 适配。[ET-06]
+计数位于 native TUN I/O 成功路径：`TunAttachment::read_result / write_result` 从 TUN 成功读出时累计本机上行，成功写回时累计本机下行，普通与向量写入复用判断，失败或 Pending 不计量。Kotlin 只读取快照，不再消费 TUN fd。对同一 fd `dup()` 也不会产生独立的报文镜像。[ET-06]
 
-速率为同一会话中累计字节差除以单调时间差；更换会话、计数回退、采样间隔异常或采样失败时断开曲线，不制造负值/尖峰。不活动但采样有效时绘制 0，缺失样本画断点。仅持有固定窗口，UI 不可见时停止高频重绘；服务继续必要的运行采集。
+速率为同一 attachment 中累计字节差乘 1000 除以单调毫秒差，接受 500–2000 ms 间隔；更换 attachment 清空窗口，计数回退、采样间隔异常或采样失败时切断基线。不活动但采样有效时绘制 0，缺失样本画断点。查询由内部 `ObservationQueryState.Idle / InFlight` 聚合 token、开始时间与 watchdog。在途满 2 秒后由 Service 每秒推进缺测；超时仍保持在途资格，收到终态或停止才清理，保持只有一个 JNI 查询。满 2 秒的迟到结果不重新标 Fresh。旧平台观测的地址标“上次地址”并禁用复制。仅持有固定窗口，UI 不可见时停止收集；服务继续采样和纵轴计算，返回直接显示当前窗口。
+
+纵轴至少 1 B/s；窗口峰值超过上限立即扩张。峰值低于上限一半连续 10 个有效采样后，每个有效点乘 0.9，最低为窗口峰值或 1；缺测不推进计数。Canvas 按时间定位，以实线/虚线和文字区分方向，非有限值不绘制，缺测两端不相连。
 
 该曲线能说明本机有流量经过 VPN 数据路径，但不能证明某个 App 已正确分流、远端已收到业务数据或所有配置均生效。DNS、系统流量也可能经过 TUN。首页连接、路由状态和业务趋势独立表达，不把全 peer 隧道字节（含保活、协议开销或第三方中继）冒充本机应用流量。
 
 ### 8.2 设备与路径指标
 
-| 展示内容 | 已证实可参考的数据 | 产品口径与缺失处理 |
-|---|---|---|
-| 设备身份 / 地址 | Route、NodeInfo、peer ID、instance ID | 用稳定身份关联；地址可变；缺失显示“暂不可用” |
-| EasyTier 版本 | `Route.version` / `NodeInfo.version` | 显示对端报告值；本机额外保留打包 SHA |
-| NAT 类型 | `StunInfo.udp_nat_type` 与 `tcp_nat_type` | TCP/UDP 分开，保留未知/检测中，禁止一概写成对称 NAT |
-| 直连 / 中继 | routes 的 next hop 与 peer connections | 设备可能多路径；以当前有效路径说明，不能只按设备在线判定 |
-| 收发字节与包数 | `PeerConnStats.rx/tx_bytes`、`rx/tx_packets` | 是连接/邻居口径，按连接重置；经中继的远端无端到端值时不能挪用中继邻居总量 |
-| 时延 | `latency_us` 与 path latency 的相应来源 | 标明直连探测或路由路径；不混合不同单位 |
-| 丢包 | `PeerConnInfo.loss_rate` 来自内部 ping/pong 探测 | 命名“探测丢包率”；不是业务包丢失比例，也不是 TCP 重传率 |
+P04 的设备桥保留 `observability-v1` 并增加 `observability-v2` capability，维护补丁为 `p04-observability-host-v2`，固定来源为 `7592951b808c4839cb9d77cc4bc642f124915951`。查询入口是 `InstanceManager::network_info` 返回的 `api.manage.NetworkInstanceRunningInfo`；下表路径相对该对象，protobuf 位于固定上游 `easytier-proto/proto/api_manage.proto` 和 `api_instance.proto`。整组快照由 Service 添加单调观测时间，绑定 sessionId 与 attachment；`SessionObservation` 统一适配查看对象、`SessionState.currentCore` 和平台资格；`CoreSnapshot.peerIndex` 为每份快照缓存成员、邻居和路由索引，供总览、设备及探测复用。页面不另设观测超时或采样器。缺失新能力为 Unsupported，本次没有值为 Missing，字段损坏为 Invalid，整数超范围为 OutOfRange。整包解码失败或 attachment 不匹配时保留旧值并标 Stale，插入缺测点。
 
-以上字段在本次主干 protobuf 与实现中已证实存在，具体稳定版本的 RPC 暴露方式仍以 P00 为准。`loss_rate` 实现由探测成功/失败窗口统计得来，不能用收发字节相除另造“丢包率”。设备列表与详情不放相关日志入口。[ET-08]、[ET-15]、[ET-16]
+| 字段 | 固定核心路径 / 符号 | 单位 / 统计对象 | 本机或远端 / 累计或瞬时 | 缺失与限制 |
+|---|---|---|---|---|
+| peerId | `my_node_info.peer_id`、`routes[].peer_id`、`peers[].peer_id` | 核心节点身份 | 当前核心实例内稳定 | 不使用列表下标；sessionId 与 peerId 共同确定页面身份 |
+| 名称 | `my_node_info.hostname`、`routes[].hostname` | 报告的名称 | 本机 / 远端，当前报告 | 空值 Missing，不以本地配置名称代替远端名称 |
+| 虚拟地址 | `my_node_info.virtual_ipv4`、`routes[].ipv4_addr` | IPv4 CIDR | 本机 / 远端，当前报告 | 缺失不可复制/探测；历史地址必须标历史 |
+| 核心版本 | `my_node_info.version`、`routes[].version` | 版本文本 | 各节点报告 | 不用本机打包版本代替远端版本 |
+| UDP/TCP NAT | 各节点 `stun_info.udp_nat_type / tcp_nat_type` | `common.NatType` 枚举 | 本机 / 远端，当前探测报告 | 无 STUN 为 Missing；未知编号保留，不猜测 |
+| 连接数 | `peers[].conns` 中 `!is_closed` 的条数 | 活跃邻居连接条数 | 本机到该邻居，瞬时 | 不是设备数；中继远端无邻居连接也不表示离线 |
+| 路径 | `routes[].next_hop_peer_id` 与目标 `peer_id` | 下一跳身份 | 本机到目标，瞬时路由 | 相等为直连，否则中继；无下一跳为未知，不用代价猜测 |
+| 链路收发 | `peers[].conns[].stats.{tx,rx}_{bytes,packets}` | bytes / packets，每条 connectionId | 本机连接，累计，连接重建重置 | 只属于该邻居；中继远端端到端计量为 Unsupported，不借用下一跳数据 |
+| 链路时延 | `peers[].conns[].stats.{latency_us,latency_valid}` | µs，核心 ping/pong RTT | 本机到邻居，当前统计 | `WindowLatency` 完成首个样本后发布有效标志；无样本为 Missing，实测零有效，旧桥无 v2 为 Unsupported，不改称端到端 RTT |
+| 路由路径时延 | `Route.path_latency` | 核心路由选择代价 | 路径累计代价 | 当前桥为 Unsupported：未将路径选择代价作为可测 RTT 传递；详情使用有明确微秒单位的连接 RTT |
+| 端到端丢包 / RTT | P04-06 的 ICMP ProbeResult | 该次请求成功比例 / ms | 本机到目标，仅该次探测 | 未运行探测为 unavailable；不使用连接 loss_rate 或邻居收发数估算 |
+| TUN 收发 | `TunAttachment::{read_completed,write_completed}` | IP bytes / packets，每个 attachment | 本机，成功 I/O 累计 | 唯一 TUN 消费路径，保持既有 Long 上限饱和规则；超出 Long 的桥输入明确 OutOfRange |
+
+同网在线数取路由成员与已确认同网活动邻居的并集，排除本机、按 peerId 去重。核心列表同时含跨网公共节点，native 沿用核心握手的网络名比较规则，仅输出 `network_role=member/relay/unknown`；网络名本身不跨桥。设备页单列公共中继，不计入成员数、不提供成员 IP 探测，也不宣称该连接正在转发流量。未知邻居不猜测角色；总览标注已确认数量，设备页说明统计范围。
+
+桥新增 u64 计量以规范十进制字符串传输，连接统计用 BigInteger 无损表示完整 u64；TUN 继续使用 Long 求差，超过范围则整组 TUN 计数 unavailable，不截断或转负。控制协议的 session generation、operation、revision 继续限制在正 Long 范围。旧桥没有 capability 时仅读取旧 TUN 数字协议，不从未声明字段推断新能力。
+
+设备详情由纯 `DevicesReducer` 管理 `Closed / Current / Stale`；保留旧详情时禁用操作。探测归属同时匹配任务 ID 和完整 session、attachment、peerId、IPv4，取消也携带任务 ID，旧页面不能取消相同目标的新任务。设备消失后可保留自身已取消的部分结果，并标明历史目标；目标变化清除当前结果归属，会话或查看对象变化关闭详情。设备列表与详情不放相关日志入口。固定上游的 `loss_rate` 是内部 ping/pong 成功/失败窗口，P04 不展示它，也不用收发字节相除另造丢包率。[ET-08]、[ET-15]、[ET-16]
+
+按需探测由进程唯一 `ConnectionProbe` 拥有，目标必须匹配当前 Fresh 的 session、attachment、远端路由和虚拟 IPv4。`AndroidIcmpTransportFactory` 选择具有当前本机虚拟地址且覆盖目标路由的 VPN，通过 `Network.bindSocket` 绑定 ICMP datagram socket；不自动连接、不改路由、不 protect 到物理网、不调用 shell。当前 Builder 未配置应用排除名单；P05 增加名单时须同步资格检查。API 24 非阻塞标志经 `probe_nonblocking` 同步 JNI 设置，临时 dup 保持 fd 有效，native 不取得关闭所有权；这与 TUN fd 无关。
+
+每次串行发送 4 个请求，各等最多 1 秒，匹配源地址、标识、序号及任务 nonce。发送成功才增加 sent，sent=0 时丢包未知；取消保留部分结果。Busy 不创建第二个 socket。离开详情、会话变化或观测失效立即关闭，finally 只关闭一次，旧任务不能回写新结果。JVM 传输替身与宿主非阻塞测试只证明工程契约，Android ICMP 权限与真实网络效果未验证。
 
 ### 8.3 两个日志来源
 
-来源枚举固定为 EasyTier 与 App。EasyTier 来源包含核心运行、连接和协议错误；App 来源包含授权、服务、配置事务、TUN、平台适配和 UI 操作错误。日志记录至少包含序号、墙钟时间、单调时间、来源、等级、模块、SessionId、可空 ProfileId、脱敏消息和结构化错误码。
+来源枚举固定为 EasyTier 与 App。EasyTier 来源将核心日志归为静态模块及 Info/Warn/Error/Debug 事件；App 来源记录 Service 的会话命令和回执。`LogRecord` 包含文件 UUID、进程序号、墙钟与单调时间、来源、等级、静态模块/code、可选 session/generation 及安全数字字段。消息只由 code 映射生成；核心进程事件没有会话归属，不能强行归入当前配置。native drain 返回捕获时刻，汇聚器按事件距该时刻的单调时间差还原记录时间。
 
-当前 `LoggerRpc` 只提供获取/设置日志级别，不能当作日志流接口。JNI 当前还有 android_logger 初始化，而核心有自身日志设施；必须确定单次初始化顺序和真实日志 sink，避免一个全局 logger 抢先安装导致另一来源丢失。优先在固定核心构建接入有界 sink / 回调，或受控读取应用私有滚动日志文件；不依赖读取其他应用 logcat。[ET-12]、[ET-17]、[ET-18]
+`SafeLogEventFactory` 通过描述表定义 code、来源、等级、模块和允许字段；结构化消息覆盖邻居、连接、监听、隧道接入、地址冲突、代理路由及 TUN 事件。消息不根据原始错误推测握手或 DNS 原因，未覆盖事件保留通用安全诊断。旧通用 LogCode 名称与 JSONL 读取保持兼容；未知桥 code、错误元数据或不允许的字段拒绝并计数。
 
-建议初始预算为内存有界环形缓冲、有限磁盘轮转、保留期上限；具体容量由 P04 压测确定。队列满时丢弃低优先级记录并报告丢弃数，不阻塞 VPN 数据面。采集级别与页面过滤分开：页面筛选 Debug 不能恢复从未采集的 Debug。用户上滑阅读时保留位置，新日志显示计数，点击后再恢复跟随。
+`LoggerRpc` 只提供获取/设置日志级别，不能当作日志流接口。正式桥只初始化一次全局 tracing subscriber，以静态前缀表确定兜底模块；另外在实例启动前通过 `subscribe_native_instance_event` 订阅结构化事件。订阅使用同一共享 runtime，任务只持有 receiver 和安全 sink；停止确认后取消并等待退出，启动失败仍由同一停止路径回收。两种输入共用有界 sink；只匹配事件变体和显式安全数字，不读取 URL、配置、认证、任意日志字段及错误原文，不依赖其他应用 logcat。Service 将诊断 drain 与生命周期回执交给进程唯一 LogCollector 汇聚。[ET-12]、[ET-17]、[ET-18]
+
+P04 固定预算为内存最近 2,000 条、UTF-8 JSONL 单条含换行最多 8 KiB、每文件最多 2 MiB、最多 5 文件、保留最多 7 天。先由静态 code 与数字白名单生成安全消息并截断，再入内存和非阻塞写队列；队列只保留记录身份，磁盘故障只保留内存且持续提示。写盘前轮转，按创建顺序淘汰，创建时间用于保留期，时钟回拨不立即过期；日志段 UUID 与序号共同形成稳定身份。文件位于 noBackupFilesDir/logs，失败后须显式重试，不补写无限积压。采集级别与页面过滤分开：Debug 必须通过服务/JNI 显式开启，页面筛选 Debug 不改变采集。日志阅读显式区分 `Following / Reading / Evicted`。像素偏移只由 Compose 的 LazyListState 持有；ViewModel 保存记录身份与未筛选缓冲的暂停边界。筛选进入暂停阅读并保留输入焦点，过滤隐藏不算淘汰；只有记录从原始缓冲移除才提示清理并定位现存最早记录。新增匹配日志显示计数，用户点击后才恢复跟随。只读流式导出重新校验安全字段，取消读取关闭文件，不取消采集。
 
 密码、密钥、认证令牌、完整含凭据 URL 与原始配置不得进入普通日志。导出前再次脱敏；导出范围和来源由用户选择，文件通过系统分享机制交付。原型中双来源和阅读行为继续作为 UI 验收基线。
 

@@ -3,7 +3,7 @@ package com.github.zzwtsy.chuanmen.features.configuration.lib
 enum class FieldInputType { Text, Secret, Multiline, Toggle, PeerList, ReadOnly }
 enum class FieldEnablement { Always, StaticIpv4 }
 
-/** 只列已接入编辑和消费者的字段；P05 的其他参数不进入表单或搜索。 */
+/** 只列已接入编辑和消费者的字段；尚未接入的参数不进入表单或搜索。 */
 data class ConfigurationField(
     val key: String, val label: String, val group: String, val field: DraftField?,
     val inputType: FieldInputType, val emptySemantics: String, val source: String, val consumer: String,
