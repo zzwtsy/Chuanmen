@@ -2,7 +2,7 @@
 
 ## 当前状态与任务入口
 
-串门（Chuanmen）是基于 EasyTier 的 Android 客户端，当前 P02 已完成限定范围实现，P03–P07 暂停。工程仅 `:app`，Kotlin 使用 `features/<功能>` 和根共享目录，主题保留 `ui/theme`，Rust 位于 `app/native`；正式应用始终通过 Service/JNI 使用真实核心。配置仍为受控内存输入。阶段状态以 [路线图](docs/plan/ROADMAP.md) 为准，设备结论绑定对应 APK 和报告范围。
+串门（Chuanmen）是基于 EasyTier 的 Android 客户端，当前 P02 已完成限定范围实现，P03–P07 已规划、尚未实施。工程仅 `:app`，Kotlin 使用 `features/<功能>` 和根共享目录，主题保留 `ui/theme`，Rust 位于 `app/native`；正式应用始终通过 Service/JNI 使用真实核心。配置仍为受控内存输入。阶段状态以 [路线图](docs/plan/ROADMAP.md) 为准，设备结论绑定对应 APK 和报告范围。
 
 中文产品名使用“串门”，英文拼音写法为 Chuanmen；文档首次介绍产品时使用“串门（Chuanmen）”，现有工程与代码标识沿用 `Chuanmen` / `chuanmen`。名称含义与介绍文案见 [项目名称](README.md#项目名称)。EasyTier 保留用于上游核心、版本、配置语义和来源引用。
 
@@ -19,7 +19,7 @@
 | 应用版本、tag 与 Release | [版本治理](docs/development/versioning.md) |
 | 配置项核对 | `docs/design/config/assistant-catalog.snapshot.json`、`docs/design/config/android-capability-plan.json`；[配置审计 skill](.agents/skills/easytier-config-audit/SKILL.md) |
 
-查找先用 `rg` / `rg --files`。不要把阶段文档中的拟建模块、命令或 API 当成已经存在；实现后同步对应状态与验证记录。
+查找先用 `rg` / `rg --files`。不要把阶段文档中的拟建模块、命令或 API 当成已经存在；实现后同步对应状态与验证记录。编写实施计划时逐任务列开始条件、现有/拟改路径或接口、编号步骤、失败后的状态、输入/操作/结果断言；不得用阶段缩写和“补齐、核对、完成闭环”代替这些内容。计划中的类型与产物未实施前须标为拟新增。
 
 目录归属按 [ADR 0005](docs/design/adr/0005-single-app.md)：配置、总览、设备、日志、设置在 `features/<功能>` 聚合各自 Screen、UiState、ViewModel；功能组件和辅助逻辑留在功能内，测试镜像归属。根仅保留导航与装配，共享代码进入实际复用的 `lib`、`components`、`utils`。根/功能 ViewModel 使用同一 Activity owner 和稳定键，功能不相互注入；仓库、客户端与 Service 会话保持唯一。共享代码不依赖 features。只保留 main/test/androidTest；debug/release 共用真实配置入口，无应用侧样例、Preview 或演示实现。不得增加 data/domain/presentation、逐动作 UseCase、空目录或通用框架。工具须有实际使用场景，缓存和产物归忽略的 build。
 
@@ -33,7 +33,7 @@ python3 scripts/catalog/audit_config_catalog.py
 python3 scripts/check_privacy.py
 ```
 
-打包使用 `./gradlew :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest`，首次须准备固定 Rust/NDK 与依赖。native 源码和输出分别为 app/native、app/build/native，Gradle 追踪实际输入输出，JVM/lint 不构建 Rust。设备回归入口为 `python3 scripts/android/verify_device.py --help`，受控对端为 `scripts/android/peer.py`。完整准备、参数、报告和回归见 [开发环境](docs/development/setup.md)。
+打包使用 `./gradlew :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest`，首次须准备固定 Rust/NDK 与依赖。native 源码和输出分别为 app/native、app/build/native，Gradle 追踪实际输入输出，JVM/lint 不构建 Rust。本轮取消全部设备执行与 release 冒烟，androidTest 仅编译。保留的设备回归入口为 `python3 scripts/android/verify_device.py --help`，受控对端为 `scripts/android/peer.py`。完整准备、参数、报告和回归见 [开发环境](docs/development/setup.md)。
 
 Python 修改须运行固定 uv + Ruff lint/格式检查及受影响回归；规则见 [ruff.toml](ruff.toml)。隐私检查支持 `--tree index`，不借用未暂存字节。HTML 原型与专用导出器已退役，历史源码及许可证从 P02 基线 `872bea7e3898881e4787b0adb012726933cd8329` 回溯。
 
@@ -61,7 +61,7 @@ P00/P02 一次性实验、模块边界扫描、证据发布/导出与 handoff �
 
 ## 修改、验证与报告
 
-按变更风险运行最小充分验证：文档/目录校验、相关状态测试、必要 UI 或设备验证。未能运行的项目写明原因，不把跳过、mock 通过或 HTML 测试写成真机通过。不要用更新截图基线、删除断言或关闭检查掩盖未解释的失败。
+按变更风险运行最小充分验证：文档/目录校验、相关状态测试、JVM Compose、宿主 Rust 及必要构建检查；P03–P07 不执行设备验证。未能运行的项目写明原因，不把跳过、mock 通过或 HTML 测试写成真机通过。不要用更新截图基线、删除断言或关闭检查掩盖未解释的失败。
 
 涉及核心升级、TUN/JNI 所有权、配置迁移时，同步契约、来源版本和针对性回归证据。只改文案或可逆低影响内容不新增机械重复的测试。
 

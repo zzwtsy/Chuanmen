@@ -2,7 +2,7 @@
 
 串门（Chuanmen）是基于 EasyTier 的 Android 组网客户端，正在开发中。
 
-P02 已完成限定范围的真实 VPN/JNI 接入。当前暂停 P03–P07，先收敛为单个 app 模块、标准 source set 和必要工具。配置仍为受控内存输入，尚未完成持久化与完整配置闭环；阶段和验证边界以 [路线图](docs/plan/ROADMAP.md) 为准。
+P02 已完成限定范围的真实 VPN/JNI 接入。单 app 结构精简已合并，P03–P07 已重新规划，尚未开始功能实施。配置仍为受控内存输入，尚未完成持久化与完整配置闭环；阶段和验证边界以 [路线图](docs/plan/ROADMAP.md) 为准。
 
 ## 项目名称
 
@@ -56,7 +56,7 @@ native 缓存和产物在 `app/build/native`，设备输出在 `app/build/device
 | 搭建环境、构建、选择检查 | [setup.md](docs/development/setup.md) |
 | 分支、PR 与手动合并 | [Git 工作流](docs/development/git-workflow.md) |
 | 应用版本、tag 与 Release | [版本治理](docs/development/versioning.md) |
-| 开始下一阶段实施 | [路线图](docs/plan/ROADMAP.md)（后续阶段暂停） |
+| 开始下一阶段实施 | [路线图](docs/plan/ROADMAP.md)（P03–P07 待实施） |
 | 产品行为与 UI/UX | [总体设计](docs/design/overall-design.md) |
 | Android、会话和 JNI 边界 | [技术架构](docs/design/technical-architecture.md)与[ADR](docs/design/adr/0005-single-app.md) |
 | 配置来源、显隐与实施状态 | [配置目录](docs/design/config/README.md) |
@@ -70,7 +70,7 @@ native 缓存和产物在 `app/build/native`，设备输出在 `app/build/device
 
 本地名称与核心身份分离，查看网络与运行网络分离，draft / saved / applied 分开建模；仅保存不改变运行配置，应用失败不伪报成功。首页使用固定 60 秒趋势，缺测值保持未知。完整约束见 [需求追踪](docs/design/requirements-traceability.md) 和总体设计。
 
-[P00 报告](docs/verification/p00/report.md) 支持固定核心、限定设备与受控网络下的技术结论。正式接入范围见 [P02 报告](docs/verification/p02/report.md)；其他设备、范围外网络能力与发行安排仍需各自验收。结构精简后的 APK 不继承旧产物的真机通过状态。
+[P00 报告](docs/verification/p00/report.md) 支持固定核心、限定设备与受控网络下的技术结论。正式接入范围见 [P02 报告](docs/verification/p02/report.md)；P03–P07 采用工程验收，设备矩阵及 release 冒烟等设备执行已取消；当前 APK 不继承旧产物的真机通过状态。P07 仅准备 GitHub APK 发布材料。
 
 HTML 交互原型及专用导出器已退役，历史源码和专属资源许可证可从 P02 基线 `872bea7e3898881e4787b0adb012726933cd8329` 取回。配置快照中的历史 `availability`、`apply` 与核心语义版本描述当时的研究；正式产品实施状态由 [能力台账](docs/design/config/android-capability-plan.json) 记录。外部资料的核对日期及限制见 [研究导航](docs/research/README.md)。
 
