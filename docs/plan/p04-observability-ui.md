@@ -158,3 +158,121 @@ UI 从同一仓库和会话源读取。所有观测绑定 sessionId、观测时�
 共享快照、平台探测和采样位于 lib/vpn，原生映射位于 app/native；页面和日志查询/存储位于对应 features。跨功能实际复用的日志采集契约进入 lib，不依赖日志 ViewModel。测试按现有 test/native tests 归属，不建立旧 contracts/telemetry、core-bridge 或独立 vpn 模块。
 
 阶段验收关注字段来源、查看/运行隔离、零/缺测、日志保密和容量、探测取消与用户可见行为。P05 消费这些观测契约，不改变本机 TUN 口径。阶段退出为 verified（工程范围），网络与设备效果未验证。
+
+## 5. 实施记录（2026-10-25）
+
+实施基于 `main` 的 `f16cb70b06f9473332a4dd01156744f23d2afbff`，本地任务分支为 `feat/p04-observability`；该 SHA 是基线，不是本次实现提交。生产继续使用唯一 Service/JNI 核心、配置仓库和客户端，没有新增 TUN 读取者或页面采样器。固定 EasyTier commit、Rust/NDK 与 ABI 保持不变，补丁身份为 `p04-observability-host-v1`；新直接依赖 libc 使用锁中已有的 0.2.189。
+
+下表 Kotlin 生产路径相对 `app/src/main/java/com/github/zzwtsy/chuanmen`，Kotlin 回归在 `app/src/test/java/com/github/zzwtsy/chuanmen` 的对应包，Rust 路径相对 `app/native`。
+
+| 任务 | 实现与接口 | 正式回归及可观察结果 |
+|---|---|---|
+| P04-01 | `lib/vpn/CoreSnapshot.kt`、`BridgeProtocolCodec.kt`、`Session.kt`；`src/session.rs`、`src/protocol.rs`。固定来源表见技术架构 8.2，新增 `observability-v1`；连接 u64 使用 BigInteger，TUN 超 Long 显式 unavailable | `ObservabilityContractTest` 验证 u64 最大值、超 Double 精度、单字段错误、未知 NAT/borrow、旧能力及错误归属；`VpnSessionCoordinatorTest` 验证旧 attachment、失败及超过 2 秒的查询不冒充 Fresh、不并行积压查询 |
+| P04-02 | `features/overview/Overview{UiState,ViewModel,Screen}.kt`、根设备导航。查看名称、状态、地址、去重远端数及路径摘要集中展示；平台旧地址不可复制 | `OverviewViewModelTest` 验证本机与重复连接排除、中继远端计数、查看/运行隔离及导航零会话命令；`P04AddressFreshnessTest` 验证两个页面共享地址过期规则 |
+| P04-03 | `host/android_tun.rs` 的成功 I/O 判断、`patches/session-host.diff` 普通/向量路径；`lib/vpn/TunTrafficHistory.kt` 和唯一 Service 查询 | `tests/tun_contract.rs` 验证失败读写及 Pending 不计量、整数饱和、复用 fd 不复用 attachment；`TunTrafficHistoryTest` 验证 1024 B/s、实测零、缺测切基线、回退与 attachment 重置 |
+| P04-04 | `features/overview/components/TrafficTrend.kt` 使用实际时间坐标、缺测断线、实线/虚线、当前速率语义；纵轴由 Service 的 `TrafficScale` 推进 | `TunTrafficHistoryTest` 验证同槽替换、61 秒窗口、第 9/10 有效点与缺测；`TrafficTrendTest` 验证绘图坐标、断口、非有限值和零线；8 组合语义测试不提供额外交互 |
+| P04-05 | `features/devices` 的稳定身份、展开摘要与单一详情面；共享 `components/CopyIpButton.kt` 成功后才反馈，API 33+ 使用系统反馈 | `DevicesViewModelTest` 验证指标归属、peer 消失保留旧详情并禁用操作、会话变化关闭详情；`CopyIpButtonTest` 注入平台写入失败，只有错误提示；`P04ExperienceTest` 验证返回列表位置及无相关日志入口 |
+| P04-06 | `lib/vpn/ConnectionProbe.kt`、`AndroidIcmpTransport.kt`；`src/probe.rs` 同步设置 ICMP 非阻塞；Application 唯一任务，设备详情消费 | `ConnectionProbeTest` 的 8 项回归覆盖 4/4、0/4、1/2 后取消、发送失败、Busy、资格核对、错误响应、旧任务隔离和一次关闭；Rust 实际 datagram 验证非阻塞与借用所有权；Android 适配通过 lint/编译，未运行真实探测 |
+| P04-07 | `lib/logging/LogRecord.kt`、`LogCollector.kt`；`features/logs/RotatingLogStore.kt`、日志 ViewModel/Screen；`src/diagnostics.rs` 静态安全 sink、显式 Debug、事件时间 | `LogCollectorTest` 验证 2000 条、丢弃、写盘故障/重试、Debug、秘密拒绝、8 KiB 截断和取消导出；`RotatingLogStoreTest` 验证 2 MiB/5 文件/7 天/回拨及重启身份；`LogsViewModelTest`、`LogsReadingUiTest` 验证组合筛选、稳定阅读、新记录提示、淘汰定位；native 验证原始消息/字段始终不输出 |
+| P04-08 | 根 `ChuanmenApp.kt` 保留每页滚动状态并让日志独立使用有界 LazyColumn；`ChuanmenViewModel.kt` 保留策略编辑返回来源；配置草稿保存失败持续展示 | `P04ExperienceTest` 的 16 项覆盖 320/600 dp、100%/200% 字体、浅/深色共 8 组合；`NavigationBehaviorTest`、既有 `NavigationUiTest` 验证返回、取消和草稿/查看身份；`P04SaveFailureTest` 验证错误跨查看对象往返保留，成功重试才清除且不应用 |
+
+正常缺测、固定核心没有端到端计量来源和平台探测拒绝有明确 unavailable；路由代价不改称 RTT，中继远端不借下一跳流量。P04 没有尚未接线的承诺字段；应用名单扩展和用户导出入口继续归 P05。日志只提供只读流式导出接口，没有上传或完整配置导出。
+
+### 工程检查与范围
+
+完整命令、基线 HEAD、工作区摘要、开始/结束时间、退出码及相对日志路径保存于忽略的 `app/build/p04-checks/*.json`，属于普通工程产物，不发布或冻结为新的实验包。最终结果登记在本节下表。
+
+实现摘要为 `cd538bb85e90197416d777366a4b4f5f8aef8217f2a7783eda2cc93d7cac37de`，清单为 `app/build/p04-checks/implementation-files.json`，覆盖 app、scripts、Gradle、CI 和根构建输入；结果回填只修改文档。JVM/Compose、Python、最终 APK 和静态产物检查的工作区摘要为 `f406f2aba4a75a693fc97ec3c3e76b18b719c5dc19ef68e0fb4e0b41bf559d44`；native/JNI 使用各自记录中的摘要，其受测 native 源码与最终实现一致。
+
+- JVM/Compose：228 项通过，无失败、错误或跳过，其中 16 项覆盖 8 个布局组合；真实宿主 JNI：5 项通过。
+- 核心 Rust：20 项单元、1 项 runtime、4 项 TUN 契约通过；受控对端只运行 4 项宿主单元测试。
+- Python：隐私 6 项、目录 10 项、原生工具 9 项、Android 工具 40 项，共 65 项通过；固定 Ruff、隐私和目录审计通过。
+- debug/release lint、debug/release APK 与 androidTest APK 编译通过；实际双 ABI 库字节、ELF LOAD 和 APK ZIP 的 16 KB 静态对齐通过。
+
+下表时间均为 2026-10-24 UTC（北京时间 2026-10-25），退出码全部为 0。`SDK_ROOT` 是本机 SDK 路径的脱敏占位；原生命令及 APK/library SHA-256 另见本地 `summary.json`。
+
+| 命令 | 开始 → 结束（UTC） | 退出码 | 日志 |
+|---|---|---|---|
+| `uv tool run --isolated --no-python-downloads --from ruff==0.17.0 ruff check scripts` | 18:06:38 → 18:06:39 | 0 | `app/build/p04-checks/static-1.log` |
+| `uv tool run --isolated --no-python-downloads --from ruff==0.17.0 ruff format --check scripts` | 18:06:39 → 18:06:39 | 0 | `app/build/p04-checks/static-2.log` |
+| `python3 scripts/check_privacy.py` | 18:06:39 → 18:06:40 | 0 | `app/build/p04-checks/static-3.log` |
+| `python3 scripts/catalog/audit_config_catalog.py` | 18:06:40 → 18:06:40 | 0 | `app/build/p04-checks/static-4.log` |
+| `python3 scripts/test_check_privacy.py` | 18:06:40 → 18:06:40 | 0 | `app/build/p04-checks/static-5.log` |
+| `python3 -m unittest discover -s scripts/catalog -p 'test_*.py'` | 18:06:40 → 18:06:41 | 0 | `app/build/p04-checks/static-6.log` |
+| `python3 -m unittest discover -s scripts/native -p 'test_*.py'` | 18:06:41 → 18:06:41 | 0 | `app/build/p04-checks/static-7.log` |
+| `python3 -m unittest discover -s scripts/android -p 'test_*.py'` | 18:06:41 → 18:06:44 | 0 | `app/build/p04-checks/static-8.log` |
+| `./gradlew :app:testDebugUnitTest :app:lintDebug :app:lintRelease --offline` | 18:06:01 → 18:06:48 | 0 | `app/build/p04-checks/jvm-1.log` |
+| `cargo +1.99.0 test --manifest-path app/native/Cargo.toml --locked --offline --target-dir app/build/native/target` | 17:59:04 → 17:59:10 | 0 | `app/build/p04-checks/native-1.log` |
+| `cargo +1.99.0 test --manifest-path scripts/android/native-peer/Cargo.toml --locked --offline --target-dir app/build/device-tests/peer-target` | 17:59:10 → 17:59:33 | 0 | `app/build/p04-checks/native-2.log` |
+| `./gradlew :app:testHostNativeCodec --offline` | 17:59:41 → 17:59:45 | 0 | `app/build/p04-checks/jni-1.log` |
+| `./gradlew :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest --offline` | 18:09:09 → 18:09:49 | 0 | `app/build/p04-checks/apk-1.log` |
+| `python3 scripts/native/check_apk.py --sdk $SDK_ROOT app/build/outputs/apk/debug/app-debug.apk` | 18:10:20 → 18:10:20 | 0 | `app/build/p04-checks/artifacts-1.log` |
+| `python3 scripts/native/check_apk.py --sdk $SDK_ROOT app/build/outputs/apk/release/app-release-unsigned.apk` | 18:10:20 → 18:10:20 | 0 | `app/build/p04-checks/artifacts-2.log` |
+| `python3 scripts/native/build_native.py verify-artifacts` | 18:10:20 → 18:10:20 | 0 | `app/build/p04-checks/artifacts-3.log` |
+| `cargo +1.99.0 fmt --manifest-path app/native/Cargo.toml --check` | 18:10:20 → 18:10:20 | 0 | `app/build/p04-checks/artifacts-4.log` |
+| `git diff --check` | 18:10:20 → 18:10:20 | 0 | `app/build/p04-checks/artifacts-5.log` |
+
+
+设备、模拟器、人工 TalkBack、系统栏、Android ICMP 权限、真实 VPN 网络行为、release 冒烟及 16 KB runtime 均未执行或验证。androidTest 仅编译。JVM 替身、故障注入和宿主 datagram 不构成设备效果结论；冻结记录、目录快照、handoff.json 和 SHA256SUMS 保持原字节。
+
+## 6. 复审修复与结构优化（2026-10-25）
+
+本次基于 `feat/p04-observability` 的 P04 暂存工作区继续实施，基线 HEAD 为 `f16cb70b06f9473332a4dd01156744f23d2afbff`。第 5 节保留当时的检查记录；以下修复覆盖复审新增的负向条件，不把原有通过结果解释为这些条件已经验证。
+
+### 接口与行为
+
+- 保留桥协议版本 1、配置存储格式和固定 EasyTier commit。补丁身份更新为 `p04-observability-host-v2`，追加 `observability-v2`，保留 v1 能力；固定工具链与锁定依赖不变。
+- native 只输出成员、中继、未知角色；网络名用于内部归属比较，不跨桥。路由成员与已确认同网活动邻居去重后计在线数，排除本机；设备页单列公共中继，未知连接说明统计范围。
+- 两份 `PeerConnStats` protobuf 追加 optional `latency_valid` 字段 6；`WindowLatency` 完成样本后发布有效标志。无样本与实测零可区分，旧桥无 v2 不推测 RTT。
+- `SnapshotPeerIndex` 对每份快照缓存只读索引，`SessionObservation` 统一查看对象、核心新鲜度及平台探测资格。总览、设备和探测复用相同事实，不增加采样任务。
+- `DevicesReducer` 统一 `Closed / Current / Stale` 详情迁移。结果归属及取消均核对完整目标与 taskId；旧详情可保留取消后的部分结果，并标明历史目标。
+- 日志采用 `Following / Reading / Evicted`；筛选进入暂停阅读，像素偏移由 LazyListState 持有。页面不可见时停止投影缓冲，返回后按最新记录恢复边界。过滤隐藏不算清理，新日志计数相对未筛选缓冲的暂停边界计算。
+- 结构化核心事件和通用 tracing 进入同一有界 sink；事件描述表统一安全 code、来源、等级、模块及允许字段。旧通用 LogCode 与 JSONL 保持兼容，未知事件拒绝并计数。
+- `ObservationQueryState` 聚合在途 token、开始时间及 watchdog；满 2 秒只推进缺测，不释放查询资格；终态或停止才清理，迟到结果不标 Fresh。
+
+### 任务与针对性回归
+
+| 任务 | 实施位置与操作 | 失败后的状态 | 输入、操作与结果断言 |
+|---|---|---|---|
+| P04-R01 | 固定核心和 native 输入可用后，先添加角色与 RTT 有效性，再统一桥解码和共享索引，最后同步维护补丁及前后像摘要 | 未知角色不猜测；缺测、非法单指标不伪造零；来源不匹配阻止构建 | `SessionObservationTest` 验证仅公共中继时成员数为 0、仍等待成员；重复连接与间接路由正确计数；`ObservabilityContractTest` 和真实 `WindowLatency` 宿主测试区分缺测、实测零、旧能力与非法字段 |
+| P04-R02 | 共享观测可用后，用纯 Reducer 替换 combine 中的状态写入，绑定本页任务，再接入成员/中继分区 | 目标变化隔离旧结果；设备消失保留只读旧详情；启动失败显示原因 | `DeviceProbeOwnershipTest` 分别更换 IP、attachment 及二者，旧 Complete 均不显示；1/2 后设备消失保留 Cancelled 历史结果；重开详情和切换查看对象不继承任务；`ConnectionProbeTest` 验证旧 taskId 不能取消同目标的新任务 |
+| P04-R03 | 有非空混合来源复现后，显式建模阅读状态，再将像素偏移交给 UI，最后区分过滤与真实淘汰 | 空结果仍可筛选；筛选、写盘错误不恢复跟随或改变采集等级 | `LogsReadingUiTest` 使用真实 ViewModel 连续筛选、输入、切会话及追加日志，输入保持焦点和可见；原位置/像素断言继续保留；`LogsViewModelTest` 验证过滤边界不误算新日志或淘汰，并验证取消订阅后缓存不变、恢复订阅读取最新缓冲 |
+| P04-R04 | 确认结构化订阅入口后，在实例启动前订阅，再映射静态安全事件，最后由工厂校验元数据与数字字段 | 订阅不可用保留通用安全诊断；写盘失败仅保留内存；停止确认后等待订阅退出 | Rust 测试验证不同失败 code、秘密不输出、滞后计数和 receiver 回收；`SafeLogEventFactoryTest` 覆盖 17 种结构化 code、中文搜索、非法元数据/字段拒绝、旧文件读取与安全导出；原有预算、Debug、轮转及取消导出回归保留 |
+| P04-R05 | 既有协调器回归可运行后，先封装查询状态，再统一终态和停止清理，保持既有 TUN 协调 | 超时维持单在途并推进缺测；旧回执不恢复状态或资源所有权 | `VpnSessionCoordinatorTest` 验证 1999/2000ms 边界、无回执时每秒缺测且不重复提交、停止后的旧查询与 watchdog 不再生效；原有 TUN 收据丢失和关闭顺序回归保留 |
+| P04-R06 | 定向回归通过后，执行完整工程检查，再同步当前契约和修复记录，最后更新路线图 | 必需检查缺失或失败时维持进行中，不把跳过计为通过 | `P04ExperienceTest` 新增八组合非空日志筛选、中继分区、只读详情及导航返回；阶段退出须有全部工程检查的实际命令、源码摘要和退出码 |
+
+### 工程检查
+
+本轮命令、源码基线、各次工作区摘要、时间、退出码及日志保存在忽略的 `app/build/p04-remediation-checks/`，汇总为 `summary.json`，源码清单为 `implementation-files.json`。这些是普通构建产物，不生成或冻结实验包。各检查使用自己的工作区摘要；最终核对受测 Kotlin、native 及固定上游后像与交付代码一致。运行过程中的编译失败和缓存只读限制保留原记录，后续通过不覆盖原尝试。
+
+- JVM/Compose：251 项通过，无失败、错误或跳过；相对原 228 项增加 23 项，八组合交互用例由 16 项增至 24 项。
+- 核心 Rust：24 项单元、1 项 runtime、4 项 TUN 契约，共 29 项通过；受控对端仅运行 4 项宿主单元测试。
+- 真实宿主 JNI：5 项通过；Python：隐私 6、目录 10、原生工具 9、Android 工具 40，共 65 项通过。
+- 固定 Ruff、隐私与目录审计、双 variant lint 通过；debug/release/androidTest APK 构建通过。
+- 当前维护补丁对 14 个干净固定原文件应用后，前后摘要全部一致；实际双 ABI 库字节及 ELF/APK ZIP 的 16 KB 静态对齐通过。
+
+下表时间均为 2026-10-24 UTC（北京时间 2026-10-25），退出码全部为 0；`SDK_ROOT` 为已安装 SDK 的脱敏占位。完整命令参数与摘要见各记录。末次文档检查及原暂存区、冻结资料字节核对另见汇总。
+
+| 命令 | 开始 → 结束（UTC） | 退出码 | 日志 |
+|---|---|---|---|
+| `uv tool run --isolated --no-python-downloads --from ruff==0.17.0 ruff check scripts` | 19:18:10 → 19:18:11 | 0 | `app/build/p04-remediation-checks/static-1.log` |
+| `uv tool run --isolated --no-python-downloads --from ruff==0.17.0 ruff format --check scripts` | 19:18:11 → 19:18:11 | 0 | `app/build/p04-remediation-checks/static-2.log` |
+| `python3 scripts/check_privacy.py` | 19:18:11 → 19:18:11 | 0 | `app/build/p04-remediation-checks/static-3.log` |
+| `python3 scripts/catalog/audit_config_catalog.py` | 19:18:11 → 19:18:11 | 0 | `app/build/p04-remediation-checks/static-4.log` |
+| `python3 scripts/test_check_privacy.py` | 19:18:12 → 19:18:12 | 0 | `app/build/p04-remediation-checks/static-5.log` |
+| `python3 -m unittest discover -s scripts/catalog -p 'test_*.py'` | 19:18:12 → 19:18:12 | 0 | `app/build/p04-remediation-checks/static-6.log` |
+| `python3 -m unittest discover -s scripts/native -p 'test_*.py'` | 19:18:12 → 19:18:12 | 0 | `app/build/p04-remediation-checks/static-7.log` |
+| `python3 -m unittest discover -s scripts/android -p 'test_*.py'` | 19:18:13 → 19:18:15 | 0 | `app/build/p04-remediation-checks/static-8.log` |
+| `./gradlew :app:testDebugUnitTest :app:lintDebug :app:lintRelease --offline` | 19:27:01 → 19:27:38 | 0 | `app/build/p04-remediation-checks/jvm-final-2.log` |
+| `cargo +1.99.0 test --manifest-path app/native/Cargo.toml --locked --offline --target-dir app/build/native/target` | 19:32:05 → 19:32:05 | 0 | `app/build/p04-remediation-checks/native-2.log` |
+| `cargo +1.99.0 test --manifest-path scripts/android/native-peer/Cargo.toml --locked --offline --target-dir app/build/device-tests/peer-target` | 19:12:19 → 19:13:51 | 0 | `app/build/p04-remediation-checks/peer-1.log` |
+| `./gradlew :app:testHostNativeCodec --offline` | 19:20:02 → 19:20:05 | 0 | `app/build/p04-remediation-checks/jni-1.log` |
+| `python3 app/build/p04-remediation-checks/verify_patch.py` | 19:29:43 → 19:29:44 | 0 | `app/build/p04-remediation-checks/patch-rebuild-2.log` |
+| `./gradlew :app:assembleDebug :app:assembleRelease :app:assembleDebugAndroidTest --offline` | 19:29:49 → 19:30:26 | 0 | `app/build/p04-remediation-checks/apk-1.log` |
+| `python3 scripts/native/check_apk.py --sdk SDK_ROOT app/build/outputs/apk/debug/app-debug.apk` | 19:32:05 → 19:32:05 | 0 | `app/build/p04-remediation-checks/artifacts-1.log` |
+| `python3 scripts/native/check_apk.py --sdk SDK_ROOT app/build/outputs/apk/release/app-release-unsigned.apk` | 19:32:05 → 19:32:05 | 0 | `app/build/p04-remediation-checks/artifacts-2.log` |
+| `python3 scripts/native/build_native.py verify-artifacts` | 19:32:05 → 19:32:05 | 0 | `app/build/p04-remediation-checks/artifacts-3.log` |
+| `cargo +1.99.0 fmt --manifest-path app/native/Cargo.toml --check` | 19:32:05 → 19:32:05 | 0 | `app/build/p04-remediation-checks/artifacts-4.log` |
+| `git diff --check` | 19:32:05 → 19:32:05 | 0 | `app/build/p04-remediation-checks/artifacts-5.log` |
+
+设备、模拟器、真实 VPN 网络、Android ICMP 权限、人工 TalkBack、release 冒烟和 16 KB runtime 不安排执行，androidTest 仅编译；以上结果不证明设备网络效果。原暂存区和冻结资料保持原字节。

@@ -47,4 +47,46 @@ class TunTrafficHistoryTest {
         assertEquals(300_000L, latest.last().observedAtMillis)
         assertTrue(latest.all { it.txBytesPerSecond == null })
     }
+
+    /** 缺测已经清除计数基线时再换 attachment，也必须清掉上一借用的窗口。 */
+    @Test fun replacementAfterMissingSampleClearsOldWindow() {
+        val history = TunTrafficHistory()
+        history.observe(attachment, 0, TunCounters(0, 0, 0, 0))
+        assertEquals(1024.0, history.observe(attachment, 1000, TunCounters(1024, 0, 1, 0)).last().txBytesPerSecond!!, 0.0)
+        history.observe(attachment, 2000, null)
+        val next = history.observe(attachment.copy(sequence = 2), 3000, TunCounters(10, 0, 1, 0))
+        assertEquals(1, next.size)
+        assertNull(next.single().txBytesPerSecond)
+        assertEquals(1.0, history.upperBound, 0.0)
+    }
+
+    /** 同秒槽替换而不增加槽数；61 秒窗口只保留最后 60 槽，零间隔不生成速率。 */
+    @Test fun duplicateSlotsAndZeroIntervalDoNotInventSamples() {
+        val history = TunTrafficHistory()
+        repeat(61) { history.observe(attachment, it * 1000L, TunCounters(it.toLong(), 0, 0, 0)) }
+        val points = history.observe(attachment, 60_000, TunCounters(61, 0, 0, 0))
+        assertEquals(60, points.size)
+        assertEquals(1000L, points.first().observedAtMillis)
+        assertNull(points.last().txBytesPerSecond)
+    }
+
+    /** 峰值降到一半以下后第 9 个有效点不缩小，第 10 个缩小；缺测不推进计数。 */
+    @Test fun scaleShrinksOnTenthValidPointAndResetsAtHalf() {
+        val scale = TrafficScale()
+        fun points(value: Double?) = listOf(TrafficPoint(0, value, value))
+        scale.observe(points(100.0), true)
+        repeat(9) { scale.observe(points(20.0), true) }
+        assertEquals(100.0, scale.upperBound, 0.0)
+        scale.observe(points(null), false)
+        assertEquals(100.0, scale.upperBound, 0.0)
+        scale.observe(points(20.0), true)
+        assertEquals(90.0, scale.upperBound, 0.0)
+        scale.observe(points(45.0), true)
+        repeat(9) { scale.observe(points(20.0), true) }
+        assertEquals(90.0, scale.upperBound, 0.0)
+        scale.observe(points(20.0), true)
+        assertEquals(81.0, scale.upperBound, 0.0)
+        scale.observe(points(1000.0), true)
+        assertEquals(1000.0, scale.upperBound, 0.0)
+    }
 }

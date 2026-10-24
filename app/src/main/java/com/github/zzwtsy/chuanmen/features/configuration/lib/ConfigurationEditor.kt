@@ -24,6 +24,7 @@ data class Draft(
     val saveState: DraftSaveState = DraftSaveState.Idle,
     val unacknowledgedEdit: Boolean = false,
     val validation: InputValidation = ConfigurationInputFactory.validate(input, base),
+    val saveFailure: String? = null,
 ) {
     val dirty get() = unacknowledgedEdit || ConfigurationInputFactory.changed(input, base)
     val saving get() = saveState is DraftSaveState.Saving
@@ -86,12 +87,12 @@ class ConfigurationEditor {
             val indices = submission.value.input.peers.mapIndexed { index, row -> row.id to index }.toMap()
             current.copy(base = saved, input = current.input.copy(peers = current.input.peers.map { row ->
                 row.copy(sourceIndex = indices[row.id])
-            }).frozen(), saveState = DraftSaveState.Idle, unacknowledgedEdit = true).validate()
+            }).frozen(), saveState = DraftSaveState.Idle, unacknowledgedEdit = true, saveFailure = null).validate()
         }
     }
-    fun reject(submission: SaveSubmission, error: WriteError) = update(submission.profileId) { current ->
+    fun reject(submission: SaveSubmission, error: WriteError, message: String = "无法保存配置，编辑内容已保留") = update(submission.profileId) { current ->
         if (!matches(current, submission)) current else current.copy(saveState =
-            if (error == WriteError.Conflict) DraftSaveState.Conflict else DraftSaveState.Idle)
+            if (error == WriteError.Conflict) DraftSaveState.Conflict else DraftSaveState.Idle, saveFailure = message)
     }
     fun finish(submission: SaveSubmission) = update(submission.profileId) { current ->
         if (matches(current, submission)) current.copy(saveState = DraftSaveState.Idle) else current

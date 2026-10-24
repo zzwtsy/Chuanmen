@@ -68,6 +68,30 @@ class NavigationBehaviorTest {
         }
     }
 
+    /** 从设备页设置进入策略编辑，第一次返回设置、第二次返回原设备页；草稿、错误与会话不变。 */
+    @Test fun policyEditorBackRestoresItsOrigin() = runTest {
+        withModel { model, configuration, engine ->
+            val original = engine.state.value
+            model.act(AppAction.Navigate(Destination.Devices))
+            model.act(AppAction.OpenSettings)
+            model.act(AppAction.EditPolicy)
+            configuration.act(ConfigurationAction.Edit(DraftField.Mtu, "invalid"))
+            runCurrent()
+            assertEquals(Destination.Configuration, model.state.value.navigation.destination)
+            assertFalse(model.state.value.navigation.settingsOpen)
+            model.act(AppAction.Back); runCurrent()
+            assertTrue(model.state.value.navigation.settingsOpen)
+            assertEquals(Destination.Devices, model.state.value.navigation.destination)
+            model.act(AppAction.Back); runCurrent()
+            assertFalse(model.state.value.navigation.settingsOpen)
+            assertEquals(Destination.Devices, model.state.value.navigation.destination)
+            assertEquals("invalid", configuration.state.value.draft!!.rawMtu)
+            assertTrue(DraftField.Mtu in configuration.state.value.draft!!.errors)
+            assertEquals(original, engine.state.value)
+            assertTrue(engine.requests.isEmpty())
+        }
+    }
+
     /** 已保存新 MTU 后请求恢复历史运行版本；恢复交给 Service，拒绝回执不得改写 saved 或清除待应用。 */
     @Test fun restoreApplied_requiresServiceReceiptAndPreservesSaved() = runTest {
         withModel { _, configuration, engine ->

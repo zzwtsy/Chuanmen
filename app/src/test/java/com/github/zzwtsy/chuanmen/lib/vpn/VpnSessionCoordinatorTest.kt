@@ -432,6 +432,92 @@ class VpnSessionCoordinatorTest {
         assertFalse(h.platform.descriptors.last().closed)
     }
 
+    /** 有效采样后查询失败，旧快照标 Stale 且趋势产生缺测；下一次匹配回执恢复 Fresh。 */
+    @Test fun failedObservationCannotLeaveOldSnapshotFresh() = runTest {
+        val h = Harness(this); val installed = h.connected()
+        h.query(attachment = installed.attachmentId)
+        assertEquals(DataFreshness.Fresh, h.state.core!!.freshness)
+        advanceTimeBy(1000); runCurrent()
+        val query = h.engine.commands.last() as EngineCommand.QueryRuntime
+        h.engine.emit(EngineEvent.Failed(query.token, UnavailableReason.ProtocolMismatch, FailureDisposition.Unknown))
+        runCurrent()
+        assertEquals(ConnectionPhase.Running, h.state.phase)
+        assertEquals(DataFreshness.Stale, h.state.core!!.freshness)
+        assertNull(h.state.currentCore(saved().profileId))
+        assertNull(h.state.traffic.last().txBytesPerSecond)
+        advanceTimeBy(1000); runCurrent()
+        h.query(attachment = installed.attachmentId)
+        assertEquals(DataFreshness.Fresh, h.state.core!!.freshness)
+        assertNotNull(h.state.currentCore(saved().profileId))
+    }
+
+    /** 在途查询的 1999 ms 回执仍有效，2000 ms 回执只产生缺测；主动查询也不能提交第二个在途请求。 */
+    @Test fun observationDeadlineIsExclusiveAtTwoSeconds() = runTest {
+        for (elapsed in listOf(1999L, 2000L)) {
+            val h = Harness(this); val installed = h.connected()
+            h.query(attachment = installed.attachmentId)
+            advanceTimeBy(1000); runCurrent()
+            val count = h.engine.commands.count { it is EngineCommand.QueryRuntime }
+            h.coordinator.query(); runCurrent()
+            assertEquals(count, h.engine.commands.count { it is EngineCommand.QueryRuntime })
+            advanceTimeBy(elapsed); runCurrent()
+            h.query(attachment = installed.attachmentId)
+            assertEquals(if (elapsed < 2000) DataFreshness.Fresh else DataFreshness.Stale, h.state.core!!.freshness)
+            h.coordinator.disconnect(); h.stopConfirmed()
+        }
+    }
+
+    /** 停止在途查询后重放旧回执并推进超时时钟，状态与关闭次数保持不变，不再发起轮询。 */
+    @Test fun stoppingDiscardsQueryReceiptAndWatchdog() = runTest {
+        val h = Harness(this); val installed = h.connected()
+        h.query(attachment = installed.attachmentId)
+        val snapshot = h.state.core!!.value!!
+        advanceTimeBy(1000); runCurrent()
+        val query = h.engine.commands.last() as EngineCommand.QueryRuntime
+        h.coordinator.disconnect(); h.stopConfirmed()
+        val stopped = h.state
+        val count = h.engine.commands.count { it is EngineCommand.QueryRuntime }
+        h.engine.emit(EngineEvent.CoreObserved(query.token, snapshot)); runCurrent()
+        advanceTimeBy(4000); runCurrent()
+        assertEquals(stopped, h.state)
+        assertEquals(count, h.engine.commands.count { it is EngineCommand.QueryRuntime })
+        assertTrue(h.platform.descriptors.single().closed)
+        assertEquals(1, h.order.count { it == "pfd-close" })
+    }
+
+    /** 同会话但旧 attachment 的采样不能覆盖当前地址或成为 Fresh，也不停止实际运行。 */
+    @Test fun oldAttachmentCannotPublishFreshMetrics() = runTest {
+        val h = Harness(this); val installed = h.connected()
+        h.query(attachment = installed.attachmentId)
+        val confirmed = h.state.core!!.value
+        advanceTimeBy(1000); runCurrent()
+        h.query(address = "10.42.9.9", attachment = installed.attachmentId.copy(sequence = 99))
+        assertEquals(confirmed, h.state.core!!.value)
+        assertEquals(DataFreshness.Stale, h.state.core!!.freshness)
+        assertEquals(ConnectionPhase.Running, h.state.phase)
+        assertEquals(1, h.platform.descriptors.size)
+        assertFalse(h.platform.descriptors.single().closed)
+    }
+
+    /** 查询挂起超过两秒后由 Service 标旧并逐秒填缺测；只保留一个 JNI 查询，迟到快照不重新标 Fresh。 */
+    @Test fun hungQueryExpiresFreshnessWithoutParallelQueries() = runTest {
+        val h = Harness(this); val installed = h.connected()
+        h.query(attachment = installed.attachmentId)
+        advanceTimeBy(1000); runCurrent()
+        val count = h.engine.commands.count { it is EngineCommand.QueryRuntime }
+        advanceTimeBy(2000); runCurrent()
+        assertEquals(DataFreshness.Stale, h.state.core!!.freshness)
+        val firstMissing = h.state.traffic.last().observedAtMillis
+        advanceTimeBy(1000); runCurrent()
+        assertEquals(firstMissing + 1000, h.state.traffic.last().observedAtMillis)
+        assertEquals(count, h.engine.commands.count { it is EngineCommand.QueryRuntime })
+        h.query(attachment = installed.attachmentId)
+        assertEquals(DataFreshness.Stale, h.state.core!!.freshness)
+        advanceTimeBy(1000); runCurrent()
+        h.query(attachment = installed.attachmentId)
+        assertEquals(DataFreshness.Fresh, h.state.core!!.freshness)
+    }
+
     /** 明确连接已校验但目标尚未落盘时禁止 Start；提交成功后目标与 Start 捕获同一修订。 */
     @Test fun explicitConnection_waitsForTargetCommit() = runTest {
         val memory = MemoryProfileRepository(listOf(ProfileSummary(saved(), "A")))

@@ -48,3 +48,37 @@ fn reused_fd_does_not_reuse_attachment_state() {
     assert_eq!(next.counters().tx_bytes, 0);
     assert_eq!(next.phase(), TunPhase::Installed);
 }
+
+/// 正式 TUN 计量入口收到读失败、写失败或 Pending 时不增加计数，成功时只增加实际 IP 字节。
+#[test]
+fn failed_io_does_not_change_counters() {
+    use std::task::Poll;
+    let tun = attachment(1);
+    tun.read_result(false, 1024);
+    tun.write_result(&Poll::Ready(Err(std::io::Error::other(
+        "synthetic-io-failure",
+    ))));
+    tun.write_result(&Poll::Pending);
+    assert_eq!(tun.counters().tx_bytes, 0);
+    assert_eq!(tun.counters().rx_bytes, 0);
+    assert_eq!(tun.counters().tx_packets, 0);
+    assert_eq!(tun.counters().rx_packets, 0);
+    tun.read_result(true, 1024);
+    tun.write_result(&Poll::Ready(Ok(64)));
+    assert_eq!(tun.counters().tx_bytes, 1024);
+    assert_eq!(tun.counters().rx_bytes, 64);
+    assert_eq!(tun.counters().tx_packets, 1);
+    assert_eq!(tun.counters().rx_packets, 1);
+}
+
+/// 实际公开计量入口保留大整数精度；累计超过 Long 范围时饱和，不回绕或产生负数。
+#[test]
+fn counters_saturate_without_losing_integer_precision() {
+    let tun = attachment(1);
+    tun.read_completed(9_007_199_254_740_993);
+    assert_eq!(tun.counters().tx_bytes, 9_007_199_254_740_993);
+    tun.read_completed(usize::MAX);
+    tun.write_completed(usize::MAX);
+    assert_eq!(tun.counters().tx_bytes, i64::MAX as u64);
+    assert_eq!(tun.counters().rx_bytes, i64::MAX as u64);
+}

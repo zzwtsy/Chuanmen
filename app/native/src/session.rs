@@ -1,7 +1,7 @@
 //! 单活动会话；后台命令和保护回调分别排空，停止未确认时不释放会话资源。
 use easytier::{
     android_tun::{TunAttachment, TunIdentity, TunPhase, TunRequest},
-    common::config::TomlConfigLoader,
+    common::config::{ConfigLoader as _, TomlConfigLoader},
     instance::factory::{NativeCoreInstance, enqueue_android_tun},
 };
 use easytier_core::instance::CoreInstanceState;
@@ -17,6 +17,7 @@ use crate::{
 
 struct State {
     instance: Option<Arc<NativeCoreInstance>>,
+    diagnostics: Option<crate::diagnostics::Subscription>,
     attachment: Option<Arc<TunAttachment>>,
     phase: &'static str,
     closing: bool,
@@ -129,6 +130,7 @@ pub fn start(env: &mut JNIEnv<'_>, callback: &JObject<'_>, request: &Request) ->
         revision,
         state: Mutex::new(State {
             instance: None,
+            diagnostics: None,
             attachment: None,
             phase: "starting",
             closing: false,
@@ -170,6 +172,7 @@ pub fn start(env: &mut JNIEnv<'_>, callback: &JObject<'_>, request: &Request) ->
         match host::block_on(async { host::manager().create(config, ()) }) {
             Ok(instance) => {
                 state.instance = Some(instance.clone());
+                state.diagnostics = crate::diagnostics::subscribe(&instance);
                 instance
             }
             Err(_) => {
@@ -359,6 +362,15 @@ pub fn stop(request: &Request) -> Value {
             return failure(request, "unknown", "stop_unconfirmed");
         }
     }
+    let diagnostics = session
+        .state
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .diagnostics
+        .take();
+    if let Some(diagnostics) = diagnostics {
+        host::block_on(diagnostics.stop());
+    }
     let mut state = session
         .state
         .lock()
@@ -460,6 +472,10 @@ pub fn query(request: &Request) -> Value {
         .as_ref()
         .and_then(|instance| host::block_on(host::manager().network_info(instance.instance_id())));
     let node = info.as_ref().and_then(|info| info.my_node_info.as_ref());
+    let network_name = instance
+        .as_ref()
+        .and_then(|instance| host::manager().config(instance.instance_id()))
+        .map(|config| config.get_network_identity().network_name);
     let ipv4 = node
         .and_then(|node| node.virtual_ipv4.as_ref())
         .map(ToString::to_string);
@@ -469,6 +485,9 @@ pub fn query(request: &Request) -> Value {
             info.routes.iter().map(|route| json!({
         "peer_id": route.peer_id, "ipv4": route.ipv4_addr.as_ref().map(ToString::to_string),
         "proxy_cidrs": route.proxy_cidrs, "cost": route.cost, "version": route.version,
+        "hostname": route.hostname, "next_hop_peer_id": route.next_hop_peer_id,
+        "udp_nat_type": route.stun_info.as_ref().map(|stun| stun.udp_nat_type),
+        "tcp_nat_type": route.stun_info.as_ref().map(|stun| stun.tcp_nat_type),
     })).collect()
         })
         .unwrap_or_default();
@@ -479,7 +498,21 @@ pub fn query(request: &Request) -> Value {
                 .iter()
                 .map(|peer| {
                     json!({
-                        "peer_id": peer.peer_id, "connections": peer.conns.len(),
+                        "peer_id": peer.peer_id,
+                        "connections": peer.conns.iter().filter(|conn| !conn.is_closed).count(),
+                        "network_role": peer_network_role(network_name.as_deref(), peer.conns.iter()
+                            .filter(|conn| !conn.is_closed).map(|conn| conn.network_name.as_str())),
+                        "links": peer.conns.iter().filter(|conn| !conn.is_closed).map(|conn| {
+                            json!({"connection_id": conn.conn_id,
+                                "tx_bytes": conn.stats.as_ref().map(|stats| stats.tx_bytes.to_string()),
+                                "rx_bytes": conn.stats.as_ref().map(|stats| stats.rx_bytes.to_string()),
+                                "tx_packets": conn.stats.as_ref().map(|stats| stats.tx_packets.to_string()),
+                                "rx_packets": conn.stats.as_ref().map(|stats| stats.rx_packets.to_string()),
+                                "latency_us": conn.stats.as_ref().filter(|stats| stats.latency_valid == Some(true))
+                                    .map(|stats| stats.latency_us.to_string()),
+                                "latency_valid": conn.stats.as_ref().and_then(|stats| stats.latency_valid),
+                            })
+                        }).collect::<Vec<_>>(),
                     })
                 })
                 .collect()
@@ -496,11 +529,19 @@ pub fn query(request: &Request) -> Value {
             "phase": phase, "core_state": instance.as_ref().map(|instance| format!("{:?}", instance.state()).to_lowercase()),
             "saved_revision": session.revision, "last_operation": last_operation,
             "ipv4": ipv4, "routes": routes, "peers": peers,
+            "capabilities": ["observability-v1", "observability-v2"],
+            "local_peer_id": node.map(|node| node.peer_id),
+            "local_hostname": node.map(|node| &node.hostname),
+            "local_version": node.map(|node| &node.version),
             "udp_nat_type": node.and_then(|node| node.stun_info.as_ref()).map(|stun| stun.udp_nat_type),
             "tcp_nat_type": node.and_then(|node| node.stun_info.as_ref()).map(|stun| stun.tcp_nat_type),
             "attachment": attachment.as_ref().map(|attachment| &attachment.identity),
             "attachment_phase": attachment.as_ref().map(|attachment| attachment.phase()),
-            "tun_counters": attachment.as_ref().map(|attachment| attachment.counters()),
+            "tun_counters": attachment.as_ref().map(|attachment| {
+                let counters = attachment.counters();
+                json!({"tx_bytes": counters.tx_bytes.to_string(), "rx_bytes": counters.rx_bytes.to_string(),
+                    "tx_packets": counters.tx_packets.to_string(), "rx_packets": counters.rx_packets.to_string()})
+            }),
             "active_instances": host::manager().instance_ids().len(),
             "callbacks_in_flight": protector.as_ref().map(|protector| protector.gate.count()).unwrap_or(0),
             "jni_global_refs": usize::from(protector.is_some()),
@@ -509,4 +550,65 @@ pub fn query(request: &Request) -> Value {
             "protection_failures": protector.as_ref().map(|protector| protector.failures.load(std::sync::atomic::Ordering::Relaxed)).unwrap_or(0),
         }),
     )
+}
+
+/// 沿用核心连接归属规则，只输出角色；网络名和认证信息不跨越桥边界。
+fn peer_network_role<'a>(
+    local: Option<&str>,
+    networks: impl Iterator<Item = &'a str>,
+) -> &'static str {
+    let Some(local) = local else {
+        return "unknown";
+    };
+    let mut foreign = false;
+    for network in networks {
+        if network == local {
+            return "member";
+        }
+        foreign = true;
+    }
+    if foreign { "relay" } else { "unknown" }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use easytier_core::tunnel::stats::WindowLatency;
+
+    /// 只有跨网邻居时是中继；同网连接优先，缺少本机身份或活动连接时不猜测角色。
+    #[test]
+    fn peer_role_uses_core_network_identity_without_exporting_it() {
+        assert_eq!(
+            peer_network_role(Some("synthetic-local"), ["synthetic-public"].into_iter()),
+            "relay"
+        );
+        assert_eq!(
+            peer_network_role(
+                Some("synthetic-local"),
+                ["synthetic-public", "synthetic-local"].into_iter()
+            ),
+            "member"
+        );
+        assert_eq!(
+            peer_network_role(None, ["synthetic-public"].into_iter()),
+            "unknown"
+        );
+        assert_eq!(
+            peer_network_role(Some("synthetic-local"), [].into_iter()),
+            "unknown"
+        );
+    }
+
+    /// 使用真实固定核心的统计窗口；未采样零无效，完成零微秒采样后有效，后续均值如实保留。
+    #[test]
+    fn latency_validity_distinguishes_missing_and_measured_zero() {
+        let stats = WindowLatency::new(15);
+        assert!(!stats.has_samples());
+        assert_eq!(stats.get_latency_us::<u64>(), 0);
+        stats.record_latency(0);
+        assert!(stats.has_samples());
+        assert_eq!(stats.get_latency_us::<u64>(), 0);
+        stats.record_latency(2400);
+        assert_eq!(stats.get_latency_us::<u64>(), 1200);
+    }
 }

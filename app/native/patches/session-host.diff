@@ -9,14 +9,14 @@ index 6c332c8..cb5e065 100644
 +pub mod android_host;
  mod strings;
  mod types;
- 
+
 diff --git a/easytier-contrib/easytier-ffi/src/state.rs b/easytier-contrib/easytier-ffi/src/state.rs
 index 749acea..8f125d5 100644
 --- a/easytier-contrib/easytier-ffi/src/state.rs
 +++ b/easytier-contrib/easytier-ffi/src/state.rs
 @@ -1,7 +1,7 @@
  use std::sync::Arc;
- 
+
  use easytier::instance::factory::{
 -    NativeInstanceManager, NativeProcessManagement, native_instance_manager_with_runtime,
 +    NativeInstanceManager, NativeProcessManagement, native_android_instance_manager,
@@ -38,6 +38,123 @@ index 749acea..8f125d5 100644
              runtime.handle().clone(),
          ));
          let process_management =
+diff --git a/easytier-core/src/config/toml.rs b/easytier-core/src/config/toml.rs
+index c0835fe..7f893fc 100644
+--- a/easytier-core/src/config/toml.rs
++++ b/easytier-core/src/config/toml.rs
+@@ -667,7 +667,10 @@ impl ConfigLoader for TomlConfig {
+             .as_ref()
+             .and_then(|s| s.parse().ok())
+             .map(|c: cidr::Ipv4Inet| {
+-                if c.network_length() == 32 {
++                // 裸地址沿用宿主历史 /24；显式前缀（包括 /32）保留用户意图。
++                if c.network_length() == 32
++                    && locked_config.ipv4.as_deref().is_some_and(|raw| !raw.contains('/'))
++                {
+                     cidr::Ipv4Inet::new(c.address(), 24).unwrap()
+                 } else {
+                     c
+diff --git a/easytier-core/src/peers/conn/peer_conn.rs b/easytier-core/src/peers/conn/peer_conn.rs
+index f03bc21..5d72633 100644
+--- a/easytier-core/src/peers/conn/peer_conn.rs
++++ b/easytier-core/src/peers/conn/peer_conn.rs
+@@ -1460,8 +1460,14 @@ impl PeerConn {
+     }
+
+     pub fn get_stats(&self) -> PeerConnStats {
++        let latency_valid = self.latency_stats.has_samples();
+         PeerConnStats {
+-            latency_us: self.latency_stats.get_latency_us(),
++            latency_us: if latency_valid {
++                self.latency_stats.get_latency_us()
++            } else {
++                0
++            },
++            latency_valid: Some(latency_valid),
+
+             tx_bytes: self.throughput.tx_bytes(),
+             rx_bytes: self.throughput.rx_bytes(),
+diff --git a/easytier-core/src/tunnel/stats.rs b/easytier-core/src/tunnel/stats.rs
+index 4149acd..b8e1e72 100644
+--- a/easytier-core/src/tunnel/stats.rs
++++ b/easytier-core/src/tunnel/stats.rs
+@@ -1,6 +1,9 @@
+ use std::{
+     cell::UnsafeCell,
+-    sync::atomic::{AtomicU32, Ordering::Relaxed},
++    sync::atomic::{
++        AtomicBool, AtomicU32,
++        Ordering::{Acquire, Relaxed, Release},
++    },
+ };
+
+ pub struct WindowLatency {
+@@ -10,6 +13,7 @@ pub struct WindowLatency {
+
+     sum: AtomicU32,
+     count: AtomicU32,
++    sample_published: AtomicBool,
+ }
+
+ impl std::fmt::Debug for WindowLatency {
+@@ -31,6 +35,7 @@ impl WindowLatency {
+
+             sum: AtomicU32::new(0),
+             count: AtomicU32::new(0),
++            sample_published: AtomicBool::new(false),
+         }
+     }
+
+@@ -48,6 +53,13 @@ impl WindowLatency {
+         } else {
+             self.sum.fetch_sub(old_lat - latency_us, Relaxed);
+         }
++        // 首个完整样本发布前不能把初始化的零解释为实测 RTT。
++        self.sample_published.store(true, Release);
++    }
++
++    /// 是否已完成至少一次采样；零微秒也可以是有效样本。
++    pub fn has_samples(&self) -> bool {
++        self.sample_published.load(Acquire)
+     }
+
+     pub fn get_latency_us<T: From<u32> + std::ops::Div<Output = T>>(&self) -> T {
+diff --git a/easytier-proto/proto/api_instance.proto b/easytier-proto/proto/api_instance.proto
+index 823e632..08f74db 100644
+--- a/easytier-proto/proto/api_instance.proto
++++ b/easytier-proto/proto/api_instance.proto
+@@ -28,6 +28,7 @@ message PeerConnStats {
+   uint64 tx_packets = 4;
+
+   uint64 latency_us = 5;
++  optional bool latency_valid = 6;
+ }
+
+ message PeerConnInfo {
+diff --git a/easytier-proto/proto/core_peer.proto b/easytier-proto/proto/core_peer.proto
+index 289966e..de01886 100644
+--- a/easytier-proto/proto/core_peer.proto
++++ b/easytier-proto/proto/core_peer.proto
+@@ -13,6 +13,7 @@ message PeerConnStats {
+   uint64 tx_packets = 4;
+
+   uint64 latency_us = 5;
++  optional bool latency_valid = 6;
+ }
+
+ message PeerConnInfo {
+diff --git a/easytier-proto/src/api.rs b/easytier-proto/src/api.rs
+index 8b152f3..238d4a3 100644
+--- a/easytier-proto/src/api.rs
++++ b/easytier-proto/src/api.rs
+@@ -84,6 +84,7 @@ pub mod instance {
+                 rx_packets: value.rx_packets,
+                 tx_packets: value.tx_packets,
+                 latency_us: value.latency_us,
++                latency_valid: value.latency_valid,
+             }
+         }
+     }
 diff --git a/easytier/src/instance/factory.rs b/easytier/src/instance/factory.rs
 index 71c341c..d900e7c 100644
 --- a/easytier/src/instance/factory.rs
@@ -45,7 +162,7 @@ index 71c341c..d900e7c 100644
 @@ -94,11 +94,40 @@ fn native_instance_manager_with_optional_runtime(
      )
  }
- 
+
 +/// Android 共享进程 runtime，保留完整原生宿主配置；不创建每会话驱动线程。
 +#[cfg(feature = "management-rpc")]
 +pub fn native_android_instance_manager(runtime: tokio::runtime::Handle) -> NativeInstanceManager {
@@ -117,7 +234,7 @@ index aa22a70..54bfdb8 100644
 @@ -128,6 +131,12 @@ impl NativeInstanceRuntimeHost {
          self.global_ctx.subscribe()
      }
- 
+
 +    #[cfg(all(feature = "tun", mobile))]
 +    pub(crate) fn enqueue_android_tun(&self, request: crate::android_tun::TunRequest)
 +        -> Result<(), crate::android_tun::TunError> {
@@ -136,17 +253,17 @@ index a86aead..ce7da06 100644
 -    any::Any,
      sync::{Arc, OnceLock},
  };
- 
+
 @@ -10,21 +9,24 @@ use super::MagicDnsRuntime;
  use crate::instance::virtual_nic::NicCtx;
- 
+
  struct NicCtxContainer {
 -    _nic_ctx: Option<Box<dyn Any + Send>>,
 +    nic_ctx: Option<NicCtx>,
 +    drain_tasks: Option<JoinSet<()>>,
      magic_dns: MagicDnsRuntime,
  }
- 
+
  impl NicCtxContainer {
      fn new(nic_ctx: NicCtx, magic_dns: MagicDnsRuntime) -> Self {
          Self {
@@ -156,7 +273,7 @@ index a86aead..ce7da06 100644
              magic_dns,
          }
      }
- 
+
      fn packet_drain(tasks: JoinSet<()>) -> Self {
          Self {
 -            _nic_ctx: Some(Box::new(tasks)),
@@ -188,10 +305,10 @@ index 4f45932..aacf6f6 100644
 +    tun_fd_receiver: Mutex<Option<mpsc::Receiver<crate::android_tun::TunRequest>>>,
      task: Mutex<Option<tokio::task::JoinHandle<()>>>,
  }
- 
+
 @@ -47,71 +47,74 @@ impl NativeTunRuntime {
      }
- 
+
      async fn install_mobile_tun(
 -        nic_state: TunNicState,
 -        global_ctx: ArcGlobalCtx,
@@ -229,7 +346,7 @@ index 4f45932..aacf6f6 100644
 +        if let Some(attachment) = request.attachment.as_ref() { attachment.installed(); }
          Ok(())
      }
- 
+
 -    pub(super) async fn prepare(&self, packet_plane: Arc<CorePacketPlane>) -> anyhow::Result<()> {
 +    pub(super) async fn prepare(&self, packet_plane: Arc<CorePacketPlane>, operation: Arc<Mutex<()>>) -> anyhow::Result<()> {
          self.nic.drain().await;
@@ -275,7 +392,7 @@ index 4f45932..aacf6f6 100644
          }));
          Ok(())
      }
- 
+
      pub(super) async fn shutdown(&self) {
 -        if let Some(task) = self.task.lock().await.take() {
 -            let _ = task.await;
@@ -287,7 +404,7 @@ index 4f45932..aacf6f6 100644
          }
          self.nic.stop().await;
      }
- 
+
 +    pub(super) fn enqueue(&self, request: crate::android_tun::TunRequest) -> Result<(), crate::android_tun::TunError> {
 +        if self.cancel.is_cancelled() { request.cancel(); return Err(crate::android_tun::TunError::QueueClosed); }
 +        self.tun_fd.try_send(request).map_err(|error| {
@@ -303,10 +420,10 @@ index 4f45932..aacf6f6 100644
 +        let (request, _receipt) = crate::android_tun::TunRequest::new(if fd > 0 { Some(fd) } else { None }, None);
 +        self.enqueue(request).map_err(|error| anyhow::anyhow!("TUN enqueue failed: {error:?}"))
      }
- 
+
      pub(super) fn dhcp_host(
 diff --git a/easytier/src/instance/virtual_nic.rs b/easytier/src/instance/virtual_nic.rs
-index 43c97aa..67a401c 100644
+index 43c97aa..7dacdf6 100644
 --- a/easytier/src/instance/virtual_nic.rs
 +++ b/easytier/src/instance/virtual_nic.rs
 @@ -50,6 +50,7 @@ pin_project! {
@@ -316,7 +433,7 @@ index 43c97aa..67a401c 100644
 +        attachment: Option<Arc<crate::android_tun::TunAttachment>>,
      }
  }
- 
+
 @@ -64,6 +65,7 @@ impl TunStream {
              cur_buf: BytesMut::new(),
              has_packet_info,
@@ -326,11 +443,11 @@ index 43c97aa..67a401c 100644
      }
  }
 @@ -86,6 +88,9 @@ impl Stream for TunStream {
- 
+
          let ret = ready!(g.as_pin_mut().poll_read(cx, &mut buf));
          let len = buf.filled().len();
-+        if ret.is_ok() && len > 0 {
-+            if let Some(attachment) = self_mut.attachment.as_ref() { attachment.read_completed(len); }
++        if let Some(attachment) = self_mut.attachment.as_ref() {
++            attachment.read_result(ret.is_ok(), len);
 +        }
          if len == 0 {
              return Poll::Ready(None);
@@ -342,19 +459,19 @@ index 43c97aa..67a401c 100644
 +        attachment: Option<Arc<crate::android_tun::TunAttachment>>,
      }
  }
- 
+
 @@ -210,7 +216,11 @@ impl AsyncWrite for TunAsyncWrite {
      ) -> Poll<Result<usize, io::Error>> {
          let self_mut = self.project();
          let mut g = ready!(self_mut.l.poll_lock(cx));
 -        g.as_pin_mut().poll_write(cx, buf)
 +        let result = g.as_pin_mut().poll_write(cx, buf);
-+        if let Poll::Ready(Ok(bytes)) = &result {
-+            if let Some(attachment) = self_mut.attachment.as_ref() { attachment.write_completed(*bytes); }
++        if let Some(attachment) = self_mut.attachment.as_ref() {
++            attachment.write_result(&result);
 +        }
 +        result
      }
- 
+
      fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Result<(), io::Error>> {
 @@ -232,7 +242,11 @@ impl AsyncWrite for TunAsyncWrite {
      ) -> Poll<Result<usize, io::Error>> {
@@ -362,12 +479,12 @@ index 43c97aa..67a401c 100644
          let mut g = ready!(self_mut.l.poll_lock(cx));
 -        g.as_pin_mut().poll_write_vectored(cx, bufs)
 +        let result = g.as_pin_mut().poll_write_vectored(cx, bufs);
-+        if let Poll::Ready(Ok(bytes)) = &result {
-+            if let Some(attachment) = self_mut.attachment.as_ref() { attachment.write_completed(*bytes); }
++        if let Some(attachment) = self_mut.attachment.as_ref() {
++            attachment.write_result(&result);
 +        }
 +        result
      }
- 
+
      fn is_write_vectored(&self) -> bool {
 @@ -578,6 +592,7 @@ impl VirtualNic {
      pub async fn create_dev_for_mobile(
@@ -402,24 +519,24 @@ index 43c97aa..67a401c 100644
              ),
              None,
 @@ -798,6 +815,7 @@ pub struct NicCtx {
- 
+
      nic: Arc<Mutex<VirtualNic>>,
      tasks: JoinSet<()>,
 +    attachment: Option<Arc<crate::android_tun::TunAttachment>>,
- 
+
      #[cfg(target_os = "windows")]
      windows_udp_broadcast_relay: Option<AbortOnDropHandle<()>>,
 @@ -819,12 +837,19 @@ impl NicCtx {
- 
+
              nic: Arc::new(Mutex::new(VirtualNic::new(global_ctx))),
              tasks: JoinSet::new(),
 +            attachment: None,
- 
+
              #[cfg(target_os = "windows")]
              windows_udp_broadcast_relay: None,
          }
      }
- 
+
 +    /// 先等待全部 TUN I/O 退出，再确认平台可以关闭 PFD。
 +    pub(super) async fn stop_io(&mut self) {
 +        self.tasks.shutdown().await;
@@ -430,7 +547,7 @@ index 43c97aa..67a401c 100644
          let nic = self.nic.lock().await;
          nic.ifname.as_ref().map(|s| s.to_owned())
 @@ -1299,9 +1324,16 @@ impl NicCtx {
- 
+
      #[cfg(mobile)]
      pub async fn run_for_mobile(&mut self, tun_fd: std::os::fd::RawFd) -> Result<(), Error> {
 +        self.run_for_mobile_with_attachment(tun_fd, None).await
@@ -459,18 +576,3 @@ index f782395..3dd93db 100644
  pub mod tunnel;
  pub mod utils;
  #[cfg(feature = "web-client")]
-diff --git a/easytier-core/src/config/toml.rs b/easytier-core/src/config/toml.rs
---- a/easytier-core/src/config/toml.rs
-+++ b/easytier-core/src/config/toml.rs
-@@ -667,7 +667,10 @@
-             .as_ref()
-             .and_then(|s| s.parse().ok())
-             .map(|c: cidr::Ipv4Inet| {
--                if c.network_length() == 32 {
-+                // 裸地址沿用宿主历史 /24；显式前缀（包括 /32）保留用户意图。
-+                if c.network_length() == 32
-+                    && locked_config.ipv4.as_deref().is_some_and(|raw| !raw.contains('/'))
-+                {
-                     cidr::Ipv4Inet::new(c.address(), 24).unwrap()
-                 } else {
-                     c

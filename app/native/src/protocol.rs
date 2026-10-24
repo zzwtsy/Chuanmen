@@ -18,6 +18,7 @@ pub struct Request {
     pub fd: Option<i32>,
     pub config: Option<String>,
     pub patch: Option<Value>,
+    pub debug: Option<bool>,
 }
 
 impl Request {
@@ -72,7 +73,7 @@ pub fn execute(env: &mut JNIEnv<'_>, callback: &JObject<'_>, text: &str) -> Valu
             json!({"core_revision": CORE_REVISION,
             "core_version": easytier::VERSION, "bridge_version": env!("CARGO_PKG_VERSION"),
             "abi": if cfg!(target_arch = "aarch64") { "arm64-v8a" } else { "x86_64" },
-            "platform": std::env::consts::OS, "features": ["upstream-default", "session-confirmations", "tun-counters", "config-codec-v2"]}),
+            "platform": std::env::consts::OS, "features": ["upstream-default", "session-confirmations", "tun-counters", "config-codec-v2", "observability-v1", "observability-v2", "icmp-datagram"]}),
         ),
         "validate" => match request.config.as_deref().and_then(|config| {
             easytier::common::config::TomlConfigLoader::new_from_str(config).ok()
@@ -101,6 +102,17 @@ pub fn execute(env: &mut JNIEnv<'_>, callback: &JObject<'_>, text: &str) -> Valu
         "release" => crate::session::release(&request),
         "query" => crate::session::query(&request),
         "diagnostics" => reply(&request, "confirmed", crate::diagnostics::drain()),
+        "probe_nonblocking" => match request.fd.and_then(|fd| crate::probe::nonblocking(fd).ok()) {
+            Some(()) => reply(&request, "confirmed", json!({"nonblocking": true})),
+            None => failure(&request, "failed", "probe_socket_unavailable"),
+        },
+        "diagnostics_debug" => match request.debug {
+            Some(enabled) => {
+                crate::diagnostics::set_debug(enabled);
+                reply(&request, "confirmed", json!({"enabled": enabled}))
+            }
+            None => failure(&request, "failed", "invalid_request"),
+        },
         _ => failure(&request, "failed", "unsupported_operation"),
     }
 }

@@ -71,9 +71,9 @@ class ConfigurationViewModel(
             try {
                 val document = codec.patch(submission.draft.base.document, submission.value.changes)
                 val notice = when (document) {
-                    is ConfigResult.Failure -> "配置解析失败，输入已保留"
+                    is ConfigResult.Failure -> "配置解析失败，输入已保留".also { editor.reject(submission, WriteError.ValidationError, it) }
                     is ConfigResult.Success -> when (val result = profiles.save(id, document.value, submission.value.policy, submission.draft.base.revision)) {
-                        is WriteResult.Failure -> { editor.reject(submission, result.error); result.notice() }
+                        is WriteResult.Failure -> result.notice().also { editor.reject(submission, result.error, requireNotNull(it)) }
                         is WriteResult.Success -> {
                             if (profiles.findSaved(id) != null) editor.acceptSaved(submission, result.value) else editor.forget(id)
                             "已保存，运行配置未改变"
@@ -82,7 +82,11 @@ class ConfigurationViewModel(
                 }
                 if (currentId() == id) message.value = notice
             } catch (error: CancellationException) { throw error }
-            catch (_: Exception) { if (currentId() == id) message.value = "无法保存配置，编辑内容已保留" }
+            catch (_: Exception) {
+                val failure = "无法保存配置，编辑内容已保留"
+                editor.reject(submission, WriteError.WriteFailed, failure)
+                if (currentId() == id) message.value = failure
+            }
             finally { editor.finish(submission) }
         }
     }

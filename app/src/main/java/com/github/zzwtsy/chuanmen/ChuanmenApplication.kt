@@ -12,4 +12,19 @@ open class ChuanmenApplication : Application(), ProfileRepositoryOwner {
     val preferences by lazy { com.github.zzwtsy.chuanmen.lib.AppearancePreferences.open(this) }
     override val profiles: ProfileRepository by lazy { PersistentProfileRepository.open(this, configCodec) }
     val sessions by lazy { VpnSessionClient(this) }
+    val logs by lazy {
+        com.github.zzwtsy.chuanmen.lib.logging.LogCollector(
+            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.IO),
+            com.github.zzwtsy.chuanmen.features.logs.RotatingLogStore(java.io.File(noBackupFilesDir, "logs")),
+            com.github.zzwtsy.chuanmen.lib.vpn.MonotonicClock { android.os.SystemClock.elapsedRealtime() },
+            setNativeDebug = { enabled -> kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main.immediate) { sessions.setDiagnosticDebug(enabled) } },
+        )
+    }
+    val probes by lazy {
+        com.github.zzwtsy.chuanmen.lib.vpn.ConnectionProbe(
+            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.SupervisorJob() + kotlinx.coroutines.Dispatchers.Main.immediate),
+            sessions.state, com.github.zzwtsy.chuanmen.lib.vpn.AndroidIcmpTransportFactory(this, sessions.state),
+            com.github.zzwtsy.chuanmen.lib.vpn.MonotonicClock { android.os.SystemClock.elapsedRealtime() },
+        )
+    }
 }

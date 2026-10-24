@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "protocol": 1,
-  "patch_id": "p03-config-host-v1",
+  "patch_id": "p04-observability-host-v2",
   "core_commit": "7592951b808c4839cb9d77cc4bc642f124915951",
   "rust_version": "1.99.0",
   "rustc_commit": "b940084d7eb6a299eb4bfeb8e34901bc051e7ac4",
@@ -41,7 +41,7 @@
     },
     "easytier/src/instance/virtual_nic.rs": {
       "original_sha256": "ac3fba74b908b31a58cb6f09ec513b0e99348528dd2cb754450facba6670bdbe",
-      "patched_sha256": "ff16995442c6289940c5cf210c0ccc77e024e7c385e83db74613af8094798e0f"
+      "patched_sha256": "ee2c074b8e990a272445c42f1d2549b3655918dc9351162c0511489235ad54fd"
     },
     "easytier/src/lib.rs": {
       "original_sha256": "f1d538cd0e48f0d780dfb5ddf4153a0284fb12d30feae5e71adc97755ee7587c",
@@ -50,6 +50,26 @@
     "easytier-core/src/config/toml.rs": {
       "original_sha256": "4c748a4faea9a0cad68d9495b311f1c57736873d8f9b2cc3acbe2c0d5db21311",
       "patched_sha256": "26524abf443fb052c68192497601aa730b9a5960e623331e1f2f9e90cba453f2"
+    },
+    "easytier-core/src/tunnel/stats.rs": {
+      "original_sha256": "0b2e93812de09eaf34cf867534541a0bf16ea1a0497a6d2245f1eb307adea6e6",
+      "patched_sha256": "78782d800585ae842ec55e9e211444fa1f192075c041789eabc3c781a44ca95c"
+    },
+    "easytier-core/src/peers/conn/peer_conn.rs": {
+      "original_sha256": "c659cada364d7e3f529f96b00442c15e9ae59cff1987836088904a3578c29038",
+      "patched_sha256": "482907130e8fc04c85cc877fc059ad8fe104718d2bc8d7b85f065ea872dbac04"
+    },
+    "easytier-proto/proto/core_peer.proto": {
+      "original_sha256": "cd5f76b6fe1b7eb7c2a8cf0d8c8ea5a4343f0a8fa870ad44324f0296daccfe9c",
+      "patched_sha256": "9c8faf192f88f69cd2b0df85fcb40745ef77f7638d31c87e5967c8533841ba83"
+    },
+    "easytier-proto/proto/api_instance.proto": {
+      "original_sha256": "5f22afab75e5110ad24038383f8065197a33b5122f9b6c83eeb9bf3dea97d431",
+      "patched_sha256": "4dc2cc3165a9610f7dc927a80acb41161f81db449018521fa87d5e85fa00e77a"
+    },
+    "easytier-proto/src/api.rs": {
+      "original_sha256": "56304f0f1237a8eea17ffb2eafcc0a3e434743efc0d8a15d72122a18a9aa62a9",
+      "patched_sha256": "24faf8af0bc3273842ae4a7c3509f135ba078e6769ce8f4d556a7aee823ba927"
     }
   }
 }

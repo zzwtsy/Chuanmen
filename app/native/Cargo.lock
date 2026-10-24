@@ -638,6 +638,7 @@ dependencies = [
  "easytier-core",
  "easytier-ffi",
  "jni 0.21.1",
+ "libc",
  "serde",
  "serde_json",
  "tokio",

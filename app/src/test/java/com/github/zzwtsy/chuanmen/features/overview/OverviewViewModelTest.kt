@@ -8,6 +8,10 @@ import com.github.zzwtsy.chuanmen.lib.profile.MemoryProfileRepository
 import com.github.zzwtsy.chuanmen.lib.profile.ProfileSummary
 import com.github.zzwtsy.chuanmen.lib.vpn.ConnectionPhase
 import com.github.zzwtsy.chuanmen.lib.vpn.CorePeer
+import com.github.zzwtsy.chuanmen.lib.vpn.PeerNetworkRole
+import com.github.zzwtsy.chuanmen.lib.vpn.CoreRoute
+import com.github.zzwtsy.chuanmen.lib.vpn.CoreMetric
+import com.github.zzwtsy.chuanmen.lib.vpn.Ipv4Cidr
 import com.github.zzwtsy.chuanmen.lib.vpn.CoreSnapshot
 import com.github.zzwtsy.chuanmen.lib.vpn.DataFreshness
 import com.github.zzwtsy.chuanmen.lib.vpn.Observation
@@ -30,6 +34,31 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class OverviewViewModelTest {
+    /** 本机及重复邻居不增加远端数，中继路由远端独立计数；下一跳缺失显示未知路径。 */
+    @Test fun onlineCountUsesUniqueRemoteIdentityAndIncludesRelayedRoutes() {
+        val saved = testSavedRevision()
+        val applied = testAppliedSnapshot(saved)
+        val core = CoreSnapshot(applied.sessionId, OperationToken(applied.sessionId, 1), 1,
+            RuntimeStatus.Running, null, listOf(CorePeer(1, 1), CorePeer(2, 2), CorePeer(2, 1)),
+            listOf(CoreRoute(2, Ipv4Cidr("10.42.0.2", 32), emptyList(), 1, "2.7.0", nextHopPeerId = CoreMetric(2L)),
+                CoreRoute(3, Ipv4Cidr("10.42.0.3", 32), emptyList(), 2, "2.7.0", nextHopPeerId = CoreMetric(2L))),
+            null, null, null, null, null, 1, 0, 1, 0, 0, localPeerId = 1)
+        val session = SessionState(ConnectionPhase.Running, applied.sessionId, saved.profileId, applied,
+            core = Observation(core, 1000, DataFreshness.Fresh))
+        val state = OverviewViewModel.project(session, saved.profileId, true)
+        assertEquals("2", state.onlineDevices)
+        assertEquals("直连 1 · 中继 1 · 未知 0", state.pathSummary)
+        assertFalse(state.waitingForPeers)
+        assertEquals("路径未知", OverviewViewModel.project(session.copy(core = null), saved.profileId, true).pathSummary)
+    }
+
+    /** 速率按 1024 换算；非有限和负值不可用，实测零保持零。 */
+    @Test fun rateUnitsAndInvalidValuesAreExplicit() {
+        assertEquals("0 B/s", rate(0.0))
+        assertEquals("1.0 KiB/s", rate(1024.0))
+        assertEquals("1.0 MiB/s", rate(1048576.0))
+        listOf(null, Double.NaN, Double.POSITIVE_INFINITY, -1.0).forEach { assertEquals("暂无数据", rate(it)) }
+    }
     /** 同一 Fresh 会话保留缺测与零；换查看对象、失去新鲜度或换代后均不显示旧流量。 */
     @Test fun traffic_requiresMatchingCurrentAppliedSession() {
         val saved = testSavedRevision()
@@ -42,7 +71,7 @@ class OverviewViewModelTest {
         assertEquals("12 B/s", current.download)
         assertEquals("已连接", current.status)
         val core = CoreSnapshot(sessionId = applied.sessionId, lastOperation = OperationToken(applied.sessionId, 1), savedRevision = 1,
-            status = RuntimeStatus.Running, ipv4 = null, peers = listOf(CorePeer(1, 0), CorePeer(2, 2)), routes = emptyList(),
+            status = RuntimeStatus.Running, ipv4 = null, peers = listOf(CorePeer(1, 0), CorePeer(2, 2, networkRole = PeerNetworkRole.Member)), routes = emptyList(),
             udpNatType = null, tcpNatType = null, attachmentId = null, attachmentState = null, counters = null,
             activeInstances = 1, callbacksInFlight = 0, jniGlobalRefs = 0, protectionCalls = 1, protectionFailures = 0)
         val measured = session.copy(core = Observation(core, 1, DataFreshness.Fresh))

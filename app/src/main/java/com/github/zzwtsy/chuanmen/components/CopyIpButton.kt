@@ -14,12 +14,12 @@ import com.github.zzwtsy.chuanmen.ui.theme.Dimensions
 
 /** 总览和设备复用同一个复制动作；只有剪贴板写入成功才反馈。 */
 @Composable
-fun CopyIpButton(ip: String) {
+fun CopyIpButton(ip: String, enabled: Boolean = true) {
     val context = LocalContext.current
     TextButton(
+        enabled = enabled,
         onClick = {
-            val clipboard = context.getSystemService(ClipboardManager::class.java)
-            runCatching { clipboard.setPrimaryClip(ClipData.newPlainText("IP", ip)) }
+            runCatching { context.getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText("IP", ip)) }
                 .onSuccess {
                     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
                         Toast.makeText(context, "IP 已复制", Toast.LENGTH_SHORT).show()

@@ -1,4 +1,4 @@
-//! P02 的 TUN 借用与安装回执；状态绑定 attachment，不以可复用 fd 作为身份。
+//! Android TUN 的借用与安装回执；状态绑定 attachment，不以可复用 fd 作为身份。
 
 use serde::{Deserialize, Serialize};
 use std::sync::{
@@ -111,6 +111,20 @@ impl TunAttachment {
         if bytes > 0 {
             Self::add(&self.rx_bytes, bytes as u64);
             Self::add(&self.rx_packets, 1);
+        }
+    }
+
+    /// 读取失败即使缓冲区包含字节也不记账；由唯一 TUN 读取路径调用。
+    pub fn read_result(&self, succeeded: bool, bytes: usize) {
+        if succeeded {
+            self.read_completed(bytes);
+        }
+    }
+
+    /// 普通和向量写入共用同一计量入口；Pending 和错误均不产生下载计数。
+    pub fn write_result(&self, result: &std::task::Poll<std::io::Result<usize>>) {
+        if let std::task::Poll::Ready(Ok(bytes)) = result {
+            self.write_completed(*bytes);
         }
     }
 
