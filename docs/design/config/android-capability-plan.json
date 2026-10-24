@@ -31,7 +31,7 @@
       "engineeringEvidence": [
         "docs/plan/p03-configuration.md#6-实施记录",
         "app/src/test/resources/profiles/p03-fields.json",
-        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/ConfigurationEditorContractTest.kt",
         "app/native/src/config_codec.rs",
         "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
       ],
@@ -70,7 +70,7 @@
       "engineeringEvidence": [
         "docs/plan/p03-configuration.md#6-实施记录",
         "app/src/test/resources/profiles/p03-fields.json",
-        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/ConfigurationEditorContractTest.kt",
         "app/native/src/config_codec.rs",
         "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
       ],
@@ -106,7 +106,7 @@
       "engineeringEvidence": [
         "docs/plan/p03-configuration.md#6-实施记录",
         "app/src/test/resources/profiles/p03-fields.json",
-        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/ConfigurationEditorContractTest.kt",
         "app/native/src/config_codec.rs",
         "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
       ],
@@ -146,7 +146,7 @@
       "engineeringEvidence": [
         "docs/plan/p03-configuration.md#6-实施记录",
         "app/src/test/resources/profiles/p03-fields.json",
-        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/ConfigurationEditorContractTest.kt",
         "app/native/src/config_codec.rs",
         "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
       ],
@@ -186,7 +186,7 @@
       "engineeringEvidence": [
         "docs/plan/p03-configuration.md#6-实施记录",
         "app/src/test/resources/profiles/p03-fields.json",
-        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/ConfigurationEditorContractTest.kt",
         "app/native/src/config_codec.rs",
         "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
       ],
@@ -259,7 +259,7 @@
       "engineeringEvidence": [
         "docs/plan/p03-configuration.md#6-实施记录",
         "app/src/test/resources/profiles/p03-fields.json",
-        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/ConfigurationEditorContractTest.kt",
         "app/native/src/config_codec.rs",
         "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
       ],
@@ -662,7 +662,7 @@
       "engineeringEvidence": [
         "docs/plan/p03-configuration.md#6-实施记录",
         "app/src/test/resources/profiles/p03-fields.json",
-        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/ConfigurationEditorContractTest.kt",
         "app/native/src/config_codec.rs",
         "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
       ],
@@ -856,7 +856,7 @@
       "engineeringEvidence": [
         "docs/plan/p03-configuration.md#6-实施记录",
         "app/src/test/resources/profiles/p03-fields.json",
-        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/ConfigurationEditorContractTest.kt",
         "app/src/test/java/com/github/zzwtsy/chuanmen/lib/vpn/VpnSessionCoordinatorTest.kt",
         "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
       ],
@@ -901,7 +901,7 @@
       "engineeringEvidence": [
         "docs/plan/p03-configuration.md#6-实施记录",
         "app/src/test/resources/profiles/p03-fields.json",
-        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/ConfigurationEditorContractTest.kt",
         "app/src/test/java/com/github/zzwtsy/chuanmen/lib/vpn/VpnSessionCoordinatorTest.kt",
         "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
       ],
@@ -965,7 +965,7 @@
       "engineeringEvidence": [
         "docs/plan/p03-configuration.md#6-实施记录",
         "app/src/test/resources/profiles/p03-fields.json",
-        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/P03ConfigurationTest.kt",
+        "app/src/test/java/com/github/zzwtsy/chuanmen/features/configuration/ConfigurationEditorContractTest.kt",
         "app/src/test/java/com/github/zzwtsy/chuanmen/lib/vpn/VpnSessionCoordinatorTest.kt",
         "docs/plan/p03-configuration.md#7-复审修复记录2026-10-24"
       ],

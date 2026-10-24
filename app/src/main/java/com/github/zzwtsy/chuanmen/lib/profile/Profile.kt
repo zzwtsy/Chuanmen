@@ -49,7 +49,7 @@ class NetworkSecret private constructor(private val content: String) {
     }
 }
 
-/** P03 首批只编辑 TCP/UDP 对端；拒绝 URL 凭据、查询和片段，错误不回显输入。 */
+/** 只允许 TCP/UDP 对端；拒绝 URL 凭据、查询和片段，错误不回显输入。 */
 data class PeerEndpoint(val value: String) {
     init {
         val uri = try { URI(value) } catch (_: Exception) { null }

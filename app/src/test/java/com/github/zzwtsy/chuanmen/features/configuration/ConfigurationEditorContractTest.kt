@@ -14,7 +14,7 @@ import org.junit.Assert.*
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class P03ConfigurationTest {
+class ConfigurationEditorContractTest {
     /** 首批黄金清单逐项经生产动作保存，文档及 Android 策略匹配且本地身份不变。 */
     @Test fun firstBatch_fieldsRoundTripThroughEditor() = runTest {
         val fixture = JsonParser.parseString(javaClass.getResourceAsStream("/profiles/p03-fields.json")!!.bufferedReader().use { it.readText() }).asJsonArray
